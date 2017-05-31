@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2//EN" "http://www.egroupware.org/etemplate2.dtd">
+<!-- $Id$ -->
+<overlay>
+	<template id="collabora.editor" template="" lang="" group="0" version="17.1">
+		<iframe id="editor_frame"></iframe>
+	</template>
+</overlay>
