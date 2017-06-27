@@ -23,6 +23,8 @@ use \EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
  */
 class Files {
 
+	const LOCK_DURATION = 1800; // 30 Minutes, per WOPI spec
+	
 	/**
 	 * Process a request to the files endpoint
 	 *
@@ -32,14 +34,45 @@ class Files {
 	 */
 	public static function process($id)
 	{
-		switch($_GET['endpoint'])
+
+		$path = Sql_Stream::id2path($id);
+		if(!$path)
 		{
-			case 'files':
+			http_response_code(404);
+			exit;
+		}
+
+		if($_REQUEST['endpoint'] !== 'files') return;
+		if(array_key_exists('contents', $_REQUEST))
+		{
+			echo 'Hello world';
+			exit;
+			return static::get_file($path);
+		}
+
+		switch ($_SERVER['HTTP_X-WOPI-Override'])
+		{
+			case 'LOCK':
+				static::lock($path);
+				exit;
+			case 'GET_LOCK':
+				static::get_lock($path);
+				exit;
+			case 'REFRESH_LOCK':
+				static::refresh_lock($path);
+				exit;
+			case 'UNLOCK':
+				static::unlock($path);
+				exit;
+			case 'PUT':
+				static::put($path);
+				exit;
 			default:
-				$data = static::checkFileInfo($id);
+				$data =  [ "BaseFileName"=> "test.txt", "Size"=> 11 ];
+				//$data = static::check_file_info($path);
 
 		}
-		
+
 		if($data == null)
 		{
 			http_response_code(404);
@@ -47,7 +80,7 @@ class Files {
 		}
 
 		// Additional, optional things we support
-		$data['UserFriendlyName'] = Accounts::format_username();
+	//	$data['UserFriendlyName'] = Accounts::format_username();
 
 		return $data;
 	}
@@ -57,12 +90,11 @@ class Files {
 	 *
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
 	 *
-	 * @param string $id
+	 * @param string $path VFS path of file we're operating on
 	 * @return Array|null
 	 */
-	protected static function checkFileInfo($id)
+	protected static function check_file_info($path)
 	{
-		$path = 'false';
 		
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
 		$data = array(
@@ -82,9 +114,8 @@ class Files {
 			'Version'		=> '1'	
 		);
 
-		if($id)
+		if($path)
 		{
-			$path = Sql_Stream::id2path($id);
 			$data['BaseFileName'] = basename($path);
 		}
 		if($path)
@@ -103,5 +134,205 @@ class Files {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Get the contents of a file
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/GetFile.html#
+	 *
+	 * @param string $path VFS path of file we're operating on
+	 */
+	public static function get_file($path)
+	{
+		// send a content-disposition header, so browser knows how to name downloaded file
+		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
+		{
+			Api\Header\Content::disposition(Vfs::basename($GLOBALS['egw']->sharing->get_path()), false);
+		}
+		$webdav_server = new Vfs\WebDAV();
+		$webdav_server->ServeRequest(Vfs::concat($GLOBALS['egw']->sharing->get_root(), Wopi::get_token()));
+		return;
+	}
+
+	/**
+	 * Lock a file
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/Lock.html
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/UnlockAndRelock.html
+	 *
+	 * @param string $path VFS path of file we're operating on
+	 */
+	public static function lock($path)
+	{
+		// Required
+		if($_SERVER['HTTP_X-WOPI-Lock'])
+		{
+			$token = $_SERVER['HTTP_X-WOPI-Lock'];
+		}
+		else
+		{
+			http_response_code(400);
+			return;
+		}
+		// Optional old lock code
+		if($_SERVER['HTTP_X-WOPI-OldLock'])
+		{
+			$old_lock = $_SERVER['HTTP_X-WOPI-OldLock'];
+		}
+
+		$timeout = static::LOCK_DURATION;
+		$owner = $GLOBALS['egw_info']['user']['account_id'];
+		$scope = 'exclusive';
+		$type = 'write';
+		$lock = Vfs::checkLock($path);
+
+		// Unlock and relock if old lock is provided
+		if($old_lock && $old_lock !== $lock['token'])
+		{
+			// Conflict
+			header('X-WOPI-Lock', $lock['token']);
+			http_response_code(409);
+			return;
+		}
+		else if ($old_lock && $old_lock == $lock['token'])
+		{
+			Vfs::unlock($path, $old_lock);
+		}
+
+		// Lock the file, refresh if the tokens match
+		$result = Vfs::lock($path,$token,$timeout,$owner,$scope,$type,$lock['token'] == $token);
+		
+		header('X-WOPI-Lock', $token);
+		http_response_code($result ? 200 : 409);
+	}
+
+	/**
+	 * Get a lock on a file
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/GetLock.html
+	 *
+	 * @param string $path VFS path of file we're operating on
+	 */
+	public static function get_lock($path)
+	{
+		$lock = Vfs::checkLock($path);
+
+		header('X-WOPI-Lock', $lock['token']);
+		http_response_code(200);
+	}
+
+	/**
+	 * Refresh a lock on a file
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/RefreshLock.html
+	 *
+	 * @param string $path VFS path of the file we're operating on
+	 */
+	public static function refresh_lock($path)
+	{
+		$token = $_SERVER['HTTP_X-WOPI-Lock'];
+		if(!$token)
+		{
+			// Bad request
+			http_response_code(400);
+		}
+
+		$timeout = static::LOCK_DURATION;
+		$owner = $GLOBALS['egw_info']['user']['account_id'];
+		$scope = 'exclusive';
+		$type = 'write';
+
+		$result = Vfs::lock($path,$token,$timeout,$owner,$scope,$type, true);
+
+		header('X-WOPI-Lock', $token);
+		http_response_code($result ? 200 : 409);
+	}
+
+	/**
+	 * Unlock a file
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/Unlock.html
+	 *
+	 * @param string $path VFS path of the file we're operating on
+	 */
+	public static function unlock($path)
+	{
+		$token = $_SERVER['HTTP_X-WOPI-Lock'];
+		if(!$token)
+		{
+			// Bad request
+			http_response_code(400);
+		}
+
+		$lock = Vfs::checkLock($path);
+
+		if($lock['token'] != $token)
+		{
+			header('X-WOPI-Lock', $lock['token']);
+			// Conflict
+			http_response_code(409);
+		}
+
+		$result = Vfs::unlock($path, $token);
+		
+		http_response_code($result ? 200 : 409);
+	}
+
+	/**
+	 * Update a file's binary contents
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutFile.html
+	 *
+	 * @param string $path VFS path of the file we're operating on
+	 */
+	public static function put($path)
+	{
+		// Lock token, might not be there for new files
+		$token = $_SERVER['HTTP_X-WOPI-Lock'];
+
+		// Check lock
+		$lock = Vfs::checkLock($path);
+		if(!$lock)
+		{
+			// Check file size
+			$stat = Vfs::stat($path);
+			if($stat['size'] != 0)
+			{
+				// Conflict
+				http_response_code(409);
+				return;
+			}
+		}
+		else if ($token && $lock['token'] !== $token)
+		{
+			// Conflict
+			http_response_code(409);
+			header('X-WOPI-Lock', $lock['token']);
+		}
+
+		// TODO: Store the file
+		http_response_code(501); // Not implemented
+	}
+
+	/**
+	 * Create a new file based on an existing file (Save As)
+	 *
+	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutRelativeFile.html
+	 *
+	 * @param string $path VFS path of the file we're operating on
+	 */
+	public static function put_relative_file($path)
+	{
+		// Lock token, might not be there
+		$token = $_SERVER['HTTP_X-WOPI-Lock'];
+
+		// File name / extension
+		$suggested_target = $_SERVER['HTTP_X-WOPI-SuggestedTarget'];
+		$relative_target = $_SERVER['HTTP_X-WOPI-RelativeTarget'];
+
+		$overwrite = boolval($_SERVER['HTTP_X-WOPI-OverwriteRelativeTarget']);
+		$size = intval($_SERVER['HTTP_X-WOPI-Size']);
+		
 	}
 }

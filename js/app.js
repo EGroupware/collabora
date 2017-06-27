@@ -42,12 +42,6 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	{
 		// call parent
 		this._super.apply(this, arguments);
-		switch(name)
-		{
-			case 'collabora.editor':
-				this.init_editor();
-				break;
-		}
 	},
 
 	/**
@@ -123,8 +117,46 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	set_discovery: function set_discovery(settings)
 	{
 		this.discovery = settings;
+	}
+});
+
+/**
+ * UI for collabora stuff
+ *
+ * @augments AppJS
+ */
+app.classes.collabora = AppJS.extend(
+{
+
+	/**
+	 * Constructor
+	 *
+	 * @memberOf app.collabora
+	 */
+	init: function()
+	{
+		this._super.apply(this, arguments);
 	},
 
+	/**
+	 * This function is called when the etemplate2 object is loaded
+	 * and ready.  If you must store a reference to the et2 object,
+	 * make sure to clean it up in destroy().
+	 *
+	 * @param et2 etemplate2 Newly ready object
+	 * @param {string} name template name
+	 */
+	et2_ready: function(et2,name)
+	{
+		// call parent
+		this._super.apply(this, arguments);
+		switch(name)
+		{
+			case 'collabora.editor':
+				this.init_editor();
+				break;
+		}
+	},
 	/**
 	 * Initialize editor and post the form that starts it
 	 *
@@ -133,14 +165,24 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	init_editor: function init_editor()
 	{
 		debugger;
-		var values = this.et2.getValues(this.et2.getRoot());
+		var values = this.et2.getArrayMgr('content').data || {};
 		var form_html = `
-		<form id="form" name="form" target="editor_frame"
+		<form id="form" name="form" target="collabora-editor_editor_frame"
 				action="${values['url']}" method="post">
 			<input name="access_token" value="${values['token']}" type="hidden"/>
-			<input name="access_token_ttl" value="${values['token_ttl']}>" type="hidden"/>
+			<input name="access_token_ttl" value="${values['access_token_ttl']}>" type="hidden"/>
 		</form>`;
 		jQuery('body').append(form_html);
+
+		var frameholder = document.getElementById('collabora-editor_editor_frame');
+		var office_frame = document.createElement('iframe');
+		office_frame.name = 'office_frame';
+		office_frame.id ='office_frame';
+		// The title should be set for accessibility
+		office_frame.title = 'Office Online Frame';
+		// This attribute allows true fullscreen mode in slideshow view
+		office_frame.setAttribute('allowfullscreen', 'true');
+		frameholder.appendChild(office_frame);
 		document.getElementById('form').submit();
 	}
 });

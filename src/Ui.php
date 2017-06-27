@@ -52,7 +52,7 @@ class Ui {
 
 		try
 		{
-		$discovery = Bo::discover();
+			$discovery = Bo::discover();
 		}
 		catch (Exception $e)
 		{
@@ -78,26 +78,24 @@ class Ui {
 
 	/**
 	 * Generate & send the needed HTML to properly open the editor
+	 *
+	 * @see https://wopi.readthedocs.io/en/latest/hostpage.html#
 	 * 
 	 * @param string $path Path to the file to be edited
 	 */
-	public function editor($path)
+	public function editor($path = false)
 	{
+		if(!$path && $_GET['path'])
+		{
+			$path = $_GET['path'];
+		}
 		Framework::includeJS('.','app','collabora',true);
 		$template = new Etemplate('collabora.editor');
 
-		$content = static::get_token($path);
+		$content = array(
+			'url'	=> Bo::get_action_url($path)
+		) + Bo::get_token($path);
 
 		$template->exec('collabora.'.__CLASS__.'.editor', $content, array(), array(), array(), 3);
-	}
-
-	public static function get_token($path)
-	{
-		$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
-			'share_expires'	=>	time() + Wopi::TOKEN_TTL
-		));
-		$share['access_token_ttl'] = Wopi::TOKEN_TTL;
-
-		return $share;
 	}
 }

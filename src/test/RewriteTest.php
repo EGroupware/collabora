@@ -17,6 +17,7 @@ require_once realpath(__DIR__.'/../../../api/src/test/LoggedInTest.php');
 
 use \EGroupware\Api;
 use \PHPUnit_Framework_TestCase as TestCase;
+use \EGroupware\Api\Vfs\Sharing;
 
 
 class RewriteTest extends \EGroupware\Api\LoggedInTest {
@@ -39,11 +40,6 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	{
 		$url = static::$wopi_endpoint . 'files/totally_invalid';
 		$headers = get_headers($url, TRUE);
-		$this->assertEquals('302', substr($headers[0], 9, 3), "Testing invalid URL $url");
-		$this->assertEquals('totally_invalid%26', substr($headers['Location'], -18));
-
-		$url = $headers['Location'];
-		$headers = get_headers($url, TRUE);
 		$this->assertEquals('404', substr($headers[0], 9, 3), "Testing invalid URL $url");
 	}
 
@@ -52,8 +48,12 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	 */
 	public function testHomeUrl()
 	{
+		
+		$share = Sharing::create('/home', Sharing::READONLY, '', '', array());
+
 		// home dir gets ID 2 normally
-		$url = static::$wopi_endpoint . 'files/2';
+		$url = static::$wopi_endpoint . 'files/2?token=' . $share['share_token'];
+
 		$headers = get_headers($url, TRUE);
 		$this->assertEquals('302', substr($headers[0], 9, 3), "Testing home directory $url");
 	}

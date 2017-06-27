@@ -12,8 +12,10 @@
 
 namespace EGroupware\collabora;
 
-use EGroupware\Api\Vfs;
+require_once(__DIR__.'/../../api/src/Vfs/Sharing.php');
+
 use EGroupware\Api\Vfs\Sharing;
+
 
 /**
  * Description of Wopi
@@ -38,14 +40,14 @@ class Wopi extends Sharing {
 	public static function index()
 	{
 		// Check access token, start session
-		static::create_session();
+	//	static::create_session(true);
 
 		// Get ID
-		$id = filter_var($_GET['id'],FILTER_SANITIZE_NUMBER_INT);
+		$id = filter_var($_REQUEST['id'],FILTER_SANITIZE_NUMBER_INT);
 
 		// Determine the endpoint
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
-				ucfirst($_GET['endpoint']),
+				ucfirst($_REQUEST['endpoint']),
 				FILTER_SANITIZE_SPECIAL_CHARS,
 				FILTER_FLAG_STRIP_LOW + FILTER_FLAG_STRIP_HIGH
 		);
@@ -61,7 +63,7 @@ class Wopi extends Sharing {
 			exit;
 		}
 
-		if(!headers_sent())
+		if(!headers_sent() && $data)
 		{
 			header('X-WOPI-ServerVersion: ' . $GLOBALS['egw_info']['apps']['collabora']['version']);
 			header('X-WOPI-MachineName: ' . 'Egroupware');
@@ -79,5 +81,4 @@ class Wopi extends Sharing {
 		$token = filter_var($_GET['token'],FILTER_SANITIZE_SPECIAL_CHARS);
 		return $token;
 	}
-
 }

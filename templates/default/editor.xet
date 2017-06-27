@@ -3,6 +3,6 @@
 <!-- $Id$ -->
 <overlay>
 	<template id="collabora.editor" template="" lang="" group="0" version="17.1">
-		<iframe id="editor_frame"></iframe>
+		<box id="editor_frame"></box>
 	</template>
 </overlay>
