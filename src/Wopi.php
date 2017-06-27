@@ -78,7 +78,7 @@ class Wopi extends Sharing {
 	 */
 	public static function get_token()
 	{
-		$token = filter_var($_GET['token'],FILTER_SANITIZE_SPECIAL_CHARS);
+		$token = filter_var($_GET['access_token'],FILTER_SANITIZE_SPECIAL_CHARS);
 		return $token;
 	}
 }

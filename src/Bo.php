@@ -240,7 +240,7 @@ class Bo {
 			$url = 'http://localhost'.$url;
 		}
 		$url = $action['urlsrc'] .
-				'WOPISrc=' . $url;
+				'WOPISrc=' . urlencode($url);
 
 		return $url;
 	}

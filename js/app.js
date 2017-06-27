@@ -63,12 +63,12 @@ app.classes.filemanager = app.classes.filemanager.extend(
 					debugger;
 					// Open editor
 					if(typeof token === 'string')
-					{
+			{
 						window.open(this.discovery[mime].urlsrc +
 							'WOPISrc=' + egw.link('/collabora/wopi/files/'+data.data.ino) +
 							'&token=' + token
 						);
-					}
+			}
 				}, this, true, this
 			).sendRequest();
 			*/
@@ -184,5 +184,7 @@ app.classes.collabora = AppJS.extend(
 		office_frame.setAttribute('allowfullscreen', 'true');
 		frameholder.appendChild(office_frame);
 		document.getElementById('form').submit();
+
+		window.setTimeout(window.close, 500);
 	}
 });

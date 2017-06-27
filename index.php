@@ -12,9 +12,7 @@ $GLOBALS['egw_info'] = array(
 	)
 );
 
-error_log('HEY');
 include_once '../header.inc.php';
-
 
 require_once EGW_INCLUDE_ROOT.'/collabora/src/Wopi.php';
 \EGroupware\collabora\Wopi::index();
