@@ -35,7 +35,7 @@ class Files {
 	public static function process($id)
 	{
 
-		$path = Sql_Stream::id2path($id);
+		$path = Sql_Stream::id2path((int)$id);
 		if(!$path)
 		{
 			http_response_code(404);
@@ -45,8 +45,6 @@ class Files {
 		if($_REQUEST['endpoint'] !== 'files') return;
 		if(array_key_exists('contents', $_REQUEST))
 		{
-			echo 'Hello world';
-			exit;
 			return static::get_file($path);
 		}
 
@@ -68,8 +66,7 @@ class Files {
 				static::put($path);
 				exit;
 			default:
-				$data =  [ "BaseFileName"=> "test.txt", "Size"=> 11 ];
-				//$data = static::check_file_info($path);
+				$data = static::check_file_info($path);
 
 		}
 
@@ -80,7 +77,7 @@ class Files {
 		}
 
 		// Additional, optional things we support
-	//	$data['UserFriendlyName'] = Accounts::format_username();
+		$data['UserFriendlyName'] = Accounts::format_username();
 
 		return $data;
 	}
@@ -95,7 +92,7 @@ class Files {
 	 */
 	protected static function check_file_info($path)
 	{
-		
+
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
 		$data = array(
 			// The string name of the file, including extension, without a path. Used for display in user interface (UI), and determining the extension of the file.
@@ -111,7 +108,7 @@ class Files {
 			'UserId'		=> ''.$GLOBALS['egw_info']['user']['account_id'],
 
 			// The current version of the file based on the server’s file version schema, as a string.
-			'Version'		=> '1'	
+			//'Version'		=> '1'
 		);
 
 		if($path)
@@ -148,10 +145,10 @@ class Files {
 		// send a content-disposition header, so browser knows how to name downloaded file
 		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
 		{
-			Api\Header\Content::disposition(Vfs::basename($GLOBALS['egw']->sharing->get_path()), false);
+			\EGroupware\Api\Header\Content::disposition(Vfs::basename($GLOBALS['egw']->sharing->get_path()), false);
+			header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
 		}
-		$webdav_server = new Vfs\WebDAV();
-		$webdav_server->ServeRequest(Vfs::concat($GLOBALS['egw']->sharing->get_root(), Wopi::get_token()));
+		readfile(Vfs::PREFIX . $path);
 		return;
 	}
 

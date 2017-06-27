@@ -40,7 +40,7 @@ class Wopi extends Sharing {
 	public static function index()
 	{
 		// Check access token, start session
-	//	static::create_session(true);
+		static::create_session(true);
 
 		// Get ID
 		$id = filter_var($_REQUEST['id'],FILTER_SANITIZE_NUMBER_INT);
