@@ -78,7 +78,13 @@ class Wopi extends Sharing {
 	 */
 	public static function get_token()
 	{
-		$token = filter_var($_GET['access_token'],FILTER_SANITIZE_SPECIAL_CHARS);
+		// Access token is encoded, as it may have + in it
+		$token = urldecode(filter_var($_GET['access_token'],FILTER_SANITIZE_SPECIAL_CHARS));
 		return $token;
+	}
+
+	public static function get_path_from_token()
+	{
+		return $GLOBALS['egw']->sharing->share['share_path'];
 	}
 }

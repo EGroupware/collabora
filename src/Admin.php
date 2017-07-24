@@ -18,10 +18,6 @@ use EGroupware\Api\Framework;
  * Edit the settings for this app.
  * We use the standard admin interface from the admin app, so not much needs
  * to be here
- *
- * Start CODE with
- * docker run -t -d -p 127.0.0.1:9980:9980 -e "domain=nathan.dev" -e "username=admin" -e "password=S3cRet" --restart always --name="collabora" --cap-add MKNOD --net host collabora/code
- * where domain is the egw domain
  */
 class Admin {
 	

@@ -38,6 +38,11 @@ class Files {
 		$path = Sql_Stream::id2path((int)$id);
 		if(!$path)
 		{
+			$path = \EGroupware\collabora\Wopi::get_path_from_token();
+
+		}
+		if(!$path)
+		{
 			http_response_code(404);
 			exit;
 		}
@@ -76,8 +81,6 @@ class Files {
 			exit;
 		}
 
-		// Additional, optional things we support
-		$data['UserFriendlyName'] = Accounts::format_username();
 
 		return $data;
 	}
@@ -105,7 +108,7 @@ class Files {
 			'Size'			=> '',
 
 			// A string value uniquely identifying the user currently accessing the file.
-			'UserId'		=> ''.$GLOBALS['egw_info']['user']['account_id'],
+			'UserId'		=> ''.Vfs::$user,
 
 			// The current version of the file based on the server’s file version schema, as a string.
 			//'Version'		=> '1'
@@ -129,6 +132,10 @@ class Files {
 			// Not found
 			return null;
 		}
+		$data['UserCanWrite'] = Vfs::is_writable($path);
+
+		// Additional, optional things we support
+		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
 
 		return $data;
 	}
@@ -145,7 +152,7 @@ class Files {
 		// send a content-disposition header, so browser knows how to name downloaded file
 		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
 		{
-			\EGroupware\Api\Header\Content::disposition(Vfs::basename($GLOBALS['egw']->sharing->get_path()), false);
+			\EGroupware\Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
 			header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
 		}
 		readfile(Vfs::PREFIX . $path);
@@ -307,9 +314,10 @@ class Files {
 			http_response_code(409);
 			header('X-WOPI-Lock', $lock['token']);
 		}
+		// Read the contents of the file from the POST body and store.
+		$content = fopen('php://input', 'r');
 
-		// TODO: Store the file
-		http_response_code(501); // Not implemented
+		file_put_contents(Vfs::PREFIX . $path, $content);
 	}
 
 	/**
@@ -330,6 +338,8 @@ class Files {
 
 		$overwrite = boolval($_SERVER['HTTP_X-WOPI-OverwriteRelativeTarget']);
 		$size = intval($_SERVER['HTTP_X-WOPI-Size']);
-		
+
+
+		http_response_code(501); // Not implemented
 	}
 }

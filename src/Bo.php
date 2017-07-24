@@ -14,6 +14,7 @@ namespace EGroupware\collabora;
 
 use EGroupware\Api\Cache;
 use EGroupware\Api\Config;
+use EGroupware\Api\DateTime;
 use EGroupware\Api\Egw;
 use EGroupware\Api\Vfs;
 
@@ -207,6 +208,15 @@ class Bo {
 				$key = str_replace('share_', '', $key);
 			}
 			$token[$key] = $value;
+		}
+		
+		// Token can have + in it
+		$token['token'] = urlencode($token['token']);
+
+		// Make sure expiry is timestamp
+		if(!is_numeric($token['expires']))
+		{
+			$token['expires'] = DateTime::to($token['expires'], 'ts');
 		}
 
 		return $token;
