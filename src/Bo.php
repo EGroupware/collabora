@@ -245,9 +245,8 @@ class Bo {
 		$url = Egw::link('/collabora/wopi/files/'.$stat['ino']);
 
 		if ($url{0} == '/') {
-			// MUST be https
-			//$url = 'https://'.($GLOBALS['egw_info']['server']['hostname'] ? $GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
-			$url = 'http://localhost'.$url;
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] ? $GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
 		}
 		$url = $action['urlsrc'] .
 				'WOPISrc=' . urlencode($url);
