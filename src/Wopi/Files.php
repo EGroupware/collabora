@@ -70,6 +70,9 @@ class Files {
 			case 'PUT':
 				static::put($path);
 				exit;
+			case 'PUT_RELATIVE':
+				static::put_relative($path);
+				exit;
 			default:
 				$data = static::check_file_info($path);
 
@@ -112,6 +115,27 @@ class Files {
 
 			// The current version of the file based on the server’s file version schema, as a string.
 			//'Version'		=> '1'
+
+			// Optional, for additional features
+			// ---------------------------------
+
+			// Support locking
+			'SupportsGetLock'   => true,
+			'SupportsLocks'     => true,
+			
+			// Support Save As
+			'SupportsUpdate'    => true,
+
+			// User permissions
+			// ----------------
+			'ReadOnly'          => !Vfs::is_writable($path),
+			'UserCanRename'     => true,
+
+			// Other miscellaneous properties
+			// ------------------------------
+			'DisablePrint'      => false,
+			'DisableExport'     => false,
+			'DisableCopy'       => false,
 		);
 
 		if($path)
@@ -126,6 +150,7 @@ class Files {
 		{
 			$data['OwnerId'] = ''.$stat['uid'];
 			$data['Size'] = ''.$stat['size'];
+			$data['LastModifiedTime'] = \EGroupware\Api\DateTime::to($stat['mtime'], \DateTime::ISO8601);
 		}
 		else
 		{
@@ -160,7 +185,7 @@ class Files {
 	}
 
 	/**
-	 * Lock a file
+	 * Lock a file, or unlock and relock a file
 	 *
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/Lock.html
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/UnlockAndRelock.html
@@ -331,15 +356,114 @@ class Files {
 	{
 		// Lock token, might not be there
 		$token = $_SERVER['HTTP_X-WOPI-Lock'];
+		$lock = Vfs::checkLock($path);
 
-		// File name / extension
 		$suggested_target = $_SERVER['HTTP_X-WOPI-SuggestedTarget'];
 		$relative_target = $_SERVER['HTTP_X-WOPI-RelativeTarget'];
-
 		$overwrite = boolval($_SERVER['HTTP_X-WOPI-OverwriteRelativeTarget']);
 		$size = intval($_SERVER['HTTP_X-WOPI-Size']);
 
+		// File name or extension
+		if($suggested_target && $relative_target)
+		{
+			// Specifying both is invalid, we give Not Implemented
+			http_response_code(501);
+			return;
+		}
 
-		http_response_code(501); // Not implemented
+		// Process the suggestion - modify as needed
+		if($suggested_target && $suggested_target[0] =='.')
+		{
+			// Only an extension, use current file name
+			$info = pathinfo($path);
+			$suggested_target = basename($path, '.'.$info['extension']) . $suggested_target;
+		}
+		if($suggested_target)
+		{
+			$target = self::clean_filename($suggested_target);
+		}
+
+		if($relative_target)
+		{
+			// Can't modify this one, but we can check & fail it
+			$clean = self::clean_filename($relative_target);
+			if($relative_target !== $clean)
+			{
+				http_response_code(400);
+				header('X-WOPI-ValidRelativeTarget', $clean);
+				return;
+			}
+			if(Vfs::file_exists($relative_target))
+			{
+				if(!$overwrite)
+				{
+					http_response_code(409); // Conflict
+					if($lock)
+					{
+						header('X-WOPI-Lock', $lock['token']);
+					}
+					return;
+				}
+				if(!$token && $lock || $token && $lock['token'] !== $token)
+				{
+					// Conflict
+					http_response_code(409);
+					if($lock)
+					{
+						header('X-WOPI-Lock', $lock['token']);
+					}
+					return;
+				}
+			}
+			$target = $relative_target;
+		}
+
+		// Ok, check target
+		if(!Vfs::check_access($target, Vfs::WRITABLE) || !Vfs::is_writable(dirname($target)))
+		{
+			// User not authorised, 401 is used for invalid token
+			http_response_code(404);
+		}
+
+		// Read the contents of the file from the POST body and store.
+		$content = fopen('php://input', 'r');
+		file_put_contents(Vfs::PREFIX . $target, $content);
+
+		http_response_code(200);
+	}
+
+	/**
+	 * Make a filename valid, even if we have to modify it a little.
+	 *
+	 * @param String $original_path
+	 * @return String modified path
+	 */
+	protected static function clean_filename($original_path)
+	{
+		$file = basename($original_path);
+
+		// Sanitize the characters -
+		// Remove anything which isn't a word, whitespace, number
+		// or any of the following caracters -_~,;[]().
+		// Thanks, Sean Vieira
+		$file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
+		// Remove any runs of periods
+		$file = mb_ereg_replace("([\.]{2,})", '', $file);
+
+		$basename = pathinfo($file, PATHINFO_FILENAME);
+		$extension = pathinfo($file, PATHINFO_EXTENSION);
+		$path = dirname($original_path);
+
+		// Avoid duplicates
+		$dupe_count = 0;
+		while(Vfs::file_exists($path.$file))
+		{
+			$dupe_count++;
+			$file = $basename .
+				' ('.($dupe_count + 1).')' . '.' .
+				$extension;
+		}
+		
+		return $path.$file;
 	}
 }
