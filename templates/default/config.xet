@@ -11,7 +11,10 @@
 			<rows>
 				<row>
 					<description value="Collabora server" label="%s:"/>
-					<url id="newsettings[server]"/>
+					<hbox>
+						<url id="newsettings[server]"/>
+						<description id="newsettings[server_status]" align="center" label="Status:" disabled="!@newsettings[server_status]"/>
+					</hbox>
 				</row>
 			</rows>
 		</grid>

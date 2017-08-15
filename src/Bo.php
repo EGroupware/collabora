@@ -77,7 +77,7 @@ class Bo {
 				}
 				else
 				{
-					throw new \EGroupware\Api\Exception\WrongParameter('Unable to load ' . $server_url . "\n".$response['data']);
+					throw new \EGroupware\Api\Exception\WrongParameter('Unable to load ' . $server_url);
 				}
 			}
 			// No cURL, fallback

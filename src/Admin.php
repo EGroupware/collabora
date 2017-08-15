@@ -56,7 +56,20 @@ class Admin {
 			$data['server'] = static::get_default_server();
 		}
 
-		// TODO: If possible, would be good to check server status here
+		// Try to check server status here - it should respond with 'OK'
+		try
+		{
+			$ctx = stream_context_create(array(
+				'http' => array(
+					'timeout' => 5
+					)
+				)
+			);
+			$status = file_get_contents($data['server'], false, $ctx, 0, 20);
+			$data['server_status'] = $status;
+		} catch (Exception $ex) {
+			// Guess it doesn't work
+		}
 
 		return $data;
 	}
