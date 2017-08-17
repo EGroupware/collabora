@@ -65,11 +65,6 @@ class Bo {
 
 			if(@function_exists('curl_version'))
 			{
-				// TODO: remove this
-				$ch = curl_init($server_url);
-				$resolve = array('collabora.localhost:9980:127.0.0.1');
-				curl_setopt($ch, CURLOPT_RESOLVE, $resolve);
-
 				$response = static::get_remote_data($server_url, false, true);
 				if($response['info']['http_code'] == 200)
 				{
@@ -134,7 +129,7 @@ class Bo {
 		if($post_parameters)
 		{
 			curl_setopt($c, CURLOPT_POST,TRUE);
-			curl_setopt($c, CURLOPT_POSTFIELDS, "var1=bla&".$post_paramtrs );
+			curl_setopt($c, CURLOPT_POSTFIELDS, "var1=bla&".$post_parameters );
 		}
 		curl_setopt($c, CURLOPT_SSL_VERIFYHOST,false);
 		curl_setopt($c, CURLOPT_SSL_VERIFYPEER,false);
@@ -149,7 +144,7 @@ class Bo {
 		}
 		curl_setopt($c, CURLOPT_CONNECTTIMEOUT, 9);
 		curl_setopt($c, CURLOPT_REFERER, $url);
-		curl_setopt($c, CURLOPT_TIMEOUT, 60);
+		curl_setopt($c, CURLOPT_TIMEOUT, 10);
 		curl_setopt($c, CURLOPT_AUTOREFERER, true);
 		curl_setopt($c, CURLOPT_ENCODING, 'gzip,deflate');
 		$data=curl_exec($c);
