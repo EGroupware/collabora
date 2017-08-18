@@ -42,12 +42,13 @@ class Wopi extends Sharing {
 		// Check access token, start session
 		static::create_session(true);
 
-		// Get ID
-		$id = filter_var($_REQUEST['id'],FILTER_SANITIZE_NUMBER_INT);
+		// Determine the endpoint, get the ID
+		$matches = array();
+		preg_match('#/wopi/([[:alpha:]]+)/([[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
+		list($discard, $endpoint, $id) = $matches;
 
-		// Determine the endpoint
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
-				ucfirst($_REQUEST['endpoint']),
+				ucfirst($endpoint),
 				FILTER_SANITIZE_SPECIAL_CHARS,
 				FILTER_FLAG_STRIP_LOW + FILTER_FLAG_STRIP_HIGH
 		);

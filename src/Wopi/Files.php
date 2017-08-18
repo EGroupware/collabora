@@ -49,8 +49,6 @@ class Files
 			exit;
 		}
 
-		if($_REQUEST['endpoint'] !== 'files') return;
-
 		switch (self::header('X-WOPI-Override'))
 		{
 			case 'LOCK':
@@ -72,7 +70,7 @@ class Files
 				static::put_relative($path);
 				exit;
 			default:
-				if(array_key_exists('contents', $_REQUEST))
+				if(preg_match('#/wopi/([[:alpha:]]+)/([[:digit:]]+)/contents#',$_SERVER['REQUEST_URI']))
 				{
 					return static::get_file($path);
 				}

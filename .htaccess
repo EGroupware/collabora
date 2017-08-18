@@ -5,4 +5,4 @@ RewriteEngine on
 # This requires always being logged in, but gives all EGw
 #RewriteRule	^wopi/([^/]+)/([^/]+)?/?(contents)?	../index.php?menuaction=collabora.EGroupware\\collabora\\Wopi.index&endpoint=$1&id=$2&$3 [QSA]
 
-RewriteRule	^wopi/([^/]+)/([^/]+)?/?(contents)?	index.php?endpoint=$1&id=$2&$3 [QSA]
+RewriteRule	^wopi(/.*)	index.php$1 [QSA]
