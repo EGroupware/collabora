@@ -12,7 +12,7 @@
 
 namespace EGroupware\collabora;
 
-use \PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 
 /**
  * Tests for the WOPI API Files endpoint
@@ -53,7 +53,7 @@ class FilesTest extends TestCase
 	}
 	public function RenameFile()
 	{
-		
+
 	}
 
 }
