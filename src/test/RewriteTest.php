@@ -15,9 +15,8 @@ namespace EGroupware\collabora;
 // test base providing Egw environment, since we need the DB
 require_once realpath(__DIR__.'/../../../api/src/test/LoggedInTest.php');
 
-use \EGroupware\Api;
-use \PHPUnit_Framework_TestCase as TestCase;
-use \EGroupware\Api\Vfs\Sharing;
+use EGroupware\Api;
+use EGroupware\Api\Vfs\Sharing;
 
 
 class RewriteTest extends \EGroupware\Api\LoggedInTest {
@@ -48,7 +47,7 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	 */
 	public function testHomeUrl()
 	{
-		
+
 		$share = Sharing::create('/home', Sharing::READONLY, '', '', array());
 
 		// home dir gets ID 2 normally
