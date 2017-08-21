@@ -351,6 +351,9 @@ class Files
 		$lock = Vfs::checkLock($path);
 		if(!$lock)
 		{
+			/* Collabora Online does not support locking, and never locks
+			 * so we skip this check to make saving work
+
 			// Check file size
 			$stat = Vfs::stat($path);
 			if($stat['size'] != 0)
@@ -359,6 +362,8 @@ class Files
 				http_response_code(409);
 				return;
 			}
+
+			 */
 		}
 		else if ($token && $lock['token'] !== $token)
 		{
