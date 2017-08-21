@@ -43,17 +43,18 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	}
 
 	/**
-	 * Try home
+	 * Try home - just testing the endpoint, which should work for our default / test
+	 * user
 	 */
 	public function testHomeUrl()
 	{
 
-		$share = Sharing::create('/home', Sharing::READONLY, '', '', array());
+		$token = Bo::get_token('/home');
 
 		// home dir gets ID 2 normally
-		$url = static::$wopi_endpoint . 'files/2?token=' . $share['share_token'];
+		$url = static::$wopi_endpoint . 'files/2?access_token=' . urlencode($token['token']);
 
 		$headers = get_headers($url, TRUE);
-		$this->assertEquals('302', substr($headers[0], 9, 3), "Testing home directory $url");
+		$this->assertEquals('200', substr($headers[0], 9, 3), "Testing home directory $url");
 	}
 }
