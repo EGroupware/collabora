@@ -192,7 +192,6 @@ class Bo {
 		$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
 			'share_expires'	=>	time() + Wopi::TOKEN_TTL
 		));
-		$share['access_token_ttl'] = Wopi::TOKEN_TTL;
 
 		$token = array();
 
@@ -212,6 +211,9 @@ class Bo {
 		if(!is_numeric($token['expires']))
 		{
 			$token['expires'] = DateTime::to($token['expires'], 'ts');
+
+			// Note that this is _not_ time to live, but expiry (per WOPI spec)
+			$share['access_token_ttl'] = $token['expires'];
 		}
 
 		return $token;
