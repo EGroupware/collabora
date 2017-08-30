@@ -1,8 +1,0 @@
-
-RewriteEngine on
-
-# Collaborative editing needs rewrite rules - URL must start with /wopi
-# This requires always being logged in, but gives all EGw
-#RewriteRule	^wopi/([^/]+)/([^/]+)?/?(contents)?	../index.php?menuaction=collabora.EGroupware\\collabora\\Wopi.index&endpoint=$1&id=$2&$3 [QSA]
-
-RewriteRule	^wopi(/.*)	index.php$1 [QSA]

@@ -5,7 +5,7 @@
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
- * @package 
+ * @package
  * @copyright (c) 2017  Nathan Gray
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
@@ -41,7 +41,7 @@ class Bo {
 	 *
 	 * @param String $server Server url (with protocol).  If not provided, the
 	 *	configured server will be used.
-	 * 
+	 *
 	 * @return String[] List of types that can be handled, with mimetypes as keys.
 	 *
 	 * @throws \EGroupware\Api\Exception\WrongParameter If the server cannot be
@@ -79,7 +79,7 @@ class Bo {
 			else if (($response_xml_data = file_get_contents($server_url))===false)
 			{
 				throw new \EGroupware\Api\Exception\WrongParameter('Unable to load ' . $server_url);
-			} 
+			}
 			libxml_use_internal_errors(true);
 			$data = simplexml_load_string($response_xml_data);
 			if (!$data) {
@@ -114,7 +114,7 @@ class Bo {
 	 * Get the contents of a page
 	 *
 	 * From https://stackoverflow.com/questions/5971398/php-get-contents-of-a-url-or-page
-	 * 
+	 *
 	 * @param string $url
 	 * @param Array $post_parameters
 	 * @param boolean  $return_full_array
@@ -172,7 +172,7 @@ class Bo {
 		{
 			$data =  "ERRORCODE22 with $url<br/><br/>Last status codes:".json_encode($status)."<br/><br/>Last data got:$data";
 		}
-		
+
 		return ( $return_full_array ? array('data'=>$data,'info'=>$status) : $data);
 	}
 
@@ -203,7 +203,7 @@ class Bo {
 			}
 			$token[$key] = $value;
 		}
-		
+
 		// Token can have + in it
 		$token['token'] = urlencode($token['token']);
 
@@ -236,10 +236,10 @@ class Bo {
 		{
 			return '';
 		}
-		
+
 		$stat = Vfs::stat($path);
 		$action = $discovery[Vfs::mime_content_type($path)];
-		$url = Egw::link('/collabora/wopi/files/'.$stat['ino']);
+		$url = Egw::link('/collabora/index.php/wopi/files/'.$stat['ino']);
 
 		if ($url{0} == '/') {
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
