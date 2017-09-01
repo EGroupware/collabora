@@ -44,7 +44,7 @@ class Wopi extends Sharing {
 
 		// Determine the endpoint, get the ID
 		$matches = array();
-		preg_match('#/wopi/([[:alpha:]]+)/([[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
+		preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
 		list($discard, $endpoint, $id) = $matches;
 
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
