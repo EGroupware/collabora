@@ -19,7 +19,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 {
 
 	discovery: {},
-	
+
 	/**
 	 * Constructor
 	 *
@@ -53,9 +53,10 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	{
 		var data = egw.dataGetUIDdata(selected[0].id);
 		var mime = data.data.mime || '';
+		var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
 
 		// Check to see if it's something we can handle
-		if (action.id === 'collabora' && mime && this.discovery && this.discovery[mime])
+		if (is_collabora && this.isEditable(action, selected))
 		{
 			/*
 			var request = egw.json('EGroupware\\collabora\\Ui::ajax_get_token', [data.data.ino],
@@ -85,7 +86,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 
 	/**
 	 * Check to see if the file is editable
-	 * 
+	 *
 	 * @param {egwAction} _egwAction
 	 * @param {egwActionObject[]} _senders
 	 * @returns {boolean} returns true if is editable otherwise false

@@ -20,17 +20,17 @@ use EGroupware\Api\Etemplate;
  * User interface for collabora integration
  */
 class Ui {
-	
+
 	public $public_functions = array(
 		'editor' => TRUE
 	);
-	
+
 	/**
 	 * Add the actions needed to filemanager index to open files in collabora.
 	 *
 	 * This is hooked into the etemplate exec call, we're only interested in filemanager
 	 * index though.
-	 * 
+	 *
 	 * @param String[] $data The content parameter from the Etemplate::exec() call, as
 	 *	well as some additional keys:
 	 *	'hook_location':		'etemplate2_before_exec'
@@ -64,14 +64,7 @@ class Ui {
 		// Send what the server said to the client, so we can use it there
 		Response::get()->call('app.filemanager.set_discovery', $discovery);
 
-		$changes['data']['nm'] = $data['nm'];
-		$changes['data']['nm']['actions']['collabora'] = array(
-			'caption' => lang('Collabora'),
-			'group' => 1,
-			'icon'	=> 'edit',
-			'onExecute' => 'javaScript:app.filemanager.open',
-			'enabled' => 'javaScript:app.filemanager.isEditable',
-		);
+		$changes['data']['is_collabora'] = true;
 
 		return $changes;
 	}
@@ -80,7 +73,7 @@ class Ui {
 	 * Generate & send the needed HTML to properly open the editor
 	 *
 	 * @see https://wopi.readthedocs.io/en/latest/hostpage.html#
-	 * 
+	 *
 	 * @param string $path Path to the file to be edited
 	 */
 	public function editor($path = false)
