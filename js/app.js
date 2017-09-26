@@ -118,6 +118,41 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	set_discovery: function set_discovery(settings)
 	{
 		this.discovery = settings;
+	},
+
+	/**
+	 * Method to create a new document
+	 *
+	 * @param {object} _action either action or node
+	 * @param {object} _selected either widget or selected row
+	 *
+	 * @return {boolean} returns true
+	 *
+	 * @TODO Implementing of create new type of file for collabora
+	 */
+	create_new: function (_action, _selected) {
+		var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
+		var type = (typeof _selected._type != 'undefined')? _selected.get_value(): _action.id;
+		if (!is_collabora)
+		{
+			switch (type)
+			{
+				case 'document':
+					//todo
+					break;
+				case 'spreadsheet':
+					//todo
+					break;
+				case 'presentation':
+					//todo
+					break;
+			}
+		}
+		else
+		{
+			return this._super.apply(this, arguments);
+		}
+		return true;
 	}
 });
 

@@ -26,6 +26,28 @@ class Ui {
 	);
 
 	/**
+	 * New actions
+	 * @var array
+	 */
+	static $new_actions = array (
+		'document' => array (
+			'caption' => 'Document',
+			'icon' => 'document',
+			'onExecute' => 'javaScript:app.filemanager.create_new',
+		),
+		'spreadsheet' => array (
+			'caption' => 'Spreadsheet',
+			'icon' => 'spreadsheet',
+			'onExecute' => 'javaScript:app.filemanager.create_new',
+		),
+		'presentation' => array (
+			'caption' => 'Presentation',
+			'icon' => 'presentation',
+			'onExecute' => 'javaScript:app.filemanager.create_new',
+		)
+	);
+
+	/**
 	 * Add the actions needed to filemanager index to open files in collabora.
 	 *
 	 * This is hooked into the etemplate exec call, we're only interested in filemanager
@@ -65,6 +87,9 @@ class Ui {
 		Response::get()->call('app.filemanager.set_discovery', $discovery);
 
 		$changes['data']['is_collabora'] = true;
+		$changes['data']['nm'] = $data['nm'];
+		$changes['data']['nm']['actions']['new']['children'] = self::$new_actions;
+		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
 
 		return $changes;
 	}
