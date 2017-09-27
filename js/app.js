@@ -121,6 +121,71 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	},
 
 	/**
+	 * Build a dialog to get name and ext of new file
+	 *
+	 * @param {string} _type = document type of file, document is default
+	 *  Types:
+	 *		-document
+	 *		-spreadsheet
+	 *		-presentation
+	 *		-mores
+	 */
+	_dialog_create_new: function (_type)
+	{
+		var current_path = this.et2.getWidgetById('path').get_value();
+		var extensions = {};
+		var type = _type || 'document';
+		var self = this;
+		var ext_default = 'odt';
+		switch (type)
+		{
+			case 'document':
+				extensions = {odt:'(.odt) OpenDocument Text', docx: '(.docx) MS Word'}; break;
+			case 'spreadsheet':
+				extensions = {ods:'(.ods) OpenDocument spreadsheet', xls: '(.xls) MS Excel'}; break;
+				ext_default = 'ods';
+			case 'presentation':
+				extensions = {odp:'(.odp) OpenDocument Presentation', ppt: '(.ppt) MS PowerPoint'}; break;
+				ext_default = 'odp';
+			case 'more':
+				Object.entries(this.discovery).forEach(function(i){
+					if (i[1].name == 'edit') extensions[i[1]['ext']] = '(.'+i[1]['ext']+') '+ i[0];
+				});
+				break;
+		}
+		et2_createWidget("dialog",
+		{
+			callback: function(_button_id, _val)
+			{
+				if (_button_id == 'create' && _val && _val.name != '')
+				{
+					egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [_val.extension, current_path, _val.name], function(_data){
+						if (_data.path)
+						{
+							self.egw.refresh('', 'filemanager');
+							window.open(egw.link('/index.php', {
+								'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
+								'path': _data.path
+							}));
+						}
+						egw.message(_data.message);
+					}).sendRequest(true);
+				}
+			},
+			title: egw.lang('Create new %1', type == 'more'? egw.lang('file'): type),
+			buttons: [
+				{id:'create', text:egw.lang('Create'), image:'new', default: true},
+				{id:'cancel', text:egw.lang('Cancel'), image:'close'}
+			],
+			minWidth: 300,
+			minHeight: 200,
+			value:{content:{extension:ext_default}, 'sel_options':{extension:extensions}},
+			template: egw.webserverUrl+'/collabora/templates/default/new.xet?1',
+			resizable: false
+		}, et2_dialog._create_parent('collabora'));
+	},
+
+	/**
 	 * Method to create a new document
 	 *
 	 * @param {object} _action either action or node
@@ -133,20 +198,9 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	create_new: function (_action, _selected) {
 		var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
 		var type = (typeof _selected._type != 'undefined')? _selected.get_value(): _action.id;
-		if (!is_collabora)
+		if (is_collabora)
 		{
-			switch (type)
-			{
-				case 'document':
-					//todo
-					break;
-				case 'spreadsheet':
-					//todo
-					break;
-				case 'presentation':
-					//todo
-					break;
-			}
+			this._dialog_create_new(type);
 		}
 		else
 		{

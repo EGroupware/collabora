@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2//EN" "http://www.egroupware.org/etemplate2.dtd">
+<!-- $Id$ -->
+<overlay>
+	<template id="collabora.new" template="" lang="" group="0" version="17.1">
+		<grid width="100%">
+			<columns>
+				<column width="80"/>
+				<column width="250"/>
+			</columns>
+			<rows>
+				<row>
+					<description value="Name" label="%s:"/>
+					<textbox id="name" class="et2_fullWidth" blur="please enter your file name"/>
+				</row>
+				<row>
+					<description value="Type" label="%s:"/>
+					<select id="extension" class="et2_fullWidth"/>
+				</row>
+			</rows>
+		</grid>
+	</template>
+</overlay>

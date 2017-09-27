@@ -44,7 +44,12 @@ class Ui {
 			'caption' => 'Presentation',
 			'icon' => 'presentation',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
-		)
+		),
+		'more' => array (
+			'caption' => 'More ...',
+			'icon' => '',
+			'onExecute' => 'javaScript:app.filemanager.create_new',
+		),
 	);
 
 	/**
@@ -115,5 +120,44 @@ class Ui {
 		) + Bo::get_token($path);
 
 		$template->exec('collabora.'.__CLASS__.'.editor', $content, array(), array(), array(), 3);
+	}
+
+	/**
+	 * Function to create new file for given filename and extension
+	 *
+	 * @param string $ext file extension
+	 * @param string $dir directory
+	 * @param string $name filename
+	 *
+	 * @todo implementing creation of new template for all supported extensions
+	 */
+	public static function ajax_createNew ($ext, $dir, $name)
+	{
+		$response = \EGroupware\Api\Json\Response::get();
+		$data = array ();
+		if (!\EGroupware\Api\Vfs::is_writable($dir))
+		{
+			$response->data(array(
+				'message' => lang ('Failed to create the file! Because you do not'
+						. ' have enough permission to %1 folder!', $dir)
+			));
+		}
+		$file = $dir.'/'.$name.'.'.$ext;
+		if (\EGroupware\Api\Vfs::file_exists($file))
+		{
+			$data['message'] = lang('Failed to create file %1! Becase the file'
+					. ' already exists.', $file);
+		}
+		else if (!($fp = \EGroupware\Api\Vfs::fopen($file,'wb')) || !fwrite($fp,' '))
+		{
+			$data['message'] = lang('Faild to create file %1!',$file);
+		}
+		else
+		{
+			$data['message'] = lang('File %1 has been created successfully.', $file);
+			$data['path'] = $file;
+		}
+		if ($fp) fclose($fp);
+		$response->data($data);
 	}
 }
