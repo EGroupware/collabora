@@ -153,6 +153,10 @@ class Files
 			// Optional, for additional features
 			// ---------------------------------
 
+			// Messaging
+			'PostMessageOrigin' => parse_url($GLOBALS['egw_info']['server']['webserver_url'], PHP_URL_SCHEME) . '://'.
+				parse_url($GLOBALS['egw_info']['server']['webserver_url'], PHP_URL_HOST),
+
 			// Support locking
 			'SupportsGetLock'   => true,
 			'SupportsLocks'     => true,

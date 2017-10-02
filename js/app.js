@@ -58,25 +58,11 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		// Check to see if it's something we can handle
 		if (is_collabora && this.isEditable(action, selected))
 		{
-			/*
-			var request = egw.json('EGroupware\\collabora\\Ui::ajax_get_token', [data.data.ino],
-				function(token) {
-					debugger;
-					// Open editor
-					if(typeof token === 'string')
-			{
-						window.open(this.discovery[mime].urlsrc +
-							'WOPISrc=' + egw.link('/collabora/wopi/files/'+data.data.ino) +
-							'&token=' + token
-						);
-			}
-				}, this, true, this
-			).sendRequest();
-			*/
-		   window.open(egw.link('/index.php', {
-			   'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
-			   'path': data.data.path
-		   }));
+			// Open the editor in a new window, still under our control
+			window.open(egw.link('/index.php', {
+				'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
+				'path': data.data.path
+			}));
 		}
 		else
 		{
@@ -225,6 +211,9 @@ app.classes.filemanager = app.classes.filemanager.extend(
 app.classes.collabora = AppJS.extend(
 {
 
+	// Handy reference to iframe
+	editor_iframe: null,
+
 	/**
 	 * Constructor
 	 *
@@ -259,29 +248,80 @@ app.classes.collabora = AppJS.extend(
 	 *
 	 * @see https://wopi.readthedocs.io/en/latest/hostpage.html
 	 */
-	init_editor: function init_editor()
+	init_editor: function init_editor(values)
 	{
-		debugger;
-		var values = this.et2.getArrayMgr('content').data || {};
+		if(typeof values == 'undefined')
+		{
+			values = this.et2.getArrayMgr('content').data || {};
+		}
 		var form_html = `
-		<form id="form" name="form" target="collabora-editor_editor_frame"
+		<form id="form" name="form" target="loleafletframe"
 				action="${values['url']}" method="post">
 			<input name="access_token" value="${values['token']}" type="hidden"/>
-			<input name="access_token_ttl" value="${values['access_token_ttl']}>" type="hidden"/>
 		</form>`;
+
 		jQuery('body').append(form_html);
 
 		var frameholder = document.getElementById('collabora-editor_editor_frame');
-		var office_frame = document.createElement('iframe');
-		office_frame.name = 'office_frame';
-		office_frame.id ='office_frame';
-		// The title should be set for accessibility
-		office_frame.title = 'Office Online Frame';
-		// This attribute allows true fullscreen mode in slideshow view
-		office_frame.setAttribute('allowfullscreen', 'true');
-		frameholder.appendChild(office_frame);
-		document.getElementById('form').submit();
+		var frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen style="width:100%;height:100%;position:absolute;"/>';
 
-		window.setTimeout(window.close, 500);
+		jQuery(frameholder).append(frame);
+
+		window.addEventListener('message', jQuery.proxy(function(e){
+			debugger;
+			if (e.data === 'close') {
+				app.collabora.onClose();
+			}
+			var message = JSON.parse(e.data);
+
+			if (message.MessageId == 'App_LoadingStatus' && message.Values.Status == 'Frame_Ready')
+			{
+				this._editor_load();
+			}
+		}, this));
+
+		this.editor_iframe = jQuery('#loleafletframe')[0];
+		jQuery(frame).on('load', function(){
+			// Tell the iframe that we are ready now
+			app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+		});
+
+		document.getElementById('form').submit();
+	},
+
+	WOPIPostMessage: function(msgId, values)
+	{
+		if(this.editor_iframe)
+		{
+			var msg = {
+				'MessageId': msgId,
+				'SendTime': Date.now(),
+				'Values': values
+			};
+
+			this.editor_iframe.contentWindow.postMessage(JSON.stringify(msg), '*');
+		}
+	},
+
+	/**
+	 * Bind listeners to the editor
+	 */
+	_editor_load: function() {
+		// Tell the iframe that we are ready now
+		app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+
+		app.collabora._customize_editor();
+	},
+
+	/**
+	 * Do our customizations of the editor
+	 */
+	_customize_editor: function() {
+		this.WOPIPostMessage('Insert_Button', {
+			id: 'egw',
+			imgurl: this.egw.image('save'),
+			hint: 'Custom button'
+
+		});
 	}
 });
