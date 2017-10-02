@@ -93,7 +93,14 @@ class Ui {
 
 		$changes['data']['is_collabora'] = true;
 		$changes['data']['nm'] = $data['nm'];
-		$changes['data']['nm']['actions']['new']['children'] = self::$new_actions;
+		$changes['data']['nm']['actions']['new']['children'] = self::$new_actions
+				+ array('openasnew' => array (
+						'caption' => 'Open as new',
+						'group' => 1,
+						'icon' => 'copy',
+						'enabled' => 'javaScript:app.filemanager.isEditable',
+						'onExecute' => 'javaScript:app.filemanager.create_new',
+				));
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
 
 		return $changes;
@@ -128,9 +135,10 @@ class Ui {
 	 * @param string $ext file extension
 	 * @param string $dir directory
 	 * @param string $name filename
+	 * @param string $openasnew path of the file to be opened as new
 	 *
 	 */
-	public static function ajax_createNew ($ext, $dir, $name)
+	public static function ajax_createNew ($ext, $dir, $name, $openasnew)
 	{
 		$response = \EGroupware\Api\Json\Response::get();
 		$data = array ();
@@ -154,7 +162,19 @@ class Ui {
 		if (\EGroupware\Api\Vfs::file_exists($file))
 		{
 			$data['message'] = lang('Failed to create file %1! Becase the file'
-					. ' already exists.', $file);
+					.' already exists.', $file);
+		}
+		elseif ($openasnew) // file opened as new
+		{
+			if (\EGroupware\Api\Vfs::copy($openasnew, $file))
+			{
+				$data['message'] = lang('File %1 has been created successfully.', $file);
+				$data['path'] = $file;
+			}
+			else
+			{
+				$data['message'] = lang('Faild to create file %1!',$file);
+			}
 		}
 		else if (!($fp = \EGroupware\Api\Vfs::fopen($file,'wb')) || !fwrite($fp, $template? $template: ' '))
 		{

@@ -13,7 +13,7 @@
 					<description value="Name" label="%s:"/>
 					<textbox id="name" class="et2_fullWidth" blur="please enter your file name"/>
 				</row>
-				<row>
+				<row disabled="@openasnew">
 					<description value="Type" label="%s:"/>
 					<select id="extension" class="et2_fullWidth"/>
 				</row>

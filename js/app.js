@@ -129,14 +129,17 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	 *		-spreadsheet
 	 *		-presentation
 	 *		-mores
+	 * @param {string} _openasnew path of file to be opened as new
 	 */
-	_dialog_create_new: function (_type)
+	_dialog_create_new: function (_type, _openasnew)
 	{
 		var current_path = this.et2.getWidgetById('path').get_value();
 		var extensions = {};
 		var type = _type || 'document';
 		var self = this;
 		var ext_default = 'odt';
+		var title = _openasnew ? egw.lang('Open as new') :
+				egw.lang('Create new %1', type == 'more'? egw.lang('file'): type);
 		switch (type)
 		{
 			case 'document':
@@ -159,7 +162,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 			{
 				if (_button_id == 'create' && _val && _val.name != '')
 				{
-					egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [_val.extension, current_path, _val.name], function(_data){
+					egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [_openasnew ? _openasnew.split('.').pop() : _val.extension, current_path, _val.name, _openasnew], function(_data){
 						if (_data.path)
 						{
 							self.egw.refresh('', 'filemanager');
@@ -172,14 +175,14 @@ app.classes.filemanager = app.classes.filemanager.extend(
 					}).sendRequest(true);
 				}
 			},
-			title: egw.lang('Create new %1', type == 'more'? egw.lang('file'): type),
+			title: title,
 			buttons: [
 				{id:'create', text:egw.lang('Create'), image:'new', default: true},
 				{id:'cancel', text:egw.lang('Cancel'), image:'close'}
 			],
 			minWidth: 300,
 			minHeight: 200,
-			value:{content:{extension:ext_default}, 'sel_options':{extension:extensions}},
+			value:{content:{extension:ext_default, openasnew:_openasnew}, 'sel_options':{extension:extensions}},
 			template: egw.webserverUrl+'/collabora/templates/default/new.xet?1',
 			resizable: false
 		}, et2_dialog._create_parent('collabora'));
@@ -193,14 +196,18 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	 *
 	 * @return {boolean} returns true
 	 *
-	 * @TODO Implementing of create new type of file for collabora
+	 * @TODO Implementing of create new type of the file for collabora
 	 */
 	create_new: function (_action, _selected) {
 		var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
 		var type = (typeof _selected._type != 'undefined')? _selected.get_value(): _action.id;
 		if (is_collabora)
 		{
-			this._dialog_create_new(type);
+			if (_action.id == 'openasnew')
+			{
+				var data = egw.dataGetUIDdata(_selected[0].id);
+			}
+			this._dialog_create_new(type, data? data.data.path: undefined);
 		}
 		else
 		{
