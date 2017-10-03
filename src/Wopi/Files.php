@@ -163,6 +163,7 @@ class Files
 
 			// Support Save As
 			'SupportsUpdate'    => true,
+			'SupportsRename'	=> true,
 
 			// User permissions
 			// ----------------

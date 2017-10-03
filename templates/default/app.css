@@ -1,0 +1,52 @@
+/**
+ * Collabora CSS
+ *
+ * @link http://www.egroupware.org
+ * @author Nathan Gray
+ * @package collabora
+ * @copyright (c) 2017  Nathan Gray
+ * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
+ */
+/** Editor page CSS **/
+#loleafletframe {
+	top: 0px;
+	width: 100%;
+}
+
+#collabora-editor_revisions {
+	width: 20%;
+	height: 100%;
+	top: 0px;
+	right: 0px;
+	position: absolute;
+	display: none;
+}
+.revisions_header span {
+	font-size: 200%
+}
+.revisions_header #collabora-editor_filename {
+	font-size: inherit;
+}
+.revisions_header {
+	border-bottom: 1px solid silver;
+}
+#collabora-editor_close_revisions {
+}
+#collabora-editor_revisions tr {
+	border-bottom: 1px solid silver;
+}
+#collabora-editor_revisions td {
+	padding: 5px;
+}
+#collabora-editor.revisions #loleafletframe {
+	width: 80%
+}
+#collabora-editor.revisions #collabora-editor_revisions {
+	display: block;
+}
+
+
+/** Inside editor CSS (not actually used right now) **/
+.logo {
+	background-image: url('../../api/templates/default/images/logo.svg');
+}

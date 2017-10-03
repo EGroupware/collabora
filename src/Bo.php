@@ -247,7 +247,38 @@ class Bo {
 		}
 		$url = $action['urlsrc'] .
 				'WOPISrc=' . urlencode($url);
+		$query = array(
+			'closebutton' => 1
+		);
+		if(static::is_versioned($path))
+		{
+			$query['revisionhistory'] = true;
+		}
+		if(!Vfs::is_writable($path))
+		{
+			$query['permission'] = 'view';
+		}
+		$url .= '&' . http_build_query($query);
 
 		return $url;
+	}
+
+	/**
+	 * Determine if the path is versioned
+	 *
+	 * @param String $path
+	 * @return boolean
+	 */
+	public static function is_versioned($path)
+	{
+		$fileinfo = Vfs::getExtraInfo($path);
+		foreach($fileinfo as $tab)
+		{
+			if($tab['label'] == lang('Versions'))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

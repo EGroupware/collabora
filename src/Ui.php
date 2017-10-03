@@ -15,6 +15,7 @@ namespace EGroupware\collabora;
 use EGroupware\Api\Framework;
 use EGroupware\Api\Json\Response;
 use EGroupware\Api\Etemplate;
+use EGroupware\Api\Vfs;
 
 /**
  * User interface for collabora integration
@@ -123,10 +124,50 @@ class Ui {
 		$template = new Etemplate('collabora.editor');
 
 		$content = array(
-			'url'	=> Bo::get_action_url($path)
+			'url'	=> Bo::get_action_url($path),
+			'filename' => Vfs::basename($path),
 		) + Bo::get_token($path);
 
+		// Revision list
+		if(Bo::is_versioned($path))
+		{
+			$fileinfo = Vfs::getExtraInfo($path);
+			foreach($fileinfo as $tab)
+			{
+				if($tab['label'] == lang('Versions'))
+				{
+					$content['revisions'] = $tab['data']['versions'];
+					$content['revisions'][0] = $content;
+					unset($content['revisions'][0]['revisions']);
+				}
+			}
+		}
+
 		$template->exec('collabora.'.__CLASS__.'.editor', $content, array(), array(), array(), 3);
+	}
+
+	/**
+	 * Get the required information to load the editor.
+	 *
+	 * This includes the file ID and token primarily, and is used when we want
+	 * to keep the current editor window, and point it to a different file, such
+	 * as a different revision.
+	 *
+	 * @param string $path Path to the file to be edited
+	 */
+	public static function ajax_getInfo($path)
+	{
+		$content = array(
+			'url'	=> Bo::get_action_url($path),
+			'filename' => Vfs::basename($path),
+		) + Bo::get_token($path);
+
+
+		$response = \EGroupware\Api\Json\Response::get();
+		if($content)
+		{
+			$response->data($content);
+		}
 	}
 
 	/**

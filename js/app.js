@@ -214,6 +214,9 @@ app.classes.collabora = AppJS.extend(
 	// Handy reference to iframe
 	editor_iframe: null,
 
+	// Flag for if we've customized & bound the editor
+	loaded: false,
+
 	/**
 	 * Constructor
 	 *
@@ -222,6 +225,13 @@ app.classes.collabora = AppJS.extend(
 	init: function()
 	{
 		this._super.apply(this, arguments);
+
+		// Filemanager has some handy utilites, but we need to be careful what
+		// we use, since it's not actually available
+		if(typeof app.filemanager === 'undefined')
+		{
+			app.filemanager = new app.classes.filemanager;
+		}
 	},
 
 	/**
@@ -243,6 +253,17 @@ app.classes.collabora = AppJS.extend(
 				break;
 		}
 	},
+
+	/**
+	 * Override the default to use the file name as title
+	 */
+	getWindowTitle: function getWindowTitle()
+	{
+		return egw.config('site_title','phpgwapi') + '[' +
+				this.et2.getArrayMgr('content').getEntry('path', true) +
+				']';
+	},
+
 	/**
 	 * Initialize editor and post the form that starts it
 	 *
@@ -250,6 +271,9 @@ app.classes.collabora = AppJS.extend(
 	 */
 	init_editor: function init_editor(values)
 	{
+		// We allow additional calls and reset, since we're replacing the editor
+		this.loaded = false;
+
 		if(typeof values == 'undefined')
 		{
 			values = this.et2.getArrayMgr('content').data || {};
@@ -262,22 +286,15 @@ app.classes.collabora = AppJS.extend(
 
 		jQuery('body').append(form_html);
 
-		var frameholder = document.getElementById('collabora-editor_editor_frame');
-		var frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen style="width:100%;height:100%;position:absolute;"/>';
+		var frameholder = jQuery('.editor_frame');
+		var frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen style="height:100%;position:absolute;"/>';
 
-		jQuery(frameholder).append(frame);
+		jQuery('iframe',frameholder).remove();
+		frameholder.append(frame);
 
+		// Listen for messages
 		window.addEventListener('message', jQuery.proxy(function(e){
-			debugger;
-			if (e.data === 'close') {
-				app.collabora.onClose();
-			}
-			var message = JSON.parse(e.data);
-
-			if (message.MessageId == 'App_LoadingStatus' && message.Values.Status == 'Frame_Ready')
-			{
-				this._editor_load();
-			}
+			this._handle_messages(e);
 		}, this));
 
 		this.editor_iframe = jQuery('#loleafletframe')[0];
@@ -289,6 +306,50 @@ app.classes.collabora = AppJS.extend(
 		document.getElementById('form').submit();
 	},
 
+	/**
+	 * Handle messages sent from the editor
+	 *
+	 * @see https://www.collaboraoffice.com/collabora-online-editor-api-reference/#loleaflet-postmessage-actions
+	 *	for allowed actions
+	 * @param Object e
+	 * @param String e.MessageId
+	 * @param Object e.Values Depends on the message, but always an object, if present
+	 */
+	_handle_messages: function(e)
+	{
+		var message = JSON.parse(e.data);
+
+		if (message.MessageId == 'App_LoadingStatus' && message.Values.Status === 'Document_Loaded' && !this.loaded)
+		{
+			// Tell the iframe that we are ready now
+			app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+
+			this._customize_editor();
+			this.load = true;
+		}
+		else if (message.MessageId === 'UI_Close')
+		{
+			this.on_close();
+		}
+		else if (message.MessageId === "rev-history")
+		{
+			this.show_revision_history();
+		}
+		else if (message.MessageId === 'Clicked_Button' || message.MessageId === 'UI_SaveAs')
+		{
+			if(message.Values.Id === 'egwSaveAs' || message.MessageId === 'UI_SaveAs')
+			{
+				this.on_save_as();
+			}
+		}
+	},
+
+	/**
+	 * Pass a message into the editor
+	 *
+	 * @see https://www.collaboraoffice.com/collabora-online-editor-api-reference/#loleaflet-postmessage-actions
+	 *	for allowed actions
+	 */
 	WOPIPostMessage: function(msgId, values)
 	{
 		if(this.editor_iframe)
@@ -304,24 +365,102 @@ app.classes.collabora = AppJS.extend(
 	},
 
 	/**
-	 * Bind listeners to the editor
+	 * Do our customizations of the editor
+	 *
+	 * This is where we add buttons and menu actions and such
 	 */
-	_editor_load: function() {
-		// Tell the iframe that we are ready now
-		app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+	_customize_editor: function() {
 
-		app.collabora._customize_editor();
+		this.WOPIPostMessage('Insert_Button', {
+			id: 'egwSaveAs',
+			imgurl: this.egw.image('save'),
+			hint: 'Save As'
+		});
 	},
 
 	/**
-	 * Do our customizations of the editor
+	 * Handle close button
+	 *
+	 * This is just the default, not sure if we need any more
 	 */
-	_customize_editor: function() {
-		this.WOPIPostMessage('Insert_Button', {
-			id: 'egw',
-			imgurl: this.egw.image('save'),
-			hint: 'Custom button'
+	on_close: function on_close() {
+		window.close();
+	},
 
+	/**
+	 * Handle click on Save As
+	 *
+	 * @TODO: This needs to be finished so it actually works
+	 */
+	on_save_as: function on_save_as() {
+		var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
+		var filename = app.filemanager.basename(filepath);
+		var path = app.filemanager.dirname(filepath);
+
+		// Get the new name / path
+		this._save_as_dialog(path, filename);
+
+		// Update current values
+		filepath = path + '/' + filename;
+
+		// Save
+		this.WOPIPostMessage('Action_SaveAs', {
+			Name: filename,
+			Path: path
 		});
+	},
+
+	/**
+	 * Create & show the dialog
+	 *
+	 * @TODO This needs to be finished so it actually works
+	 */
+	_save_as_dialog: function(path, filename)
+	{
+		var attrs = {
+			menuaction: 'filemanager.filemanager_select.select',
+			mode: 'saveas',
+			label: egw.lang('Save'),
+			path: path,
+			name: filename
+		};
+
+		// Open the filemanager select in a popup
+		var popup = this.egw.open_link(
+			this.egw.link('/index.php', attrs),
+			'link_existing',
+			'680x400'
+		);
+	},
+
+	/**
+	 * Show the revision history list for the file
+	 */
+	show_revision_history: function show_revision_history()
+	{
+		jQuery(this.et2.getInstanceManager().DOMContainer).addClass('revisions');
+	},
+
+	/**
+	 * Hide the revision history list
+	 */
+	close_revision_history: function hide_revision_history()
+	{
+		jQuery(this.et2.getInstanceManager().DOMContainer).removeClass('revisions');
+	},
+
+	/**
+	 * Edit a particular revision of a file, selected from a list
+	 */
+	edit_revision: function edit_revision(event, widget)
+	{
+		var row = widget.getArrayMgr('content').explodeKey(widget.id).pop()||0;
+		var revision = widget.getArrayMgr('content').getEntry(row);
+		egw.json(
+			'EGroupware\\collabora\\Ui::ajax_getInfo',
+			[revision.path],
+			jQuery.proxy(this.init_editor,this),
+			this
+		).sendRequest(true);
 	}
 });
