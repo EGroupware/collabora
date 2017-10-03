@@ -117,7 +117,7 @@ class Ui {
 	{
 		if(!$path && $_GET['path'])
 		{
-			$path = $_GET['path'];
+			$path = urldecode($_GET['path']);
 		}
 		Framework::includeJS('.','app','collabora',true);
 		$template = new Etemplate('collabora.editor');

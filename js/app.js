@@ -154,7 +154,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 							self.egw.refresh('', 'filemanager');
 							window.open(egw.link('/index.php', {
 								'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
-								'path': _data.path
+								'path': egw.encodePath(_data.path)
 							}));
 						}
 						egw.message(_data.message);
