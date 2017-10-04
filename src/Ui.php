@@ -23,7 +23,8 @@ use EGroupware\Api\Vfs;
 class Ui {
 
 	public $public_functions = array(
-		'editor' => TRUE
+		'editor' => TRUE,
+		'merge_edit' => TRUE
 	);
 
 	/**
@@ -144,6 +145,55 @@ class Ui {
 		}
 
 		$template->exec('collabora.'.__CLASS__.'.editor', $content, array(), array(), array(), 3);
+	}
+
+	/**
+	 * Merge the selected IDs into the given document, save it to the VFS, then
+	 * open it in the editor.
+	 */
+	public static function merge_edit()
+	{
+		if(class_exists($_REQUEST['merge']) && is_subclass_of($_REQUEST['merge'], 'EGroupware\\Api\\Storage\\Merge'))
+		{
+			$document_merge = new $_REQUEST['merge']();
+		}
+		else
+		{
+			$document_merge = new \EGroupware\Api\Contacts\Merge();
+		}
+
+		if(($error = $document_merge->check_document($_REQUEST['document'],'')))
+		{
+			$response->error($error);
+			return;
+		}
+
+		$filename = '';
+		$result = $document_merge->merge_file($_REQUEST['document'], explode(',',$_REQUEST['id']), $filename, '', $header);
+
+		if(is_file($result) && is_readable($result))
+		{
+			// Put it into the vfs
+			$target = Vfs::get_home_dir() . "/$filename";
+			while(is_file($target))
+			{
+				$dupe_count++;
+				$target = Vfs::get_home_dir() . '/' .
+					pathinfo($filename, PATHINFO_FILENAME) .
+					' ('.($dupe_count + 1).')' . '.' .
+					pathinfo($filename, PATHINFO_EXTENSION);
+			}
+			copy($result, Vfs::PREFIX.$target);
+			unlink($result);
+			\Egroupware\Api\Egw::redirect_link('/index.php', array(
+				'menuaction' => 'collabora.EGroupware\\collabora\\Ui.editor',
+				'path'=> urlencode($target)
+			));
+		}
+		else
+		{
+			echo $result;
+		}
 	}
 
 	/**
