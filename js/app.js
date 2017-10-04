@@ -148,17 +148,12 @@ app.classes.filemanager = app.classes.filemanager.extend(
 			{
 				if (_button_id == 'create' && _val && _val.name != '')
 				{
-					egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [_openasnew ? _openasnew.split('.').pop() : _val.extension, current_path, _val.name, _openasnew], function(_data){
-						if (_data.path)
-						{
-							self.egw.refresh('', 'filemanager');
-							window.open(egw.link('/index.php', {
-								'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
-								'path': egw.encodePath(_data.path)
-							}));
-						}
-						egw.message(_data.message);
-					}).sendRequest(true);
+					self._request_createNew({
+						name: _val.name,
+						openasnew: _openasnew,
+						ext: _openasnew ? _openasnew.split('.').pop(): _val.extension,
+						dir: current_path
+					});
 				}
 			},
 			title: title,
@@ -172,6 +167,31 @@ app.classes.filemanager = app.classes.filemanager.extend(
 			template: egw.webserverUrl+'/collabora/templates/default/new.xet?1',
 			resizable: false
 		}, et2_dialog._create_parent('collabora'));
+	},
+
+	/**
+	 * Method to request create new file or open as new file
+	 * @param {object} data
+	 *	data: {
+	 *		name: //filename
+	 *		ext: //file extension
+	 *		dir: //directory
+	 *		openasnew: //path of the file to be opened as new
+	 *	}
+	 */
+	_request_createNew: function(data)
+	{
+		egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [data.ext, data.dir, data.name, data.openasnew], function(_data){
+			if (_data.path)
+			{
+				self.egw.refresh('', 'filemanager');
+				window.open(egw.link('/index.php', {
+					'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
+					'path': egw.encodePath(_data.path)
+				}));
+			}
+			egw.message(_data.message);
+		}).sendRequest(true);
 	},
 
 	/**
@@ -413,24 +433,44 @@ app.classes.collabora = AppJS.extend(
 	/**
 	 * Create & show the dialog
 	 *
-	 * @TODO This needs to be finished so it actually works
+	 * @TODO This implementation is a work arround because of SaveAs feature in
+	 * Collabora RC not yet been working. It needs re-implementation as soon as
+	 * Collabora SaveAs feature is available.
 	 */
 	_save_as_dialog: function(path, filename)
 	{
-		var attrs = {
-			menuaction: 'filemanager.filemanager_select.select',
+		// create file selector
+		var vfs_select = et2_createWidget('vfs-select', {
+			id:'savefile',
 			mode: 'saveas',
-			label: egw.lang('Save'),
-			path: path,
-			name: filename
-		};
+			button_caption:"",
+			button_label:"save as",
+		}, this.et2);
+		var self = this;
+		var content = self.et2.getArrayMgr('content');
 
-		// Open the filemanager select in a popup
-		var popup = this.egw.open_link(
-			this.egw.link('/index.php', attrs),
-			'link_existing',
-			'680x400'
-		);
+		// try to save before calling Save as
+		this.WOPIPostMessage("Action_Save");
+
+		// bind change handler for setting the selected path and calling save
+		window.setTimeout(function() {
+			jQuery(vfs_select.getDOMNode()).on('change', function (){
+			var file_path = vfs_select.get_value();
+			if (file_path)
+			{
+				var parts = file_path.split('/');
+				var name = parts.pop();
+				var ext = content.getEntry('filename').split('.').pop();
+				app.filemanager._request_createNew({
+					name: name,
+					openasnew: content.getEntry('path'),
+					ext: ext,
+					dir: parts.join('/')
+				});
+			}
+		})}, 1);
+		// start the file selector dialog
+		jQuery(vfs_select.getDOMNode()).click();
 	},
 
 	/**
