@@ -393,7 +393,7 @@ app.classes.collabora = AppJS.extend(
 
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAs',
-			imgurl: this.egw.image('save'),
+			imgurl: 'images/lc_saveas.svg',
 			hint: 'Save As'
 		});
 	},
