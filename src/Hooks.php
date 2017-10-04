@@ -15,16 +15,16 @@ namespace EGroupware\collabora;
 class Hooks {
 	/**
 	 * Allow collabora host as frame src, otherwise opening the editor fails
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function csp_frame_src()
 	{
 		$config = \EGroupware\Api\Config::read('collabora');
 		$frm_srcs = array();
-		if (($host = parse_url($config['server'], PHP_URL_HOST) . ':' . parse_url($config['server'], PHP_URL_PORT)))
+		if (!empty($config['server']))
 		{
-			$frm_srcs[] = $host;
+			$frm_srcs[] = $config['server'];
 		}
 		return $frm_srcs;
 	}
