@@ -132,7 +132,15 @@ class Files
 	 */
 	protected static function check_file_info($path)
 	{
-
+		$origin = $GLOBALS['egw_info']['server']['webserver_url'];
+		if ($origin[0] == '/')
+		{
+			$origin = ($_SERVER['HTTPS'] ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
+		}
+		else
+		{
+			$origin = parse_url($origin, PHP_URL_SCHEME).'://'.parse_url($origin, PHP_URL_HOST);
+		}
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
 		$data = array(
 			// The string name of the file, including extension, without a path. Used for display in user interface (UI), and determining the extension of the file.
@@ -154,8 +162,7 @@ class Files
 			// ---------------------------------
 
 			// Messaging
-			'PostMessageOrigin' => parse_url($GLOBALS['egw_info']['server']['webserver_url'], PHP_URL_SCHEME) . '://'.
-				parse_url($GLOBALS['egw_info']['server']['webserver_url'], PHP_URL_HOST),
+			'PostMessageOrigin' => $origin,
 
 			// Support locking
 			'SupportsGetLock'   => true,

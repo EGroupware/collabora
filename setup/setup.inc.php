@@ -29,7 +29,7 @@ $setup_info['collabora']['hooks']['admin'] = 'EGroupware\collabora\Admin::admin_
 $setup_info['collabora']['hooks']['config'] = 'EGroupware\collabora\Admin::config';
 $setup_info['collabora']['hooks']['config_validate'] = 'EGroupware\collabora\Admin::validate';
 $setup_info['collabora']['hooks']['csp-frame-src'] = 'EGroupware\collabora\Hooks::csp_frame_src';
-
+$setup_info['collabora']['hooks']['filemanager-editor-link'] = 'EGroupware\collabora\Hooks::getEditorLink';
 /* Tie into filemanager */
 $setup_info['collabora']['hooks']['etemplate2_before_exec'] = 'EGroupware\collabora\Ui::index';
 

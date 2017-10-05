@@ -11,8 +11,8 @@
 
 namespace EGroupware\collabora;
 
+use EGroupware\Api;
 use EGroupware\Api\Egw;
-use EGroupware\Api\Framework;
 
 /**
  * Edit the settings for this app.
@@ -20,14 +20,14 @@ use EGroupware\Api\Framework;
  * to be here
  */
 class Admin {
-	
+
 	/**
 	 * Admin sidebox tree leaves
 	 */
 	public static function admin_sidebox($data)
 	{
 		$appname = 'collabora';
-		
+
 		if ($GLOBALS['egw_info']['user']['apps']['admin'])
 		{
 			$file = Array(
@@ -43,10 +43,10 @@ class Admin {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set configuration defaults
-	 * 
+	 *
 	 * @param Array $data
 	 */
 	public static function config($data)
@@ -57,18 +57,29 @@ class Admin {
 		}
 
 		// Try to check server status here - it should respond with 'OK'
-		try
-		{
-			$ctx = stream_context_create(array(
-				'http' => array(
-					'timeout' => 5
-					)
+		$ctx = stream_context_create(array(
+			'http' => array(
+				'timeout' => 5
 				)
-			);
-			$status = file_get_contents($data['server'], false, $ctx, 0, 20);
-			$data['server_status'] = $status;
-		} catch (Exception $ex) {
-			// Guess it doesn't work
+			)
+		);
+		if (!($status = file_get_contents($data['server'], false, $ctx, 0, 20)))
+		{
+			$status = lang('Unable to connect');
+		}
+		$data['server_status'] = $status;
+		$data['server_status_class'] = $status == 'OK' ? 'ok' : 'error';
+
+		// check if we have an (active) anonymous user, required for Collabora / sharing
+		if (Api\Accounts::is_active('anonymous'))
+		{
+			$data['anonymous_status'] = lang("Active user 'anonymous' found.");
+			$data['anonymous_status_class'] = 'ok';
+		}
+		else
+		{
+			$data['anonymous_status'] = lang("No active user 'anonymous' found!");
+			$data['anonymous_status_class'] = 'error';
 		}
 
 		return $data;
@@ -83,7 +94,7 @@ class Admin {
 	public static function validate($data)
 	{
 		// Validate server by checking discovery
-		\EGroupware\Api\Cache::setInstance('collabora', 'discovery', false);
+		Api\Cache::setInstance('collabora', 'discovery', false);
 		try
 		{
 			$discovery = Bo::discover($data['server']);
@@ -98,7 +109,7 @@ class Admin {
 		}
 		if($error)
 		{
-			\EGroupware\Api\Etemplate::set_validation_error('server',$error,'newsettings');
+			Api\Etemplate::set_validation_error('server', $error, 'newsettings');
 		}
 	}
 

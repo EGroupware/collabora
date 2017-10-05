@@ -29,4 +29,23 @@ class Hooks {
 		return $frm_srcs;
 	}
 
+	/**
+	 * Gets links for open handler of collabora supported mime types
+	 *
+	 * @return array
+	 */
+	public static function getEditorLink()
+	{
+		$discover = Bo::discover();
+		foreach($discover as $mime => $val)
+		{
+			if ($val['name'] != 'edit') unset($discover[$mime]);
+		}
+		return array (
+			'edit' => array(
+				'menuaction' => 'collabora.EGroupware\\collabora\\Ui.editor',
+			),
+			'mime' => $discover
+		);
+	}
 }
