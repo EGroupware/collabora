@@ -36,11 +36,16 @@ class Hooks {
 	 */
 	public static function getEditorLink()
 	{
+		$discover = Bo::discover();
+		foreach($discover as $mime => $val)
+		{
+			if ($val['name'] != 'edit') unset($discover[$mime]);
+		}
 		return array (
 			'edit' => array(
 				'menuaction' => 'collabora.EGroupware\\collabora\\Ui.editor',
 			),
-			'mime' => Bo::discover()
+			'mime' => $discover
 		);
 	}
 }
