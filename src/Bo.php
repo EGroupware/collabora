@@ -12,6 +12,7 @@
 
 namespace EGroupware\collabora;
 
+use EGroupware\Api;
 use EGroupware\Api\Cache;
 use EGroupware\Api\Config;
 use EGroupware\Api\DateTime;
@@ -25,7 +26,7 @@ use EGroupware\Api\Vfs;
  */
 class Bo {
 
-	const DISCOVERY_CACHE_TIME = 86400; // 1 day
+	const DISCOVERY_CACHE_TIME = 3600; // 1 hour, until we can trigger a new discovery from client-side, if opening of iframe fails
 
 	// These for the collabora server
 	const DISCOVERY_URL = '/hosting/discovery';
@@ -44,25 +45,29 @@ class Bo {
 	 *
 	 * @return String[] List of types that can be handled, with mimetypes as keys.
 	 *
-	 * @throws \EGroupware\Api\Exception\WrongParameter If the server cannot be
-	 *	contacted.
-	 * @throws \EGroupware\Api\Exception\AssertionFailed if the server responds,
+	 * @trhows Api\Exception\WrongUserinput if Collabora is not configured
+	 * @throws Api\Exception\WrongParameter if the server cannot be contacted
+	 * @throws Api\Exception\AssertionFailed if the server responds,
 	 *	but the XML cannot be parsed
 	 */
 	public static function discover($server = '')
 	{
-		$discovery = Cache::getInstance('collabora', 'discovery');
-		if($discovery)
+		if (($cached = Cache::getInstance('collabora', 'discovery')))
 		{
-			return $discovery;
+			return $cached;
 		}
 
-		$server_url = ($server ? $server : static::get_server()) . self::DISCOVERY_URL;
+		if (empty($server)) $server = static::get_server();
+
+		if (empty($server))
+		{
+			throw new Api\Exception\WrongUserinput(lang('Collabora is not configured!'));
+		}
+		$server_url = $server . self::DISCOVERY_URL;
 		$discovery = array();
 
 		try
 		{
-
 			if(@function_exists('curl_version'))
 			{
 				$response = static::get_remote_data($server_url, false, true);
@@ -72,13 +77,13 @@ class Bo {
 				}
 				else
 				{
-					throw new \EGroupware\Api\Exception\WrongParameter('Unable to load ' . $server_url);
+					throw new Api\Exception\WrongParameter('Unable to load ' . $server_url);
 				}
 			}
 			// No cURL, fallback
 			else if (($response_xml_data = file_get_contents($server_url))===false)
 			{
-				throw new \EGroupware\Api\Exception\WrongParameter('Unable to load ' . $server_url);
+				throw new Api\Exception\WrongParameter('Unable to load ' . $server_url);
 			}
 			libxml_use_internal_errors(true);
 			$data = simplexml_load_string($response_xml_data);
@@ -152,6 +157,7 @@ class Bo {
 		curl_close($c);
 
 		// if redirected, then get that redirected page
+		$redirURL = $m = null;
 		if($status['http_code']==301 || $status['http_code']==302)
 		{
 			//if we FOLLOWLOCATION was not allowed, then re-get REDIRECTED URL
@@ -164,7 +170,7 @@ class Bo {
 				//if REDIRECT URL is found in OUTPUT
 				if(empty($redirURL)){preg_match('/moved\s\<a(.*?)href\=\"(.*?)\"(.*?)here\<\/a\>/si',$data,$m); if (!empty($m[1])){ $redirURL=$m[1]; } }
 				//if URL found, then re-use this function again, for the found url
-				if(!empty($redirURL)){$t=debug_backtrace(); return call_user_func( $t[0]["function"], trim($redirURL), $post_paramtrs);}
+				if(!empty($redirURL)){$t=debug_backtrace(); return call_user_func( $t[0]["function"], trim($redirURL), $post_parameters);}
 			}
 		}
 		// if not redirected,and nor "status 200" page, then error..
