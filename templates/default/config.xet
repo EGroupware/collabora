@@ -5,16 +5,25 @@
 	<template id="collabora.config" template="" lang="" group="0" version="17.1">
 		<grid width="100%" class="admin-config egwGridView_grid">
 			<columns>
-				<column width="60%"/>
+				<column width="250px"/>
 				<column/>
 			</columns>
 			<rows>
 				<row>
 					<description value="Collabora server" label="%s:"/>
 					<hbox>
-						<url id="newsettings[server]"/>
-						<description id="newsettings[server_status]" align="center" label="Status:" disabled="!@newsettings[server_status]"/>
+						<url id="newsettings[server]" width="300px"/>
+						<description id="newsettings[server_status]" label="Status:" disabled="!@newsettings[server_status]" class="@newsettings[server_status_class]"/>
+						<!-- hack to get class propagated: id="newsettings[server_status_class]" -->
 					</hbox>
+				</row>
+				<row>
+					<description value="Checking for user 'anonymous'" label="%s:"/>
+					<description id="newsettings[anonymous_status]" class="@newsettings[anonymous_status_class]"/>
+					<!-- hack to get class propagated: id="newsettings[anonymous_status_class]" -->
+				</row>
+				<row>
+					<description colspan="2" value="An user 'anonymous' is required for Collabora to access files and also for sharing files."/>
 				</row>
 			</rows>
 		</grid>
