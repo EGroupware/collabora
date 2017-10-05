@@ -175,7 +175,7 @@ class Ui {
 		{
 			// Put it into the vfs
 			$target = Vfs::get_home_dir() . "/$filename";
-			while(is_file($target))
+			while(is_file(Vfs::PREFIX.$target))
 			{
 				$dupe_count++;
 				$target = Vfs::get_home_dir() . '/' .
