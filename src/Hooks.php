@@ -36,7 +36,13 @@ class Hooks {
 	 */
 	public static function getEditorLink()
 	{
-		$discover = Bo::discover();
+		try {
+			$discover = Bo::discover();
+		}
+		catch (\Exception $e) {
+			unset($e);
+			return;
+		}
 		foreach($discover as $mime => $val)
 		{
 			if ($val['name'] != 'edit') unset($discover[$mime]);

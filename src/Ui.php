@@ -12,6 +12,7 @@
 
 namespace EGroupware\collabora;
 
+use EGroupware\Api;
 use EGroupware\Api\Framework;
 use EGroupware\Api\Json\Response;
 use EGroupware\Api\Etemplate;
@@ -83,10 +84,14 @@ class Ui {
 		{
 			$discovery = Bo::discover();
 		}
-		catch (Exception $e)
+		catch (Api\Exception\WrongUserinput $e)
+		{
+			// Collabora is installed, but not configured --> ignore that
+		}
+		catch (\Exception $e)
 		{
 			$discovery = array();
-			Response::get()->message(lang('unable to contact collabora server') . "\n" . $e->message, 'error');
+			Response::get()->call('egw.message', lang('Unable to contact collabora server') . "\n\n" . $e->getMessage(), 'error');
 		}
 		if(!$discovery) return;
 

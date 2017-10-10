@@ -108,7 +108,7 @@ class Bo {
 			Cache::setInstance('collabora', 'discovery', $discovery, self::DISCOVERY_CACHE_TIME);
 			return $discovery;
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			Cache::setInstance('collabora', 'discovery', false, self::DISCOVERY_CACHE_TIME);
 			throw $e;

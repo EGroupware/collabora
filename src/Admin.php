@@ -120,6 +120,6 @@ class Admin {
 	 */
 	public static function get_default_server()
 	{
-		return 'collabora.'.$GLOBALS['egw_info']['server']['hostname'].':9980';
+		return 'https://collabora.egroupware.org';
 	}
 }
