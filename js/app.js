@@ -126,19 +126,24 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var ext_default = 'odt';
 		var title = _openasnew ? egw.lang('Open as new') :
 				egw.lang('Create new %1', type == 'more'? egw.lang('file'): type);
+
+		//list of extensions that we don't want to offer for create new file
+		var exclusive_ext = ['odg','fodg', 'odz', 'otg', 'odb', 'dif', 'slk', 'dbf', 'oth'];
 		switch (type)
 		{
 			case 'document':
 				extensions = {odt:'(.odt) OpenDocument Text', docx: '(.docx) MS Word'}; break;
 			case 'spreadsheet':
-				extensions = {ods:'(.ods) OpenDocument spreadsheet', xls: '(.xls) MS Excel'}; break;
+				extensions = {ods:'(.ods) OpenDocument spreadsheet', xlsx: '(.xlsx) MS Excel'}; break;
 				ext_default = 'ods';
 			case 'presentation':
-				extensions = {odp:'(.odp) OpenDocument Presentation', ppt: '(.ppt) MS PowerPoint'}; break;
+				extensions = {odp:'(.odp) OpenDocument Presentation', pptx: '(.pptx) MS PowerPoint'}; break;
 				ext_default = 'odp';
 			case 'more':
 				Object.entries(this.discovery).forEach(function(i){
-					if (i[1].name == 'edit') extensions[i[1]['ext']] = '(.'+i[1]['ext']+') '+ i[0];
+					if (i[1].name == 'edit' && exclusive_ext.filter(function(v){
+						return (i[1]['ext'] == v);
+					}).length == 0) extensions[i[1]['ext']] = '(.'+i[1]['ext']+') '+ i[0];
 				});
 				break;
 		}
