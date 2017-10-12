@@ -35,22 +35,22 @@ class Ui {
 	static $new_actions = array (
 		'document' => array (
 			'caption' => 'Document',
-			'icon' => 'document',
+			'icon' => 'mime128_application_vnd.oasis.opendocument.text.png',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
 		'spreadsheet' => array (
 			'caption' => 'Spreadsheet',
-			'icon' => 'spreadsheet',
+			'icon' => 'mime128_application_vnd.openxmlformats-officedocument.spreadsheetml.sheet.png',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
 		'presentation' => array (
 			'caption' => 'Presentation',
-			'icon' => 'presentation',
+			'icon' => 'mime128_application_vnd.oasis.opendocument.presentation.png',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
 		'more' => array (
 			'caption' => 'More ...',
-			'icon' => '',
+			'icon' => 'mime128_unknown.png',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
 	);
