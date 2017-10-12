@@ -448,6 +448,7 @@ app.classes.collabora = AppJS.extend(
 		var vfs_select = et2_createWidget('vfs-select', {
 			id:'savefile',
 			mode: 'saveas',
+			name: filename,
 			button_caption:"",
 			button_label:"save as",
 		}, this.et2);
@@ -475,7 +476,7 @@ app.classes.collabora = AppJS.extend(
 			}
 		})}, 1);
 		// start the file selector dialog
-		jQuery(vfs_select.getDOMNode()).click();
+		vfs_select.click();
 	},
 
 	/**
