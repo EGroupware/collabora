@@ -101,7 +101,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	 * @param {string} settings[].urlsrc URL to edit the file.  It still needs
 	 *	a WOPISrc parameter added though.
 	 */
-	set_discovery: function set_discovery(settings)
+	set_discovery: function (settings)
 	{
 		this.discovery = settings;
 	},
@@ -293,8 +293,9 @@ app.classes.collabora = AppJS.extend(
 	 * Initialize editor and post the form that starts it
 	 *
 	 * @see https://wopi.readthedocs.io/en/latest/hostpage.html
+	 * @param {Object} values
 	 */
-	init_editor: function init_editor(values)
+	init_editor: function (values)
 	{
 		// We allow additional calls and reset, since we're replacing the editor
 		this.loaded = false;
@@ -303,6 +304,8 @@ app.classes.collabora = AppJS.extend(
 		{
 			values = this.et2.getArrayMgr('content').data || {};
 		}
+		values.url += '&user='+this.egw.user('account_lid');
+
 		var form_html = `
 		<form id="form" name="form" target="loleafletframe"
 				action="${values['url']}" method="post">
@@ -336,9 +339,9 @@ app.classes.collabora = AppJS.extend(
 	 *
 	 * @see https://www.collaboraoffice.com/collabora-online-editor-api-reference/#loleaflet-postmessage-actions
 	 *	for allowed actions
-	 * @param Object e
-	 * @param String e.MessageId
-	 * @param Object e.Values Depends on the message, but always an object, if present
+	 * @param {Object} e
+	 * @param {String} e.MessageId
+	 * @param {Object} e.Values Depends on the message, but always an object, if present
 	 */
 	_handle_messages: function(e)
 	{
@@ -450,7 +453,7 @@ app.classes.collabora = AppJS.extend(
 			mode: 'saveas',
 			name: filename,
 			button_caption:"",
-			button_label:"save as",
+			button_label:"save as"
 		}, this.et2);
 		var self = this;
 		var content = self.et2.getArrayMgr('content');
@@ -474,7 +477,7 @@ app.classes.collabora = AppJS.extend(
 					dir: parts.join('/')
 				});
 			}
-		})}, 1);
+		});}, 1);
 		// start the file selector dialog
 		vfs_select.click();
 	},
@@ -498,7 +501,7 @@ app.classes.collabora = AppJS.extend(
 	/**
 	 * Edit a particular revision of a file, selected from a list
 	 */
-	edit_revision: function edit_revision(event, widget)
+	edit_revision: function (event, widget)
 	{
 		var row = widget.getArrayMgr('content').explodeKey(widget.id).pop()||0;
 		var revision = widget.getArrayMgr('content').getEntry(row);
