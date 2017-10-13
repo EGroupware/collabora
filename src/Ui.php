@@ -179,11 +179,12 @@ class Ui {
 		if(is_file($result) && is_readable($result))
 		{
 			// Put it into the vfs
-			$target = Vfs::get_home_dir() . "/$filename";
+			$target = $_target = "/home/{$GLOBALS['egw_info']['user']['account_lid']}/$filename";
+			$dupe_count = 0;
 			while(is_file(Vfs::PREFIX.$target))
 			{
 				$dupe_count++;
-				$target = Vfs::get_home_dir() . '/' .
+				$target = Vfs::dirname($_target) . '/' .
 					pathinfo($filename, PATHINFO_FILENAME) .
 					' ('.($dupe_count + 1).')' . '.' .
 					pathinfo($filename, PATHINFO_EXTENSION);
