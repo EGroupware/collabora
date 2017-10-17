@@ -18,7 +18,6 @@ require_once realpath(__DIR__.'/../../../api/src/test/LoggedInTest.php');
 use EGroupware\Api;
 use EGroupware\Api\Vfs\Sharing;
 
-
 class RewriteTest extends \EGroupware\Api\LoggedInTest {
 
 	protected static $wopi_endpoint;
@@ -26,10 +25,6 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	public function setUp()
 	{
 		static::$wopi_endpoint = Api\Egw::link( Bo::WOPI_ENDPOINT );
-		if(strpos(static::$wopi_endpoint, $GLOBALS['egw_info']['server']['hostname']) === false)
-		{
-			static::$wopi_endpoint = 'http://' . $GLOBALS['egw_info']['server']['hostname'] . static::$wopi_endpoint;
-		}
 	}
 
 	/**
