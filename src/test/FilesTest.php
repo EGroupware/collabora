@@ -25,35 +25,35 @@ class FilesTest extends TestCase
 {
 	public function testCheckFileInfo()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function testPutRelativeFile()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function testLock()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function testUnlock()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function testRefreshLock()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function testUnlockAndRelock()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function testDeleteFile()
 	{
-
+		$this->markTestIncomplete();
 	}
 	public function RenameFile()
 	{
-
+		$this->markTestIncomplete();
 	}
 
 }
