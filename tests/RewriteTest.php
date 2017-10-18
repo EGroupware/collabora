@@ -13,7 +13,7 @@
 namespace EGroupware\collabora;
 
 // test base providing Egw environment, since we need the DB
-require_once realpath(__DIR__.'/../../../api/src/test/LoggedInTest.php');
+require_once realpath(__DIR__.'/../../api/tests/LoggedInTest.php');
 
 use EGroupware\Api;
 use EGroupware\Api\Vfs\Sharing;
