@@ -24,7 +24,7 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	 */
 	public function testInvalidUrl()
 	{
-		$url = Egw::link('/collabora/index.php/wopi/files/totally_invalid');
+		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/totally_invalid'));
 		$headers = get_headers($url, TRUE);
 		$this->assertEquals('404', substr($headers[0], 9, 3), "Testing invalid URL $url");
 	}
@@ -39,9 +39,18 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		$token = Bo::get_token('/home');
 
 		// home dir gets ID 2 normally
-		$url = Egw::link('/collabora/index.php/wopi/files/2?access_token=' . urlencode($token['token']));
+		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/2?access_token=' . urlencode($token['token'])));
 
 		$headers = get_headers($url, TRUE);
 		$this->assertEquals('200', substr($headers[0], 9, 3), "Testing home directory $url");
+	}
+
+	protected function fixLink($url)
+	{
+		if ($url{0} == '/') {
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] ? $GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
+		}
+		return $url;
 	}
 }
