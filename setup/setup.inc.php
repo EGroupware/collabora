@@ -11,6 +11,7 @@ $setup_info['collabora']['title']   = 'Collabora';
 $setup_info['collabora']['version'] = '17.1';
 $setup_info['collabora']['app_order'] = 1;
 $setup_info['collabora']['enable']  = 2;
+$setup_info['stylite']['autoinstall'] = true;	// install automatically on update
 
 $setup_info['collabora']['author'] = 'Nathan Gray';
 $setup_info['collabora']['maintainer'] = array(
