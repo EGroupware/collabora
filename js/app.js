@@ -402,7 +402,7 @@ app.classes.collabora = AppJS.extend(
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAs',
 			imgurl: 'images/lc_saveas.svg',
-			hint: 'Save As'
+			hint: egw.lang('Save As')
 		});
 	},
 
@@ -453,7 +453,7 @@ app.classes.collabora = AppJS.extend(
 			mode: 'saveas',
 			name: filename,
 			button_caption:"",
-			button_label:"save as"
+			button_label: egw.lang("Save as")
 		}, this.et2);
 		var self = this;
 		var content = self.et2.getArrayMgr('content');

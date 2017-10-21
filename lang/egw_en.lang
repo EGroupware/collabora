@@ -1,0 +1,23 @@
+	collabora	en	EGroupware EPL is required to configure a custom Collabora server.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	en	A local installation not accessible from the internet will NOT work with a public Collabora server.
+active user 'anonymous' found.	collabora	en	Active user 'anonymous' found.
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	en	An user 'anonymous' is required for Collabora to access files and also for sharing files.
+checking for user 'anonymous'	collabora	en	Checking for user 'anonymous'
+collabora	common	en	Collabora
+collabora is not configured!	collabora	en	Collabora is not configured!
+collabora server	collabora	en	Collabora server
+create	collabora	en	Create
+create new %1	collabora	en	Create new %1
+egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora server.
+failed to create file %1!	collabora	en	Failed to create file %1!
+failed to create file %1: file already exists!	collabora	en	Failed to create file %1: file already exists!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	en	Failed to create the file! Because you do not have enough permission to %1 folder!
+file	collabora	en	file
+file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
+no active user 'anonymous' found!	collabora	en	No active user 'anonymous' found!
+open as new	collabora	en	Open as new
+requirements / please note	collabora	en	Requirements / please note
+the collabora server must be able to access your egroupware installation!	collabora	en	The Collabora server must be able to access your EGroupware installation!
+unable to connect	collabora	en	Unable to connect
+unable to contact collabora server	collabora	en	Unable to contact collabora server
+versions	collabora	en	Versions

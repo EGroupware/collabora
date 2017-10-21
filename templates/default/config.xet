@@ -9,15 +9,28 @@
 				<column/>
 			</columns>
 			<rows>
-				<row>
+				<row valign="middle" height="40">
 					<description value="Collabora server" label="%s:"/>
 					<hbox>
-						<url id="newsettings[server]" width="300px"/>
+						<url id="newsettings[server]" width="300px" readonly="true" disabled="@epl"/>
+						<url id="newsettings[server]" width="300px" disabled="!@epl"/>
 						<description id="newsettings[server_status]" label="Status:" disabled="!@newsettings[server_status]" class="@newsettings[server_status_class]"/>
 						<!-- hack to get class propagated: id="newsettings[server_status_class]" -->
 					</hbox>
 				</row>
+				<row disabled="@epl">
+					<description value="EGroupware EPL is required to configure a custom Collabora server." span="all" href="https://www.egroupware.org/EPL" extra_link_target="_blank"/>
+				</row>
 				<row>
+					<description value="Requirements / please note" span="all" class="subHeader"/>
+				</row>
+				<row height="30" valign="bottom">
+					<description value="The Collabora server must be able to access your EGroupware installation!" span="all"/>
+				</row>
+				<row>
+					<description value="A local installation not accessible from the internet will NOT work with a public Collabora server." span="all"/>
+				</row>
+				<row height="30" valign="bottom">
 					<description value="Checking for user 'anonymous'" label="%s:"/>
 					<description id="newsettings[anonymous_status]" class="@newsettings[anonymous_status_class]"/>
 					<!-- hack to get class propagated: id="newsettings[anonymous_status_class]" -->

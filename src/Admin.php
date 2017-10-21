@@ -19,8 +19,8 @@ use EGroupware\Api\Egw;
  * We use the standard admin interface from the admin app, so not much needs
  * to be here
  */
-class Admin {
-
+class Admin
+{
 	/**
 	 * Admin sidebox tree leaves
 	 */

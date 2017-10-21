@@ -17,11 +17,8 @@ $setup_info['collabora']['maintainer'] = array(
 	'name'  => 'EGroupware GmbH',
 	'url'   => 'http://www.egroupware.org',
 );
-$setup_info['collabora']['license']  = array(
-	'name' => 'EGroupware EPL license',
-	'url'  => 'http://www.egroupware.org/EPL',
-);
-$setup_info['collabora']['description'] = 'Online document editing with Collabora and EGroupware GmbH';
+$setup_info['collabora']['license']  = 'GPL';
+$setup_info['collabora']['description'] = 'Online document editing with Collabora Libre Office Online';
 
 /* The hooks this app includes, needed for hooks registration */
 $setup_info['collabora']['hooks']['settings'] = 'EGroupware\collabora\Preferences::preferences';

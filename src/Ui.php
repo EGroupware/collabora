@@ -98,6 +98,7 @@ class Ui {
 		// Send what the server said to the client, so we can use it there
 		Response::get()->call('app.filemanager.set_discovery', $discovery);
 
+		$changes = array();
 		$changes['data']['is_collabora'] = true;
 		$changes['data']['nm'] = $data['nm'];
 		$changes['data']['nm']['actions']['new']['children'] = self::$new_actions
@@ -242,8 +243,7 @@ class Ui {
 		if (!\EGroupware\Api\Vfs::is_writable($dir))
 		{
 			$response->data(array(
-				'message' => lang ('Failed to create the file! Because you do not'
-						. ' have enough permission to %1 folder!', $dir)
+				'message' => lang ('Failed to create the file! Because you do not have enough permission to %1 folder!', $dir)
 			));
 		}
 		$file = $dir.'/'.$name.'.'.$ext;
@@ -258,8 +258,7 @@ class Ui {
 		$template = file_get_contents($temp_url);
 		if (\EGroupware\Api\Vfs::file_exists($file))
 		{
-			$data['message'] = lang('Failed to create file %1! Becase the file'
-					.' already exists.', $file);
+			$data['message'] = lang('Failed to create file %1: file already exists!', $file);
 		}
 		elseif ($openasnew) // file opened as new
 		{
@@ -270,12 +269,12 @@ class Ui {
 			}
 			else
 			{
-				$data['message'] = lang('Faild to create file %1!',$file);
+				$data['message'] = lang('Failed to create file %1!',$file);
 			}
 		}
 		else if (!($fp = \EGroupware\Api\Vfs::fopen($file,'wb')) || !fwrite($fp, $template? $template: ' '))
 		{
-			$data['message'] = lang('Faild to create file %1!',$file);
+			$data['message'] = lang('Failed to create file %1!',$file);
 		}
 		else
 		{
