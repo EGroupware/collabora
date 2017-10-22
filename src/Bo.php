@@ -1,7 +1,6 @@
 <?php
-
 /**
- * App
+ * EGroupware - Collabora business object
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
@@ -10,7 +9,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
 
 use EGroupware\Api;
 use EGroupware\Api\Cache;
@@ -92,7 +91,7 @@ class Bo {
 				foreach(libxml_get_errors() as $error) {
 					$msg .= "\t". $error->message;
 				}
-				throw new \EGroupware\Api\Exception\AssertionFailed($msg);
+				throw new Api\Exception\AssertionFailed($msg);
 			}
 
 			// Iterate through & extract the data

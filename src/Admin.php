@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Collabora Admin functions
+ * EGroupware - Collabora Admin functions
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
@@ -9,7 +8,7 @@
  * @copyright (c) 2017  Nathan Gray
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
 
 use EGroupware\Api;
 use EGroupware\Api\Egw;

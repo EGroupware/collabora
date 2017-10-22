@@ -1,16 +1,15 @@
 <?php
-
 /**
- * App
+ * EGroupware - Collabora preferences
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
- * @package 
+ * @package collabora
  * @copyright (c) 2017  Nathan Gray
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace collabora;
+namespace EGroupware\Collabora;
 
 /**
  * Description of Preferences
@@ -19,8 +18,8 @@ namespace collabora;
  */
 class Preferences {
 
-	public static function preferences()
+	public static function settings()
 	{
-		
+
 	}
 }

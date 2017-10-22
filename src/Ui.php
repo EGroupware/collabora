@@ -1,8 +1,6 @@
 <?php
-
 /**
- * Collabora integration user interface, or at least as much as Egroupware is
- * responsible for
+ * EGroupware - Collabora integration user interface
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
@@ -10,7 +8,7 @@
  * @copyright (c) 2017  Nathan Gray
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
 
 use EGroupware\Api;
 use EGroupware\Api\Framework;
@@ -165,7 +163,7 @@ class Ui {
 		}
 		else
 		{
-			$document_merge = new \EGroupware\Api\Contacts\Merge();
+			$document_merge = new Api\Contacts\Merge();
 		}
 
 		if(($error = $document_merge->check_document($_REQUEST['document'],'')))
@@ -193,7 +191,7 @@ class Ui {
 			copy($result, Vfs::PREFIX.$target);
 			unlink($result);
 			\Egroupware\Api\Egw::redirect_link('/index.php', array(
-				'menuaction' => 'collabora.EGroupware\\collabora\\Ui.editor',
+				'menuaction' => 'collabora.EGroupware\\Collabora\\Ui.editor',
 				'path'=> urlencode($target)
 			));
 		}
@@ -220,7 +218,7 @@ class Ui {
 		) + Bo::get_token($path);
 
 
-		$response = \EGroupware\Api\Json\Response::get();
+		$response = Api\Json\Response::get();
 		if($content)
 		{
 			$response->data($content);
@@ -238,9 +236,9 @@ class Ui {
 	 */
 	public static function ajax_createNew ($ext, $dir, $name, $openasnew)
 	{
-		$response = \EGroupware\Api\Json\Response::get();
+		$response = Api\Json\Response::get();
 		$data = array ();
-		if (!\EGroupware\Api\Vfs::is_writable($dir))
+		if (!Api\Vfs::is_writable($dir))
 		{
 			$response->data(array(
 				'message' => lang ('Failed to create the file! Because you do not have enough permission to %1 folder!', $dir)
@@ -256,13 +254,13 @@ class Ui {
 					$_SERVER['HTTP_HOST'].$temp_url;
 		}
 		$template = file_get_contents($temp_url);
-		if (\EGroupware\Api\Vfs::file_exists($file))
+		if (Api\Vfs::file_exists($file))
 		{
 			$data['message'] = lang('Failed to create file %1: file already exists!', $file);
 		}
 		elseif ($openasnew) // file opened as new
 		{
-			if (\EGroupware\Api\Vfs::copy($openasnew, $file))
+			if (Api\Vfs::copy($openasnew, $file))
 			{
 				$data['message'] = lang('File %1 has been created successfully.', $file);
 				$data['path'] = $file;
@@ -272,7 +270,7 @@ class Ui {
 				$data['message'] = lang('Failed to create file %1!',$file);
 			}
 		}
-		else if (!($fp = \EGroupware\Api\Vfs::fopen($file,'wb')) || !fwrite($fp, $template? $template: ' '))
+		else if (!($fp = Api\Vfs::fopen($file,'wb')) || !fwrite($fp, $template? $template: ' '))
 		{
 			$data['message'] = lang('Failed to create file %1!',$file);
 		}

@@ -22,14 +22,14 @@ $setup_info['collabora']['license']  = 'GPL';
 $setup_info['collabora']['description'] = 'Online document editing with Collabora Libre Office Online';
 
 /* The hooks this app includes, needed for hooks registration */
-$setup_info['collabora']['hooks']['settings'] = 'EGroupware\collabora\Preferences::preferences';
-$setup_info['collabora']['hooks']['admin'] = 'EGroupware\collabora\Admin::admin_sidebox';
-$setup_info['collabora']['hooks']['config'] = 'EGroupware\collabora\Admin::config';
-$setup_info['collabora']['hooks']['config_validate'] = 'EGroupware\collabora\Admin::validate';
-$setup_info['collabora']['hooks']['csp-frame-src'] = 'EGroupware\collabora\Hooks::csp_frame_src';
-$setup_info['collabora']['hooks']['filemanager-editor-link'] = 'EGroupware\collabora\Hooks::getEditorLink';
+$setup_info['collabora']['hooks']['settings'] = 'EGroupware\Collabora\Preferences::settings';
+$setup_info['collabora']['hooks']['admin'] = 'EGroupware\Collabora\Admin::admin_sidebox';
+$setup_info['collabora']['hooks']['config'] = 'EGroupware\Collabora\Admin::config';
+$setup_info['collabora']['hooks']['config_validate'] = 'EGroupware\Collabora\Admin::validate';
+$setup_info['collabora']['hooks']['csp-frame-src'] = 'EGroupware\Collabora\Hooks::csp_frame_src';
+$setup_info['collabora']['hooks']['filemanager-editor-link'] = 'EGroupware\Collabora\Hooks::getEditorLink';
 /* Tie into filemanager */
-$setup_info['collabora']['hooks']['etemplate2_before_exec'] = 'EGroupware\collabora\Ui::index';
+$setup_info['collabora']['hooks']['etemplate2_before_exec'] = 'EGroupware\Collabora\Ui::index';
 
 
 /* Dependencies for this app to work */

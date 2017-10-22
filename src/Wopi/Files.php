@@ -1,7 +1,6 @@
 <?php
-
 /**
- * WOPI File access endpoint
+ * EGroupware - Collabora WOPI File access endpoint
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
@@ -12,9 +11,10 @@
 
 namespace EGroupware\collabora\Wopi;
 
-use \EGroupware\Api\Accounts;
-use \EGroupware\Api\Vfs;
-use \EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
+use EGroupware\Api;
+use EGroupware\Api\Accounts;
+use EGroupware\Api\Vfs;
+use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
 
 /**
  * File enpoint
@@ -196,7 +196,7 @@ class Files
 		{
 			$data['OwnerId'] = ''.$stat['uid'];
 			$data['Size'] = ''.$stat['size'];
-			$data['LastModifiedTime'] = \EGroupware\Api\DateTime::to($stat['mtime'], \DateTime::ISO8601);
+			$data['LastModifiedTime'] = Api\DateTime::to($stat['mtime'], \DateTime::ISO8601);
 		}
 		else
 		{
@@ -223,7 +223,7 @@ class Files
 		// send a content-disposition header, so browser knows how to name downloaded file
 		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
 		{
-			\EGroupware\Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
+			Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
 			header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
 		}
 		readfile(Vfs::PREFIX . $path);

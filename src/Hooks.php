@@ -1,16 +1,17 @@
 <?php
-
 /**
  * Hooks for Collabora app
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
- * @package
+ * @package collabora
  * @copyright (c) 2017  Nathan Gray
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
+
+use EGroupware\Api;
 
 class Hooks {
 	/**
@@ -20,7 +21,7 @@ class Hooks {
 	 */
 	public static function csp_frame_src()
 	{
-		$config = \EGroupware\Api\Config::read('collabora');
+		$config = Api\Config::read('collabora');
 		$frm_srcs = array();
 		if (!empty($config['server']))
 		{
@@ -49,7 +50,7 @@ class Hooks {
 		}
 		return array (
 			'edit' => array(
-				'menuaction' => 'collabora.EGroupware\\collabora\\Ui.editor',
+				'menuaction' => 'collabora.EGroupware\\Collabora\\Ui.editor',
 			),
 			'mime' => $discover
 		);

@@ -1,11 +1,10 @@
 <?php
-
 /**
- * App
+ * EGroupware - Collabora Wopi protocol
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
- * @package 
+ * @package collabora
  * @copyright (c) 2017  Nathan Gray
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
@@ -24,11 +23,11 @@ use EGroupware\Api\Vfs\Sharing;
 class Wopi extends Sharing {
 
 	const TOKEN_TTL = 86400; // One day
-	
+
 	public $public_functions = array(
 		'index'	=> TRUE
 	);
-	
+
 	/**
 	 * Entry point for the WOPI API
 	 *
