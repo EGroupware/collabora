@@ -248,7 +248,8 @@ class Bo {
 
 		if ($url{0} == '/') {
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] ? $GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
+			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] && $GLOBALS['egw_info']['server']['hostname'] !== 'localhost' ?
+				$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
 		}
 		$url = $action['urlsrc'] .
 				'WOPISrc=' . urlencode($url);
