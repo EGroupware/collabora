@@ -116,10 +116,11 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	 *		-presentation
 	 *		-mores
 	 * @param {string} _openasnew path of file to be opened as new
+	 * @param {string} _path path to store the file
 	 */
-	_dialog_create_new: function (_type, _openasnew)
+	_dialog_create_new: function (_type, _openasnew, _path)
 	{
-		var current_path = this.et2.getWidgetById('path').get_value();
+		var current_path = _path || this.et2.getWidgetById('path').get_value();
 		var extensions = {};
 		var type = _type || 'document';
 		var self = this;
@@ -218,7 +219,10 @@ app.classes.filemanager = app.classes.filemanager.extend(
 			{
 				var data = egw.dataGetUIDdata(_selected[0].id);
 			}
-			this._dialog_create_new(type, data? data.data.path: undefined);
+			var path = _selected[0] && _selected[0].id.split('filemanager::') ?
+			_selected[0].id.split('filemanager::')[1]: this.et2.getWidgetById('path').get_value();
+
+			this._dialog_create_new(type, data? data.data.path: undefined, path);
 		}
 		else
 		{
