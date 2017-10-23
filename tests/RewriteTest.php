@@ -26,6 +26,10 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	{
 		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/totally_invalid'));
 		$headers = get_headers($url, TRUE);
+		if($headers === FALSE)
+		{
+			$this->markTestSkipped('No webserver');
+		}
 		$this->assertEquals('404', substr($headers[0], 9, 3), "Testing invalid URL $url");
 	}
 
@@ -42,6 +46,12 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/2?access_token=' . urlencode($token['token'])));
 
 		$headers = get_headers($url, TRUE);
+		
+		if($headers === FALSE)
+		{
+			$this->markTestSkipped('No webserver');
+		}
+
 		$this->assertEquals('200', substr($headers[0], 9, 3), "Testing home directory $url");
 	}
 
