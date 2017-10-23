@@ -7,7 +7,7 @@
  */
 
 // configure default server
-Api\Config::save_value('server', 'https://collabora.egroupware.org', 'collabora');
+EGroupware\Api\Config::save_value('server', 'https://collabora.egroupware.org', 'collabora');
 
 // Create anonymous user required for Collabora to access VFS
 $GLOBALS['egw_setup']->add_account('NoGroup', 'No', 'Rights', false, false);
