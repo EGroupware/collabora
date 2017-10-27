@@ -12,6 +12,7 @@
 namespace EGroupware\collabora\Wopi;
 
 use EGroupware\collabora\Wopi;
+use EGroupware\collabora\Bo;
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
 use EGroupware\Api\Vfs;

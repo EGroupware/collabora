@@ -41,7 +41,7 @@ class Wopi extends Sharing {
 	public static function index()
 	{
 		// Check access token, start session
-		if(!$GLOBALS['egw']->session)
+		if(!$GLOBALS['egw']->share)
 		{
 			static::create_session(true);
 		}
@@ -139,7 +139,9 @@ class Wopi extends Sharing {
 	 *
 	 * @param int $file_id
 	 *
-	 * @return String|Boolean Either the path, or false if it cannot be found
+	 * @return String the path
+	 *
+	 * @throws Api\Exception\NotFound if it cannot be found or no permission
 	 */
 	public static function get_path($file_id)
 	{
