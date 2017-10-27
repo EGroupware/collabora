@@ -242,9 +242,8 @@ class Bo {
 			return '';
 		}
 
-		$stat = Vfs::stat($path);
 		$action = $discovery[Vfs::mime_content_type($path)];
-		$url = Egw::link('/collabora/index.php/wopi/files/'.$stat['ino']);
+		$url = Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($path));
 
 		if ($url{0} == '/') {
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";

@@ -11,10 +11,10 @@
 
 namespace EGroupware\collabora\Wopi;
 
+use EGroupware\collabora\Wopi;
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
 use EGroupware\Api\Vfs;
-use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
 
 /**
  * File enpoint
@@ -35,7 +35,7 @@ class Files
 	public static function process($id)
 	{
 
-		$path = Sql_Stream::id2path((int)$id);
+		$path = Vfs::PREFIX . Wopi::get_path($id);
 		if(!$path)
 		{
 			$path = \EGroupware\collabora\Wopi::get_path_from_token();
@@ -395,6 +395,8 @@ class Files
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutRelativeFile.html
 	 *
 	 * @param string $path VFS path of the file we're operating on
+	 *
+	 * @todo Still need to return the new path with new token
 	 */
 	public static function put_relative_file($path)
 	{

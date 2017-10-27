@@ -13,7 +13,9 @@ namespace EGroupware\collabora;
 
 require_once(__DIR__.'/../../api/src/Vfs/Sharing.php');
 
+use EGroupware\Api;
 use EGroupware\Api\Vfs\Sharing;
+use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
 
 
 /**
@@ -39,7 +41,10 @@ class Wopi extends Sharing {
 	public static function index()
 	{
 		// Check access token, start session
-		static::create_session(true);
+		if(!$GLOBALS['egw']->session)
+		{
+			static::create_session(true);
+		}
 
 		// Determine the endpoint, get the ID
 		$matches = array();
@@ -86,5 +91,83 @@ class Wopi extends Sharing {
 	public static function get_path_from_token()
 	{
 		return $GLOBALS['egw']->sharing->share['share_path'];
+	}
+
+	/**
+	 * Get a WOPI file ID from a path
+	 *
+	 * File ID is the lowest fs_id for the path, if available.  If no fs_id is
+	 * available (eg: samba mount) we use the ID of the lowest active share
+	 * for a file.  To deal with versioning, we use the lowest fs_id since for
+	 * a new version a new fs_id will be generated, and the original file will
+	 * be moved to the attic, but the lowest share ID should stay the same.
+	 *
+	 * @param string $path Full file path
+	 *
+	 * @param Integer File ID, (0 if not found)
+	 */
+	public static function get_file_id($path)
+	{
+		$file_id = Api\Vfs::get_minimum_file_id($path);
+
+		// No fs_id?  Fall back to the earliest valid share ID
+		if(!$file_id)
+		{
+			self::so();
+
+			$where = array(
+				'share_path' => $path,
+				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
+			);
+			$append = 'ORDER BY share_id ASC';
+			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_id', $where,
+					__LINE__, __FILE__,false,$append,false,1) as $row)
+			{
+				$file_id = '-'.$row['share_id'];
+			}
+		}
+
+		return $file_id;
+	}
+
+	/**
+	 * Get the full file path for the given file ID
+	 *
+	 * We also take into account the current token permissions, to make sure
+	 * the file matches what the token has access for.  File IDs with '-' prefixed
+	 * (negative numbers) use the share ID, positive numbers are found in SQLfs.
+	 *
+	 * @param int $file_id
+	 *
+	 * @return String|Boolean Either the path, or false if it cannot be found
+	 */
+	public static function get_path($file_id)
+	{
+		$path = false;
+
+		if(abs((int)$file_id) == (int)$file_id)
+		{
+			$path = Sql_Stream::id2path((int)$file_id);
+		}
+		else if(strpos($file_id,'-') === 0)
+		{
+			$where = array(
+				'share_id' => abs((int)$file_id)
+			);
+
+			self::so();
+			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_path', array(
+					'share_id' => $where,
+				), __LINE__, __FILE__) as $row)
+			{
+				$path = $row['share_path'];
+			}
+		}
+
+		if($path && $GLOBALS['egw']->sharing && $path != self::get_path_from_token())
+		{
+			throw new Api\Exception\NotFound();
+		}
+		return $path;
 	}
 }
