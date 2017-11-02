@@ -67,7 +67,7 @@ class Files
 				static::put($path);
 				exit;
 			case 'PUT_RELATIVE':
-				static::put_relative($path);
+				static::put_relative_file($path);
 				exit;
 			default:
 				if(preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)/contents#',$_SERVER['REQUEST_URI']))
@@ -171,6 +171,8 @@ class Files
 			// Support Save As
 			'SupportsUpdate'    => true,
 			'SupportsRename'	=> true,
+			// enables Save As acton in File menu
+			'UserCanNotWriteRelative' => false,
 
 			// User permissions
 			// ----------------
@@ -486,7 +488,7 @@ class Files
 	 */
 	protected static function clean_filename($original_path)
 	{
-		$file = basename($original_path);
+		$file = Vfs::basename($original_path);
 
 		// Sanitize the characters -
 		// Remove anything which isn't a word, whitespace, number
@@ -498,7 +500,7 @@ class Files
 
 		$basename = pathinfo($file, PATHINFO_FILENAME);
 		$extension = pathinfo($file, PATHINFO_EXTENSION);
-		$path = dirname($original_path);
+		$path = Vfs::dirname($original_path);
 
 		// Avoid duplicates
 		$dupe_count = 0;
@@ -510,6 +512,6 @@ class Files
 				$extension;
 		}
 
-		return $path.$file;
+		return Vfs::concat($path, $file);
 	}
 }

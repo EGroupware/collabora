@@ -427,30 +427,7 @@ app.classes.collabora = AppJS.extend(
 	on_save_as: function on_save_as() {
 		var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
 		var filename = app.filemanager.basename(filepath);
-		var path = app.filemanager.dirname(filepath);
 
-		// Get the new name / path
-		this._save_as_dialog(path, filename);
-
-		// Update current values
-		filepath = path + '/' + filename;
-
-		// Save
-		this.WOPIPostMessage('Action_SaveAs', {
-			Name: filename,
-			Path: path
-		});
-	},
-
-	/**
-	 * Create & show the dialog
-	 *
-	 * @TODO This implementation is a work arround because of SaveAs feature in
-	 * Collabora RC not yet been working. It needs re-implementation as soon as
-	 * Collabora SaveAs feature is available.
-	 */
-	_save_as_dialog: function(path, filename)
-	{
 		// create file selector
 		var vfs_select = et2_createWidget('vfs-select', {
 			id:'savefile',
@@ -460,10 +437,6 @@ app.classes.collabora = AppJS.extend(
 			button_label: egw.lang("Save as")
 		}, this.et2);
 		var self = this;
-		var content = self.et2.getArrayMgr('content');
-
-		// try to save before calling Save as
-		this.WOPIPostMessage("Action_Save");
 
 		// bind change handler for setting the selected path and calling save
 		window.setTimeout(function() {
@@ -471,14 +444,8 @@ app.classes.collabora = AppJS.extend(
 			var file_path = vfs_select.get_value();
 			if (file_path)
 			{
-				var parts = file_path.split('/');
-				var name = parts.pop();
-				var ext = content.getEntry('filename').split('.').pop();
-				app.filemanager._request_createNew({
-					name: name,
-					openasnew: content.getEntry('path'),
-					ext: ext,
-					dir: parts.join('/')
+				self.WOPIPostMessage('Action_SaveAs', {
+					Filename: file_path
 				});
 			}
 		});}, 1);
