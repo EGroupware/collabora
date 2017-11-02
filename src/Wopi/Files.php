@@ -467,17 +467,28 @@ class Files
 		}
 
 		// Ok, check target
-		if(!Vfs::check_access($target, Vfs::WRITABLE) || !Vfs::is_writable(dirname($target)))
+		if(!Vfs::is_writable(dirname($target)))
 		{
 			// User not authorised, 401 is used for invalid token
 			http_response_code(404);
+			error_log(__METHOD__.'() check access $traget'.$target . array2string(Vfs::check_access($target, Vfs::WRITABLE)). ' dirname='. Vfs::dirname($target));
+			exit();
 		}
 
 		// Read the contents of the file from the POST body and store.
 		$content = fopen('php://input', 'r');
 		file_put_contents(Vfs::PREFIX . $target, $content);
 
-		http_response_code(200);
+		$url = Api\Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target)). '?access_token='. \EGroupware\Collabora\Bo::get_token($path)['token'];
+		if ($url{0} == '/') {
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] && $GLOBALS['egw_info']['server']['hostname'] !== 'localhost' ?
+				$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
+		}
+		$response = json_encode(array('Name' => Vfs::basename($target), 'Url' => $url));
+		header('Content-Length:'.strlen($response));
+		header('Content-Type:application/json;charset=utf-8');
+		echo $response;
 	}
 
 	/**
