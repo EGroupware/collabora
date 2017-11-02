@@ -10,8 +10,9 @@
 EGroupware\Api\Config::save_value('server', 'https://collabora.egroupware.org', 'collabora');
 
 // Create anonymous user required for Collabora to access VFS
+// do NOT set a new password for an existing anon user (random password for new anonymous user)
 $GLOBALS['egw_setup']->add_account('NoGroup', 'No', 'Rights', false, false);
-$anonymous = $GLOBALS['egw_setup']->add_account('anonymous', 'Anonymous', 'User', 'anonymous', 'NoGroup');
+$anonymous = $GLOBALS['egw_setup']->add_account('anonymous', 'Anonymous', 'User', '*unchanged*', 'NoGroup');
 $GLOBALS['egw_setup']->add_acl('phpgwapi', 'anonymous', $anonymous);
 
 // Give Default group access to Collabora app
