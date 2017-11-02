@@ -9,7 +9,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
 
 require_once(__DIR__.'/../../api/src/Vfs/Sharing.php');
 
@@ -22,9 +22,16 @@ use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
  * Description of Wopi
  *
  */
-class Wopi extends Sharing {
-
-	const TOKEN_TTL = 86400; // One day
+class Wopi extends Sharing
+{
+	/**
+	 * Lifetime of WOPI shares: 1 day
+	 */
+	const TOKEN_TTL = 86400;
+	/**
+	 * Mark share a WOPI share to be able to supress it from list of shares
+	 */
+	const WOPI_SHARE = 3;
 
 	public $public_functions = array(
 		'index'	=> TRUE
@@ -49,7 +56,7 @@ class Wopi extends Sharing {
 		// Determine the endpoint, get the ID
 		$matches = array();
 		preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
-		list($discard, $endpoint, $id) = $matches;
+		list(, $endpoint, $id) = $matches;
 
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
 				ucfirst($endpoint),

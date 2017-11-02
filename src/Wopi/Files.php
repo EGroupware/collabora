@@ -9,10 +9,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\collabora\Wopi;
+namespace EGroupware\Collabora\Wopi;
 
-use EGroupware\collabora\Wopi;
-use EGroupware\collabora\Bo;
+use EGroupware\Collabora\Wopi;
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
 use EGroupware\Api\Vfs;
