@@ -508,11 +508,11 @@ app.classes.collabora = AppJS.extend(
 	{
 		var row = widget.getArrayMgr('content').explodeKey(widget.id).pop()||0;
 		var revision = widget.getArrayMgr('content').getEntry(row);
-		egw.json(
-			'EGroupware\\collabora\\Ui::ajax_getInfo',
-			[revision.path],
-			jQuery.proxy(this.init_editor,this),
-			this
-		).sendRequest(true);
+		window.location.href = egw.link('/index.php', {
+				'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
+				'path': revision.path,
+				'cd': 'no'	// needed to not reload framework in sharing
+			});
+		return false;
 	}
 });

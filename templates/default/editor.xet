@@ -15,15 +15,18 @@
 					</vbox>
 					<grid width="100%">
 						<columns>
-							<column width="100%"/>
+							<column width="20%"/>
+							<column width="80%"/>
 							<column width="25px"/>
 						</columns>
 						<rows>
 							<row>
+								<label/>
 								<label value="Latest revision"/>
 								<button id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"/>
 							</row>
 							<row>
+								<box><vfs-mime id="$row" size="128"/></box>
 								<date-time readonly="true" id="${row}[mtime]"/>
 								<button id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"/>
 							</row>

@@ -175,6 +175,13 @@ class Wopi extends Sharing
 
 		if($path && $GLOBALS['egw']->sharing && $path != self::get_path_from_token())
 		{
+			// id2path fails with old revisions
+			$token_path = self::get_path_from_token();
+			$versioned_name = $file_id . ' - '.Api\Vfs::basename($path);
+			if(Api\Vfs::basename($token_path) == $versioned_name && strpos($token_path, '/.versions'))
+			{
+				return $token_path;
+			}
 			throw new Api\Exception\NotFound();
 		}
 		return $path;
