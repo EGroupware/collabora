@@ -247,6 +247,9 @@ app.classes.collabora = AppJS.extend(
 	// Flag for if we've customized & bound the editor
 	loaded: false,
 
+	// Mime types supported for export/save as the openned file
+	export_formats:{},
+
 	/**
 	 * Constructor
 	 *
@@ -352,28 +355,53 @@ app.classes.collabora = AppJS.extend(
 	{
 		var message = JSON.parse(e.data);
 
-		if (message.MessageId == 'App_LoadingStatus' && message.Values.Status === 'Document_Loaded' && !this.loaded)
+		switch (message.MessageId)
 		{
-			// Tell the iframe that we are ready now
-			app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+			case "App_LoadingStatus":
+				if (message.Values.Status === 'Document_Loaded' && !this.loaded)
+				{
+					// Tell the iframe that we are ready now
+					app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
 
-			this._customize_editor();
-			this.load = true;
-		}
-		else if (message.MessageId === 'UI_Close')
-		{
-			this.on_close();
-		}
-		else if (message.MessageId === "rev-history")
-		{
-			this.show_revision_history();
-		}
-		else if (message.MessageId === 'Clicked_Button' || message.MessageId === 'UI_SaveAs')
-		{
-			if(message.Values.Id === 'egwSaveAs' || message.MessageId === 'UI_SaveAs')
-			{
-				this.on_save_as();
-			}
+					// Get supported export formats
+					app.collabora.WOPIPostMessage('Get_Export_Formats');
+					this._customize_editor();
+					this.load = true;
+				}
+				break;
+
+			case "UI_Close":
+				this.on_close();
+				break;
+
+			case "rev-history":
+				this.show_revision_history();
+				break;
+
+			case "Clicked_Button":
+			case "UI_SaveAs":
+				if(message.Values.Id === 'egwSaveAs' || message.MessageId === 'UI_SaveAs')
+				{
+					this.on_save_as();
+				}
+				break;
+
+			case "Get_Export_Formats_Resp":
+				var discovery = window.opener.app.filemanager.discovery;
+				if (message.Values)
+				{
+					for (var i in message.Values)
+					{
+						for(var j in discovery)
+						{
+							if (discovery[j]['ext'] == message.Values[i]['Format'])
+							{
+								this.export_formats[j] = discovery[j];
+							}
+						}
+					}
+				}
+				break;
 		}
 	},
 
@@ -427,7 +455,7 @@ app.classes.collabora = AppJS.extend(
 	 */
 	on_save_as: function on_save_as() {
 		var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
-		var filename = app.filemanager.basename(filepath);
+		var filename = app.filemanager.basename(filepath).split('.').pop();
 
 		// create file selector
 		var vfs_select = et2_createWidget('vfs-select', {
@@ -435,7 +463,8 @@ app.classes.collabora = AppJS.extend(
 			mode: 'saveas',
 			name: filename,
 			button_caption:"",
-			button_label: egw.lang("Save as")
+			button_label: egw.lang("Save as"),
+			mime: Object.keys(this.export_formats)
 		}, this.et2);
 		var self = this;
 
@@ -443,6 +472,8 @@ app.classes.collabora = AppJS.extend(
 		window.setTimeout(function() {
 			jQuery(vfs_select.getDOMNode()).on('change', function (){
 			var file_path = vfs_select.get_value();
+			var selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
+			if (selectedMime) file_path += '.' + selectedMime.ext;
 			if (file_path)
 			{
 				self.WOPIPostMessage('Action_SaveAs', {
