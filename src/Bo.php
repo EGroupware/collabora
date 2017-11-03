@@ -231,7 +231,6 @@ class Bo {
 	 * @see https://wopi.readthedocs.io/en/latest/discovery.html#action-urls
 	 *
 	 * @param string $path Location of the file in the VFS
-	 * @param Array $token Token information from get_token()
 	 *
 	 * @return String Action URL
 	 */
