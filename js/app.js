@@ -455,7 +455,19 @@ app.classes.collabora = AppJS.extend(
 	 */
 	on_save_as: function on_save_as() {
 		var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
-		var filename = app.filemanager.basename(filepath).split('.').pop();
+		var parts = app.filemanager.basename(filepath).split('.');
+		var ext = parts.pop();
+		var filename = parts.join('.');
+
+		// select current mime-type
+		var mime_types = [];
+		for(var mime in this.export_formats) {
+			if (this.export_formats[mime].ext == ext) {
+				mime_types.unshift(mime);
+			} else {
+				mime_types.push(mime);
+			}
+		}
 
 		// create file selector
 		var vfs_select = et2_createWidget('vfs-select', {
@@ -464,7 +476,7 @@ app.classes.collabora = AppJS.extend(
 			name: filename,
 			button_caption:"",
 			button_label: egw.lang("Save as"),
-			mime: Object.keys(this.export_formats)
+			mime: mime_types
 		}, this.et2);
 		var self = this;
 
@@ -473,7 +485,11 @@ app.classes.collabora = AppJS.extend(
 			jQuery(vfs_select.getDOMNode()).on('change', function (){
 			var file_path = vfs_select.get_value();
 			var selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
-			if (selectedMime) file_path += '.' + selectedMime.ext;
+			// only add extension, if not already there
+			if (selectedMime && file_path.substr(-selectedMime.ext.length-1) !== '.' + selectedMime.ext)
+			{
+				file_path += '.' + selectedMime.ext;
+			}
 			if (file_path)
 			{
 				self.WOPIPostMessage('Action_SaveAs', {

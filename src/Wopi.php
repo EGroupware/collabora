@@ -58,6 +58,12 @@ class Wopi extends Sharing
 		preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
 		list(, $endpoint, $id) = $matches;
 
+		// need to create a new session, if the file_id changes, eg. after a PUT_RELATIVE
+		if (($last_id = Api\Cache::getSession(__CLASS__, 'file_id')) && $last_id != $id)
+		{
+			static::create_session(null);
+		}
+
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
 				ucfirst($endpoint),
 				FILTER_SANITIZE_SPECIAL_CHARS,
@@ -67,6 +73,7 @@ class Wopi extends Sharing
 		if($endpoint_class && class_exists($endpoint_class))
 		{
 			$data = $endpoint_class::process($id);
+			Api\Cache::setSession(__CLASS__, 'file_id', $id);
 		}
 		else
 		{
@@ -173,15 +180,15 @@ class Wopi extends Sharing
 			}
 		}
 
-		if($path && $GLOBALS['egw']->sharing && $path != self::get_path_from_token())
+		if($path && $GLOBALS['egw']->sharing && $path != ($token_path=self::get_path_from_token()))
 		{
 			// id2path fails with old revisions
-			$token_path = self::get_path_from_token();
 			$versioned_name = $file_id . ' - '.Api\Vfs::basename($path);
 			if(Api\Vfs::basename($token_path) == $versioned_name && strpos($token_path, '/.versions'))
 			{
 				return $token_path;
 			}
+			error_log(__METHOD__."($file_id) path='$path' != '$token_path'=token_path --> 500 Exception Not Found");
 			throw new Api\Exception\NotFound();
 		}
 		return $path;

@@ -396,42 +396,59 @@ class Files
 	 *
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutRelativeFile.html
 	 *
-	 * @param string $path VFS path of the file we're operating on
+	 * @param string $url VFS url (Vfs::PREFIX+path) of the file we're operating on
 	 *
 	 * @todo Still need to return the new path with new token
 	 */
-	public static function put_relative_file($path)
+	public static function put_relative_file($url)
 	{
+		$path = Vfs::parse_url($url, PHP_URL_PATH);
+
 		// Lock token, might not be there
 		$token = self::header('X-WOPI-Lock');
 		$lock = Vfs::checkLock($path);
+		$dirname = Vfs::dirname($path);
 
-		$suggested_target = self::header('X-WOPI-SuggestedTarget');
-		$relative_target = self::header('X-WOPI-RelativeTarget');
+		$suggested_target = Api\Translation::convert(self::header('X-WOPI-SuggestedTarget'), 'utf-7', 'utf-8');
+		$relative_target = Api\Translation::convert(self::header('X-WOPI-RelativeTarget'), 'utf-7', 'utf-8');
 		$overwrite = boolval(self::header('X-WOPI-OverwriteRelativeTarget'));
-		$size = intval(self::header('X-WOPI-Size'));
+		//$size = intval(self::header('X-WOPI-Size'));
+		error_log(__METHOD__."('$path') X-WOPI-SuggestedTarget='$suggested_target', X-WOPI-RelativeTarget='$relative_target', X-WOPI-OverwriteRelativeTarget=$overwrite");
 
 		// File name or extension
 		if($suggested_target && $relative_target)
 		{
 			// Specifying both is invalid, we give Not Implemented
 			http_response_code(501);
+			error_log(__METHOD__."() RelativeTarget='$relative_target' AND SuggestedTarget='$suggested_target' is invalid --> 501 Not implemented");
 			return;
 		}
 
 		// Process the suggestion - modify as needed
-		if($suggested_target && $suggested_target[0] =='.')
+		if ($suggested_target && $suggested_target[0] == '.')
 		{
 			// Only an extension, use current file name
 			$info = pathinfo($path);
 			$suggested_target = basename($path, '.'.$info['extension']) . $suggested_target;
 		}
-		if($suggested_target)
+
+		// seems targets can be relative
+		if (!empty($suggested_target) && $suggested_target[0] != '/') $suggested_target = Vfs::concat ($dirname, $suggested_target);
+		if (!empty($relative_target) && $relative_target[0] != '/') $relative_target = Vfs::concat ($dirname, $relative_target);
+
+		if ($suggested_target)
 		{
+			// check for multiple extensions and only keep last one
+			$matches = null;
+			if (preg_match('/^(.*)\.([a-z0-9]{3,4})(\.[a-z0-9]{3,4})$/', $suggested_target, $matches) &&
+				(!is_numeric($matches[2]) || in_array((int)$matches, array(123, 602))))
+			{
+				$suggested_target = $matches[1].$matches[3];
+			}
 			$target = self::clean_filename($suggested_target);
 		}
 
-		if($relative_target)
+		if ($relative_target)
 		{
 			// Can't modify this one, but we can check & fail it
 			$clean = self::clean_filename($relative_target);
@@ -439,6 +456,7 @@ class Files
 			{
 				http_response_code(400);
 				header('X-WOPI-ValidRelativeTarget', $clean);
+				error_log(__METHOD__."() clean_filename('$relative_target')='$clean' --> 400 Bad Request");
 				return;
 			}
 			if(Vfs::file_exists($relative_target))
@@ -450,6 +468,7 @@ class Files
 					{
 						header('X-WOPI-Lock', $lock['token']);
 					}
+					error_log(__METHOD__."() Vfs::file_exists('$relative_target') --> 409 Conflict");
 					return;
 				}
 				if(!$token && $lock || $token && $lock['token'] !== $token)
@@ -460,6 +479,7 @@ class Files
 					{
 						header('X-WOPI-Lock', $lock['token']);
 					}
+					error_log(__METHOD__."() '$relative_target' is locked --> 409 Conflict");
 					return;
 				}
 			}
@@ -471,7 +491,7 @@ class Files
 		{
 			// User not authorised, 401 is used for invalid token
 			http_response_code(404);
-			error_log(__METHOD__.'() check access $traget'.$target . array2string(Vfs::check_access($target, Vfs::WRITABLE)). ' dirname='. Vfs::dirname($target));
+			error_log(__METHOD__."() Vfs::is_writable(Vfs::dirname('$target')) = ". array2string(Vfs::is_writable(Vfs::dirname($target))).' --> 404 Not Found');
 			exit();
 		}
 
@@ -479,13 +499,15 @@ class Files
 		$content = fopen('php://input', 'r');
 		file_put_contents(Vfs::PREFIX . $target, $content);
 
-		$url = Api\Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target)). '?access_token='. \EGroupware\Collabora\Bo::get_token($path)['token'];
-		if ($url{0} == '/') {
+		$url = Api\Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target)). '?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
+		if ($url{0} == '/')
+		{
 			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] && $GLOBALS['egw_info']['server']['hostname'] !== 'localhost' ?
 				$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
 		}
 		$response = json_encode(array('Name' => Vfs::basename($target), 'Url' => $url));
+		error_log(__METHOD__."() response: $response --> 200 Ok");
 		header('Content-Length:'.strlen($response));
 		header('Content-Type:application/json;charset=utf-8');
 		echo $response;
