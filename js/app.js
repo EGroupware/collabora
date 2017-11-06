@@ -368,6 +368,16 @@ app.classes.collabora = AppJS.extend(
 					this._customize_editor();
 					this.load = true;
 				}
+				if (message.Values.Status === 'Frame_Ready')
+				{
+					if (window.opener && window.opener.app && window.opener.app.filemanager)
+					{
+						var nm = window.opener.app.filemanager.et2.getWidgetById('nm');
+						// try to referesh opener nm list, it helps to keep the list up to date
+						// in save as changes.
+						if (nm) nm.applyFilters();
+					}
+				}
 				break;
 
 			case "UI_Close":
