@@ -193,8 +193,9 @@ app.classes.filemanager = app.classes.filemanager.extend(
 			{
 				self.egw.refresh('', 'filemanager');
 				window.open(egw.link('/index.php', {
-					'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
-					'path': egw.encodePath(_data.path)
+					menuaction: 'collabora.EGroupware\\collabora\\Ui.editor',
+					path: egw.encodePath(_data.path),
+					cd: 'no' // needed to not reload framework in sharing
 				}));
 			}
 			egw.message(_data.message);
