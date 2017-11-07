@@ -136,7 +136,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 			case 'document':
 				extensions = {odt:'(.odt) OpenDocument Text', docx: '(.docx) MS Word'}; break;
 			case 'spreadsheet':
-				extensions = {ods:'(.ods) OpenDocument spreadsheet', xlsx: '(.xlsx) MS Excel'}; break;
+				extensions = {ods:'(.ods) OpenDocument Spreadsheet', xlsx: '(.xlsx) MS Excel'}; break;
 				ext_default = 'ods';
 			case 'presentation':
 				extensions = {odp:'(.odp) OpenDocument Presentation', pptx: '(.pptx) MS PowerPoint'}; break;
@@ -484,7 +484,8 @@ app.classes.collabora = AppJS.extend(
 			id:'savefile',
 			mode: 'saveas',
 			name: filename,
-			button_caption:"",
+			path: app.filemanager.dirname(filepath),
+			button_caption: "",
 			button_label: egw.lang("Save as"),
 			mime: mime_types
 		}, this.et2);
