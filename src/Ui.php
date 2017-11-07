@@ -244,7 +244,7 @@ class Ui {
 				'message' => lang ('Failed to create the file! Because you do not have enough permission to %1 folder!', $dir)
 			));
 		}
-		$file = $dir.'/'.$name.'.'.$ext;
+		$file = ($dir === '/' ? $dir : $dir.'/').$name.'.'.$ext;
 		$temp_url = $GLOBALS['egw_info']['server']['webserver_url'].
 				'/collabora/assets/template_'.$ext.'.'.$ext;
 		if ($temp_url[0] == '/')
