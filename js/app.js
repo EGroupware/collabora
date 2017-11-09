@@ -80,7 +80,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	 */
 	isEditable: function isEditable(_egwAction, _senders) {
 		var data = egw.dataGetUIDdata(_senders[0].id);
-		var mime = data.data.mime || '';
+		var mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
 			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
