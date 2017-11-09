@@ -134,9 +134,9 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		switch (type)
 		{
 			case 'document':
-				extensions = {odt:'(.odt) OpenDocument Text', docx: '(.docx) MS Word'}; break;
+				extensions = {odt:'(.odt) OpenDocument Text', doc: '(.doc) MS Word 97-2003', docx: '(.docx) MS Word'}; break;
 			case 'spreadsheet':
-				extensions = {ods:'(.ods) OpenDocument Spreadsheet', xlsx: '(.xlsx) MS Excel'}; break;
+				extensions = {ods:'(.ods) OpenDocument Spreadsheet', xls: '(.xls) MS Excel 97-2003', xlsx: '(.xlsx) MS Excel'}; break;
 				ext_default = 'ods';
 			case 'presentation':
 				extensions = {odp:'(.odp) OpenDocument Presentation', pptx: '(.pptx) MS PowerPoint'}; break;
