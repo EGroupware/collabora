@@ -44,9 +44,10 @@ class Hooks {
 			unset($e);
 			return;
 		}
-		foreach($discover as $mime => $val)
+		foreach($discover as $mime => &$val)
 		{
 			if ($val['name'] != 'edit') unset($discover[$mime]);
+			$val['mime_popup'] = ''; // try to avoid mime_open exception
 		}
 		return array (
 			'edit' => array(
