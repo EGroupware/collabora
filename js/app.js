@@ -314,7 +314,7 @@ app.classes.collabora = AppJS.extend(
 			values = this.et2.getArrayMgr('content').data || {};
 		}
 		values.url += '&user='+this.egw.user('account_lid');
-
+		values.url += '&lang=' + this.egw.preference('lang');
 		var form_html = `
 		<form id="form" name="form" target="loleafletframe"
 				action="${values['url']}" method="post">
