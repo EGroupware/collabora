@@ -246,7 +246,8 @@ class Bo {
 		$url = Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($path));
 
 		if ($url{0} == '/') {
-			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ||
+				$_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https://" : "http://";
 			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] && $GLOBALS['egw_info']['server']['hostname'] !== 'localhost' ?
 				$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
 		}

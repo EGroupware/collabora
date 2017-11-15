@@ -250,7 +250,7 @@ class Ui {
 		if ($temp_url[0] == '/')
 		{
 			$temp_url = ($_SERVER['SERVER_PORT'] == 443 || !empty($_SERVER['HTTPS'])
-					&& $_SERVER['HTTPS'] != 'off') ? 'https://': 'http://'.
+					&& $_SERVER['HTTPS'] !== 'off' || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https://': 'http://'.
 					$_SERVER['HTTP_HOST'].$temp_url;
 		}
 		$template = file_get_contents($temp_url);
