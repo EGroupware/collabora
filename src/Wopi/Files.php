@@ -135,7 +135,8 @@ class Files
 		$origin = $GLOBALS['egw_info']['server']['webserver_url'];
 		if ($origin[0] == '/')
 		{
-			$origin = ($_SERVER['HTTPS'] ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
+			$origin = ($_SERVER['SERVER_PORT'] == 443 || !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ||
+				$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
 		}
 		else
 		{
@@ -502,7 +503,8 @@ class Files
 		$url = Api\Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target)). '?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
 		if ($url{0} == '/')
 		{
-			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ||
+				$_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https://" : "http://";
 			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] && $GLOBALS['egw_info']['server']['hostname'] !== 'localhost' ?
 				$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
 		}
