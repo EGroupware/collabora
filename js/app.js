@@ -194,7 +194,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 				self.egw.refresh('', 'filemanager');
 				window.open(egw.link('/index.php', {
 					menuaction: 'collabora.EGroupware\\collabora\\Ui.editor',
-					path: egw.encodePath(_data.path),
+					path: _data.path,
 					cd: 'no' // needed to not reload framework in sharing
 				}));
 			}
@@ -315,12 +315,19 @@ app.classes.collabora = AppJS.extend(
 		}
 		values.url += '&user='+this.egw.user('account_lid');
 		values.url += '&lang=' + this.egw.preference('lang');
-		var form_html = `
-		<form id="form" name="form" target="loleafletframe"
-				action="${values['url']}" method="post">
-			<input name="access_token" value="${values['token']}" type="hidden"/>
-		</form>`;
-
+		var form_html = jQuery(document.createElement('form')).attr({
+			id: "form",
+			name: "form",
+			target: "loleafletframe",
+			action: values.url,
+			method: "post",
+		});
+		jQuery(document.createElement('input')).attr({
+			name: "access_token",
+			value: values.token,
+			type: "hidden"
+		}).appendTo(form_html);
+		
 		jQuery('body').append(form_html);
 
 		var frameholder = jQuery('.editor_frame');
