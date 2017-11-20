@@ -315,6 +315,7 @@ app.classes.collabora = AppJS.extend(
 		}
 		values.url += '&user='+this.egw.user('account_lid');
 		values.url += '&lang=' + this.egw.preference('lang');
+		values.url += '&title=' + encodeURIComponent(values.filename);
 		var form_html = jQuery(document.createElement('form')).attr({
 			id: "form",
 			name: "form",
@@ -327,7 +328,7 @@ app.classes.collabora = AppJS.extend(
 			value: values.token,
 			type: "hidden"
 		}).appendTo(form_html);
-		
+
 		jQuery('body').append(form_html);
 
 		var frameholder = jQuery('.editor_frame');
