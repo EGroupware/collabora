@@ -22,7 +22,7 @@ $setup_info['collabora']['license']  = 'GPL';
 $setup_info['collabora']['description'] = 'Online document editing with Collabora Libre Office Online';
 
 /* The hooks this app includes, needed for hooks registration */
-$setup_info['collabora']['hooks']['settings'] = 'EGroupware\Collabora\Preferences::settings';
+//$setup_info['collabora']['hooks']['settings'] = 'EGroupware\Collabora\Preferences::settings';
 $setup_info['collabora']['hooks']['admin'] = 'EGroupware\Collabora\Admin::admin_sidebox';
 $setup_info['collabora']['hooks']['config'] = 'EGroupware\Collabora\Admin::config';
 $setup_info['collabora']['hooks']['config_validate'] = 'EGroupware\Collabora\Admin::validate';
