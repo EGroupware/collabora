@@ -192,7 +192,7 @@ class Ui {
 			unlink($result);
 			\Egroupware\Api\Egw::redirect_link('/index.php', array(
 				'menuaction' => 'collabora.EGroupware\\Collabora\\Ui.editor',
-				'path'=> urlencode($target)
+				'path'=> $target
 			));
 		}
 		else
