@@ -8,6 +8,7 @@ collabora is not configured!	collabora	de	Collabora ist nicht konfiguriert!
 collabora server	collabora	de	Collabora Server
 create	collabora	de	Anlegen
 create new %1	collabora	de	%1 neu anlegen
+document	collabora	de	Textdokument
 egroupware epl is required to configure a custom collabora server.	collabora	de	Sie benötigen EGroupware EPL um einen eigenen Collabora Server zu konfigurieren.
 failed to create file %1!	collabora	de	Anlegen der Datei %1 fehlgeschlagen!
 failed to create file %1: file already exists!	collabora	de	Anlegen der Datei %1 fehlgeschlagen: sie existiert bereits!
@@ -16,7 +17,10 @@ file	collabora	de	Datei
 file %1 has been created successfully.	collabora	de	Datei %1 wurde erfolgreich angelegt.
 no active user 'anonymous' found!	collabora	de	Kein aktiver Benutzer 'anonymous' gefunden!
 open as new	collabora	de	Als neu bearbeiten
+please enter your file name	collabora	de	Bitte Dateiname eingeben
+presentation	collabora	de	Präsentation
 requirements / please note	collabora	de	Voraussetzungen / bitte beachten
+spreadsheet	collabora	de	Tabellendokument
 the collabora server must be able to access your egroupware installation!	collabora	de	Der Collabora Server muss auf Ihre EGroupware Installation zugreifen können!
 unable to connect	collabora	de	Verbindung fehlgeschlagen
 unable to contact collabora server	collabora	de	Verbindung zu Collabora Server fehlgeschlagen

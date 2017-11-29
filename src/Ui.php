@@ -47,7 +47,7 @@ class Ui {
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
 		'more' => array (
-			'caption' => 'More ...',
+			'caption' => 'More',
 			'icon' => 'mime128_unknown.png',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
@@ -96,17 +96,24 @@ class Ui {
 		// Send what the server said to the client, so we can use it there
 		Response::get()->call('app.filemanager.set_discovery', $discovery);
 
+		// Translate captions
+		foreach (self::$new_actions as &$action)
+		{
+			$action['caption'] = lang($action['caption']);
+		}
+
 		$changes = array();
 		$changes['data']['is_collabora'] = true;
 		$changes['data']['nm'] = $data['nm'];
 		$changes['data']['nm']['actions']['new']['children'] = self::$new_actions
 				+ array('openasnew' => array (
-						'caption' => 'Open as new',
+						'caption' => lang('Open as new'),
 						'group' => 1,
 						'icon' => 'copy',
 						'enabled' => 'javaScript:app.filemanager.isEditable',
 						'onExecute' => 'javaScript:app.filemanager.create_new',
 				));
+
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
 
 		return $changes;

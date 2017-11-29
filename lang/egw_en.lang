@@ -8,6 +8,7 @@ collabora is not configured!	collabora	en	Collabora is not configured!
 collabora server	collabora	en	Collabora server
 create	collabora	en	Create
 create new %1	collabora	en	Create new %1
+document	collabora	en	Document
 egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora server.
 failed to create file %1!	collabora	en	Failed to create file %1!
 failed to create file %1: file already exists!	collabora	en	Failed to create file %1: file already exists!
@@ -16,7 +17,10 @@ file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
 no active user 'anonymous' found!	collabora	en	No active user 'anonymous' found!
 open as new	collabora	en	Open as new
+please enter your file name	collabora	en	Please enter your file name
+presentation	collabora	en	Presentation
 requirements / please note	collabora	en	Requirements / please note
+spreadsheet	collabora	en	Spreadsheet
 the collabora server must be able to access your egroupware installation!	collabora	en	The Collabora server must be able to access your EGroupware installation!
 unable to connect	collabora	en	Unable to connect
 unable to contact collabora server	collabora	en	Unable to contact collabora server
