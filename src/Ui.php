@@ -179,8 +179,14 @@ class Ui {
 			return;
 		}
 
+		$ids = explode(',',$_REQUEST['id']);
+		if($_REQUEST['select_all'])
+		{
+			$ids = self::get_all_ids($document_merge);
+		}
+
 		$filename = '';
-		$result = $document_merge->merge_file($_REQUEST['document'], explode(',',$_REQUEST['id']), $filename, '', $header);
+		$result = $document_merge->merge_file($_REQUEST['document'], $ids, $filename, '', $header);
 
 		if(is_file($result) && is_readable($result))
 		{
@@ -206,6 +212,75 @@ class Ui {
 		{
 			echo $result;
 		}
+	}
+
+	/**
+	 * Get all ids for when they try to do 'Select All', then merge into document
+	 *
+	 * @param Api\Contacts\Merge $merge App-specific merge object
+	 */
+	protected function get_all_ids(Api\Storage\Merge $merge)
+	{
+		$ids = array();
+		$locations = array('index', 'session_data');
+
+		// Get app
+		list($appname, $_merge) = explode('_',  get_class($merge));
+
+		if($merge instanceOf Api\Contacts\Merge)
+		{
+			$appname = 'addressbook';
+		}
+		if ($merge instanceOf \calendar_merge)
+		{
+			$ui_class = 'calendar_uilist';
+			$locations = array('calendar_list');
+		}
+		else
+		{
+			$ui_class = $appname . '_ui';
+		}
+
+		// Ask app
+		if(class_exists($ui_class))
+		{
+			$ui = new $ui_class();
+			if( method_exists($ui_class, 'get_all_ids') )
+			{
+				return $ui->get_all_ids();
+			}
+
+			// Try cache
+			if( method_exists($ui_class, 'get_rows'))
+			{
+				foreach($locations as $location)
+				{
+					$session = Api\Cache::getSession($appname, $location);
+					if($session && $session['row_id'])
+					{
+						break;
+					}
+				}
+				$rows = $readonlys = array();
+				@set_time_limit(0);			// switch off the execution time limit, as it's for big selections to small
+				$session['num_rows'] = -1;	// all
+				$ui->get_rows($session, $rows, $readonlys);
+				foreach($rows as $row_number => $row)
+				{
+					if(!is_numeric($row_number)) continue;
+					if ($merge instanceOf \calendar_merge)
+					{
+						$explody = explode(':',$row['id']);
+						$ids[] = array('id' => $explody[0], 'recur_date' => $explody[1]);
+					}
+					else
+					{
+						$ids[] = $row[$session['row_id'] ? $session['row_id'] : 'id'];
+					}
+				}
+			}
+		}
+		return $ids;
 	}
 
 	/**
