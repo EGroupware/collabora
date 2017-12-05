@@ -36,7 +36,7 @@ class Files
 	{
 
 		$path = Vfs::PREFIX . Wopi::get_path($id);
-		if(!$path)
+		if($path == Vfs::PREFIX)
 		{
 			$path = \EGroupware\collabora\Wopi::get_path_from_token();
 			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from token) = $path");
@@ -210,7 +210,7 @@ class Files
 
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
-
+error_log(array2string($data));
 		return $data;
 	}
 
