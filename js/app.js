@@ -406,7 +406,8 @@ app.classes.collabora = AppJS.extend(
 				break;
 
 			case "Get_Export_Formats_Resp":
-				var discovery = window.opener.app.filemanager.discovery;
+				var fe = egw.link_get_registry('filemanager-editor');
+				var discovery = (fe && fe.mime) ? fe.mime: [];
 				if (message.Values)
 				{
 					for (var i in message.Values)
