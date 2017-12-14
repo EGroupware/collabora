@@ -231,14 +231,19 @@ class Ui {
 		{
 			$appname = 'addressbook';
 		}
-		if ($merge instanceOf \calendar_merge)
+		switch(get_class($merge))
 		{
-			$ui_class = 'calendar_uilist';
-			$locations = array('calendar_list');
-		}
-		else
-		{
-			$ui_class = $appname . '_ui';
+			case \calendar_merge::class:
+				$ui_class = 'calendar_uilist';
+				$locations = array('calendar_list');
+				break;
+			case \projectmanager_merge::class;
+				$ui_class = 'projectmanager_ui';
+				$locations = array('project_list');
+				break;
+			default:
+				$ui_class = $appname . '_ui';
+				break;
 		}
 
 		// Ask app
