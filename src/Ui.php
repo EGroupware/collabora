@@ -180,7 +180,7 @@ class Ui {
 		}
 
 		$ids = explode(',',$_REQUEST['id']);
-		if($_REQUEST['select_all'])
+		if($_REQUEST['select_all'] === 'true')
 		{
 			$ids = self::get_all_ids($document_merge);
 		}
