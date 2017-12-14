@@ -268,14 +268,19 @@ class Ui {
 				foreach($rows as $row_number => $row)
 				{
 					if(!is_numeric($row_number)) continue;
-					if ($merge instanceOf \calendar_merge)
+					$row_id = $row[$session['row_id'] ? $session['row_id'] : 'id'];
+					switch (get_class($merge))
 					{
-						$explody = explode(':',$row['id']);
-						$ids[] = array('id' => $explody[0], 'recur_date' => $explody[1]);
-					}
-					else
-					{
-						$ids[] = $row[$session['row_id'] ? $session['row_id'] : 'id'];
+						case \calendar_merge::class:
+							$explody = explode(':',$row['id']);
+							$ids[] = array('id' => $explody[0], 'recur_date' => $explody[1]);
+							break;
+						case \timesheet_merge::class:
+							// Skip the rows with totalss
+							if(!is_numeric($row_id)) continue;
+							// Fall through
+						default:
+							$ids[] = $row_id;
 					}
 				}
 			}
