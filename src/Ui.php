@@ -179,7 +179,7 @@ class Ui {
 			return;
 		}
 
-		$ids = is_string($_REQUEST['id'] && strpos($_REQUEST['id'],'[') === FALSE) ? explode(',',$_REQUEST['id']) : json_decode($_REQUEST['id'],true);
+		$ids = is_string($_REQUEST['id']) && strpos($_REQUEST['id'],'[') === FALSE ? explode(',',$_REQUEST['id']) : json_decode($_REQUEST['id'],true);
 		if($_REQUEST['select_all'] === 'true')
 		{
 			$ids = self::get_all_ids($document_merge);
