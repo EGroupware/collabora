@@ -277,7 +277,7 @@ class Ui {
 					switch (get_class($merge))
 					{
 						case \calendar_merge::class:
-							$explody = explode(':',$row['id']);
+							$explody = explode(':',$row_id);
 							$ids[] = array('id' => $explody[0], 'recur_date' => $explody[1]);
 							break;
 						case \timesheet_merge::class:
