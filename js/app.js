@@ -130,7 +130,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 				egw.lang('Create new %1', type == 'more'? egw.lang('file'): type);
 
 		//list of extensions that we don't want to offer for create new file
-		var exclusive_ext = ['odg','fodg', 'odz', 'otg', 'odb', 'dif', 'slk', 'dbf', 'oth'];
+		var exclusive_ext = ['odg','fodg', 'odz', 'otg', 'odb', 'dif', 'slk', 'dbf', 'oth', 'oxt'];
 		switch (type)
 		{
 			case 'document':
