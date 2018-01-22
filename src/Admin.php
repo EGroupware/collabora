@@ -55,20 +55,18 @@ class Admin
 			$data['server'] = static::get_default_server();
 		}
 
-		// Try to check server status here - it should respond with 'OK'
-		$ctx = stream_context_create(array(
-			'http' => array(
-				'timeout' => 5
-				)
-			)
-		);
-		if (!($status = file_get_contents($data['server'], false, $ctx, 0, 20)))
+		// Check server by trying discovery url and report supported
+		try
 		{
-			$status = lang('Unable to connect');
+			$discovery = Bo::discover($data['server']);
+			$data['server_status'] = lang('%1 supported document types', count($discovery));
+			$data['server_status_class'] = count($discovery) ? 'ok' : 'error';
 		}
-		$data['server_status'] = $status;
-		$data['server_status_class'] = $status == 'OK' ? 'ok' : 'error';
-
+		catch (\Exception $e)
+		{
+			$data['server_status'] = $e->getMessage();
+			$data['server_status_class'] = 'error';
+		}
 		// check if we have an (active) anonymous user, required for Collabora / sharing
 		if (Api\Accounts::is_active('anonymous'))
 		{

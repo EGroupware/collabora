@@ -1,4 +1,4 @@
-	collabora	en	EGroupware EPL is required to configure a custom Collabora server.
+%1 supported document types	collabora	en	%1 supported document types
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	en	A local installation not accessible from the internet will NOT work with a public Collabora server.
 active user 'anonymous' found.	collabora	en	Active user 'anonymous' found.
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	en	An user 'anonymous' is required for Collabora to access files and also for sharing files.
