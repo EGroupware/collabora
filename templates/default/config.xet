@@ -38,6 +38,14 @@
 				<row>
 					<description colspan="2" value="An user 'anonymous' is required for Collabora to access files and also for sharing files."/>
 				</row>
+				<!-- hack to get class propagated: id="newsettings[no_managed_collabora]" -->
+				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
+					<description value="Local Collabora server" span="all" class="subHeader"/>
+				</row>
+				<row disabled="@newsettings[no_managed_collabora]">
+					<description value="Support-key"/>
+					<textbox rows="5" multiline="1" width="100%" id="newsettings[support_key]"/>
+				</row>
 			</rows>
 		</grid>
 	</template>

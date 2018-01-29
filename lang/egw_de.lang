@@ -2,6 +2,7 @@
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	de	Eine lokale Installation, die vom Internet aus nicht erreichbar ist, kann NICHT mit einem öffentlichen Collabora Server funktionieren.
 active user 'anonymous' found.	collabora	de	Aktiver Benutzer 'anonymous' gefunden.
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	de	Ein Benutzer 'anonymous' wird benötigt damit Collabora auf Ihre Dateien zugreifen kann und um diese zu "sharen".
+can not read collobora configuration in %1!	collabora	de	Kann Collabora Konfiguration in %1 NICHT lesen!
 checking for user 'anonymous'	collabora	de	Prüfung des Benutzer 'anonymous'
 collabora	common	de	Collabora
 collabora is not configured!	collabora	de	Collabora ist nicht konfiguriert!
@@ -13,14 +14,17 @@ egroupware epl is required to configure a custom collabora server.	collabora	de	
 failed to create file %1!	collabora	de	Anlegen der Datei %1 fehlgeschlagen!
 failed to create file %1: file already exists!	collabora	de	Anlegen der Datei %1 fehlgeschlagen: sie existiert bereits!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	de	Anlegen der Datei fehlgeschlagen, da Sie nicht die notwendigen Rechte für den Ordner %1 haben!
+failed to update collabora configuration in %1!	collabora	de	Kann Collabora Konfiguration in %1 nicht aktualisieren!
 file	collabora	de	Datei
 file %1 has been created successfully.	collabora	de	Datei %1 wurde erfolgreich angelegt.
+local collabora server	collabora	de	Lokaler Collabora Server
 no active user 'anonymous' found!	collabora	de	Kein aktiver Benutzer 'anonymous' gefunden!
 open as new	collabora	de	Als neu bearbeiten
 please enter your file name	collabora	de	Bitte Dateiname eingeben
 presentation	collabora	de	Präsentation
 requirements / please note	collabora	de	Voraussetzungen / bitte beachten
 spreadsheet	collabora	de	Tabellendokument
+support-key	collabora	de	Support-Key
 the collabora server must be able to access your egroupware installation!	collabora	de	Der Collabora Server muss auf Ihre EGroupware Installation zugreifen können!
 unable to connect	collabora	de	Verbindung fehlgeschlagen
 unable to contact collabora server	collabora	de	Verbindung zu Collabora Server fehlgeschlagen
