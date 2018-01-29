@@ -21,6 +21,11 @@ use EGroupware\Api\Egw;
 class Admin
 {
 	/**
+	 * Collabora config managed by EGroupware
+	 */
+	const LOOLWSD_CONFIG = '/var/lib/egroupware/default/loolwsd/loolwsd.xml';
+
+	/**
 	 * Admin sidebox tree leaves
 	 */
 	public static function admin_sidebox($data)
@@ -79,12 +84,17 @@ class Admin
 			$data['anonymous_status_class'] = 'error';
 		}
 
+		// disable local Collabora configuration, if not manged by EGroupware
+		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) || !file_exists(self::LOOLWSD_CONFIG))
+		{
+			$data['no_managed_collabora'] = true;
+		}
+		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
 	}
 
 	/**
 	 * Validate the configuration
-	 *
 	 *
 	 * @param Array $data
 	 */
@@ -104,9 +114,56 @@ class Admin
 		{
 			$error = lang('Unable to connect');
 		}
+		// check if we have a local Collabora instance managed by EGroupware
+		if (!$error && $data['location'] === 'config_validate' &&
+			file_exists(dirname(self::LOOLWSD_CONFIG)) && file_exists(self::LOOLWSD_CONFIG))
+		{
+			$error = self::update_loolwsd_config(array('support_key' => $data['support_key']));
+		}
 		if($error)
 		{
 			Api\Etemplate::set_validation_error('server', $error, 'newsettings');
+			$GLOBALS['config_error'] = $error;
+		}
+	}
+
+	/**
+	 * Update config of managed Collbora at self::LOOLWSD_CONFIG
+	 *
+	 * File is only updated, when there is a real change to avoid unnecessary reloads.
+	 *
+	 * @param array $data key => value pairs to replace
+	 * @return string error-message or null on success
+	 */
+	protected static function update_loolwsd_config(array $data)
+	{
+		if (!($content = file_get_contents(self::LOOLWSD_CONFIG)))
+		{
+			return lang('Can NOT read Collobora configuration in %1!', self::LOOLWSD_CONFIG);
+		}
+		$update = false;
+		foreach($data as $name => $value)
+		{
+			$name_quoted = preg_quote($name, '|');
+			$value_escaped = htmlspecialchars($value, ENT_XML1);
+
+			$matches = null;
+			if (!preg_match("|<$name_quoted>(.*)</$name_quoted>|", $content, $matches))
+			{
+				$content = preg_replace('|</config>|',
+					"    <$name>$value_escaped</$name>\n</config>", $content);
+				$update = true;
+			}
+			else
+			{
+				$content = preg_replace("|<$name_quoted>.*</$name_quoted>|",
+					"<$name>$value_escaped</$name>", $content);
+				$update = $update || $matches[1] !== $value_escaped;
+			}
+		}
+		if ($update && !file_put_contents(self::LOOLWSD_CONFIG, $content))
+		{
+			return lang('Failed to update Collabora configuration in %1!', self::LOOLWSD_CONFIG);
 		}
 	}
 
