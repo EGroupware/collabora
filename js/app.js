@@ -126,8 +126,10 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var type = _type || 'document';
 		var self = this;
 		var ext_default = 'odt';
-		var title = _openasnew ? egw.lang('Open as new') :
-				egw.lang('Create new %1', type == 'more'? egw.lang('file'): type);
+		var title = _openasnew ? this.egw.lang('Open as new') :
+				this.egw.lang('Create new %1', type == 'more'? this.egw.lang('file'): this.egw.lang(type));
+		// Make first char uppercase, as some languages (German) put the type first
+		title = title.charAt(0).toUpperCase() + title.slice(1);
 
 		//list of extensions that we don't want to offer for create new file
 		var exclusive_ext = ['odg','fodg', 'odz', 'otg', 'odb', 'dif', 'slk', 'dbf', 'oth', 'oxt'];
