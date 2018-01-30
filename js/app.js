@@ -219,15 +219,15 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var type = (typeof _selected._type != 'undefined')? _selected.get_value(): _action.id;
 		if (is_collabora)
 		{
-			var elem = egw.dataGetUIDdata(_selected[0].id);
+			var id = _selected[0] && _selected[0].id ? _selected[0].id : null;
+			var elem = id ? egw.dataGetUIDdata(id) : null;
 			if (_action.id == 'openasnew')
 			{
 				var data = egw.dataGetUIDdata(_selected[0].id);
 			}
-			var path = _selected[0] && _selected[0].id.split('filemanager::') ?
-			_selected[0].id.split('filemanager::')[1]: this.et2.getWidgetById('path').get_value();
+			var path = id ?	id.split('filemanager::')[1]: this.et2.getWidgetById('path').get_value();
 			if (elem && elem.data && !elem.data.is_dir) path = this.dirname(path);
-			
+
 			this._dialog_create_new(type, data? data.data.path: undefined, path);
 		}
 		else
