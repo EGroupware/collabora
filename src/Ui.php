@@ -134,11 +134,12 @@ class Ui {
 		}
 		Framework::includeJS('.','app','collabora',true);
 		$template = new Etemplate('collabora.editor');
+		$token = Bo::get_token($path);
 
 		$content = array(
 			'url'	=> Bo::get_action_url($path),
 			'filename' => Vfs::basename($path),
-		) + Bo::get_token($path);
+		) + $token;
 
 		// Revision list
 		if(Bo::is_versioned($path))
