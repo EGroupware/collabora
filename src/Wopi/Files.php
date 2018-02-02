@@ -42,6 +42,10 @@ class Files
 			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from token) = $path");
 		}
 		else error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from id $id) = $path");
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__ ." ID: $id -> Path: $path     " . self::header('X-WOPI-Override'));
+		}
 
 		if(!$path)
 		{

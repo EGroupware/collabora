@@ -24,6 +24,9 @@ use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
  */
 class Wopi extends Sharing
 {
+	// Debug flag
+	const DEBUG = true;
+	
 	/**
 	 * Lifetime of WOPI shares: 1 day
 	 */
@@ -123,6 +126,7 @@ class Wopi extends Sharing
 	public static function get_file_id($path)
 	{
 		$file_id = Api\Vfs::get_minimum_file_id($path);
+		$from = 'Vfs';
 
 		// No fs_id?  Fall back to the earliest valid share ID
 		if(!$file_id)
@@ -138,9 +142,14 @@ class Wopi extends Sharing
 					__LINE__, __FILE__,false,$append,false,1) as $row)
 			{
 				$file_id = '-'.$row['share_id'];
+				$from = 'Share';
 			}
 		}
 
+		if(static::DEBUG)
+		{
+			error_log(__METHOD__ ." Path: $path ID: $file_id ($from) ");
+		}
 		return $file_id;
 	}
 
