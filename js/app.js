@@ -83,6 +83,8 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
+			var fe = egw_get_file_editor_prefered_mimes();
+			if (fe && fe.mime && !fe.mime[mime]) return false;
 			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
 		}
 		else
