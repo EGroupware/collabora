@@ -155,6 +155,11 @@ class Wopi extends Sharing
 		{
 			error_log(__METHOD__ ." Path: $path ID: $file_id ($from) ");
 		}
+		if(!$file_id)
+		{
+			// Can't do anything if we didn't find an ID
+			throw new Api\Exception\NotFound("No file_id for path '$path'");
+		}
 		return $file_id;
 	}
 
