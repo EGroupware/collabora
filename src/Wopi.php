@@ -126,7 +126,7 @@ class Wopi extends Sharing
 	public static function get_file_id($path)
 	{
 		$file_id = Api\Vfs\Sqlfs\StreamWrapper::get_minimum_file_id($path);
-		$from = 'Vfs';
+		$from = $file_id ? 'Vfs' : 'None';
 
 		// No fs_id?  Fall back to the earliest valid share ID
 		if(!$file_id)
@@ -138,6 +138,11 @@ class Wopi extends Sharing
 				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
 			);
 			$append = 'ORDER BY share_id ASC';
+			if(static::DEBUG)
+			{
+				error_log(__METHOD__ . "($path) share query:");
+				error_log(array2string($where));
+			}
 			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_id', $where,
 					__LINE__, __FILE__,false,$append,false,1) as $row)
 			{

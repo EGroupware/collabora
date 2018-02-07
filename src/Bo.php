@@ -201,6 +201,11 @@ class Bo {
 
 		$token = array();
 
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__ . "($path) share_id: {$share['share_id']}");
+		}
+
 		foreach($share as $key => $value)
 		{
 			if(substr($key, 0, 6) == 'share_')
