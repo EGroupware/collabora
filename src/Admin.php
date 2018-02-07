@@ -118,7 +118,13 @@ class Admin
 		if (!$error && $data['location'] === 'config_validate' &&
 			file_exists(dirname(self::LOOLWSD_CONFIG)) && file_exists(self::LOOLWSD_CONFIG))
 		{
-			$error = self::update_loolwsd_config(array('support_key' => $data['support_key']));
+			$server_parsed = parse_url($data['server']);
+			$error = self::update_loolwsd_config(array(
+				'support_key' => $data['support_key'],
+				// we proxy and do ssl termination outside of container!
+				'termination' => $server_parsed['scheme'] === 'https' ? 'true' : 'false',
+				'host' => $server_parsed['host'],
+			));
 		}
 		if($error)
 		{
@@ -148,7 +154,7 @@ class Admin
 			$value_escaped = htmlspecialchars($value, ENT_XML1);
 
 			$matches = null;
-			if (!preg_match("|<$name_quoted>(.*)</$name_quoted>|", $content, $matches))
+			if (!preg_match("|<$name_quoted([^>]*)>(.*)</$name_quoted>|", $content, $matches))
 			{
 				$content = preg_replace('|</config>|',
 					"    <$name>$value_escaped</$name>\n</config>", $content);
@@ -156,8 +162,9 @@ class Admin
 			}
 			else
 			{
-				$content = preg_replace("|<$name_quoted>.*</$name_quoted>|",
-					"<$name>$value_escaped</$name>", $content);
+				$value_regexp = $name !== 'host' ? '.*' : '[a-zA-Z0-9_.-]+';
+				$content = preg_replace("|<({$name_quoted}[^>]*)>$value_regexp</$name_quoted>|",
+					"<\\1>$value_escaped</$name>", $content);
 				$update = $update || $matches[1] !== $value_escaped;
 			}
 		}
