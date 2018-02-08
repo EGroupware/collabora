@@ -35,13 +35,16 @@ class Files
 	public static function process($id)
 	{
 
-		$path = Vfs::PREFIX . Wopi::get_path($id);
-		if($path == Vfs::PREFIX)
+		$path = Wopi::get_path($id);
+		if($path == '')
 		{
 			$path = \EGroupware\collabora\Wopi::get_path_from_token();
 			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from token) = $path");
 		}
-		else error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from id $id) = $path");
+		else if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from id $id) = $path");
+		}
 
 		if(!$path)
 		{
@@ -193,7 +196,14 @@ class Files
 		}
 		if($path)
 		{
-			$stat = Vfs::stat($path);
+			$stat = $path[0] == '/' && strpos($path, $GLOBALS['egw_info']['server']['files_dir']) === false ? Vfs::stat($path) : stat($path);
+
+			// Allow arbitrary filesystem paths, if they were allowed to be shared
+			if(!$stat)
+			{
+				$stat = stat($path);
+			}
+
 		}
 		if($stat)
 		{
@@ -210,7 +220,7 @@ class Files
 
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
-error_log(array2string($data));
+
 		return $data;
 	}
 
@@ -223,13 +233,22 @@ error_log(array2string($data));
 	 */
 	public static function get_file($path)
 	{
+		// Check that the file is in VFS or real FS
+		$stat = $path[0] == '/' && strpos($path, $GLOBALS['egw_info']['server']['files_dir']) === false ? Vfs::stat($path) : stat($path);
+
 		// send a content-disposition header, so browser knows how to name downloaded file
-		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
+		if($path[0] != '/' || strpos($path, $GLOBALS['egw_info']['server']['files_dir']) === 0 || !$stat)
+		{
+			Api\Header\Content::disposition(basename($path), false);
+			header('Content-Length: ' . filesize($path));
+			readfile($path);
+		}
+		else if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
 		{
 			Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
 			header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
+			readfile(Vfs::PREFIX . $path);
 		}
-		readfile(Vfs::PREFIX . $path);
 		return;
 	}
 
