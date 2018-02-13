@@ -128,15 +128,12 @@ class Wopi extends Sharing
 		$file_id = Api\Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Fall back to the earliest valid share ID
-		if (!$file_id && ($exists = ($stat = Api\Vfs::stat($path)) && Api\Vfs::check_access($path, Api\Vfs::READABLE, $stat)))
+		if (!$file_id)
 		{
-			// Share stores the full URL for mounted shares, not VFS
-			$vfs_path = Api\Vfs::parse_url($stat['url'], PHP_URL_PATH);
-
 			self::so();
 
 			$where = array(
-				'share_path' => $vfs_path,
+				'share_path' => $path,
 				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
 			);
 			$append = 'ORDER BY share_id ASC';
