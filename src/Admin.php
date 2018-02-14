@@ -123,7 +123,9 @@ class Admin
 				'support_key' => $data['support_key'],
 				// we proxy and do ssl termination outside of container!
 				'termination' => $server_parsed['scheme'] === 'https' ? 'true' : 'false',
-				'host' => $server_parsed['host'],
+				'host' => str_replace('.', '\\.', $server_parsed['host']),
+				'username' => $data['username'],
+				'password' => $data['password'],
 			));
 		}
 		if($error)
@@ -162,7 +164,7 @@ class Admin
 			}
 			else
 			{
-				$value_regexp = $name !== 'host' ? '.*' : '[a-zA-Z0-9_.-]+';
+				$value_regexp = $name !== 'host' ? '.*' : '[a-zA-Z0-9_.\\\\-]+';
 				$content = preg_replace("|<({$name_quoted}[^>]*)>$value_regexp</$name_quoted>|",
 					"<\\1>$value_escaped</$name>", $content);
 				$update = $update || $matches[1] !== $value_escaped;

@@ -46,6 +46,18 @@
 					<description value="Support-key"/>
 					<textbox rows="5" multiline="1" width="100%" id="newsettings[support_key]"/>
 				</row>
+				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
+					<description value="Admin console" onclick="window.open('/loleaflet/dist/admin/admin.html', '_blank');" font_style="b"/>
+					<description value="(requires username and password below)"/>
+				</row>
+				<row disabled="@newsettings[no_managed_collabora]">
+					<description value="Username"/>
+					<textbox id="newsettings[username]"/>
+				</row>
+				<row disabled="@newsettings[no_managed_collabora]">
+					<description value="Password"/>
+					<textbox type="password" id="newsettings[password]"/>
+				</row>
 			</rows>
 		</grid>
 	</template>
