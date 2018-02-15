@@ -102,7 +102,27 @@ class Bo {
 				{
 					$info[$name] = (string)$value;
 				}
-				$discovery[(string)$app['name']] = $info;
+				$name = (string)$app['name'];
+				if (!isset($discovery[$name]))
+				{
+					$discovery[$name] = $info;
+				}
+				else
+				{
+					switch($info['ext'])
+					{
+						case 'ppt':	// prefer these main extensions over their template conterparts
+						case 'xls':
+						case 'doc':
+							$extra_extensions = (array)$discovery[$name]['extra_extensions'];
+							$extra_extensions[] = $discovery[$name]['ext'];
+							$discovery[$name] = $info;
+							$discovery[$name]['extra_extensions'] = $extra_extensions;
+							break;
+						default:
+							$discovery[$name]['extra_extensions'][] = $info['ext'];
+					}
+				}
 			}
 			Cache::setInstance('collabora', 'discovery', $discovery, self::DISCOVERY_CACHE_TIME);
 			return $discovery;
