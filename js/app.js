@@ -495,6 +495,11 @@ app.classes.collabora = AppJS.extend(
 			}
 		}
 
+		// TODO: this is a hack to get rtf format into as available mime type in
+		// saveas dialog. This should be removed as soon as Collabora provides
+		// .rtf as export formats.
+		if (ext.match(/odt|doc|docx/)) mime_types.push('application/rtf');
+
 		// create file selector
 		var vfs_select = et2_createWidget('vfs-select', {
 			id:'savefile',
