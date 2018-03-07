@@ -113,6 +113,18 @@ class Ui {
 						'enabled' => 'javaScript:app.filemanager.isEditable',
 						'onExecute' => 'javaScript:app.filemanager.create_new',
 				));
+		if($GLOBALS['egw_info']['apps']['stylite'])
+		{
+			$changes['data']['nm']['actions']['mail']['children']['shareCollaboraLink'] = array(
+				'caption' => lang('Writable Collabora link'),
+				'group' => 1,
+				'icon' => 'collabora',
+				'enabled' => 'javaScript:app.filemanager.isSharableFile',
+				'hideOnDisabled' => true,
+				'order' => 12,
+				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
+			);
+		}
 
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
 
@@ -133,11 +145,13 @@ class Ui {
 			$path = $_GET['path'];
 		}
 		Framework::includeJS('.','app','collabora',true);
+		Framework::includeCSS('collabora', 'app');
+
 		$template = new Etemplate('collabora.editor');
 		$token = Bo::get_token($path);
 
 		$content = array(
-			'url'	=> Bo::get_action_url($path),
+			'url'	=> Bo::get_action_url($token['resolve_url']?$token['resolve_url']:$path),
 			'filename' => Vfs::basename($path),
 		) + $token;
 
@@ -374,5 +388,47 @@ class Ui {
 		}
 		if ($fp) fclose($fp);
 		$response->data($data);
+	}
+
+	/**
+	 * Create a sharable link that leads directly to the collabora editor
+	 *
+	 * return array/object with values for keys 'msg', 'errs', 'dirs', 'files'
+	 *
+	 * @param string $action eg. 'delete', ...
+	 * @param array $selected selected path(s)
+	 * @param string $dir=null current directory
+	 * @see static::action()
+	 */
+	public static function ajax_share_link($action, $selected)
+	{
+		$response = Api\Json\Response::get();
+
+		$arr = array(
+			'msg' => '',
+			'action' => $action,
+			'errs' => 0,
+			'dirs' => 0,
+			'files' => 0,
+		);
+
+		// Create a token for access
+		$token = Bo::get_token($selected);
+
+		$link = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
+		if ($link[0] == '/')
+		{
+			$link = ($_SERVER['HTTPS'] ? 'https://' : 'http://').
+				($GLOBALS['egw_info']['server']['hostname'] ?
+					$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).
+				$link;
+		}
+		$arr['share_link'] = $link;
+		$arr['title'] = lang("Editable share link");
+		$arr['template'] = Api\Etemplate\Widget\Template::rel2url('/filemanager/templates/default/share_dialog.xet');
+
+		$response->data($arr);
+		//error_log(__METHOD__."('$action',".array2string($selected).') returning '.array2string($arr));
+		return $arr;
 	}
 }

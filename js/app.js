@@ -94,6 +94,31 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	},
 
 	/**
+	 * Check to see if we can make a sharable edit link
+	 *
+	 * @param {egwAction} _egwAction
+	 * @param {egwActionObject[]} _selected
+	 * @returns {Boolean}
+	 */
+	isSharableFile: function isSharableFile(_egwAction, _selected)
+	{
+		if(_selected.length !== 1) return false;
+
+		var data = egw.dataGetUIDdata(_selected[0].id);
+		var mime = data && data.data && data.data.mime ? data.data.mime : '';
+		if(data && mime && this.discovery && this.discovery[mime])
+		{
+			var fe = egw_get_file_editor_prefered_mimes();
+			if (fe && fe.mime && !fe.mime[mime]) return false;
+			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
 	 * Set the list of what the collabora server can handle.
 	 *
 	 * The list is indexed by mimetype
@@ -107,6 +132,25 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	set_discovery: function (settings)
 	{
 		this.discovery = settings;
+	},
+
+	/**
+	 * create a share-link for the given file
+	 * @param {object} _action egw actions
+	 * @param {object} _selected selected nm row
+	 * @returns {Boolean} returns false if not successful
+	 */
+	share_collabora_link: function(_action, _selected)
+	{
+		// Check to see if it's something we can handle
+		if (this.isEditable(_action, _selected))
+		{
+			var path = this.id2path(_selected[0].id);
+			egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path],
+				this._share_link_callback, this, true, this).sendRequest();
+			return true;
+		}
+		return this._super.apply(this, arguments);
 	},
 
 	/**

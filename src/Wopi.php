@@ -105,6 +105,11 @@ class Wopi extends Sharing
 		return $token;
 	}
 
+	public static function get_share()
+	{
+		return $GLOBALS['egw']->sharing->share;
+	}
+
 	public static function get_path_from_token()
 	{
 		return $GLOBALS['egw']->sharing->share['share_path'];
