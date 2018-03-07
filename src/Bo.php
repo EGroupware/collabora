@@ -214,7 +214,8 @@ class Bo {
 
 	public static function get_token($path)
 	{
-		$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
+		$share = Wopi::get_share();
+		$share = $share ? $share : Wopi::create($path, Wopi::WRITABLE, '', '', array(
 			'share_expires'	=>	time() + Wopi::TOKEN_TTL,
 			'share_writable' => Wopi::WOPI_SHARE,
 		));
