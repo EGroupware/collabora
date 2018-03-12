@@ -115,7 +115,7 @@ class Ui {
 				));
 		if($GLOBALS['egw_info']['apps']['stylite'])
 		{
-			$changes['data']['nm']['actions']['mail']['children']['shareCollaboraLink'] = array(
+			$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
 				'caption' => lang('Writable Collabora link'),
 				'group' => 1,
 				'icon' => 'collabora',
