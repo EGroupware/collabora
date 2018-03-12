@@ -67,20 +67,16 @@ class Bo {
 
 		try
 		{
-			if(@function_exists('curl_version'))
+			// dont use proxy for localhost or private IPs
+			if (preg_match('/^(localhost|((10|127)\.\d{1,3}|192\.168)\.\d{1,3}\.\d{1,3})(:\d+)?$/', $server))
 			{
-				$response = static::get_remote_data($server_url, false, true);
-				if($response['info']['http_code'] == 200)
-				{
-					$response_xml_data = $response['data'];
-				}
-				else
-				{
-					throw new Api\Exception\WrongParameter('Unable to load ' . $server_url);
-				}
+				$response_xml_data = file_get_contents($server_url);
 			}
-			// No cURL, fallback
-			else if (($response_xml_data = file_get_contents($server_url))===false)
+			else
+			{
+				$response_xml_data = file_get_contents($server_url, false, Api\Framework::proxy_context());
+			}
+			if ($response_xml_data  === false)
 			{
 				throw new Api\Exception\WrongParameter('Unable to load ' . $server_url);
 			}
@@ -135,73 +131,6 @@ class Bo {
 	}
 
 	/**
-	 * Get the contents of a page
-	 *
-	 * From https://stackoverflow.com/questions/5971398/php-get-contents-of-a-url-or-page
-	 *
-	 * @param string $url
-	 * @param Array $post_parameters
-	 * @param boolean  $return_full_array
-	 * @return string
-	 */
-	protected static function get_remote_data($url, $post_parameters=false, $return_full_array=false)
-	{
-		$c = curl_init();
-		curl_setopt($c, CURLOPT_URL, $url);
-		curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-		//if parameters were passed to this function, then transform into POST method.. (if you need GET request, then simply change the passed URL)
-		if($post_parameters)
-		{
-			curl_setopt($c, CURLOPT_POST,TRUE);
-			curl_setopt($c, CURLOPT_POSTFIELDS, "var1=bla&".$post_parameters );
-		}
-		curl_setopt($c, CURLOPT_SSL_VERIFYHOST,false);
-		curl_setopt($c, CURLOPT_SSL_VERIFYPEER,false);
-
-		curl_setopt($c, CURLOPT_MAXREDIRS, 10);
-
-		//if SAFE_MODE or OPEN_BASEDIR is set,then FollowLocation cant be used.. so...
-		$follow_allowed = ( ini_get('open_basedir') || ini_get('safe_mode')) ? false:true;
-		if ($follow_allowed)
-		{
-			curl_setopt($c, CURLOPT_FOLLOWLOCATION, 1);
-		}
-		curl_setopt($c, CURLOPT_CONNECTTIMEOUT, 9);
-		curl_setopt($c, CURLOPT_REFERER, $url);
-		curl_setopt($c, CURLOPT_TIMEOUT, 10);
-		curl_setopt($c, CURLOPT_AUTOREFERER, true);
-		curl_setopt($c, CURLOPT_ENCODING, 'gzip,deflate');
-		$data=curl_exec($c);
-		$status=curl_getinfo($c);
-		curl_close($c);
-
-		// if redirected, then get that redirected page
-		$redirURL = $m = null;
-		if($status['http_code']==301 || $status['http_code']==302)
-		{
-			//if we FOLLOWLOCATION was not allowed, then re-get REDIRECTED URL
-			//p.s. WE dont need "else", because if FOLLOWLOCATION was allowed, then we wouldnt have come to this place, because 301 could already auto-followed by curl  :)
-			if (!$follow_allowed){
-				//if REDIRECT URL is found in HEADER
-				if(empty($redirURL)){if(!empty($status['redirect_url'])){$redirURL=$status['redirect_url'];}}
-				//if REDIRECT URL is found in RESPONSE
-				if(empty($redirURL)){preg_match('/(Location:|URI:)(.*?)(\r|\n)/si', $data, $m);                 if (!empty($m[2])){ $redirURL=$m[2]; } }
-				//if REDIRECT URL is found in OUTPUT
-				if(empty($redirURL)){preg_match('/moved\s\<a(.*?)href\=\"(.*?)\"(.*?)here\<\/a\>/si',$data,$m); if (!empty($m[1])){ $redirURL=$m[1]; } }
-				//if URL found, then re-use this function again, for the found url
-				if(!empty($redirURL)){$t=debug_backtrace(); return call_user_func( $t[0]["function"], trim($redirURL), $post_parameters);}
-			}
-		}
-		// if not redirected,and nor "status 200" page, then error..
-		else if ( $status['http_code'] != 200 )
-		{
-			$data =  "ERRORCODE22 with $url<br/><br/>Last status codes:".json_encode($status)."<br/><br/>Last data got:$data";
-		}
-
-		return ( $return_full_array ? array('data'=>$data,'info'=>$status) : $data);
-	}
-
-	/**
 	 * Get the configured server URL
 	 *
 	 * @return string
@@ -214,12 +143,13 @@ class Bo {
 
 	public static function get_token($path)
 	{
-		$share = Wopi::get_share();
-		$share = $share ? $share : Wopi::create($path, Wopi::WRITABLE, '', '', array(
-			'share_expires'	=>	time() + Wopi::TOKEN_TTL,
-			'share_writable' => Wopi::WOPI_SHARE,
-		));
-
+		if (!($share = Wopi::get_share()))
+		{
+			$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
+				'share_expires'	=>	time() + Wopi::TOKEN_TTL,
+				'share_writable' => Wopi::WOPI_SHARE,
+			));
+		}
 		$token = array();
 
 		foreach($share as $key => $value)

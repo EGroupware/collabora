@@ -352,15 +352,7 @@ class Ui {
 			));
 		}
 		$file = ($dir === '/' ? $dir : $dir.'/').$name.'.'.$ext;
-		$temp_url = $GLOBALS['egw_info']['server']['webserver_url'].
-				'/collabora/assets/template_'.$ext.'.'.$ext;
-		if ($temp_url[0] == '/')
-		{
-			$temp_url = ($_SERVER['SERVER_PORT'] == 443 || !empty($_SERVER['HTTPS'])
-					&& $_SERVER['HTTPS'] !== 'off' || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https://': 'http://'.
-					$_SERVER['HTTP_HOST'].$temp_url;
-		}
-		$template = file_get_contents($temp_url);
+		$template = file_get_contents(EGW_SERVER_ROOT.'/collabora/assets/template_'.$ext.'.'.$ext);
 		if (Api\Vfs::file_exists($file))
 		{
 			$data['message'] = lang('Failed to create file %1: file already exists!', $file);
