@@ -131,7 +131,6 @@ class Wopi extends Sharing
 	public static function get_file_id($path)
 	{
 		$file_id = Api\Vfs\Sqlfs\StreamWrapper::get_minimum_file_id($path);
-		$from = 'Vfs';
 
 		// No fs_id?  Fall back to the earliest valid share ID
 		if (!$file_id)
