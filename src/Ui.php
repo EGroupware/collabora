@@ -115,7 +115,7 @@ class Ui {
 				));
 		if($GLOBALS['egw_info']['apps']['stylite'])
 		{
-			$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
+			/*$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
 				'caption' => lang('Writable Collabora link'),
 				'group' => 1,
 				'icon' => 'collabora',
@@ -123,7 +123,7 @@ class Ui {
 				'hideOnDisabled' => true,
 				'order' => 12,
 				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
-			);
+			);*/
 		}
 
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
@@ -151,7 +151,7 @@ class Ui {
 		$token = Bo::get_token($path);
 
 		$content = array(
-			'url'	=> Bo::get_action_url($token['resolve_url']?$token['resolve_url']:$path),
+			'url'	=> Bo::get_action_url($path),
 			'filename' => Vfs::basename($path),
 		) + $token;
 
