@@ -150,8 +150,14 @@ class Ui {
 		$template = new Etemplate('collabora.editor');
 		$token = Bo::get_token($path);
 
+		// If resolved url ends with path, use resolved URL, otherwise stick with path
+		$path = $token['resolve_url'] && substr($token['resolve_url'], -strlen($path)) === $path ?
+			$token['resolve_url'] :
+			$path;
+
+
 		$content = array(
-			'url'	=> Bo::get_action_url($token['resolve_url']?$token['resolve_url']:$path),
+			'url'	=> Bo::get_action_url($path),
 			'filename' => Vfs::basename($path),
 		) + $token;
 

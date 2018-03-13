@@ -130,7 +130,9 @@ class Wopi extends Sharing
 	 */
 	public static function get_file_id($path)
 	{
-		$file_id = Api\Vfs\Sqlfs\StreamWrapper::get_minimum_file_id($path);
+		$file_id = Api\Vfs\Sqlfs\StreamWrapper::get_minimum_file_id(
+			Api\Vfs::resolve_url($path, true, true, true, true)
+		);
 		$from = $file_id ? 'Vfs' : 'None';
 
 		// No fs_id?  Fall back to the earliest valid share ID
@@ -205,7 +207,7 @@ class Wopi extends Sharing
 		}
 
 		if($path && $GLOBALS['egw']->sharing && $path != ($token_path=self::get_path_from_token())
-				&& !Api\Vfs::is_link($token_path)
+				&& !Api\Vfs::is_dir($token_path) && !Api\Vfs::is_link($token_path)
 		)
 		{
 			// id2path fails with old revisions
