@@ -15,6 +15,7 @@ use EGroupware\Api\Framework;
 use EGroupware\Api\Json\Response;
 use EGroupware\Api\Etemplate;
 use EGroupware\Api\Vfs;
+use EGroupware\Api\Vfs\Sharing;
 
 /**
  * User interface for collabora integration
@@ -148,19 +149,41 @@ class Ui {
 		Framework::includeCSS('collabora', 'app');
 
 		$template = new Etemplate('collabora.editor');
-		$token = Bo::get_token($path);
+		$share = Wopi::get_share();
+
+		// If working from a shared directory, add in the share path to try to
+		// get real VFS path
+		$token = Bo::get_token($share['share_writable'] == 1 ? $share['share_path'] . $path : $path);
 
 		// If resolved url ends with path, use resolved URL, otherwise stick with path
 		$path = $token['resolve_url'] && substr($token['resolve_url'], -strlen($path)) === $path ?
 			$token['resolve_url'] :
 			$path;
 
-		$share = Wopi::get_share();
+		// For anonymous access - special handling needed?
+		switch(Vfs::parse_url($token['resolve_url'], PHP_URL_SCHEME))
+		{
+			case 'stylite.merge':
+				$path = $token['resolve_url'];
+				break;
+		}
 
-		$content = array(
-			'url'	=> Bo::get_action_url($path),
-			'filename' => Vfs::basename($path),
-		) + $token;
+		error_log(__METHOD__ . " Using $path as path");
+
+		try
+		{
+			$content = array(
+				'url'	=> Bo::get_action_url($path),
+				'filename' => Vfs::basename($path),
+			) + $token;
+		}
+		catch(Api\Exception\NotFound $e)
+		{
+			// Probably opening a singe file from a shared directory, which failed
+			// since the whole VFS is not available
+			$share = Bo::get_token($share['share_root'] . $share['share_token'].$path);
+			\EGroupware\Api\Egw::redirect(Sharing::share2link($share['token']).'?edit&cd=no');
+		}
 
 		// Revision list
 		if(Bo::is_versioned($path))
