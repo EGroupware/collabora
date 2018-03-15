@@ -181,7 +181,7 @@ class Ui {
 		{
 			// Probably opening a singe file from a shared directory, which failed
 			// since the whole VFS is not available
-			$share = Bo::get_token($share['share_root'] . $share['share_token'].$path);
+			$share = Bo::get_token($share['share_path'].$path);
 			\EGroupware\Api\Egw::redirect(Sharing::share2link($share['token']).'?edit&cd=no');
 		}
 
