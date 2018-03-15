@@ -216,8 +216,6 @@ class Wopi extends Sharing
 			{
 				return $token_path;
 			}
-			error_log(__METHOD__."($file_id) path='$path' != '$token_path'=token_path --> 500 Exception Not Found");
-			throw new Api\Exception\NotFound();
 		}
 		return $path;
 	}

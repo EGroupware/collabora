@@ -155,6 +155,7 @@ class Ui {
 			$token['resolve_url'] :
 			$path;
 
+		$share = Wopi::get_share();
 
 		$content = array(
 			'url'	=> Bo::get_action_url($path),
@@ -170,6 +171,13 @@ class Ui {
 				if($tab['label'] == lang('Versions'))
 				{
 					$content['revisions'] = $tab['data']['versions'];
+					foreach($content['revisions'] as &$revision)
+					{
+						if(strpos($revision['path'], $share['share_path']) === 0)
+						{
+							$revision['path'] = substr($revision['path'], strlen($share['share_path']));
+						}
+					}
 					$content['revisions'][0] = $content;
 					unset($content['revisions'][0]['revisions']);
 				}
