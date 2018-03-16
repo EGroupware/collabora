@@ -12,6 +12,7 @@
 namespace EGroupware\Collabora\Wopi;
 
 use EGroupware\Collabora\Wopi;
+use EGroupware\Collabora\Bo;
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
 use EGroupware\Api\Vfs;
@@ -180,7 +181,7 @@ class Files
 
 			// User permissions
 			// ----------------
-			'ReadOnly'          => !Vfs::is_writable($path),
+			'ReadOnly'          => !Bo::is_writable($path),
 			'UserCanRename'     => true,
 
 			// Other miscellaneous properties
@@ -209,7 +210,7 @@ class Files
 			// Not found
 			return null;
 		}
-		$data['UserCanWrite'] = Vfs::is_writable($path);
+		$data['UserCanWrite'] = Bo::is_writable($path);
 
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);

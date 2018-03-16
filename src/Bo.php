@@ -145,9 +145,10 @@ class Bo {
 	{
 		if (!($share = Wopi::get_share()) || $share['share_path'] != $path)
 		{
-			$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
+			$share = Wopi::create($path, $share['share_writable'] == 0 ? Wopi::READONLY : Wopi::WRITABLE,
+				'', '', array(
 				'share_expires'	=>	time() + Wopi::TOKEN_TTL,
-				'share_writable' => Wopi::WOPI_SHARE,
+				'share_writable' => $share['share_writable'] == 0 ? 0 : Wopi::WOPI_SHARE,
 			));
 		}
 		$token = array();
@@ -193,6 +194,7 @@ class Bo {
 	public static function get_action_url($path)
 	{
 		$discovery = self::discover();
+		$share = Wopi::get_share();
 		if(!$path || !Vfs::check_access($path, Vfs::READABLE))
 		{
 			return '';
@@ -216,7 +218,10 @@ class Bo {
 		{
 			$query['revisionhistory'] = true;
 		}
-		if(!Vfs::is_writable($path))
+
+		// Check both the Vfs & the share, since sometimes a share mounted as
+		// readonly still gets writable permission
+		if(!static::is_writable($path))
 		{
 			$query['permission'] = 'view';
 		}
@@ -242,5 +247,16 @@ class Bo {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Check both the share and the Vfs for writable permission, since
+	 * sometimes the original user's permission would allow writing but the
+	 * share is readonly
+	 */
+	public static function is_writable($path)
+	{
+		$share = Wopi::get_share();
+		return Vfs::is_writable($path) && (!$share || $share['share_writable'] != 0);
 	}
 }
