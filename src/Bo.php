@@ -143,13 +143,11 @@ class Bo {
 
 	public static function get_token($path)
 	{
-		if (!($share = Wopi::get_share()))
-		{
-			$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
-				'share_expires'	=>	time() + Wopi::TOKEN_TTL,
-				'share_writable' => Wopi::WOPI_SHARE,
-			));
-		}
+		$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
+			'share_expires'	=>	time() + Wopi::TOKEN_TTL,
+			'share_writable' => Wopi::WOPI_SHARE,
+		));
+		
 		$token = array();
 
 		foreach($share as $key => $value)
