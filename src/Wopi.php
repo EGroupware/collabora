@@ -32,9 +32,13 @@ class Wopi extends Sharing
 	 */
 	const TOKEN_TTL = 86400;
 	/**
-	 * Mark share a WOPI share to be able to supress it from list of shares
+	 * writable WOPI share, to be able to supress it from list of shares
 	 */
-	const WOPI_SHARE = 3;
+	const WOPI_WRITABLE = 3;
+	/**
+	 * readonly WOPI share, to be able to supress it from list of shares
+	 */
+	const WOPI_READONLY = 4;
 
 	public $public_functions = array(
 		'index'	=> TRUE

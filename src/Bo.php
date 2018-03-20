@@ -145,9 +145,9 @@ class Bo {
 	{
 		$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
 			'share_expires'	=>	time() + Wopi::TOKEN_TTL,
-			'share_writable' => Wopi::WOPI_SHARE,
+			'share_writable' => Vfs::is_writable($path) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 		));
-		
+
 		$token = array();
 
 		foreach($share as $key => $value)
