@@ -407,15 +407,7 @@ class Ui {
 		// Create a token for access
 		$token = Bo::get_token($selected);
 
-		$link = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
-		if ($link[0] == '/')
-		{
-			$link = ($_SERVER['HTTPS'] ? 'https://' : 'http://').
-				($GLOBALS['egw_info']['server']['hostname'] ?
-					$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).
-				$link;
-		}
-		$arr['share_link'] = $link;
+		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
 		$arr['title'] = lang("Editable share link");
 		$arr['template'] = Api\Etemplate\Widget\Template::rel2url('/filemanager/templates/default/share_dialog.xet');
 

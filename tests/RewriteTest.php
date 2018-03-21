@@ -46,7 +46,7 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/2?access_token=' . urlencode($token['token'])));
 
 		$headers = get_headers($url, TRUE);
-		
+
 		if($headers === FALSE)
 		{
 			$this->markTestSkipped('No webserver');
@@ -57,10 +57,6 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 
 	protected function fixLink($url)
 	{
-		if ($url{0} == '/') {
-			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] ? $GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
-		}
-		return $url;
+		return Api\Framework::getUrl($url);
 	}
 }
