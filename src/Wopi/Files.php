@@ -496,7 +496,7 @@ class Files
 		$content = fopen('php://input', 'r');
 		file_put_contents(Vfs::PREFIX . $target, $content);
 
-		$url = Api\Framkework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
+		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
 			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
 		$response = json_encode(array('Name' => Vfs::basename($target), 'Url' => $url));
 		error_log(__METHOD__."() response: $response --> 200 Ok");
