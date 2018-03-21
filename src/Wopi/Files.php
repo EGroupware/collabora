@@ -135,16 +135,7 @@ class Files
 	 */
 	protected static function check_file_info($path)
 	{
-		$origin = $GLOBALS['egw_info']['server']['webserver_url'];
-		if ($origin[0] == '/')
-		{
-			$origin = ($_SERVER['SERVER_PORT'] == 443 || !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ||
-				$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ? 'https://' : 'http://').$_SERVER['HTTP_HOST'];
-		}
-		else
-		{
-			$origin = parse_url($origin, PHP_URL_SCHEME).'://'.parse_url($origin, PHP_URL_HOST);
-		}
+		$origin = Api\Framework::getUrl($GLOBALS['egw_info']['server']['webserver_url']);
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
 		$data = array(
 			// The string name of the file, including extension, without a path. Used for display in user interface (UI), and determining the extension of the file.
@@ -505,14 +496,8 @@ class Files
 		$content = fopen('php://input', 'r');
 		file_put_contents(Vfs::PREFIX . $target, $content);
 
-		$url = Api\Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target)). '?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
-		if ($url{0} == '/')
-		{
-			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ||
-				$_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? "https://" : "http://";
-			$url = $protocol.($GLOBALS['egw_info']['server']['hostname'] && $GLOBALS['egw_info']['server']['hostname'] !== 'localhost' ?
-				$GLOBALS['egw_info']['server']['hostname'] : $_SERVER['HTTP_HOST']).$url;
-		}
+		$url = Api\Framkework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
+			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
 		$response = json_encode(array('Name' => Vfs::basename($target), 'Url' => $url));
 		error_log(__METHOD__."() response: $response --> 200 Ok");
 		header('Content-Length:'.strlen($response));
