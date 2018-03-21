@@ -32,9 +32,13 @@ class Wopi extends Sharing
 	 */
 	const TOKEN_TTL = 86400;
 	/**
-	 * Mark share a WOPI share to be able to supress it from list of shares
+	 * writable WOPI share, to be able to supress it from list of shares
 	 */
-	const WOPI_SHARE = 3;
+	const WOPI_WRITABLE = 3;
+	/**
+	 * readonly WOPI share, to be able to supress it from list of shares
+	 */
+	const WOPI_READONLY = 4;
 
 	public $public_functions = array(
 		'index'	=> TRUE
@@ -130,10 +134,7 @@ class Wopi extends Sharing
 	 */
 	public static function get_file_id($path)
 	{
-		$file_id = Api\Vfs\Sqlfs\StreamWrapper::get_minimum_file_id(
-			$path
-		);
-		$from = $file_id ? 'Vfs' : 'None';
+		$file_id = Api\Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Fall back to the earliest valid share ID
 		if (!$file_id)
@@ -145,28 +146,13 @@ class Wopi extends Sharing
 				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
 			);
 			$append = 'ORDER BY share_id ASC';
-			if(static::DEBUG)
-			{
-				error_log(__METHOD__ . "($path) share query:");
-				error_log(array2string($where));
-			}
 			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_id', $where,
 					__LINE__, __FILE__,false,$append,false,1) as $row)
 			{
 				$file_id = '-'.$row['share_id'];
-				$from = 'Share';
 			}
 		}
 
-		if(static::DEBUG)
-		{
-			error_log(__METHOD__ ." Path: $path ID: $file_id ($from) ");
-		}
-		if(!$file_id)
-		{
-			// Can't do anything if we didn't find an ID
-			throw new Api\Exception\NotFound("No file_id for path '$path'");
-		}
 		return $file_id;
 	}
 

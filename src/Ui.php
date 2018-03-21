@@ -15,7 +15,6 @@ use EGroupware\Api\Framework;
 use EGroupware\Api\Json\Response;
 use EGroupware\Api\Etemplate;
 use EGroupware\Api\Vfs;
-use EGroupware\Api\Vfs\Sharing;
 
 /**
  * User interface for collabora integration
@@ -116,7 +115,7 @@ class Ui {
 				));
 		if($GLOBALS['egw_info']['apps']['stylite'])
 		{
-			$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
+			/*$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
 				'caption' => lang('Writable Collabora link'),
 				'group' => 1,
 				'icon' => 'collabora',
@@ -124,7 +123,7 @@ class Ui {
 				'hideOnDisabled' => true,
 				'order' => 12,
 				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
-			);
+			);*/
 		}
 
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
@@ -149,41 +148,12 @@ class Ui {
 		Framework::includeCSS('collabora', 'app');
 
 		$template = new Etemplate('collabora.editor');
-		$share = Wopi::get_share();
+		$token = Bo::get_token($path);
 
-		// If working from a shared directory, add in the share path to try to
-		// get real VFS path
-		$token = Bo::get_token($share['share_writable'] == 1 ? $share['share_path'] . $path : $path);
-
-		// If resolved url ends with path, use resolved URL, otherwise stick with path
-		$path = $token['resolve_url'] && substr($token['resolve_url'], -strlen($path)) === $path ?
-			$token['resolve_url'] :
-			$path;
-
-		// For anonymous access - special handling needed?
-		switch(Vfs::parse_url($token['resolve_url'], PHP_URL_SCHEME))
-		{
-			case 'stylite.merge':
-				$path = $token['resolve_url'];
-				break;
-		}
-
-		error_log(__METHOD__ . " Using $path as path");
-
-		try
-		{
-			$content = array(
-				'url'	=> Bo::get_action_url($path),
-				'filename' => Vfs::basename($path),
-			) + $token;
-		}
-		catch(Api\Exception\NotFound $e)
-		{
-			// Probably opening a singe file from a shared directory, which failed
-			// since the whole VFS is not available
-			$share = Bo::get_token($share['share_path'].$path);
-			\EGroupware\Api\Egw::redirect(Sharing::share2link($share['token']).'?edit&cd=no');
-		}
+		$content = array(
+			'url'	=> Bo::get_action_url($path),
+			'filename' => Vfs::basename($path),
+		) + $token;
 
 		// Revision list
 		if(Bo::is_versioned($path))
@@ -194,13 +164,6 @@ class Ui {
 				if($tab['label'] == lang('Versions'))
 				{
 					$content['revisions'] = $tab['data']['versions'];
-					foreach($content['revisions'] as &$revision)
-					{
-						if(strpos($revision['path'], $share['share_path']) === 0)
-						{
-							$revision['path'] = substr($revision['path'], strlen($share['share_path']));
-						}
-					}
 					$content['revisions'][0] = $content;
 					unset($content['revisions'][0]['revisions']);
 				}
