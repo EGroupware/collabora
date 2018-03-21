@@ -15,6 +15,7 @@ namespace EGroupware\collabora;
 // test base providing Egw environment, since we need the DB
 require_once realpath(__DIR__.'/../../api/tests/LoggedInTest.php');
 
+use EGroupware\Api;
 use EGroupware\Api\Egw;
 
 class RewriteTest extends \EGroupware\Api\LoggedInTest {
