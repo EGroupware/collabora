@@ -133,7 +133,7 @@ class Files
 	 * @param string $path VFS path of file we're operating on
 	 * @return Array|null
 	 */
-	protected static function check_file_info($path)
+	public static function check_file_info($path)
 	{
 		$origin = Api\Framework::getUrl($GLOBALS['egw_info']['server']['webserver_url']);
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
