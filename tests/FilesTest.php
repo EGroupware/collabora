@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/../../api/tests/Vfs/SharingBase.php';
+require_once __DIR__ . '/SharingBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -23,12 +23,10 @@ use \EGroupware\Api\Vfs;
  *
  * @author nathan
  */
-class FilesTest extends\ EGroupware\Api\Vfs\SharingBase
+class FilesTest extends SharingBase
 {
-	public function testPutRelativeFile()
-	{
-		$this->markTestIncomplete();
-	}
+
+	// Collabora does not actually use locking last I heard (2017)
 	public function testLock()
 	{
 		$this->markTestIncomplete();
@@ -44,58 +42,5 @@ class FilesTest extends\ EGroupware\Api\Vfs\SharingBase
 	public function testUnlockAndRelock()
 	{
 		$this->markTestIncomplete();
-	}
-	public function testDeleteFile()
-	{
-		$this->markTestIncomplete();
-	}
-	public function RenameFile()
-	{
-		$this->markTestIncomplete();
-	}
-
-	/**
-	 * Check the file info for the given path against what is saved in the
-	 * fixture file
-	 *
-	 * @param string $_file Path of the file
-	 */
-	protected function checkFileInfo($_file)
-	{
-		// Ignore directories
-		if(Vfs::is_dir($_file) || !$_file) return;
-
-		$info = $this->clean_info(Wopi\Files::check_file_info($_file));
-
-		$file = basename($_file);
-		$stored = file_get_contents($this->get_info_fixture($file));
-		if(!$stored)
-		{
-			trigger_error("Missing fixture for $file created.", E_USER_NOTICE);
-			file_put_contents($this->get_info_fixture($file), $info);
-		}
-		$this->assertEquals($stored, $info);
-	}
-
-	/**
-	 * Get the fixture file for the given path
-	 * @param string $file
-	 * @return string
-	 */
-	protected function get_info_fixture($file, $test='info')
-	{
-		return __DIR__ . "/fixtures/$test/" . $file . '.json';
-	}
-
-
-	/**
-	 * Clean file info of stuff
-	 */
-	protected function clean_info($info)
-	{
-		unset($info['PostMessageOrigin']);
-		unset($info['LastModifiedTime']);
-
-		return json_encode($info);
 	}
 }

@@ -10,14 +10,14 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\collabora;
+namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/../../api/tests/Vfs/SharingBase.php';
+require_once __DIR__ . '/SharingBase.php';
 
 use \EGroupware\Api\Vfs;
 
 /**
- * Tests for the WOPI API Files endpoint
+ * Tests for the WOPI API Files FileInfo endpoint
  *
  * This group of tests operates locally and under the original login to check
  * that the VFS gives FileInfo that matches expectations stored in tests/fixtures/info.
@@ -26,7 +26,7 @@ use \EGroupware\Api\Vfs;
  *
  * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/endpoints.html#files-endpoint
  */
-class FileInfoLocalTest extends\ EGroupware\Api\Vfs\SharingBase
+class FileInfoLocalTest extends SharingBase
 {
 	// Use consistant content since we're checking file size
 	const CONTENT = 'Test file for Collabora File tests';
