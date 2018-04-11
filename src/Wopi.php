@@ -79,7 +79,8 @@ class Wopi extends Sharing
 		$data = array();
 		if($endpoint_class && class_exists($endpoint_class))
 		{
-			$data = $endpoint_class::process($id);
+			$instance = new $endpoint_class();
+			$data = $instance->process($id);
 			Api\Cache::setSession(__CLASS__, 'file_id', $id);
 		}
 		else
@@ -91,10 +92,12 @@ class Wopi extends Sharing
 
 		if(!headers_sent() && $data)
 		{
+			$response = json_encode($data);
 			header('X-WOPI-ServerVersion: ' . $GLOBALS['egw_info']['apps']['collabora']['version']);
 			header('X-WOPI-MachineName: ' . 'Egroupware');
+			header('Content-Length:'.strlen($response));
 			header('Content-Type: application/json;charset=utf-8');
-			echo json_encode($data);
+			echo $response;
 		}
 		exit;
 	}

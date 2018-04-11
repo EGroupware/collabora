@@ -32,18 +32,18 @@ class Files
 	 *
 	 * @return Array Map of information as response to the request
 	 */
-	public static function process($id)
+	public function process($id)
 	{
 
 		$path = Wopi::get_path($id);
 		if($path == '')
 		{
 			$path = \EGroupware\collabora\Wopi::get_path_from_token();
-			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from token) = $path");
+			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".$this->header('X-WOPI-Override').", path (from token) = $path");
 		}
 		else if(Wopi::DEBUG)
 		{
-			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".self::header('X-WOPI-Override').", path (from id $id) = $path");
+			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".$this->header('X-WOPI-Override').", path (from id $id) = $path");
 		}
 
 		if(!$path)
@@ -52,32 +52,31 @@ class Files
 			exit;
 		}
 
-		switch (self::header('X-WOPI-Override'))
+		switch ($this->header('X-WOPI-Override'))
 		{
 			case 'LOCK':
-				static::lock($path);
+				$this->lock($path);
 				exit;
 			case 'GET_LOCK':
-				static::get_lock($path);
+				$this->get_lock($path);
 				exit;
 			case 'REFRESH_LOCK':
-				static::refresh_lock($path);
+				$this->refresh_lock($path);
 				exit;
 			case 'UNLOCK':
-				static::unlock($path);
+				$this->unlock($path);
 				exit;
 			case 'PUT':
-				static::put($path);
+				$this->put($path);
 				exit;
 			case 'PUT_RELATIVE':
-				static::put_relative_file($path);
-				exit;
+				return $this->put_relative_file($path);
 			default:
 				if(preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)/contents#',$_SERVER['REQUEST_URI']))
 				{
-					return static::get_file($path);
+					return $this->get_file($path);
 				}
-				$data = static::check_file_info($path);
+				$data = $this->check_file_info($path);
 		}
 
 		if($data == null)
@@ -96,7 +95,7 @@ class Files
 	 * @param string $name =null name of header or default all
 	 * @return array|string|NULL array with all headers or value of specified header oder NULL wenn nicht gesetzt
 	 */
-	static function header($name = null)
+	function header($name = null)
 	{
 		static $header = array();
 
@@ -126,6 +125,16 @@ class Files
 	}
 
 	/**
+	 * Get the contents of the file as sent from the client
+	 *
+	 * @return resource
+	 */
+	public function get_sent_content()
+	{
+		return fopen('php://input', 'r');
+	}
+
+	/**
 	 * Get file information
 	 *
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
@@ -133,7 +142,7 @@ class Files
 	 * @param string $path VFS path of file we're operating on
 	 * @return Array|null
 	 */
-	public static function check_file_info($path)
+	public function check_file_info($path)
 	{
 		$origin = Api\Framework::getUrl($GLOBALS['egw_info']['server']['webserver_url']);
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
@@ -215,7 +224,7 @@ class Files
 	 *
 	 * @param string $path VFS path of file we're operating on
 	 */
-	public static function get_file($path)
+	public function get_file($path)
 	{
 		$stat = Vfs::stat($path);
 
@@ -237,18 +246,18 @@ class Files
 	 *
 	 * @param string $path VFS path of file we're operating on
 	 */
-	public static function lock($path)
+	public function lock($path)
 	{
 		// Required
-		if(!($token = self::header('X-WOPI-Lock')))
+		if(!($token = $this->header('X-WOPI-Lock')))
 		{
 			http_response_code(400);
 			return;
 		}
 		// Optional old lock code
-		$old_lock = self::header('X-WOPI-OldLock');
+		$old_lock = $this->header('X-WOPI-OldLock');
 
-		$timeout = static::LOCK_DURATION;
+		$timeout = $this->LOCK_DURATION;
 		$owner = $GLOBALS['egw_info']['user']['account_id'];
 		$scope = 'exclusive';
 		$type = 'write';
@@ -281,7 +290,7 @@ class Files
 	 *
 	 * @param string $path VFS path of file we're operating on
 	 */
-	public static function get_lock($path)
+	public function get_lock($path)
 	{
 		$lock = Vfs::checkLock($path);
 
@@ -296,16 +305,16 @@ class Files
 	 *
 	 * @param string $path VFS path of the file we're operating on
 	 */
-	public static function refresh_lock($path)
+	public function refresh_lock($path)
 	{
-		$token = self::header('X-WOPI-Lock');
+		$token = $this->header('X-WOPI-Lock');
 		if(!$token)
 		{
 			// Bad request
 			http_response_code(400);
 		}
 
-		$timeout = static::LOCK_DURATION;
+		$timeout = $this->LOCK_DURATION;
 		$owner = $GLOBALS['egw_info']['user']['account_id'];
 		$scope = 'exclusive';
 		$type = 'write';
@@ -323,9 +332,9 @@ class Files
 	 *
 	 * @param string $path VFS path of the file we're operating on
 	 */
-	public static function unlock($path)
+	public function unlock($path)
 	{
-		$token = self::header('X-WOPI-Lock');
+		$token = $this->header('X-WOPI-Lock');
 		if(!$token)
 		{
 			// Bad request
@@ -353,10 +362,10 @@ class Files
 	 *
 	 * @param string $path VFS path of the file we're operating on
 	 */
-	public static function put($path)
+	public function put($path)
 	{
 		// Lock token, might not be there for new files
-		$token = self::header('X-WOPI-Lock');
+		$token = $this->header('X-WOPI-Lock');
 
 		// Check lock
 		$lock = Vfs::checkLock($path);
@@ -383,7 +392,7 @@ class Files
 			header('X-WOPI-Lock', $lock['token']);
 		}
 		// Read the contents of the file from the POST body and store.
-		$content = fopen('php://input', 'r');
+		$content = $this->get_sent_content();
 
 		file_put_contents(Vfs::PREFIX . $path, $content);
 	}
@@ -394,30 +403,34 @@ class Files
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutRelativeFile.html
 	 *
 	 * @param string $url VFS url (Vfs::PREFIX+path) of the file we're operating on
-	 *
-	 * @todo Still need to return the new path with new token
 	 */
-	public static function put_relative_file($url)
+	public function put_relative_file($url)
 	{
 		$path = Vfs::parse_url($url, PHP_URL_PATH);
 
 		// Lock token, might not be there
-		$token = self::header('X-WOPI-Lock');
+		$token = $this->header('X-WOPI-Lock');
 		$lock = Vfs::checkLock($path);
 		$dirname = Vfs::dirname($path);
 
-		$suggested_target = Api\Translation::convert(self::header('X-WOPI-SuggestedTarget'), 'utf-7', 'utf-8');
-		$relative_target = Api\Translation::convert(self::header('X-WOPI-RelativeTarget'), 'utf-7', 'utf-8');
-		$overwrite = boolval(self::header('X-WOPI-OverwriteRelativeTarget'));
-		//$size = intval(self::header('X-WOPI-Size'));
-		error_log(__METHOD__."('$path') X-WOPI-SuggestedTarget='$suggested_target', X-WOPI-RelativeTarget='$relative_target', X-WOPI-OverwriteRelativeTarget=$overwrite");
+		$suggested_target = Api\Translation::convert($this->header('X-WOPI-SuggestedTarget'), 'utf-7', 'utf-8');
+		$relative_target = Api\Translation::convert($this->header('X-WOPI-RelativeTarget'), 'utf-7', 'utf-8');
+		$overwrite = boolval($this->header('X-WOPI-OverwriteRelativeTarget'));
+		//$size = intval($this->header('X-WOPI-Size'));
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__."('$path') X-WOPI-SuggestedTarget='$suggested_target', X-WOPI-RelativeTarget='$relative_target', X-WOPI-OverwriteRelativeTarget=$overwrite");
+		}
 
 		// File name or extension
 		if($suggested_target && $relative_target)
 		{
 			// Specifying both is invalid, we give Not Implemented
 			http_response_code(501);
-			error_log(__METHOD__."() RelativeTarget='$relative_target' AND SuggestedTarget='$suggested_target' is invalid --> 501 Not implemented");
+			if(Wopi::DEBUG)
+			{
+				error_log(__METHOD__."() RelativeTarget='$relative_target' AND SuggestedTarget='$suggested_target' is invalid --> 501 Not implemented");
+			}
 			return;
 		}
 
@@ -428,6 +441,17 @@ class Files
 			$info = pathinfo($path);
 			$suggested_target = basename($path, '.'.$info['extension']) . $suggested_target;
 		}
+
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__."() Directory: $dirname RelativeTarget='$relative_target' AND SuggestedTarget='$suggested_target'");
+		}
+
+		// Need access to full Vfs to check for existing files
+		$api_config = Api\Config::read('phpgwapi');
+		$GLOBALS['egw_info']['server']['vfs_fstab'] = $api_config['vfs_fstab'];
+		Vfs\StreamWrapper::init_static();
+		Vfs::clearstatcache();
 
 		// seems targets can be relative
 		if (!empty($suggested_target) && $suggested_target[0] != '/') $suggested_target = Vfs::concat ($dirname, $suggested_target);
@@ -442,18 +466,30 @@ class Files
 			{
 				$suggested_target = $matches[1].$matches[3];
 			}
-			$target = self::clean_filename($suggested_target);
+			$target = $this->clean_filename($suggested_target);
+			if(Wopi::DEBUG)
+			{
+				error_log(__METHOD__ . "() Suggested: $suggested_target Target: $target");
+			}
 		}
 
 		if ($relative_target)
 		{
+			if(Wopi::DEBUG)
+			{
+				error_log(__METHOD__ . "() Relative: $relative_target (no changes allowed)");
+			}
+
 			// Can't modify this one, but we can check & fail it
-			$clean = self::clean_filename($relative_target);
+			$clean = $this->clean_filename($relative_target, false);
 			if($relative_target !== $clean)
 			{
 				http_response_code(400);
 				header('X-WOPI-ValidRelativeTarget', $clean);
-				error_log(__METHOD__."() clean_filename('$relative_target')='$clean' --> 400 Bad Request");
+				if(Wopi::DEBUG)
+				{
+					error_log(__METHOD__."() clean_filename('$relative_target')='$clean' --> 400 Bad Request");
+				}
 				return;
 			}
 			if(Vfs::file_exists($relative_target))
@@ -465,7 +501,10 @@ class Files
 					{
 						header('X-WOPI-Lock', $lock['token']);
 					}
-					error_log(__METHOD__."() Vfs::file_exists('$relative_target') --> 409 Conflict");
+					if(Wopi::DEBUG)
+					{
+						error_log(__METHOD__."() Vfs::file_exists('$relative_target') --> 409 Conflict");
+					}
 					return;
 				}
 				if(!$token && $lock || $token && $lock['token'] !== $token)
@@ -476,7 +515,10 @@ class Files
 					{
 						header('X-WOPI-Lock', $lock['token']);
 					}
-					error_log(__METHOD__."() '$relative_target' is locked --> 409 Conflict");
+					if(Wopi::DEBUG)
+					{
+						error_log(__METHOD__."() '$relative_target' is locked --> 409 Conflict");
+					}
 					return;
 				}
 			}
@@ -488,30 +530,36 @@ class Files
 		{
 			// User not authorised, 401 is used for invalid token
 			http_response_code(404);
-			error_log(__METHOD__."() Vfs::is_writable(Vfs::dirname('$target')) = ". array2string(Vfs::is_writable(Vfs::dirname($target))).' --> 404 Not Found');
-			exit();
+			if(Wopi::DEBUG)
+			{
+				error_log(__METHOD__."() Vfs::is_writable(Vfs::dirname('$target')) = ". array2string(Vfs::is_writable(Vfs::dirname($target))).' --> 404 Not Found');
+			}
+			return;
 		}
 
 		// Read the contents of the file from the POST body and store.
-		$content = fopen('php://input', 'r');
+		$content = $this->get_sent_content();
 		file_put_contents(Vfs::PREFIX . $target, $content);
 
 		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
 			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
-		$response = json_encode(array('Name' => Vfs::basename($target), 'Url' => $url));
-		error_log(__METHOD__."() response: $response --> 200 Ok");
-		header('Content-Length:'.strlen($response));
-		header('Content-Type:application/json;charset=utf-8');
-		echo $response;
+		$response = array('Name' => Vfs::basename($target), 'Url' => $url);
+
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__."() saved as $target   " . array2string($response));
+		}
+		return $response;
 	}
 
 	/**
 	 * Make a filename valid, even if we have to modify it a little.
 	 *
 	 * @param String $original_path
+	 * @param boolean $modify_filename = true Modify the filename to make it work
 	 * @return String modified path
 	 */
-	protected static function clean_filename($original_path)
+	protected function clean_filename($original_path, $modify_filename = true)
 	{
 		$file = Vfs::basename($original_path);
 
@@ -529,7 +577,7 @@ class Files
 
 		// Avoid duplicates
 		$dupe_count = 0;
-		while(Vfs::file_exists($path.$file))
+		while($modify_filename && Vfs::file_exists($path.'/'.$file) && $dupe_count < 1000)
 		{
 			$dupe_count++;
 			$file = $basename .
