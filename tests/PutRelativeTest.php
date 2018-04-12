@@ -6,7 +6,7 @@
  * @link http://www.egroupware.org
  * @author Nathan Gray
  * @package collabora
- * @copyright (c) 2017  Nathan Gray
+ * @copyright (c) 2018  Nathan Gray
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
@@ -52,34 +52,19 @@ class PutRelativeTest extends SharingBase
 	 */
 	public function testPutRelativeFileSpecific()
 	{
-		// Set headers for this test
-		$header_map = array_merge($this->header_map, array(
-			'X-WOPI-RelativeTarget' => Vfs::get_home_dir() . '/'. $this->new_filename,
-		));
-
-		// Set up mock for header()
-		$files = $this->getMockBuilder(Wopi\Files::class)
-				->setMethods(array('header','get_sent_content'))
-				->getMock();
-		$files->method('header')
-				// Headers that will trigger specific mode - no changes allowed
-				->will($this->returnCallback(
-						function($header) use ($header_map)
-						{
-							return $header_map[$header];
-						}
-				));
-
-		// Mock the file contents, since nobody sent them
-		$files->expects($this->once())
-				->method('get_sent_content')
-				->will($this->returnValue($this->file_contents));
-
 		// Create test file
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
 		$this->files[] = $target = Vfs::get_home_dir() . '/'. $this->new_filename;
 		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
 		$this->assertTrue(Vfs::file_exists($url), "Test file $url is missing");
+
+		// Set headers for this test
+		$header_map = array_merge($this->header_map, array(
+			'X-WOPI-RelativeTarget' => $target,
+		));
+
+		// Mock Files
+		$files = $this->mock_files($header_map, $this->file_contents);
 
 		// Create and use link
 		$extra = array();
@@ -102,34 +87,20 @@ class PutRelativeTest extends SharingBase
 	 */
 	public function testPutRelativeFileConflict()
 	{
-		// Set headers for this test
-		$header_map = array_merge($this->header_map, array(
-			'X-WOPI-RelativeTarget' => Vfs::get_home_dir() . '/'. $this->new_filename
-		));
-
-		// Set up mock for header()
-		$files = $this->getMockBuilder(Wopi\Files::class)
-				->setMethods(array('header','get_sent_content'))
-				->getMock();
-		$files->method('header')
-				// Headers that will trigger specific mode - no changes allowed
-				->will($this->returnCallback(
-						function($header) use ($header_map)
-						{
-							return $header_map[$header];
-						}
-				));
-
-		// Should not look at content, since it will conflict on name
-		$files->expects($this->never())
-				->method('get_sent_content');
-
 		// Create test files
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
 		$this->files[] = $target = Vfs::get_home_dir() . '/'. $this->new_filename;
 		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
 		file_put_contents(Vfs::PREFIX.$target, 'Do not overwrite me');
 		$this->assertTrue(Vfs::file_exists($target));
+
+		// Set headers for this test
+		$header_map = array_merge($this->header_map, array(
+			'X-WOPI-RelativeTarget' => $target
+		));
+
+		// Mock Files - no content, since it should conflict on name
+		$files = $this->mock_files($header_map);
 
 		// Create and use link
 		$extra = array();
@@ -151,33 +122,20 @@ class PutRelativeTest extends SharingBase
 	 */
 	public function testPutRelativeFileSuggested()
 	{
-		// Set headers for this test
-		$header_map = array_merge($this->header_map, array(
-			'X-WOPI-SuggestedTarget' => Vfs::get_home_dir() . '/'. $this->new_filename
-		));
-		// Set up mock for header()
-		$files = $this->getMockBuilder(Wopi\Files::class)
-				->setMethods(array('header','get_sent_content'))
-				->getMock();
-		$files->method('header')
-				// Headers that will trigger suggested mode
-				->will($this->returnCallback(
-						function($header) use ($header_map)
-						{
-							return $header_map[$header];
-						}
-				));
-		// Mock the file contents, since nobody sent them
-		$files->expects($this->once())
-				->method('get_sent_content')
-				->will($this->returnValue($this->file_contents));
-
 		// Create test files
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
 		$this->files[] = $target = Vfs::get_home_dir() . '/'. $this->new_filename;
 		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
 		file_put_contents(Vfs::PREFIX.$target, $this->file_contents);
 		$this->assertTrue(Vfs::file_exists($target));
+
+		// Set headers for this test
+		$header_map = array_merge($this->header_map, array(
+			'X-WOPI-SuggestedTarget' => $target
+		));
+
+		// Mock Files
+		$files = $this->mock_files($header_map, $this->file_contents);
 
 		// Create and use link
 		$extra = array();
@@ -197,4 +155,71 @@ class PutRelativeTest extends SharingBase
 		$this->files[] = Vfs::get_home_dir().'/'.$response['Name'];
 	}
 
+	/**
+	 * Test what happens if we try to save to an invalid place
+	 */
+	public function testPutRelativeInvalid()
+	{
+		// Create test files
+		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
+		// Invalid path
+		$target = Vfs::get_home_dir() . '/../../'. $this->new_filename;
+
+		// Set headers for this test
+		$header_map = array_merge($this->header_map, array(
+			'X-WOPI-RelativeTarget' => $target
+		));
+
+		// Mock Files - no content, should stop at path check
+		$files = $this->mock_files($this->header_map);
+
+		// Create and use link
+		$extra = array();
+		$mode = Wopi::WOPI_WRITABLE;
+		$this->getShareExtra($url, $mode, $extra);
+		$this->shareLink($url, $mode, $extra);
+
+		$response = $files->put_relative_file($this->original_filename);
+
+		// Response code should be 404, target not found/valid
+		$this->assertEquals(404, http_response_code());
+		$this->assertNull($response);
+		$this->assertFalse(Vfs::file_exists($target));
+	}
+
+	/**
+	 * Test save as on readonly share - this one should fail
+	 */
+	public function testPutRelativeFileReadonly()
+	{
+		// Create test file
+		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
+		$this->files[] = $target = Vfs::get_home_dir() . '/'. $this->new_filename;
+		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
+		$this->assertTrue(Vfs::file_exists($url), "Test file $url is missing");
+		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.$url));
+
+		// Set headers for this test
+		$header_map = array_merge($this->header_map, array(
+			'X-WOPI-RelativeTarget' => $target
+		));
+
+		// Mock Files - no content, since it will fail before that
+		$files = $this->mock_files($header_map);
+
+		// Create and use link
+		$extra = array();
+		$mode = Wopi::WOPI_READONLY;
+		$this->getShareExtra($url, $mode, $extra);
+		$this->shareLink($url, $mode, $extra);
+
+		$response = $files->put_relative_file($url);
+		
+		// Response code should be 404
+		$this->assertEquals(404, http_response_code());
+		$this->assertNull($response);
+		$this->assertFalse(Vfs::file_exists($target));
+		// Note still using share path (/) since that's the only file available here
+		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.'/'));
+	}
 }

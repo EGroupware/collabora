@@ -123,6 +123,17 @@ class Wopi extends Sharing
 	}
 
 	/**
+	 * Find out if the share is writable (regardless of file permissions)
+	 *
+	 * @return boolean
+	 */
+	public static function is_writable()
+	{
+		$share = static::get_share();
+		return ((intval($share['share_writable']) & 1));
+	}
+
+	/**
 	 * Get a WOPI file ID from a path
 	 *
 	 * File ID is the lowest fs_id for the path, if available.  If no fs_id is

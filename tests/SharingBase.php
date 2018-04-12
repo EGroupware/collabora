@@ -20,6 +20,44 @@ use \EGroupware\Api\Vfs;
 class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 {
 	/**
+	 * Mock the Files object for testing, overriding the header & get_sent_content
+	 * methods so we can specify what headers & content it uses.
+	 *
+	 * @param Array $header_map Map of Header => Value
+	 * @param String $file_contents = null Specify the content 'sent' from the client
+	 * @return MockedFiles
+	 */
+	protected function mock_files($header_map, $file_contents = null)
+	{
+		$files = $this->getMockBuilder(Wopi\Files::class)
+			->setMethods(array('header','get_sent_content'))
+			->getMock();
+		$files->method('header')
+				// Headers that will trigger specific mode - no changes allowed
+				->will($this->returnCallback(
+						function($header) use ($header_map)
+						{
+							return $header_map[$header];
+						}
+				));
+
+		// Mock the file contents, since nobody sent them
+		if($file_contents)
+		{
+			$files->expects($this->once())
+					->method('get_sent_content')
+					->will($this->returnValue($this->file_contents));
+		}
+		else
+		{
+			$files->expects($this->never())
+					->method('get_sent_content');
+		}
+
+		return $files;
+	}
+
+	/**
 	 * Check the access permissions & file info for one file
 	 *
 	 * @param string $file

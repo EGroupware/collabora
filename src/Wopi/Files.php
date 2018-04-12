@@ -364,6 +364,14 @@ class Files
 	 */
 	public function put($path)
 	{
+		// Check if share _can_ be written to, before we bother with anything else
+		if(!Wopi::is_writable())
+		{
+			http_response_code(404);
+			header('X-WOPI-ServerError', 'Share is readonly');
+			return;
+		}
+
 		// Lock token, might not be there for new files
 		$token = $this->header('X-WOPI-Lock');
 
@@ -391,10 +399,20 @@ class Files
 			http_response_code(409);
 			header('X-WOPI-Lock', $lock['token']);
 		}
+
+		$api_config = Api\Config::read('phpgwapi');
+		$GLOBALS['egw_info']['server']['vfs_fstab'] = $api_config['vfs_fstab'];
+		Vfs\StreamWrapper::init_static();
+		Vfs::clearstatcache();
+
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
 
-		file_put_contents(Vfs::PREFIX . $path, $content);
+		if(False === file_put_contents(Vfs::PREFIX . $path, $content))
+		{
+			http_response_code(500);
+			header('X-WOPI-ServerError', 'Unable to write file');
+		}
 	}
 
 	/**
@@ -406,6 +424,14 @@ class Files
 	 */
 	public function put_relative_file($url)
 	{
+		// Check if share _can_ be written to, before we bother with anything else
+		if(!Wopi::is_writable())
+		{
+			http_response_code(404);
+			header('X-WOPI-ServerError', 'Share is readonly');
+			return;
+		}
+
 		$path = Vfs::parse_url($url, PHP_URL_PATH);
 
 		// Lock token, might not be there
@@ -539,7 +565,12 @@ class Files
 
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
-		file_put_contents(Vfs::PREFIX . $target, $content);
+		if(False === file_put_contents(Vfs::PREFIX . $target, $content))
+		{
+			http_response_code(500);
+			header('X-WOPI-ServerError', 'Unable to write file');
+			return;
+		}
 
 		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
 			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
