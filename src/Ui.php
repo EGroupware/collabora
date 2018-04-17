@@ -205,8 +205,12 @@ class Ui {
 
 		if(is_file($result) && is_readable($result))
 		{
-			// Put it into the vfs
-			$target = $_target = Vfs::get_home_dir()."/$filename";
+			// Put it into the vfs using user's configured home dir if writable,
+			// or expected home dir (/home/username) if not
+			$target = $_target = (Vfs::is_writable(Vfs::get_home_dir()) ?
+					Vfs::get_home_dir() :
+					"/home/{$GLOBALS['egw_info']['user']['account_lid']}"
+				)."/$filename";
 			$dupe_count = 0;
 			while(is_file(Vfs::PREFIX.$target))
 			{
