@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/SharingBase.php';
+require_once __DIR__ . '/../SharingBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -214,7 +214,7 @@ class PutRelativeTest extends SharingBase
 		$this->shareLink($url, $mode, $extra);
 
 		$response = $files->put_relative_file($url);
-		
+
 		// Response code should be 404
 		$this->assertEquals(404, http_response_code());
 		$this->assertNull($response);

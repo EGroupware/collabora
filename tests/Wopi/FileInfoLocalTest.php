@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/SharingBase.php';
+require_once __DIR__ . '/../SharingBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -141,7 +141,7 @@ class FileInfoLocalTest extends SharingBase
 	 */
 	protected function get_info_fixture($file, $test='info')
 	{
-		return __DIR__ . "/fixtures/$test/" . $file . '.json';
+		return __DIR__ . "/../fixtures/$test/" . $file . '.json';
 	}
 
 

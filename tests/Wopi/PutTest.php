@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/SharingBase.php';
+require_once __DIR__ . '/../SharingBase.php';
 
 use \EGroupware\Api\Vfs;
 
