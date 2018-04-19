@@ -156,7 +156,7 @@ class Wopi extends Sharing
 			self::so();
 
 			$where = array(
-				'share_path' => $path,
+				'share_path' => Api\Vfs::PREFIX.$path,
 				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
 			);
 			$append = 'ORDER BY share_id ASC';
