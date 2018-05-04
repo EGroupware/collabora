@@ -118,6 +118,11 @@ class FileInfoSharingTest extends SharingBase
 
 	public function testCheckFileInfoOnMergeReadonly()
 	{
+		if(!class_exists("\EGroupware\Stylite\Vfs\Merge\StreamWrapper"))
+		{
+			$this->markTestSkipped();
+			return;
+		}
 		$this->files[] = $dir = Vfs::get_home_dir().'/merged/';
 
 		// Create versioned directory
@@ -131,6 +136,11 @@ class FileInfoSharingTest extends SharingBase
 
 	public function testCheckFileInfoOnMergeWritable()
 	{
+		if(!class_exists("\EGroupware\Stylite\Vfs\Merge\StreamWrapper"))
+		{
+			$this->markTestSkipped();
+			return;
+		}
 		$this->files[] = $dir = Vfs::get_home_dir().'/merged/';
 
 		// Create versioned directory

@@ -96,6 +96,11 @@ class FileInfoLocalTest extends SharingBase
 
 	public function testCheckFileInfoOnMerge()
 	{
+		if(!class_exists("\EGroupware\Stylite\Vfs\Merge\StreamWrapper"))
+		{
+			$this->markTestSkipped();
+			return;
+		}
 		$this->files[] = $dir = Vfs::get_home_dir().'/merged/';
 
 		// Create versioned directory
