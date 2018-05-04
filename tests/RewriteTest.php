@@ -31,7 +31,7 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		{
 			$this->markTestSkipped('No webserver');
 		}
-		$this->assertEquals('404', substr($headers[0], 9, 3), "Testing invalid URL $url");
+		$this->assertEquals('401', substr($headers[0], 9, 3), "Testing invalid URL $url");
 	}
 
 	/**
