@@ -123,8 +123,9 @@ class PutRelativeTest extends SharingBase
 	public function testPutRelativeFileSuggested()
 	{
 		// Create test files
-		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
-		$this->files[] = $target = Vfs::get_home_dir() . '/'. $this->new_filename;
+		$home_dir = Vfs::get_home_dir();
+		$this->files[] = $url = $home_dir .'/' . $this->original_filename;
+		$this->files[] = $target = $home_dir . '/'. $this->new_filename;
 		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
 		file_put_contents(Vfs::PREFIX.$target, $this->file_contents);
 		$this->assertTrue(Vfs::file_exists($target));
@@ -152,7 +153,7 @@ class PutRelativeTest extends SharingBase
 		$this->assertNotEquals($this->new_filename, $response['Name']);
 		$this->assertEquals(file_get_contents(Vfs::PREFIX.$url), file_get_contents(Vfs::PREFIX.$target));
 
-		$this->files[] = Vfs::get_home_dir().'/'.$response['Name'];
+		$this->files[] = $home_dir.'/'.$response['Name'];
 	}
 
 	/**
