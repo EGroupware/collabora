@@ -155,8 +155,12 @@ class FileInfoLocalTest extends SharingBase
 	 */
 	protected function clean_info($info)
 	{
+		// These are always going to be different
 		unset($info['PostMessageOrigin']);
 		unset($info['LastModifiedTime']);
+
+		// This is different on Travis (User, Admin vs Account, Demo)
+		unset($info['UserFriendlyName']);
 
 		return json_encode($info);
 	}
