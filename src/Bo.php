@@ -141,12 +141,25 @@ class Bo {
 		return $config['server'];
 	}
 
-	public static function get_token($path)
+	/**
+	 * Get the token / share information for the path
+	 *
+	 * @param String $path
+	 * @param Array $share If provided, the share will be used instead of looking
+	 *	in the database or creating a new share.
+	 * @return Array
+	 */
+	public static function get_token($path, $share = null)
 	{
-		$share = Wopi::create($path, Wopi::WRITABLE, '', '', array(
-			'share_expires'	=>	time() + Wopi::TOKEN_TTL,
-			'share_writable' => Vfs::is_writable($path) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
-		));
+		if ($share == null && !($share = Wopi::get_share()))
+		{
+			$share = Wopi::create($path,
+				$share['share_writable'] & 1 ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+				'', '', array(
+				'share_expires'  =>  time() + Wopi::TOKEN_TTL,
+				'share_writable' =>  Vfs::is_writable($path) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+			));
+		}
 
 		$token = array();
 
@@ -228,5 +241,19 @@ class Bo {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Reset the VFS if it's restricted to get full access to the normal VFS
+	 *
+	 * This is used to create new shares (we need the real path) and to check
+	 * target permissions for save as.
+	 */
+	public static function reset_vfs()
+	{
+		$api_config = Api\Config::read('phpgwapi');
+		$GLOBALS['egw_info']['server']['vfs_fstab'] = $api_config['vfs_fstab'];
+		Vfs\StreamWrapper::init_static();
+		Vfs::clearstatcache();
 	}
 }

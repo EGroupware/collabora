@@ -112,14 +112,42 @@ class Wopi extends Sharing
 		return $token;
 	}
 
+	/**
+	 * Get the current share object, if set
+	 *
+	 * @return array
+	 */
 	public static function get_share()
 	{
-		return $GLOBALS['egw']->sharing->share;
+		return isset($GLOBALS['egw']->sharing) ? $GLOBALS['egw']->sharing->share : array();
 	}
 
 	public static function get_path_from_token()
 	{
 		return $GLOBALS['egw']->sharing->share['share_path'];
+	}
+
+	public static function open_from_share($share, $path)
+	{
+		if($share['root'] && Api\Vfs::is_dir($share['root']))
+		{
+			// Editing file in a shared directory, need to have share for just
+			// the file
+			$dir_share = $GLOBALS['egw']->sharing->share;
+			$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
+			$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
+			Bo::reset_vfs();
+			$share = Wopi::create($share['path'].$path,
+				$writable ? Wopi::WRITABLE : Wopi::READONLY,
+				'', '', array(
+				'share_expires'  =>  time() + Wopi::TOKEN_TTL,
+				'share_writable' =>  $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+			));
+			$GLOBALS['egw_info']['server']['vfs_fstab'] = $fstab;
+			$GLOBALS['egw']->sharing->share = $dir_share;
+
+			return $share;
+		}
 	}
 
 	/**

@@ -115,7 +115,7 @@ class Ui {
 				));
 		if($GLOBALS['egw_info']['apps']['stylite'])
 		{
-			/*$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
+			$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
 				'caption' => lang('Writable Collabora link'),
 				'group' => 1,
 				'icon' => 'collabora',
@@ -123,7 +123,7 @@ class Ui {
 				'hideOnDisabled' => true,
 				'order' => 12,
 				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
-			);*/
+			);
 		}
 
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
@@ -151,9 +151,18 @@ class Ui {
 		$token = Bo::get_token($path);
 
 		$content = array(
-			'url'	=> Bo::get_action_url($path),
+			'url'	=> Bo::get_action_url($token['root'] && !Vfs::is_dir($token['root']) ? $token['root'] : $path),
 			'filename' => Vfs::basename($path),
 		) + $token;
+
+
+		if($token['root'] && Vfs::is_dir($token['root']))
+		{
+			$file_share = Wopi::open_from_share($token, $path);
+			$content = Bo::get_token($path, $file_share) + array(
+				'url'	=> Bo::get_action_url(str_replace(Vfs::PREFIX,'',$file_share['share_path']))
+			) + $content;
+		}
 
 		// Revision list
 		if(Bo::is_versioned($path))

@@ -34,7 +34,12 @@ class Files
 	 */
 	public function process($id)
 	{
-
+		if(!$id)
+		{
+			http_response_code(404);
+			header('X-WOPI-ServerError', 'Missing file ID');
+			return;
+		}
 		$path = Wopi::get_path($id);
 		if($path == '')
 		{
@@ -46,29 +51,29 @@ class Files
 			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".$this->header('X-WOPI-Override').", path (from id $id) = $path");
 		}
 
-		if(!$path)
+		if(!$path || Vfs::is_dir($path))
 		{
 			http_response_code(404);
-			exit;
+			header('X-WOPI-ServerError', 'Unable to find file / path is invalid');
+			return;
 		}
 
 		switch ($this->header('X-WOPI-Override'))
 		{
 			case 'LOCK':
 				$this->lock($path);
-				exit;
+				return;
 			case 'GET_LOCK':
 				$this->get_lock($path);
-				exit;
+				return;
 			case 'REFRESH_LOCK':
 				$this->refresh_lock($path);
-				exit;
+				return;
 			case 'UNLOCK':
 				$this->unlock($path);
-				exit;
+				return;
 			case 'PUT':
-				$this->put($path);
-				exit;
+				return $this->put($path);
 			case 'PUT_RELATIVE':
 				return $this->put_relative_file($path);
 			default:
@@ -82,7 +87,7 @@ class Files
 		if($data == null)
 		{
 			http_response_code(404);
-			exit;
+			return null;
 		}
 
 
@@ -229,12 +234,10 @@ class Files
 		$stat = Vfs::stat($path);
 
 		// send a content-disposition header, so browser knows how to name downloaded file
-		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
-		{
-			Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
-			header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
-			readfile(Vfs::PREFIX . $path);
-		}
+		Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
+		header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
+		readfile(Vfs::PREFIX . $path);
+
 		return;
 	}
 
