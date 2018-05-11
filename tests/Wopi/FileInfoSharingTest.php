@@ -151,4 +151,38 @@ class FileInfoSharingTest extends SharingBase
 
 		$this->checkDirectory($dir, Wopi::WOPI_WRITABLE);
 	}
+
+	/**
+	 * Check the access permissions & file info for one file
+	 *
+	 * @param string $file
+	 * @param string $mode
+	 */
+	protected function checkOneFile($file, $mode)
+	{
+		$parent = parent::checkOneFile($file, $mode);
+
+		$files = new Wopi\Files();
+		$info = $files->check_file_info($file);
+
+		// Check additional things
+		// - Readonly or sharing a single file does not give save as
+		switch($mode)
+		{
+			case Wopi::WOPI_READONLY:
+				$this->assertTrue($info['UserCanNotWriteRelative'], "Readonly share allows Save As");
+				$this->assertFalse($info['UserCanRename'], "Readonly allows rename");
+				break;
+			case Wopi::WOPI_WRITABLE:
+				$this->assertFalse($info['UserCanNotWriteRelative'], "Writable does not allow Save As");
+				$this->assertTrue($info['UserCanRename'], "Writable does not allow rename");
+				break;
+			case Wopi::WOPI_SHARED:
+				// Same as readonly
+				$this->assertTrue($info['UserCanNotWriteRelative'], "Writable share allows Save As");
+				$this->assertFalse($info['UserCanRename'], "Writable share allows rename");
+				break;
+
+		}
+	}
 }

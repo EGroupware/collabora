@@ -127,7 +127,8 @@ class FileInfoLocalTest extends SharingBase
 		// Ignore directories
 		if(Vfs::is_dir($_file) || !$_file) return;
 
-		$info = $this->clean_info(Wopi\Files::check_file_info($_file));
+		$files = new Wopi\Files();
+		$info = $this->clean_info($files->check_file_info($_file));
 
 		$file = basename($_file);
 		$stored = file_get_contents($this->get_info_fixture($file));

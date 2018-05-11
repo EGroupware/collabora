@@ -181,12 +181,12 @@ class Files
 			'SupportsUpdate'    => true,
 			'SupportsRename'	=> true,
 			// enables Save As acton in File menu
-			'UserCanNotWriteRelative' => false,
+			'UserCanNotWriteRelative' => !$this->allow_save_as($path),
 
 			// User permissions
 			// ----------------
 			'ReadOnly'          => !Vfs::is_writable($path),
-			'UserCanRename'     => true,
+			'UserCanRename'     => $this->allow_save_as($path),
 
 			// Other miscellaneous properties
 			// ------------------------------
@@ -470,6 +470,11 @@ class Files
 			$info = pathinfo($path);
 			$suggested_target = basename($path, '.'.$info['extension']) . $suggested_target;
 		}
+		if(strpos($suggested_target, '//') === 0)
+		{
+			// Sometimes Collabora suggested target has // at the front instead of /
+			$suggested_target = substr($suggested_target, 2);
+		}
 
 		if(Wopi::DEBUG)
 		{
@@ -620,5 +625,19 @@ class Files
 		}
 
 		return Vfs::concat($path, $file);
+	}
+
+	/**
+	 * Check if we allow the user to rename or Save As
+	 *
+	 * If the file is read-only, neither are allowed.
+	 * We do not allow files shared as editable to rename either.  Only files
+	 * opened directly for editing or opened from a shared (writable) directory
+	 * are allowed to be renamed.
+	 */
+	protected function allow_save_as($path)
+	{
+		$share = Wopi::get_share();
+		return $share['share_writable'] == Wopi::WOPI_WRITABLE;
 	}
 }

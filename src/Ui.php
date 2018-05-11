@@ -155,7 +155,7 @@ class Ui {
 			'filename' => Vfs::basename($path),
 		) + $token;
 
-
+		// Check if editing a file in a shared directory
 		if($token['root'] && Vfs::is_dir($token['root']))
 		{
 			$file_share = Wopi::open_from_share($token, $path);
@@ -401,7 +401,7 @@ class Ui {
 	 * return array/object with values for keys 'msg', 'errs', 'dirs', 'files'
 	 *
 	 * @param string $action eg. 'delete', ...
-	 * @param array $selected selected path(s)
+	 * @param string $selected selected path
 	 * @param string $dir=null current directory
 	 * @see static::action()
 	 */
@@ -418,7 +418,13 @@ class Ui {
 		);
 
 		// Create a token for access
-		$token = Bo::get_token($selected);
+		// Use WOPI_SHARED to limit filesystem (Save As)
+		$token = Bo::get_token($selected, Api\Vfs\Sharing::create($selected,
+			Vfs::is_writable($selected) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+			'', '', array(
+			'share_expires'  =>  time() + Wopi::TOKEN_TTL,
+			'share_writable' =>  Vfs::is_writable($selected) ? Wopi::WOPI_SHARED : Wopi::WOPI_READONLY,
+		)));
 
 		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
 		$arr['title'] = lang("Editable share link");

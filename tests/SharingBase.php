@@ -77,7 +77,8 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 			return parent::checkOneFile($file, $mode);
 		}
 
-		$info = Wopi\Files::check_file_info($file);
+		$files = new Wopi\Files();
+		$info = $files->check_file_info($file);
 		if(static::LOG_LEVEL > 1)
 		{
 			error_log($file . ' FileInfo: ' .array2string($info));
