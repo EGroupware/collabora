@@ -1,0 +1,31 @@
+%1 supported document types	collabora	it	%1 tipi di documenti supportati
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	it	Una installazione locale non accessibile via internet NON funzionerà con un server pubblico Collabora.
+active user 'anonymous' found.	collabora	it	Trovato utente "anonimo" attivo
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	it	Un utente "anonimo" è richiesto da parte di Collabora per accedere e condividere file
+can not read collobora configuration in %1!	collabora	it	Cobfigurazione Collabora non leggibile in %1!
+checking for user 'anonymous'	collabora	it	Controllo l'esistenza di un utente "anonimo"
+collabora	common	it	Collabora
+collabora is not configured!	collabora	it	Collabora non è configurato!
+collabora server	collabora	it	Server Collabora
+create	collabora	it	Crea
+create new %1	filemanager	it	Crea nuovo %1
+document	filemanager	it	Documento
+egroupware epl is required to configure a custom collabora server.	collabora	it	È richiesto EGroupware EPL per configurare un server Collabora personalizzato
+failed to create file %1!	collabora	it	Creazione del file %1 fallita!
+failed to create file %1: file already exists!	collabora	it	Creazione del file %1 fallita! Il file estiste già!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	it	Creazione del file fallita per mancanza di permessi di accesso sufficienti alla cartella %1!
+failed to update collabora configuration in %1!	collabora	it	Aggiornamento della configurazione di Collabora fallita in %1!
+file	collabora	it	file
+file %1 has been created successfully.	collabora	it	Il file %1 è stato creato con successo
+local collabora server	collabora	it	Server Collabora locale
+no active user 'anonymous' found!	collabora	it	Non è stato trovato un utente "anonimo"!
+open as new	filemanager	it	Apri come nuovo
+please enter your file name	filemanager	it	Per favore inserisci il nome del tuo file
+presentation	filemanager	it	Presentazione
+requirements / please note	collabora	it	Requisiti/per favore prendere nota
+spreadsheet	filemanager	it	Foglio di calcolo
+support-key	collabora	it	Chiave di supporto
+the collabora server must be able to access your egroupware installation!	collabora	it	Il server collabora deve poter accedere alla tua installazione EGroupware!
+unable to connect	collabora	it	Impossibile connettersi
+unable to contact collabora server	collabora	it	Impossibile contattare il server Collabora
+versions	collabora	it	Versioni
