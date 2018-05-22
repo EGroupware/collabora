@@ -56,7 +56,7 @@
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]">
 					<description value="Password"/>
-					<textbox type="password" id="newsettings[password]"/>
+					<textbox type="passwd" id="newsettings[password]"/>
 				</row>
 			</rows>
 		</grid>
