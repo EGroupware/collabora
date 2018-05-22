@@ -164,9 +164,9 @@ class Admin
 			}
 			else
 			{
-				$value_regexp = $name !== 'host' ? '.*' : '[a-zA-Z0-9_.\\\\-]+';
-				$content = preg_replace("|<({$name_quoted}[^>]*)>$value_regexp</$name_quoted>|",
-					"<\\1>$value_escaped</$name>", $content);
+				$value_regexp = $name !== 'host' ? ')>.*' : 'allow="true")>.+';
+				$content = preg_replace("|^((\s*<{$name_quoted}[^>]*$value_regexp</$name_quoted>\n)+|m",
+					"\\2>$value_escaped</$name>\n", $content);
 				$update = $update || $matches[1] !== $value_escaped;
 			}
 		}
