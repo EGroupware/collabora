@@ -67,10 +67,15 @@ class Bo {
 
 		try
 		{
-			// dont use proxy for localhost or private IPs
-			if (preg_match('/^(localhost|((10|127)\.\d{1,3}|192\.168)\.\d{1,3}\.\d{1,3})(:\d+)?$/', $server))
+			// dont use proxy for localhost or private IPs and don't try to verify a certificate
+			if (preg_match('#^https?://(localhost|((10|127)\.\d{1,3}|192\.168)\.\d{1,3}\.\d{1,3})(:\d+)?$#', $server))
 			{
-				$response_xml_data = file_get_contents($server_url);
+				$no_ssl_verify = stream_context_create(array(
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+				)));
+				$response_xml_data = file_get_contents($server_url, false, $no_ssl_verify);
 			}
 			else
 			{
