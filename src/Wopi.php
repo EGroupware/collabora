@@ -239,7 +239,7 @@ class Wopi extends Sharing
 			}
 		}
 
-		if($path && $GLOBALS['egw']->sharing && $path != ($token_path=self::get_path_from_token())
+		if($path && isset($GLOBALS['egw']->sharing) && $path != ($token_path=self::get_path_from_token())
 				&& !Api\Vfs::is_dir($token_path) && !Api\Vfs::is_link($token_path)
 		)
 		{
