@@ -148,7 +148,7 @@ class Ui {
 		Framework::includeCSS('collabora', 'app');
 
 		$template = new Etemplate('collabora.editor');
-		unset($GLOBALS['egw']->sharing);
+		
 		$token = Bo::get_token($path);
 
 		$content = array(

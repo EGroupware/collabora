@@ -156,7 +156,7 @@ class Bo {
 	 */
 	public static function get_token($path, $share = null)
 	{
-		if ($share == null && !($share = Wopi::get_share()) || $share && $share['path'] != $path)
+		if ($share == null && !($share = Wopi::get_share()) || $share && $share['share_path'] != $path)
 		{
 			$share = Wopi::create($path,
 				$share['share_writable'] & 1 ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,

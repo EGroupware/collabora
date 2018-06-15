@@ -60,10 +60,7 @@ class Wopi extends Sharing
 	public static function index()
 	{
 		// Check access token, start session
-		if(!$GLOBALS['egw']->share)
-		{
-			static::create_session(true);
-		}
+		static::create_session(true);
 
 		// Determine the endpoint, get the ID
 		$matches = array();
