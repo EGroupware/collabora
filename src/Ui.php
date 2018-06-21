@@ -147,8 +147,11 @@ class Ui {
 		Framework::includeJS('.','app','collabora',true);
 		Framework::includeCSS('collabora', 'app');
 
+		//Allow Collabora frame to pass the CSP check
+		Api\Header\ContentSecurityPolicy::add('frame-src', array(Bo::get_server()));
+
 		$template = new Etemplate('collabora.editor');
-		
+
 		$token = Bo::get_token($path);
 
 		$content = array(
