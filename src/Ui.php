@@ -153,11 +153,23 @@ class Ui {
 		$template = new Etemplate('collabora.editor');
 
 		$token = Bo::get_token($path);
-
+		$resolved_path = $token['root'] && $token['root'] != '/' &&
+			!Vfs::is_dir($token['root']) ? $token['root'] : $path;
 		$content = array(
-			'url'	=> Bo::get_action_url($token['root'] && !Vfs::is_dir($token['root']) ? $token['root'] : $path),
+			'url'	=> Bo::get_action_url($resolved_path),
 			'filename' => Vfs::basename($path),
 		) + $token;
+
+		// No permissions or Vfs could not resolve a file mounted to root
+		if(!$content['url'] && $token['root'] == '/' && !is_dir($token['root']))
+		{
+			$parsed_path = Vfs::parse_url($token['path']);
+			$parsed_url = Vfs::parse_url($token['resolve_url']);
+			if($parsed_path['path'] == $parsed_url['path'])
+			{
+				$content['url'] = Bo::get_action_url($token['root']);
+			}
+		}
 
 		// Check if editing a file in a shared directory
 		if($token['root'] && Vfs::is_dir($token['root']))
