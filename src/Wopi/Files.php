@@ -197,7 +197,7 @@ class Files
 
 		if($path)
 		{
-			$data['BaseFileName'] = basename($path);
+			$data['BaseFileName'] = Vfs::basename($path);
 		}
 		if($path)
 		{
