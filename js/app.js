@@ -56,7 +56,8 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
 
 		// Check to see if it's something we can handle
-		if (is_collabora && this.isEditable(action, selected))
+		if (is_collabora && this.isEditable(action, selected)
+				&& egw.preference('document_doubleclick_action', 'filemanager') == 'collabora')
 		{
 			// Open the editor in a new window, still under our control
 			window.open(egw.link('/index.php', {
@@ -83,7 +84,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
-			var fe = egw_get_file_editor_prefered_mimes();
+			var fe = egw_get_file_editor_prefered_mimes(mime);
 			if (fe && fe.mime && !fe.mime[mime]) return false;
 			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
 		}
