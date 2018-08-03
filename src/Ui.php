@@ -124,6 +124,15 @@ class Ui {
 				'order' => 12,
 				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
 			);
+			$changes['data']['nm']['actions']['share']['children']['mail_collabora'] = array(
+				'caption' => lang('Writable collabora share'),
+				'icon' => 'mail',
+				'hint' => lang('Link is appended to email allowing recipients to edit the file'),
+				'group' => 2,
+				'order' => 12,
+				'enabled' => 'javaScript:app.filemanager.isSharableFile',
+				'onExecute' => 'javaScript:app.filemanager.mail',
+			);
 		}
 
 		$changes['sel_options']['new'] = \filemanager_ui::convertActionsToselOptions(self::$new_actions);
@@ -443,7 +452,8 @@ class Ui {
 		)));
 
 		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
-		$arr['title'] = lang("Editable share link");
+		// Send the filename as title for mail
+		$arr['title'] = $action == 'mail_collabora' ? Api\Vfs::basename($selected) : lang("Editable share link");
 		$arr['template'] = Api\Etemplate\Widget\Template::rel2url('/filemanager/templates/default/share_dialog.xet');
 
 		$response->data($arr);

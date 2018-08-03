@@ -155,6 +155,50 @@ app.classes.filemanager = app.classes.filemanager.extend(
 	},
 
 	/**
+	 * Mail files action: open compose with already linked files
+	 * We're only interested in collabora shares here, the super can handle
+	 * the rest
+	 *
+	 * @param {egwAction} _action
+	 * @param {egwActionObject[]} _selected
+	 */
+	mail: function(_action, _selected)
+	{
+		if(_action.id.indexOf('collabora') < 0)
+		{
+			return this._super.apply(this, arguments);
+		}
+		var path = this.id2path(_selected[0].id);
+		egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path],
+			this._mail_link_callback, this, true, this).sendRequest();
+		return true;
+	},
+
+	/**
+	 * Callback with the share link to append to an email
+	 *
+	 * @param {Object} _data
+	 * @param {String} _data.share_link Link to the share
+	 * @param {String} _data.title Title for the link
+	 * @param {String} [_data.msg] Error message
+	 */
+	_mail_link_callback: function(_data) {
+		if (_data.msg || !_data.share_link) window.egw_refresh(_data.msg, this.appname);
+
+		var params = {
+			'preset[body]': '<a href="'+_data.share_link + '">'+_data.title+'</a>'
+		};
+		var content = {
+			mail_htmltext: ['<br /><a href="'+_data.share_link + '">'+_data.title+'</a>'],
+			mail_plaintext: ["\n"+_data.share_link]
+		};
+
+		// always open compose in html mode, as attachment links look a lot nicer in html
+		params.mimeType = 'html';
+		return egw.openWithinWindow("mail", "setCompose", content, params, /mail.mail_compose.compose/);
+	},
+
+	/**
 	 * Build a dialog to get name and ext of new file
 	 *
 	 * @param {string} _type = document type of file, document is default
