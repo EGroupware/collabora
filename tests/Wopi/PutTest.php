@@ -65,10 +65,16 @@ class PutTest extends SharingBase
 
 		$response = $files->put($url);
 
+		// Get modified time
+		$stat = Vfs::stat($url);
+		$mtime = new Api\DateTime($stat['mtime']);
+		$mtime->setTimezone(new \DateTimeZone('UTC'));
+		$mtime = $mtime->format(Wopi\Files::DATE_FORMAT);
+
 		// Response code should be 200, which we set in setUp
 		$this->assertEquals(200, http_response_code());
-		// No actual response though
-		$this->assertNull($response);
+		// Response has modified time
+		$this->assertEquals($mtime, $response['LastModifiedTime']);
 		$this->assertTrue(Vfs::file_exists($url), "Test file $url is missing");
 		$this->assertNotEmpty(file_get_contents(Vfs::PREFIX.$url));
 	}
@@ -94,9 +100,16 @@ class PutTest extends SharingBase
 
 		$response = $files->put($url);
 
+		// Get modified time
+		$stat = Vfs::stat($url);
+		$mtime = new Api\DateTime($stat['mtime']);
+		$mtime->setTimezone(new \DateTimeZone('UTC'));
+		$mtime = $mtime->format(Wopi\Files::DATE_FORMAT);
+
 		// Response code should be 200, happily overwriting
 		$this->assertEquals(200, http_response_code());
-		$this->assertNull($response);
+		// Response has modified time
+		$this->assertEquals($mtime, $response['LastModifiedTime']);
 		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.$url));
 	}
 
