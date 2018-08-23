@@ -67,7 +67,7 @@ class PutTest extends SharingBase
 
 		// Get modified time
 		$stat = Vfs::stat($url);
-		$mtime = new Api\DateTime($stat['mtime']);
+		$mtime = new \EGroupware\Api\DateTime($stat['mtime']);
 		$mtime->setTimezone(new \DateTimeZone('UTC'));
 		$mtime = $mtime->format(Wopi\Files::DATE_FORMAT);
 
@@ -102,7 +102,7 @@ class PutTest extends SharingBase
 
 		// Get modified time
 		$stat = Vfs::stat($url);
-		$mtime = new Api\DateTime($stat['mtime']);
+		$mtime = new \EGroupware\Api\DateTime($stat['mtime']);
 		$mtime->setTimezone(new \DateTimeZone('UTC'));
 		$mtime = $mtime->format(Wopi\Files::DATE_FORMAT);
 
