@@ -25,6 +25,11 @@ class Files
 {
 	const LOCK_DURATION = 1800; // 30 Minutes, per WOPI spec
 
+
+	// WOPI spec says ISO 8601, specifically this format
+	// https://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#term-lastmodifiedtime
+	const DATE_FORMAT = 'Y-m-d\TH:i:s.u\Z';
+
 	/**
 	 * Process a request to the files endpoint
 	 *
@@ -193,7 +198,9 @@ class Files
 		{
 			$data['OwnerId'] = ''.$stat['uid'];
 			$data['Size'] = ''.$stat['size'];
-			$data['LastModifiedTime'] = Api\DateTime::to($stat['mtime'], \DateTime::ISO8601);
+			$mtime = new Api\DateTime($stat['mtime']);
+			$mtime->setTimezone(new \DateTimeZone('UTC'));
+			$data['LastModifiedTime'] = $mtime->format(static::DATE_FORMAT);
 		}
 		else
 		{
@@ -385,7 +392,22 @@ class Files
 		// Read the contents of the file from the POST body and store.
 		$content = fopen('php://input', 'r');
 
-		file_put_contents(Vfs::PREFIX . $path, $content);
+		if(False === file_put_contents(Vfs::PREFIX . $path, $content))
+		{
+			http_response_code(500);
+			header('X-WOPI-ServerError', 'Unable to write file');
+		}
+
+		$stat = Vfs::stat($path);
+		$data = array('status' => 'success');
+		if($stat)
+		{
+			$data['Size'] = ''.$stat['size'];
+			$mtime = new Api\DateTime($stat['mtime']);
+			$mtime->setTimezone(new \DateTimeZone('UTC'));
+			$data['LastModifiedTime'] = $mtime->format(static::DATE_FORMAT);
+		}
+		return $data;
 	}
 
 	/**
