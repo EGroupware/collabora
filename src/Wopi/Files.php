@@ -408,6 +408,7 @@ class Files
 			// Conflict
 			http_response_code(409);
 			header('X-WOPI-Lock', $lock['token']);
+			return;
 		}
 
 		$api_config = Api\Config::read('phpgwapi');
@@ -422,6 +423,7 @@ class Files
 		{
 			http_response_code(500);
 			header('X-WOPI-ServerError', 'Unable to write file');
+			return;
 		}
 
 		$stat = Vfs::stat($path);
