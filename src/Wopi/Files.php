@@ -72,8 +72,8 @@ class Files
 				static::unlock($path);
 				exit;
 			case 'PUT':
-				static::put($path);
-				exit;
+				$data = static::put($path);
+				break;
 			case 'PUT_RELATIVE':
 				static::put_relative_file($path);
 				exit;
