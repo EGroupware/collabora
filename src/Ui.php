@@ -390,7 +390,9 @@ class Ui {
 			));
 		}
 		$file = ($dir === '/' ? $dir : $dir.'/').$name.'.'.$ext;
-		$template = file_get_contents(EGW_SERVER_ROOT.'/collabora/assets/template_'.$ext.'.'.$ext);
+		$template = file_get_contents(($GLOBALS['egw_info']['user']['apps']['stylite'] ?
+			Api\Vfs::PREFIX.'/templates/collabora/' :
+			EGW_SERVER_ROOT.'/collabora/assets/').'template_'.$ext.'.'.$ext);
 		if (Api\Vfs::file_exists($file))
 		{
 			$data['message'] = lang('Failed to create file %1: file already exists!', $file);
