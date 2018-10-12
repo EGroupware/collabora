@@ -193,6 +193,9 @@ class Files
 			'ReadOnly'          => !Vfs::is_writable($path),
 			'UserCanRename'     => $this->allow_save_as($path),
 
+			// Insert images from VFS
+			'EnableInsertRemoteImage' => true,
+
 			// Other miscellaneous properties
 			// ------------------------------
 			'DisablePrint'      => false,

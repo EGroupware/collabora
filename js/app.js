@@ -506,6 +506,9 @@ app.classes.collabora = AppJS.extend(
 					this.on_save_as();
 				}
 				break;
+			case "UI_InsertGraphic":
+				this.insert_image();
+				break;
 
 			case "Get_Export_Formats_Resp":
 				var fe = egw.link_get_registry('filemanager-editor');
@@ -658,5 +661,30 @@ app.classes.collabora = AppJS.extend(
 				'cd': 'no'	// needed to not reload framework in sharing
 			});
 		return false;
+	},
+
+	/**
+	 * Get a URL to insert into the document
+	 */
+	insert_image: function()
+	{
+		var image_selected = function(node, widget)
+		{
+			if(widget.get_value())
+			{
+				var path = egw.link('/webdav.php'+widget.get_value());
+				// Tell Collabora about it
+				this.WOPIPostMessage('Action_InsertGraphic', {url:path});
+			}
+		}.bind(this);
+		var attrs = {
+			mode: 'open',
+			dialog_title: 'Insert',
+			button_label: 'Insert',
+			onchange: image_selected
+		};
+		var select = et2_createWidget('vfs-select',attrs, this.et2);
+		select.loadingFinished();
+		select.click();
 	}
 });
