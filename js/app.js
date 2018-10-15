@@ -672,9 +672,22 @@ app.classes.collabora = AppJS.extend(
 		{
 			if(widget.get_value())
 			{
-				var path = egw.link('/webdav.php'+widget.get_value());
-				// Tell Collabora about it
-				this.WOPIPostMessage('Action_InsertGraphic', {url:path});
+				// Collabora server probably doesn't have access to file, so share it
+				// It needs access, but only to fetch the file so expire tomorrow.
+				// Collabora will fail (hang) if share dissapears while the document is open
+				var expires = new Date();
+				expires.setUTCDate(expires.getUTCDate()+1);
+				this.egw.json('EGroupware\\Api\\Sharing::ajax_create',
+					['collabora', widget.get_value(), false, false, {share_expires: date('Y-m-d',expires)}],
+					function(value) {
+						var path = value.share_link || '';
+
+						// Tell Collabora about it
+						this.WOPIPostMessage('Action_InsertGraphic', {url:value.share_link});
+					},
+					this, true, this, this.egw
+				)
+					.sendRequest();
 			}
 		}.bind(this);
 		var attrs = {
