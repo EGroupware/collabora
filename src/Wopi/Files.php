@@ -196,6 +196,8 @@ class Files
 			// Insert images from VFS
 			'EnableInsertRemoteImage' => true,
 
+			// Sharing
+			'EnableShare'       => true,
 			// Other miscellaneous properties
 			// ------------------------------
 			'DisablePrint'      => false,

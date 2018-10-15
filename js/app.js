@@ -509,6 +509,9 @@ app.classes.collabora = AppJS.extend(
 			case "UI_InsertGraphic":
 				this.insert_image();
 				break;
+			case "UI_Share":
+				this.share();
+				break;
 
 			case "Get_Export_Formats_Resp":
 				var fe = egw.link_get_registry('filemanager-editor');
@@ -699,5 +702,18 @@ app.classes.collabora = AppJS.extend(
 		var select = et2_createWidget('vfs-select',attrs, this.et2);
 		select.loadingFinished();
 		select.click();
+	},
+
+	/**
+	 * Share the current file (via mail)
+	 * 
+	 * @returns {Boolean}
+	 */
+	share: function()
+	{
+		var path = this.et2.getArrayMgr('content').getEntry('path');
+		egw.json('EGroupware\\collabora\\Ui::ajax_share_link', ['mail_collabora', path],
+				app.filemanager._mail_link_callback, this, true, this).sendRequest();
+		return true;
 	}
 });
