@@ -203,6 +203,9 @@ class Files
 			'DisablePrint'      => false,
 			'DisableExport'     => false,
 			'DisableCopy'       => false,
+			'UserExtraInfo'		=> array(
+				'avatar'	=> $origin.'/api/avatar.php?account_id='.Vfs::$user
+			)
 		);
 
 		if($path)
