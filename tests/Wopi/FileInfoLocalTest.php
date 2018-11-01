@@ -137,7 +137,7 @@ class FileInfoLocalTest extends SharingBase
 			trigger_error("Missing fixture for $file created.", E_USER_NOTICE);
 			file_put_contents($this->get_info_fixture($file), $info);
 		}
-		$this->assertEquals($stored, $info);
+		$this->assertEquals($stored, $info, "Did you update the text fixture? (".$this->get_info_fixture($file).')');
 	}
 
 	/**
