@@ -159,7 +159,8 @@ class FileInfoLocalTest extends SharingBase
 		// These are always going to be different
 		unset($info['PostMessageOrigin']);
 		unset($info['LastModifiedTime']);
-
+		unset($info['UserExtraInfo']);
+		
 		// This is different on Travis (User, Admin vs Account, Demo)
 		unset($info['UserFriendlyName']);
 
