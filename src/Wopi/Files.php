@@ -411,10 +411,11 @@ class Files
 			Vfs::SCHEME => array(
 				'versioning' => array(
 					'disable' => $is_autosaved && $this->header('X-LOOL-WOPI-IsAutosave') === 'true',
+					'min_version' => 0,	// do NOT stop explicit versioning for non autosave and new opened of files
 				),
 			),
 		));
-		//error_log(__METHOD__."('$path') headers=".array2string($this->header())." --> context=".array2string($context));
+		//error_log(__METHOD__."('$path') prop=".array2string($prop).", is_autosaved=".array2string($is_autosaved)." --> context=".array2string($context));
 
 		if (False === file_put_contents(Vfs::PREFIX . $path, $content, 0, $context))
 		{
