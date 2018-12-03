@@ -170,6 +170,9 @@ class Ui {
 			}
 		}
 
+		// remove evtl. set autosave TS, to force a new version
+		Vfs::proppatch($path, array(array('ns' => Vfs::DEFAULT_PROP_NAMESPACE, 'name' => Wopi\Files::PROP_AUTOSAVE_TS, 'val' => null)));
+
 		$template->exec('collabora.'.__CLASS__.'.editor', $content, array(), array(), array(), 3);
 	}
 
