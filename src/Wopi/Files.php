@@ -227,11 +227,12 @@ class Files
 		$stat = Vfs::stat($path);
 
 		// send a content-disposition header, so browser knows how to name downloaded file
-		Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
-		header('Content-Length: ' . $stat['size']);
-		header('Content-Type: ' . $stat['mime']);
-		readfile(Vfs::PREFIX . $path);
-
+		if (!Vfs::is_dir($GLOBALS['egw']->sharing->get_root()))
+		{
+			Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
+			header('Content-Length: ' . filesize(Vfs::PREFIX . $path));
+			readfile(Vfs::PREFIX . $path);
+		}
 		return;
 	}
 
@@ -353,11 +354,6 @@ class Files
 	}
 
 	/**
-	 * Name of property for autosave time-stamp
-	 */
-	const PROP_AUTOSAVE_TS = 'AutosaveTS';
-
-	/**
 	 * Update a file's binary contents
 	 *
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutFile.html
@@ -396,37 +392,11 @@ class Files
 		// Read the contents of the file from the POST body and store.
 		$content = fopen('php://input', 'r');
 
-		// check if current file-version is from an autosave (modification TS matches autosave TS)
-		$is_autosaved = false;
-		foreach(Vfs::propfind($path) as $prop)
-		{
-			if ($prop['name'] === self::PROP_AUTOSAVE_TS)
-			{
-				$is_autosaved = $prop['val'] == filemtime(Vfs::PREFIX.$path);
-				break;
-			}
-		}
-		// let VFS via context know, to NOT create a new version for consecutive autosaves
-		$context = stream_context_create($c=array(
-			Vfs::SCHEME => array(
-				'versioning' => array(
-					'disable' => $is_autosaved && $this->header('X-LOOL-WOPI-IsAutosave') === 'true',
-				),
-			),
-		));
-		//error_log(__METHOD__."('$path') headers=".array2string($this->header())." --> context=".array2string($context));
-
-		if (False === file_put_contents(Vfs::PREFIX . $path, $content, 0, $context))
+		if(False === file_put_contents(Vfs::PREFIX . $path, $content))
 		{
 			http_response_code(500);
 			header('X-WOPI-ServerError', 'Unable to write file');
 		}
-		// mark version as autosaved by storing it's modification TS
-		Vfs::proppatch($path, array(array(
-			'ns' => Vfs::DEFAULT_PROP_NAMESPACE,
-			'name' => self::PROP_AUTOSAVE_TS,
-			'val' => $this->header('X-LOOL-WOPI-IsAutosave') === 'true' ? filemtime(Vfs::PREFIX.$path) : null,
-		)));
 
 		$stat = Vfs::stat($path);
 		$data = array('status' => 'success');
@@ -545,20 +515,8 @@ class Files
 		}
 
 		// Read the contents of the file from the POST body and store.
-<<<<<<< HEAD
 		$content = fopen('php://input', 'r');
 		file_put_contents(Vfs::PREFIX . $target, $content);
-=======
-		$content = $this->get_sent_content();
-		if(False === file_put_contents(Vfs::PREFIX . $target, $content))
-		{
-			http_response_code(500);
-			header('X-WOPI-ServerError', 'Unable to write file');
-			return;
-		}
-		// remove evtl. set autosave TS, to force a new version
-		Vfs::proppatch($path, array(array('ns' => Vfs::DEFAULT_PROP_NAMESPACE, 'name' => self::PROP_AUTOSAVE_TS, 'val' => null)));
->>>>>>> 78f9a15... * Collabora: do NOT create new versions for consecutive autosave
 
 		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
 			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
@@ -577,13 +535,15 @@ class Files
 	 */
 	protected static function clean_filename($original_path)
 	{
+		$file = Vfs::basename($original_path);
+
 		// Sanitize the characters -
 		// Remove anything which isn't a word, whitespace, number
 		// or any of the following caracters -_~,;[]().
 		// Thanks, Sean Vieira
-		$name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', Vfs::basename($original_path));
+		$file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
 		// Remove any runs of periods
-		$file = mb_ereg_replace("([\.]{2,})", '', $name);
+		$file = mb_ereg_replace("([\.]{2,})", '', $file);
 
 		$basename = pathinfo($file, PATHINFO_FILENAME);
 		$extension = pathinfo($file, PATHINFO_EXTENSION);
@@ -601,23 +561,4 @@ class Files
 
 		return Vfs::concat($path, $file);
 	}
-<<<<<<< HEAD
-=======
-
-	/**
-	 * Check if we allow the user to rename or Save As
-	 *
-	 * If the file is read-only, neither are allowed.
-	 * We do not allow files shared as editable to rename either.  Only files
-	 * opened directly for editing or opened from a shared (writable) directory
-	 * are allowed to be renamed.
-	 */
-	protected function allow_save_as($path)
-	{
-		unset($path);	// not used, but required by function signature
-
-		$share = Wopi::get_share();
-		return $share['share_writable'] == Wopi::WOPI_WRITABLE;
-	}
->>>>>>> 78f9a15... * Collabora: do NOT create new versions for consecutive autosave
 }
