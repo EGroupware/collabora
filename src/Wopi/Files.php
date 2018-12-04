@@ -546,6 +546,10 @@ class Files
 		}
 
 		// Read the contents of the file from the POST body and store.
+<<<<<<< HEAD
+		$content = fopen('php://input', 'r');
+		file_put_contents(Vfs::PREFIX . $target, $content);
+=======
 		$content = $this->get_sent_content();
 		if(False === file_put_contents(Vfs::PREFIX . $target, $content))
 		{
@@ -555,6 +559,7 @@ class Files
 		}
 		// remove evtl. set autosave TS, to force a new version
 		Vfs::proppatch($path, array(array('ns' => Vfs::DEFAULT_PROP_NAMESPACE, 'name' => self::PROP_AUTOSAVE_TS, 'val' => null)));
+>>>>>>> 78f9a15... * Collabora: do NOT create new versions for consecutive autosave
 
 		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
 			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
@@ -597,4 +602,23 @@ class Files
 
 		return Vfs::concat($path, $file);
 	}
+<<<<<<< HEAD
+=======
+
+	/**
+	 * Check if we allow the user to rename or Save As
+	 *
+	 * If the file is read-only, neither are allowed.
+	 * We do not allow files shared as editable to rename either.  Only files
+	 * opened directly for editing or opened from a shared (writable) directory
+	 * are allowed to be renamed.
+	 */
+	protected function allow_save_as($path)
+	{
+		unset($path);	// not used, but required by function signature
+
+		$share = Wopi::get_share();
+		return $share['share_writable'] == Wopi::WOPI_WRITABLE;
+	}
+>>>>>>> 78f9a15... * Collabora: do NOT create new versions for consecutive autosave
 }
