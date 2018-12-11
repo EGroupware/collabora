@@ -338,7 +338,7 @@ class Ui {
 							break;
 						case \timesheet_merge::class:
 							// Skip the rows with totalss
-							if(!is_numeric($row_id)) continue;
+							if(!is_numeric($row_id)) continue 2;	// +1 for switch
 							// Fall through
 						default:
 							$ids[] = $row_id;
