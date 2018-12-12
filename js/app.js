@@ -505,6 +505,10 @@ app.classes.collabora = AppJS.extend(
 				{
 					this.on_save_as();
 				}
+				if (message.Values.Id === 'egwSaveAsMail')
+				{
+					this.on_save_as_mail();
+				}
 				break;
 			case "UI_InsertGraphic":
 				this.insert_image();
@@ -561,10 +565,24 @@ app.classes.collabora = AppJS.extend(
 	_customize_editor: function() {
 
 		this.WOPIPostMessage('Insert_Button', {
+			id: 'egwSaveAsMail',
+			imgurl: 'images/lc_saveas.svg',
+			hint: egw.lang('Save As Mail')
+		});
+
+		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAs',
 			imgurl: 'images/lc_saveas.svg',
 			hint: egw.lang('Save As')
 		});
+	},
+
+	/**
+	 * Handle Save as mail button
+	 */
+	on_save_as_mail: function () {
+		var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
+		app.filemanager.mail({id:"attach"}, [{id:filepath}]);
 	},
 
 	/**
@@ -706,7 +724,7 @@ app.classes.collabora = AppJS.extend(
 
 	/**
 	 * Share the current file (via mail)
-	 * 
+	 *
 	 * @returns {Boolean}
 	 */
 	share: function()
