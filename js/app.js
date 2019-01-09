@@ -564,9 +564,13 @@ app.classes.collabora = AppJS.extend(
 	 */
 	_customize_editor: function() {
 
+		var baseUrl = egw.webserverUrl[0] == '/' ?
+			window.location.protocol+'//'+window.location.hostname+egw.webserverUrl
+			: egw.webserverUrl;
+
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAsMail',
-			imgurl: window.location.protocol+'//'+window.location.hostname+egw.webserverUrl+'/collabora/templates/default/images/mail.svg',
+			imgurl: baseUrl+'/collabora/templates/default/images/mail.svg',
 			hint: egw.lang('Save As Mail')
 		});
 
