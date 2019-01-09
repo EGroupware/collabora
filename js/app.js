@@ -566,7 +566,7 @@ app.classes.collabora = AppJS.extend(
 
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAsMail',
-			imgurl: 'images/lc_saveas.svg',
+			imgurl: window.location.protocol+'//'+window.location.hostname+egw.webserverUrl+'/collabora/templates/default/images/mail.svg',
 			hint: egw.lang('Save As Mail')
 		});
 
