@@ -228,9 +228,7 @@ class Wopi extends Sharing
 			);
 
 			self::so();
-			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_path', array(
-					'share_id' => $where,
-				), __LINE__, __FILE__) as $row)
+			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_path', $where, __LINE__, __FILE__) as $row)
 			{
 				$path = $row['share_path'];
 			}
