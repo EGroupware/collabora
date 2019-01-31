@@ -49,6 +49,9 @@ class Wopi extends Sharing
 		'index'	=> TRUE
 	);
 
+	// Access credentials if we need to get to a password
+	static $credentials = null;
+	
 	/**
 	 * Entry point for the WOPI API
 	 *
@@ -105,13 +108,82 @@ class Wopi extends Sharing
 	}
 
 	/**
+	 * Create a new share for Collabora to use while editing
+	 *
+	 * @param string $path either path in temp_dir or vfs with optional vfs scheme
+	 * @param string $mode self::LINK: copy file in users tmp-dir or self::READABLE share given vfs file,
+	 *	if no vfs behave as self::LINK
+	 * @param string $name filename to use for $mode==self::LINK, default basename of $path
+	 * @param string|array $recipients one or more recipient email addresses
+	 * @param array $extra =array() extra data to store
+	 * @throw Api\Exception\NotFound if $path not found
+	 * @throw Api\Exception\AssertionFailed if user temp. directory does not exist and can not be created
+	 * @return array with share data, eg. value for key 'share_token'
+	 */
+	public static function create($path, $mode, $name, $recipients, $extra=array())
+	{
+
+		$result = parent::create($path, $mode, $name, $recipients, $extra);
+
+
+		// If path needs password, get credentials and add on the ID so we can
+		// actually open the path with the anon user
+		if(static::path_needs_password($path))
+		{
+			$cred_id = Credentials::read($result);
+			if(!$cred_id)
+			{
+				$cred_id = Credentials::write($result);
+			}
+
+			$result['share_token'] .= ':'.$cred_id;
+		}
+
+		return $result;
+	}
+
+
+	/**
 	 * Get token from url
 	 */
 	public static function get_token()
 	{
 		// Access token is encoded, as it may have + in it
 		$token = urldecode(filter_var($_GET['access_token'],FILTER_SANITIZE_SPECIAL_CHARS));
+
+		// Strip out possible credentials ID if path needs password
+		list($token, self::$credentials) = explode(':', $token);
+
 		return $token;
+	}
+
+	/**
+	 * If credentials are required to access the file, load & set what is needed
+	 *
+	 * @param boolean $keep_session
+	 * @param Array $share
+	 */
+	public static function setup_share($keep_session, &$share)
+	{
+		parent::setup_share($keep_session, $share);
+
+		if(self::$credentials && $share)
+		{
+			$access = Credentials::read_credential(self::$credentials);
+
+			$GLOBALS['egw_info']['user']['account_lid'] = Api\Accounts::id2name($share['share_owner'], 'account_lid');
+			$GLOBALS['egw_info']['user']['passwd'] = $access['password'];
+		}
+	}
+
+	/**
+	 * Get the namespaced class for the given share
+	 *
+	 * @param string $share
+	 */
+	protected static function get_share_class($share)
+	{
+		return __CLASS__;
 	}
 
 	/**
@@ -127,6 +199,26 @@ class Wopi extends Sharing
 	public static function get_path_from_token()
 	{
 		return $GLOBALS['egw']->sharing->share['share_path'];
+	}
+
+	/**
+	 * Parent just throws an exception if you try, here we return boolean so
+	 * we can take action and make sure the credentials are available
+	 *
+	 * @param string $path
+	 * @return boolean
+	 */
+	public static function path_needs_password($path)
+	{
+		try
+		{
+			parent::path_needs_password($path);
+		}
+		catch (Api\Exception\WrongParameter $e)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public static function open_from_share($share, $path)

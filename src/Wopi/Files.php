@@ -432,6 +432,7 @@ class Files
 
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
+		$path = strpos($path, Vfs::PREFIX) === 0 ? $path : Vfs::PREFIX.$path;
 
 		// check if current file-version is from an autosave (modification TS matches autosave TS)
 		$is_autosaved = false;
@@ -439,7 +440,7 @@ class Files
 		{
 			if ($prop['name'] === self::PROP_AUTOSAVE_TS)
 			{
-				$is_autosaved = $prop['val'] == filemtime(Vfs::PREFIX.$path);
+				$is_autosaved = $prop['val'] == filemtime($path);
 				break;
 			}
 		}
@@ -454,7 +455,7 @@ class Files
 		));
 		//error_log(__METHOD__."('$path') prop=".array2string($prop).", is_autosaved=".array2string($is_autosaved)." --> context=".array2string($context));
 
-		if (False === file_put_contents(Vfs::PREFIX . $path, $content, 0, $context))
+		if (False === file_put_contents($path, $content, 0, $context))
 		{
 			http_response_code(500);
 			header('X-WOPI-ServerError', 'Unable to write file');
@@ -464,7 +465,7 @@ class Files
 		Vfs::proppatch($path, array(array(
 			'ns' => Vfs::DEFAULT_PROP_NAMESPACE,
 			'name' => self::PROP_AUTOSAVE_TS,
-			'val' => $this->header('X-LOOL-WOPI-IsAutosave') === 'true' ? filemtime(Vfs::PREFIX.$path) : null,
+			'val' => $this->header('X-LOOL-WOPI-IsAutosave') === 'true' ? filemtime($path) : null,
 		)));
 
 		$stat = Vfs::stat($path);
