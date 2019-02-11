@@ -476,6 +476,10 @@ app.classes.collabora = AppJS.extend(
 
 					// Get supported export formats
 					app.collabora.WOPIPostMessage('Get_Export_Formats');
+
+					// enable FollowUser option by default
+					app.collabora.WOPIPostMessage('Action_FollowUser');
+					
 					this._customize_editor();
 					this.load = true;
 				}
