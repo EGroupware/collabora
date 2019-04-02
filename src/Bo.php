@@ -51,17 +51,20 @@ class Bo {
 	 */
 	public static function discover($server = '')
 	{
-		if (($cached = Cache::getInstance('collabora', 'discovery')))
-		{
-			return $cached;
-		}
-
-		if (empty($server)) $server = static::get_server();
+		if (empty($server)) $server = self::get_server();
 
 		if (empty($server))
 		{
 			throw new Api\Exception\WrongUserinput(lang('Collabora is not configured!'));
 		}
+
+		// if server is configured server AND we have a cached discovery --> use it
+		if ($server === self::get_server() &&
+			($cached = Cache::getInstance('collabora', 'discovery')))
+		{
+			return $cached;
+		}
+
 		$server_url = $server . self::DISCOVERY_URL;
 		$discovery = array();
 
