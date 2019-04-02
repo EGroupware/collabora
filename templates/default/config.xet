@@ -38,10 +38,18 @@
 				<row>
 					<description colspan="2" value="An user 'anonymous' is required for Collabora to access files and also for sharing files."/>
 				</row>
-				<!-- hack to get class propagated: id="newsettings[no_managed_collabora]" -->
-				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
+				<row height="30" valign="bottom">
 					<description value="Local Collabora server" span="all" class="subHeader"/>
 				</row>
+				<row height="60">
+					<vbox>
+						<description value="A local Collabora server can be installed with the 'egroupware-collabora-key' package." colspan="2"/>
+						<description value="You need a support-key from the EGroupware GmbH shop, for a supported Collabora installation." colspan="2"
+							href="https://www.egroupware.org/collabora-office/#order" extra_link_target="_blank"/>
+						<description value="A supported Collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default." colspan="2"/>
+					</vbox>
+				</row>
+				<!-- hack to get class propagated: id="newsettings[no_managed_collabora]" -->
 				<row disabled="@newsettings[no_managed_collabora]">
 					<description value="Support-key"/>
 					<textbox rows="5" multiline="1" width="100%" id="newsettings[support_key]"/>
