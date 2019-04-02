@@ -57,7 +57,7 @@ class Admin
 	{
 		if(!array_key_exists('server', $data))
 		{
-			$data['server'] = static::get_default_server();
+			$data['server'] = self::get_default_server();
 		}
 
 		// Check server by trying discovery url and report supported
@@ -88,6 +88,32 @@ class Admin
 		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) || !file_exists(self::LOOLWSD_CONFIG))
 		{
 			$data['no_managed_collabora'] = true;
+		}
+		// if Collabora server is managed by EGroupware (egroupware-collabora-key package) and URL is the default one
+		elseif ($data['server'] === self::get_default_server())
+		{
+			$server = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ||
+				!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
+					'https://' : 'http://').
+				(isset($_SERVER['HTTP_X_FORWARDED_HOST']) ?
+					$_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST']);
+
+			if ($server !== $data['server'])
+			{
+				// try the managed server under EGroupware's own URL
+				try {
+					$discovery = Bo::discover($server);
+					if (count($discovery))
+					{
+						$data['server'] = $server;
+						$data['server_status'] = lang('%1 supported document types', count($discovery));
+						$data['server_status_class'] = count($discovery) ? 'ok' : 'error';
+					}
+				}
+				catch (\Exception $ex) {
+					// ignore exception --> stay with default server
+				}
+			}
 		}
 		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
