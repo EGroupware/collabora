@@ -51,7 +51,7 @@ class Wopi extends Sharing
 
 	// Access credentials if we need to get to a password
 	static $credentials = null;
-	
+
 	/**
 	 * Entry point for the WOPI API
 	 *
@@ -285,7 +285,7 @@ class Wopi extends Sharing
 			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_id', $where,
 					__LINE__, __FILE__,false,$append,false,1) as $row)
 			{
-				$file_id = '-'.$row['share_id'];
+				$file_id = -1*$row['share_id'];
 			}
 		}
 
