@@ -289,7 +289,7 @@ class Wopi extends Sharing
 			}
 		}
 
-		return $file_id;
+		return (int)$file_id;
 	}
 
 	/**
