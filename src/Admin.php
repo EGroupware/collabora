@@ -92,11 +92,7 @@ class Admin
 		// if Collabora server is managed by EGroupware (egroupware-collabora-key package) and URL is the default one
 		elseif ($data['server'] === self::get_default_server())
 		{
-			$server = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ||
-				!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-					'https://' : 'http://').
-				(isset($_SERVER['HTTP_X_FORWARDED_HOST']) ?
-					$_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST']);
+			$server = self::get_managed_server();
 
 			if ($server !== $data['server'])
 			{
@@ -128,6 +124,12 @@ class Admin
 	{
 		// Validate server by checking discovery
 		Api\Cache::setInstance('collabora', 'discovery', false);
+
+		if (!isset($data['server']) && ($server = self::get_managed_server()))
+		{
+			$data['server'] = $server;
+		}
+
 		try
 		{
 			$discovery = Bo::discover($data['server']);
@@ -210,5 +212,26 @@ class Admin
 	public static function get_default_server()
 	{
 		return 'https://collabora.egroupware.org';
+	}
+
+	/**
+	 * Get url of managed Collabora server (egroupware-collabora-key package)
+	 *
+	 * @return string url of managed server or null
+	 */
+	public static function get_managed_server()
+	{
+		// disable local Collabora configuration, if not managed by EGroupware
+		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) || !file_exists(self::LOOLWSD_CONFIG))
+		{
+			return null;
+		}
+		$server = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ||
+			!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
+				'https://' : 'http://').
+			(isset($_SERVER['HTTP_X_FORWARDED_HOST']) ?
+				$_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST']);
+
+		return $server;
 	}
 }
