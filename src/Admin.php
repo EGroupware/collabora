@@ -177,7 +177,7 @@ class Admin
 		{
 			return lang('Can NOT read Collobora configuration in %1!', self::LOOLWSD_CONFIG);
 		}
-		$update = false;
+		$md5_before = md5($content);
 		foreach($data as $name => $value)
 		{
 			$name_quoted = preg_quote($name, '|');
@@ -188,17 +188,16 @@ class Admin
 			{
 				$content = preg_replace('|</config>|',
 					"    <$name>$value_escaped</$name>\n</config>", $content);
-				$update = true;
 			}
 			else
 			{
 				$value_regexp = $name !== 'host' ? ')>.*' : 'allow="true")>.+';
 				$content = preg_replace("|^((\s*<{$name_quoted}[^>]*$value_regexp</$name_quoted>\n)+|m",
 					"\\2>$value_escaped</$name>\n", $content);
-				$update = $update || $matches[1] !== $value_escaped;
 			}
 		}
-		if ($update && !file_put_contents(self::LOOLWSD_CONFIG, $content))
+		// do NOT update, if there is no change (as it caused Collabora to restart unnecessary)
+		if (md5($content) !== $md5_before && !file_put_contents(self::LOOLWSD_CONFIG, $content))
 		{
 			return lang('Failed to update Collabora configuration in %1!', self::LOOLWSD_CONFIG);
 		}
