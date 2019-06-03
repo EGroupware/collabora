@@ -127,7 +127,7 @@ class Admin
 
 		if (!isset($data['server']) && ($server = self::get_managed_server()))
 		{
-			$data['server'] = $server;
+			$_POST['newsettings']['server'] = $data['server'] = $server;
 		}
 
 		try
