@@ -1,8 +1,10 @@
 %1 supported document types	collabora	de	%1 unterstützte Dokument-Typen
+(requires username and password below)	collabora	de	(benötigt Benutzername und Passwort)
 a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	de	Ein lokaler Collabora Server kann über das 'egroupware-collabora-key' Paket installiert werden.
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	de	Eine lokale Installation, die vom Internet aus nicht erreichbar ist, kann NICHT mit einem öffentlichen Collabora Server funktionieren.
 a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	de	Das unterstütze Collabora erlaubt eine Nutzung mit der gekauften Anzahl Benutzer, mehr als bei der per Default installierten Demo- bzw. Entwickler-Version.
 active user 'anonymous' found.	collabora	de	Aktiver Benutzer 'anonymous' gefunden.
+admin console	collabora	de	Admin-Konsole
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	de	Ein Benutzer 'anonymous' wird benötigt damit Collabora auf Ihre Dateien zugreifen kann und um diese zu "sharen".
 can not read collobora configuration in %1!	collabora	de	Kann Collabora Konfiguration in %1 NICHT lesen!
 checking for user 'anonymous'	collabora	de	Prüfung des Benutzer 'anonymous'
