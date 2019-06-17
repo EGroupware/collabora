@@ -1,5 +1,5 @@
 %1 supported document types	collabora	en	%1 supported document types
-(requires username and password below)	collabora	en	(requires username and password below) 
+(requires username and password below)	collabora	en	(requires username and password below)
 a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	en	A local Collabora server can be installed with the 'egroupware-collabora-key' package.
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	en	A local installation not accessible from the internet will NOT work with a public Collabora server.
 a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	en	A supported Collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.
@@ -14,6 +14,7 @@ collabora server	collabora	en	Collabora server
 create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
 document	filemanager	en	Document
+editable share link	collabora	en	Editable share link
 egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora server.
 failed to create file %1!	collabora	en	Failed to create file %1!
 failed to create file %1: file already exists!	collabora	en	Failed to create file %1: file already exists!
@@ -21,16 +22,20 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	en	Failed to update Collabora configuration in %1!
 file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
+link is appended to email allowing recipients to edit the file	collabora	en	Link is appended to email allowing recipients to edit the file
 local collabora server	collabora	en	Local Collabora server
 no active user 'anonymous' found!	collabora	en	No active user 'anonymous' found!
 open as new	filemanager	en	Open as new
 please enter your file name	filemanager	en	Please enter your file name
 presentation	filemanager	en	Presentation
 requirements / please note	collabora	en	Requirements / please note
+save as mail	collabora	en	Save As Mail
 spreadsheet	filemanager	en	Spreadsheet
 support-key	collabora	en	Support-key
 the collabora server must be able to access your egroupware installation!	collabora	en	The Collabora server must be able to access your EGroupware installation!
 unable to connect	collabora	en	Unable to connect
 unable to contact collabora server	collabora	en	Unable to contact collabora server
 versions	collabora	en	Versions
+writable collabora link	collabora	en	Writable Collabora link
+writable collabora share	collabora	en	Writable collabora share
 you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	en	You need a support-key from the EGroupware GmbH shop, for a supported Collabora installation.
