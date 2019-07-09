@@ -54,10 +54,11 @@ app.classes.filemanager = app.classes.filemanager.extend(
 		var data = egw.dataGetUIDdata(selected[0].id);
 		var mime = data.data.mime || '';
 		var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
+		var dblclick_action = egw.preference('document_doubleclick_action', 'filemanager');
 
 		// Check to see if it's something we can handle
-		if (is_collabora && this.isEditable(action, selected)
-				&& egw.preference('document_doubleclick_action', 'filemanager') == 'collabora')
+		if (is_collabora && this.isEditable(action, selected) &&
+			(!dblclick_action || dblclick_action == 'collabora'))
 		{
 			// Open the editor in a new window, still under our control
 			window.open(egw.link('/index.php', {
@@ -479,7 +480,7 @@ app.classes.collabora = AppJS.extend(
 
 					// enable FollowUser option by default
 					app.collabora.WOPIPostMessage('Action_FollowUser');
-					
+
 					this._customize_editor();
 					this.load = true;
 				}
