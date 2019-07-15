@@ -344,6 +344,7 @@ app.classes.filemanager = app.classes.filemanager.extend(
  */
 app.classes.collabora = AppJS.extend(
 {
+	appname: "collabora",
 
 	// Handy reference to iframe
 	editor_iframe: null,
@@ -572,17 +573,17 @@ app.classes.collabora = AppJS.extend(
 		var baseUrl = egw.webserverUrl[0] == '/' ?
 			window.location.protocol+'//'+window.location.hostname+egw.webserverUrl
 			: egw.webserverUrl;
-			
+
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAsMail',
 			imgurl: this.egw.image('navbar','mail').replace(egw.webserverUrl, baseUrl),
-			hint: egw.lang('Save As Mail')
+			hint: this.egw.lang('Save As Mail')
 		});
 
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAs',
 			imgurl: 'images/lc_saveas.svg',
-			hint: egw.lang('Save As')
+			hint: this.egw.lang('Save As')
 		});
 	},
 
