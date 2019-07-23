@@ -458,7 +458,7 @@ class Ui {
 
 		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
 		// Send the filename as title for mail
-		$arr['title'] = $action == 'mail_collabora' ? Api\Vfs::basename($selected) : lang("Editable share link");
+		$arr['title'] = $action == 'mail_collabora' ? Api\Vfs::basename($selected) : lang("Writable Collabora link");
 		$arr['template'] = Api\Etemplate\Widget\Template::rel2url('/filemanager/templates/default/share_dialog.xet');
 
 		$response->data($arr);
