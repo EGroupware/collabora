@@ -17,7 +17,9 @@ use EGroupware\Api;
 
 class Credentials extends Api\Mail\Credentials {
 
-	const CREDENTIAL_TYPE = 32;
+	// Defined in parent as COLLABORA
+	// const CREDENTIAL_TYPE = 64;
+
 	const CREDENTIAL_ACCOUNT = -1;
 	const CREDENTIAL_PREFIX = '';
 
@@ -36,7 +38,7 @@ class Credentials extends Api\Mail\Credentials {
 			$share['share_owner'],
 			$share['share_token'],
 			base64_decode(Api\Cache::getSession('phpgwapi', 'password')),
-			self::CREDENTIAL_TYPE,
+			parent::COLLABORA,
 			self::CREDENTIAL_ACCOUNT
 		);
 
@@ -55,10 +57,10 @@ class Credentials extends Api\Mail\Credentials {
 		{
 			throw new \EGroupware\Api\Exception\WrongParameter("Missing share token");
 		}
-		static::$type2prefix[self::CREDENTIAL_TYPE] = self::CREDENTIAL_PREFIX;
+		static::$type2prefix[parent::COLLABORA] = self::CREDENTIAL_PREFIX;
 
 		$cred_id = 0;
-		$access = parent::read($share['share_owner'], self::CREDENTIAL_TYPE, self::CREDENTIAL_ACCOUNT);
+		$access = parent::read($share['share_owner'], parent::COLLABORA, self::CREDENTIAL_ACCOUNT);
 		if($access[self::CREDENTIAL_PREFIX.'username'] == $share['share_token'])
 		{
 			// Existing credentials found
@@ -79,7 +81,7 @@ class Credentials extends Api\Mail\Credentials {
 		$rows = self::get_db()->select(self::TABLE, '*', array(
 				'cred_id' => (int)$cred_id,
 				'account_id' => self::CREDENTIAL_ACCOUNT,
-				'(cred_type & '.(int)self::CREDENTIAL_TYPE.') > 0',	// postgreSQL require > 0, or gives error as it expects boolean
+				'(cred_type & '.(int)parent::COLLABORA.') > 0',	// postgreSQL require > 0, or gives error as it expects boolean
 			), __LINE__, __FILE__, false,
 			'ORDER BY account_id ASC', self::APP
 		);
