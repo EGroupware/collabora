@@ -8,7 +8,7 @@
 
 $setup_info['collabora']['name']    = 'collabora';
 $setup_info['collabora']['title']   = 'Collabora';
-$setup_info['collabora']['version'] = '19.1';
+$setup_info['collabora']['version'] = '19.1.001';
 $setup_info['collabora']['app_order'] = 1;
 $setup_info['collabora']['enable']  = 2;
 $setup_info['collabora']['autoinstall'] = true;	// install automatically on update
