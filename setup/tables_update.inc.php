@@ -11,6 +11,11 @@
 use EGroupware\Api;
 
 
+function collabora_upgrade17_1()
+{
+	return $GLOBALS['setup_info']['collabora']['currentver'] = '19.1';
+}
+
 /**
  * Change credential type from 32 (now used by two factor authentication) to 64
  *
