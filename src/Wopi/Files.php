@@ -45,7 +45,7 @@ class Files
 			header('X-WOPI-ServerError', 'Missing file ID');
 			return;
 		}
-		$path = Wopi::get_path($id);
+		$path = Wopi::get_path_from_id($id);
 		if($path == '')
 		{
 			$path = \EGroupware\collabora\Wopi::get_path_from_token();
