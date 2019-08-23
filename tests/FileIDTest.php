@@ -131,6 +131,6 @@ class FileIDTest extends SharingBase
 		$this->assertNotEquals(0, $file_id, 'No File ID for ' . $file);
 
 		// Check the other way, but $file is missing the Vfs prefix
-		$this->assertStringEndsWith($file, Wopi::get_path($file_id) );
+		$this->assertStringEndsWith($file, Wopi::get_path_from_id($file_id) );
 	}
 }

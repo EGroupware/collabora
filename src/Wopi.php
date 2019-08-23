@@ -305,7 +305,7 @@ class Wopi extends Sharing
 	 *
 	 * @throws Api\Exception\NotFound if it cannot be found or no permission
 	 */
-	public static function get_path($file_id)
+	public static function get_path_from_id($file_id)
 	{
 		$path = false;
 
