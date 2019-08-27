@@ -77,6 +77,7 @@ class Ui {
 		if($data['location_name'] != 'filemanager.index') return;
 
 		Framework::includeJS('.','app','collabora',true);
+		Api\Translation::add_app('collabora');
 
 		try
 		{
