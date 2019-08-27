@@ -723,8 +723,8 @@ app.classes.collabora = AppJS.extend(
 		}.bind(this);
 		var attrs = {
 			mode: 'open',
-			dialog_title: 'Insert',
-			button_label: 'Insert',
+			dialog_title: this.egw.lang('Insert'),
+			button_label: this.egw.lang('Insert'),
 			onchange: image_selected
 		};
 		var select = et2_createWidget('vfs-select',attrs, this.et2);

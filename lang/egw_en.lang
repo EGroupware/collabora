@@ -22,6 +22,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	en	Failed to update Collabora configuration in %1!
 file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
+insert	collabora	en	Insert
 link is appended to email allowing recipients to edit the file	collabora	en	Link is appended to email allowing recipients to edit the file
 local collabora server	collabora	en	Local Collabora server
 no active user 'anonymous' found!	collabora	en	No active user 'anonymous' found!
