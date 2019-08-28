@@ -15,6 +15,7 @@ create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
 document	filemanager	en	Document
 editable share link	collabora	en	Editable share link
+edit %1 in collabora	collabora	en	Edit %1 in Collabora
 egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora server.
 failed to create file %1!	collabora	en	Failed to create file %1!
 failed to create file %1: file already exists!	collabora	en	Failed to create file %1: file already exists!

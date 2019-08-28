@@ -457,9 +457,12 @@ class Ui {
 			'share_writable' =>  Vfs::is_writable($selected) ? Wopi::WOPI_SHARED : Wopi::WOPI_READONLY,
 		)));
 
-		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).'?edit&cd=no';
+		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).
+				($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
 		// Send the filename as title for mail
-		$arr['title'] = $action == 'mail_collabora' ? Api\Vfs::basename($selected) : lang("Writable Collabora link");
+		$arr['title'] = $action == 'mail_collabora' ?
+				($GLOBALS['egw_info']['user']['apps']['stylite'] ? lang('Edit %1 in Collabora',Api\Vfs::basename($selected)) : Api\Vfs::basename($selected))  :
+			lang("Writable Collabora link");
 		$arr['template'] = Api\Etemplate\Widget\Template::rel2url('/filemanager/templates/default/share_dialog.xet');
 
 		$response->data($arr);
