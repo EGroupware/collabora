@@ -452,7 +452,6 @@ class Ui {
 		$token = Bo::get_token($selected, Api\Vfs\Sharing::create($selected,
 			Vfs::is_writable($selected) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 			'', '', array(
-			'share_expires'  =>  time() + Wopi::TOKEN_TTL,
 			'share_writable' =>  Vfs::is_writable($selected) ? Wopi::WOPI_SHARED : Wopi::WOPI_READONLY,
 		)));
 
