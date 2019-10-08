@@ -339,4 +339,15 @@ class Wopi extends Sharing
 		}
 		return $path;
 	}
+	/**
+	 * Generate link to collabora editor from share or share-token
+	 *
+	 * @param string|array $share share or share-token
+	 * @return string full Url incl. schema and host
+	 */
+	public static function share2link($share)
+	{
+		return Api\Vfs\Sharing::share2link($share).
+				($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
+	}
 }

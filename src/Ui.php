@@ -456,8 +456,7 @@ class Ui {
 			'share_writable' =>  Vfs::is_writable($selected) ? Wopi::WOPI_SHARED : Wopi::WOPI_READONLY,
 		)));
 
-		$arr['share_link'] = Api\Vfs\Sharing::share2link($token['token']).
-				($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
+		$arr['share_link'] = Wopi::share2link($token['token']);
 		// Send the filename as title for mail
 		$arr['title'] = $action == 'mail_collabora' ?
 				($GLOBALS['egw_info']['user']['apps']['stylite'] ? lang('Edit %1 in Collabora',Api\Vfs::basename($selected)) : Api\Vfs::basename($selected))  :
