@@ -142,6 +142,49 @@ class Wopi extends Sharing
 		return $result;
 	}
 
+	/**
+	 * Collabora server does not have the share password, and we don't want to
+	 * pass it.  Check to see if the share needs a password, and if it does
+	 * we create a new share with no password and use it for the Collabora server.
+	 *
+	 * This is used for writable collabora shares (sent via URL), not normal
+	 * logged in users.  It's in Wopi instead of Bo for access to protected
+	 * variables.
+	 *
+	 * @param Array $share
+	 * @return Array share without password
+	 */
+	public static function get_no_password_share(Array $share)
+	{
+		if(!$share['passwd'])
+		{
+			return $share;
+		}
+		$pwd_share = $GLOBALS['egw']->sharing->share;
+		$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
+		$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
+		Bo::reset_vfs();
+		$share = Wopi::create($share['path'],
+			$writable ? Wopi::WRITABLE : Wopi::READONLY,
+			'', '', array(
+			'share_passwd' => null,
+			'share_expires'  =>  time() + Wopi::TOKEN_TTL,
+			'share_writable' =>  $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+		));
+		$GLOBALS['egw_info']['server']['vfs_fstab'] = $fstab;
+		$GLOBALS['egw']->sharing->share = $pwd_share;
+
+		// Cleanup to match expected
+		foreach($share as $key => $value)
+		{
+			if(substr($key, 0, 6) == 'share_')
+			{
+				$key = str_replace('share_', '', $key);
+			}
+			$token[$key] = $value;
+		}
+		return $token;
+	}
 
 	/**
 	 * Get token from url
@@ -270,6 +313,7 @@ class Wopi extends Sharing
 	 */
 	public static function get_file_id($path)
 	{
+		$path = str_replace(Api\Vfs::PREFIX, '', $path);
 		$file_id = Api\Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Fall back to the earliest valid share ID
