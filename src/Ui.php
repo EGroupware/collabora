@@ -163,6 +163,7 @@ class Ui {
 		$template = new Etemplate('collabora.editor');
 
 		$token = Bo::get_token($path);
+		$token = Wopi::get_no_password_share($token);
 		$resolved_path = $token['root'] && $token['root'] != '/' &&
 			!Vfs::is_dir($token['root']) ? $token['root'] : $path;
 		$content = array(
