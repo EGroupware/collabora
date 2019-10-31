@@ -1,0 +1,43 @@
+%1 supported document types	collabora	bg	% 1 поддържа типове документи
+(requires username and password below)	collabora	bg	(изисква потребителско име и парола)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	bg	Локален Collabora Online сървър може да бъде инсталиран с пакета 'egroupware-collabora-key'.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	bg	Локалната инсталация, недостъпна от интернет, НЯМА да работи с обществения Collabora Online сървър.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	bg	Подържаният Collabora Online сървър позволява употреба на необходимия брой потребители - повече от демо-версията или версията за разработчици, инсталирана по подразбиране.
+active user 'anonymous' found.	collabora	bg	Намерен е активен "Анонимен" потребител
+admin console	collabora	bg	Административна конзола
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	bg	"Анонимен" потребител е необходим за сървъра Collabora Online при достъп до файлове, а също и за споделяне на файлове.
+can not read collobora configuration in %1!	collabora	bg	НЕ МОЖЕ да разчете конфигурация на Collobora Online в% 1!
+checking for user 'anonymous'	collabora	bg	Проверка за "Анонимен" потребител
+collabora	common	bg	Collabora Online
+collabora is not configured!	collabora	bg	Collabora Online не е конфигуриранa!
+collabora server	collabora	bg	Collabora Online сървър
+create	collabora	bg	Създай
+create new %1	filemanager	bg	Създай нов(а) %1
+document	filemanager	bg	Документ
+edit %1 in collabora	collabora	bg	Редактиране на % 1 в "Collabora"
+editable share link	collabora	bg	Редактираща споделена връзка
+egroupware epl is required to configure a custom collabora server.	collabora	bg	EGroupware EPL е необходим за конфигуриране на персонализиран Collabora Online сървър.
+failed to create file %1!	collabora	bg	Неуспешно създаване на файл % 1!
+failed to create file %1: file already exists!	collabora	bg	Неуспешно създаване на файл% 1: файлът вече съществува!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	bg	Неуспешно създаване на файла! Нямате достатъчно права за % 1 папка!
+failed to update collabora configuration in %1!	collabora	bg	Неуспешна актуализация на "Collabora Online" конфигурацията в % 1!
+file	collabora	bg	Файл
+file %1 has been created successfully.	collabora	bg	Файл %1 е създаден успешно.
+insert	collabora	bg	Вмъкни
+link is appended to email allowing recipients to edit the file	collabora	bg	Връзката е добавена към имейла, което позволява на получателите да редактират файла.
+local collabora server	collabora	bg	Локален сървър Collabora Online
+no active user 'anonymous' found!	collabora	bg	Не е намерен активен "Анонимен" потребител!
+open as new	filemanager	bg	Отвори като нов(а)
+please enter your file name	filemanager	bg	Моля, въведете името на файла си
+presentation	filemanager	bg	Представяне
+requirements / please note	collabora	bg	Моля, отбележете Вашите изисквания.
+save as mail	collabora	bg	Изпрати като имейл
+spreadsheet	filemanager	bg	Spreadsheet (електронна таблица)
+support-key	collabora	bg	Ключ за поддръжка
+the collabora server must be able to access your egroupware installation!	collabora	bg	Сървърът на Collabora Online трябва да има достъп до вашата инсталация на EGroupware!
+unable to connect	collabora	bg	Не може да се свърже
+unable to contact collabora server	collabora	bg	Не може да се свърже със сървъра на Collabora Online
+versions	collabora	bg	Версии
+writable collabora link	collabora	bg	Collabora Online връзка (линк) с възможност за редактиране
+writable collabora share	collabora	bg	Collabora Online споделяне с възможност за редактиране
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	bg	Необходим е ключ за поддръжка от магазинът на EGroupware GmbH, за да поддържа Collabora Online инсталация.
