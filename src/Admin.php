@@ -225,11 +225,7 @@ class Admin
 		{
 			return null;
 		}
-		$server = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ||
-			!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ?
-				'https://' : 'http://').
-			(isset($_SERVER['HTTP_X_FORWARDED_HOST']) ?
-				$_SERVER['HTTP_X_FORWARDED_HOST'] : $_SERVER['HTTP_HOST']);
+		$server = substr(Api\Header\Http::fullUrl('/'), 0, -1);		// remove trailing slash
 
 		return $server;
 	}
