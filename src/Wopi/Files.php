@@ -120,7 +120,10 @@ class Files
 							$h == 'AUTHORIZATION' ? 'Basic ***************' : $v;
 				}
 			}
-			error_log(__METHOD__."() header=".array2string($header));
+			if(Wopi::DEBUG)
+			{
+				error_log(__METHOD__."() header=".array2string($header));
+			}
 		}
 		if (empty($name))
 		{
@@ -436,7 +439,7 @@ class Files
 
 		// check if current file-version is from an autosave (modification TS matches autosave TS)
 		$is_autosaved = false;
-		foreach(Vfs::propfind($path) as $prop)
+		foreach((Array)Vfs::propfind($path) as $prop)
 		{
 			if ($prop['name'] === self::PROP_AUTOSAVE_TS)
 			{
