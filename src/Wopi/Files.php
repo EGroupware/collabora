@@ -381,6 +381,10 @@ class Files
 	 * Name of property for autosave time-stamp
 	 */
 	const PROP_AUTOSAVE_TS = 'AutosaveTS';
+	/**
+	 * Maximum time / age to skip versioning of autosave
+	 */
+	const MAX_SKIP_AUTOSAVE_AGE = 7200;
 
 	/**
 	 * Update a file's binary contents
@@ -435,7 +439,7 @@ class Files
 
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
-		$path = strpos($path, Vfs::PREFIX) === 0 ? $path : Vfs::PREFIX.$path;
+		if (strpos($path, '://') === false) $path = Vfs::PREFIX.$path;
 
 		// check if current file-version is from an autosave (modification TS matches autosave TS)
 		$is_autosaved = false;
@@ -443,20 +447,23 @@ class Files
 		{
 			if ($prop['name'] === self::PROP_AUTOSAVE_TS)
 			{
-				$is_autosaved = $prop['val'] == filemtime($path);
+				$is_autosaved = $prop['val'] == filemtime($path) &&
+					// only consider autosaves less then MAX_SKIP_AUTOSAVE_AGE (2h) old
+					$prop['val']+self::MAX_SKIP_AUTOSAVE_AGE > time();
 				break;
 			}
 		}
 		// let VFS via context know, to NOT create a new version for consecutive autosaves
+		// or explicit save after an autosave (minimize automatic versions)
 		$context = stream_context_create($c=array(
 			Vfs::SCHEME => array(
 				'versioning' => array(
-					'disable' => $is_autosaved && $this->header('X-LOOL-WOPI-IsAutosave') === 'true',
+					'disable' => $is_autosaved,
 					'min_version' => 0,	// do NOT stop explicit versioning for non autosave and new opened of files
 				),
 			),
 		));
-		//error_log(__METHOD__."('$path') prop=".array2string($prop).", is_autosaved=".array2string($is_autosaved)." --> context=".array2string($context));
+		//error_log(__METHOD__."('$path') prop=".array2string($prop).", is_autosaved=".array2string($is_autosaved).", X-LOOL-WOPI-IsAutosave={$this->header('X-LOOL-WOPI-IsAutosave')} --> context=".array2string($c));
 
 		if (False === file_put_contents($path, $content, 0, $context))
 		{
