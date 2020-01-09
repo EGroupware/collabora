@@ -279,7 +279,7 @@ class Files
 		// Optional old lock code
 		$old_lock = $this->header('X-WOPI-OldLock');
 
-		$timeout = $this->LOCK_DURATION;
+		$timeout = static::LOCK_DURATION;
 		$owner = $GLOBALS['egw_info']['user']['account_id'];
 		$scope = 'exclusive';
 		$type = 'write';
@@ -336,7 +336,7 @@ class Files
 			http_response_code(400);
 		}
 
-		$timeout = $this->LOCK_DURATION;
+		$timeout = static::LOCK_DURATION;
 		$owner = $GLOBALS['egw_info']['user']['account_id'];
 		$scope = 'exclusive';
 		$type = 'write';
@@ -364,6 +364,12 @@ class Files
 		}
 
 		$lock = Vfs::checkLock($path);
+		if(!$lock)
+		{
+			// File was already unlocked
+			http_response_code(200);
+			return;
+		}
 
 		if($lock['token'] != $token)
 		{
