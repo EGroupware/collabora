@@ -37,7 +37,7 @@ class PutTest extends SharingBase
 		'X-WOPI-Lock' => false
 	);
 
-	public function setUp()
+	protected function setUp() : void
 	{
 		parent::setUp();
 
