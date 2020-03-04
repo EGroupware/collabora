@@ -40,7 +40,7 @@ class PutRelativeTest extends SharingBase
 		'X-WOPI-OverwriteRelativeTarget' => false
 	);
 
-	public function setUp()
+	protected function setUp() : void
 	{
 		parent::setUp();
 
