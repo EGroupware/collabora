@@ -743,3 +743,4 @@ class collaboraAPP extends EgwApp
 		return true;
 	}
 }
+app.classes.collabora = collaboraAPP;

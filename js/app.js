@@ -643,4 +643,5 @@ var collaboraAPP = /** @class */ (function (_super) {
     collaboraAPP.appname = "collabora";
     return collaboraAPP;
 }(egw_app_1.EgwApp));
+app.classes.collabora = collaboraAPP;
 //# sourceMappingURL=app.js.map
