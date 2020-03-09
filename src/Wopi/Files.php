@@ -11,10 +11,10 @@
 
 namespace EGroupware\Collabora\Wopi;
 
-use EGroupware\Collabora\Wopi;
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
 use EGroupware\Api\Vfs;
+use EGroupware\Collabora\Wopi;
 
 /**
  * File enpoint
@@ -42,7 +42,7 @@ class Files
 		if(!$id)
 		{
 			http_response_code(404);
-			header('X-WOPI-ServerError', 'Missing file ID');
+			header('X-WOPI-ServerError: Missing file ID');
 			return;
 		}
 		$path = Wopi::get_path_from_id($id);
@@ -59,7 +59,7 @@ class Files
 		if(!$path || Vfs::is_dir($path))
 		{
 			http_response_code(404);
-			header('X-WOPI-ServerError', 'Unable to find file / path is invalid');
+			header('X-WOPI-ServerError: Unable to find file / path is invalid');
 			return;
 		}
 
@@ -289,19 +289,22 @@ class Files
 		if($old_lock && $old_lock !== $lock['token'])
 		{
 			// Conflict
-			header('X-WOPI-Lock', $lock['token']);
+			header('X-WOPI-Lock: ' . $lock['token']);
 			http_response_code(409);
 			return;
 		}
-		else if ($old_lock && $old_lock == $lock['token'])
+		else
 		{
-			Vfs::unlock($path, $old_lock);
+			if ($old_lock && $old_lock == $lock['token'])
+			{
+				Vfs::unlock($path, $old_lock);
+			}
 		}
 
 		// Lock the file, refresh if the tokens match
-		$result = Vfs::lock($path,$token,$timeout,$owner,$scope,$type,$lock['token'] == $token);
+		$result = Vfs::lock($path, $token, $timeout, $owner, $scope, $type, $lock['token'] == $token);
 
-		header('X-WOPI-Lock', $token);
+		header('X-WOPI-Lock: ' . $token);
 		http_response_code($result ? 200 : 409);
 	}
 
@@ -316,7 +319,7 @@ class Files
 	{
 		$lock = Vfs::checkLock($path);
 
-		header('X-WOPI-Lock', $lock['token']);
+		header('X-WOPI-Lock: ' . $lock['token']);
 		http_response_code(200);
 	}
 
@@ -341,9 +344,9 @@ class Files
 		$scope = 'exclusive';
 		$type = 'write';
 
-		$result = Vfs::lock($path,$token,$timeout,$owner,$scope,$type, true);
+		$result = Vfs::lock($path, $token, $timeout, $owner, $scope, $type, true);
 
-		header('X-WOPI-Lock', $token);
+		header('X-WOPI-Lock: ' . $token);
 		http_response_code($result ? 200 : 409);
 	}
 
@@ -373,7 +376,7 @@ class Files
 
 		if($lock['token'] != $token)
 		{
-			header('X-WOPI-Lock', $lock['token']);
+			header('X-WOPI-Lock: ' . $lock['token']);
 			// Conflict
 			http_response_code(409);
 		}
@@ -405,7 +408,7 @@ class Files
 		if(!Wopi::is_writable())
 		{
 			http_response_code(404);
-			header('X-WOPI-ServerError', 'Share is readonly');
+			header('X-WOPI-ServerError: Share is readonly');
 			return;
 		}
 
@@ -434,7 +437,7 @@ class Files
 		{
 			// Conflict
 			http_response_code(409);
-			header('X-WOPI-Lock', $lock['token']);
+			header('X-WOPI-Lock: ' . $lock['token']);
 			return;
 		}
 
@@ -474,7 +477,7 @@ class Files
 		if (False === file_put_contents($path, $content, 0, $context))
 		{
 			http_response_code(500);
-			header('X-WOPI-ServerError', 'Unable to write file');
+			header('X-WOPI-ServerError: Unable to write file');
 			return;
 		}
 		// mark version as autosaved by storing it's modification TS
@@ -509,7 +512,7 @@ class Files
 		if(!Wopi::is_writable())
 		{
 			http_response_code(404);
-			header('X-WOPI-ServerError', 'Share is readonly');
+			header('X-WOPI-ServerError: Share is readonly');
 			return;
 		}
 
@@ -597,10 +600,10 @@ class Files
 			if($relative_target !== $clean)
 			{
 				http_response_code(400);
-				header('X-WOPI-ValidRelativeTarget', $clean);
-				if(Wopi::DEBUG)
+				header('X-WOPI-ValidRelativeTarget: ' . $clean);
+				if (Wopi::DEBUG)
 				{
-					error_log(__METHOD__."() clean_filename('$relative_target')='$clean' --> 400 Bad Request");
+					error_log(__METHOD__ . "() clean_filename('$relative_target')='$clean' --> 400 Bad Request");
 				}
 				return;
 			}
@@ -611,7 +614,7 @@ class Files
 					http_response_code(409); // Conflict
 					if($lock)
 					{
-						header('X-WOPI-Lock', $lock['token']);
+						header('X-WOPI-Lock: ' . $lock['token']);
 					}
 					if(Wopi::DEBUG)
 					{
@@ -625,7 +628,7 @@ class Files
 					http_response_code(409);
 					if($lock)
 					{
-						header('X-WOPI-Lock', $lock['token']);
+						header('X-WOPI-Lock: ' . $lock['token']);
 					}
 					if(Wopi::DEBUG)
 					{
@@ -654,7 +657,7 @@ class Files
 		if(False === file_put_contents(Vfs::PREFIX . $target, $content))
 		{
 			http_response_code(500);
-			header('X-WOPI-ServerError', 'Unable to write file');
+			header('X-WOPI-ServerError: Unable to write file');
 			return;
 		}
 		// remove evtl. set autosave TS, to force a new version
