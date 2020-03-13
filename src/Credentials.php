@@ -35,11 +35,11 @@ class Credentials extends Api\Mail\Credentials {
 	public static function write($share)
 	{
 		$cred_id = parent::write(
-			$share['share_owner'],
-			$share['share_token'],
-			base64_decode(Api\Cache::getSession('phpgwapi', 'password')),
-			parent::COLLABORA,
-			self::CREDENTIAL_ACCOUNT
+				-$share['share_id'],
+				$share['share_token'],
+				base64_decode(Api\Cache::getSession('phpgwapi', 'password')),
+				parent::COLLABORA,
+				self::CREDENTIAL_ACCOUNT
 		);
 
 		return $cred_id;
@@ -53,18 +53,18 @@ class Credentials extends Api\Mail\Credentials {
 	 */
 	public static function read($share)
 	{
-		if(!$share['share_token'])
+		if (!$share['share_token'])
 		{
 			throw new \EGroupware\Api\Exception\WrongParameter("Missing share token");
 		}
 		static::$type2prefix[parent::COLLABORA] = self::CREDENTIAL_PREFIX;
 
 		$cred_id = 0;
-		$access = parent::read($share['share_owner'], parent::COLLABORA, self::CREDENTIAL_ACCOUNT);
-		if($access[self::CREDENTIAL_PREFIX.'username'] == $share['share_token'])
+		$access = parent::read(-$share['share_id'], parent::COLLABORA, self::CREDENTIAL_ACCOUNT);
+		if ($access[self::CREDENTIAL_PREFIX . 'username'] == $share['share_token'])
 		{
 			// Existing credentials found
-			$cred_id = $access[self::CREDENTIAL_PREFIX.'cred_id'];
+			$cred_id = $access[self::CREDENTIAL_PREFIX . 'cred_id'];
 		}
 
 		return $cred_id;
@@ -112,8 +112,8 @@ class Credentials extends Api\Mail\Credentials {
 			throw new \EGroupware\Api\Exception\WrongParameter("Missing share token");
 		}
 		$where = array(
-			'cred_username' => $share['share_token'],
-			'account_id' => self::CREDENTIAL_ACCOUNT,
+				'acc_id' => -$share['share_id'],
+				'account_id' => self::CREDENTIAL_ACCOUNT,
 		);
 
 		self::get_db()->delete(self::TABLE, $where, __LINE__, __FILE__, self::APP);
