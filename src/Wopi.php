@@ -391,7 +391,28 @@ class Wopi extends Sharing
 	 */
 	public static function share2link($share)
 	{
-		return Api\Vfs\Sharing::share2link($share).
+		return Api\Vfs\Sharing::share2link($share) .
 				($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
+	}
+
+	/**
+	 * Delete specified shares and remove credentials, if needed
+	 *
+	 * @param int|array $keys
+	 * @return int number of deleted shares
+	 */
+	public static function delete($keys)
+	{
+		self::$db = $GLOBALS['egw']->db;
+
+		if (is_scalar($keys))
+		{
+			$keys = array('share_id' => $keys);
+		}
+
+		// Delete credentials, if there
+		Credentials::delete($keys);
+
+		return parent::delete($keys);
 	}
 }
