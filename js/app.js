@@ -325,7 +325,7 @@ var collaboraAPP = /** @class */ (function (_super) {
      * Constructor
      */
     function collaboraAPP() {
-        var _this = _super.call(this) || this;
+        var _this = _super.call(this, "collabora") || this;
         // Handy reference to iframe
         _this.editor_iframe = null;
         // Flag for if we've customized & bound the editor
@@ -640,7 +640,6 @@ var collaboraAPP = /** @class */ (function (_super) {
         egw.json('EGroupware\\collabora\\Ui::ajax_share_link', ['mail_collabora', path], app.filemanager._mail_link_callback, this, true, this).sendRequest();
         return true;
     };
-    collaboraAPP.appname = "collabora";
     return collaboraAPP;
 }(egw_app_1.EgwApp));
 app.classes.collabora = collaboraAPP;

@@ -349,7 +349,6 @@ app.classes.filemanager = collaboraFilemanagerAPP;
 */
 class collaboraAPP extends EgwApp
 {
-	static readonly appname : string = "collabora";
 
 	// Handy reference to iframe
 	private editor_iframe : HTMLIFrameElement = null;
@@ -366,7 +365,7 @@ class collaboraAPP extends EgwApp
 	 */
 	constructor()
 	{
-		super();
+		super("collabora");
 
 		// Filemanager has some handy utilites, but we need to be careful what
 		// we use, since it's not actually available
