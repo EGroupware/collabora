@@ -508,14 +508,6 @@ class Files
 	 */
 	public function put_relative_file($url)
 	{
-		// Check if share _can_ be written to, before we bother with anything else
-		if(!Wopi::is_writable())
-		{
-			http_response_code(404);
-			header('X-WOPI-ServerError: Share is readonly');
-			return;
-		}
-
 		$path = Vfs::parse_url($url, PHP_URL_PATH);
 
 		// Lock token, might not be there
