@@ -615,8 +615,9 @@ var collaboraAPP = /** @class */ (function (_super) {
                 var expires = new Date();
                 expires.setUTCDate(expires.getUTCDate() + 1);
                 this.egw.json('EGroupware\\Api\\Sharing::ajax_create', ['collabora', widget.get_value(), false, false, { share_expires: date('Y-m-d', expires) }], function (value) {
-                    // Tell Collabora about it
-                    this.WOPIPostMessage('Action_InsertGraphic', { url: value.share_link });
+                    // Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
+                    // (WebDAV/Server.php line 247
+                    this.WOPIPostMessage('Action_InsertGraphic', { url: value.share_link + '/' });
                 }, this, true, this.egw).sendRequest();
             }
         }.bind(this);

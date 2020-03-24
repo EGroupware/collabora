@@ -453,7 +453,7 @@ class collaboraAPP extends EgwApp
 			app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
 		});
 
-		document.getElementById('form').submit();
+		(<HTMLFormElement>document.getElementById('form')).submit();
 	}
 
 	/**
@@ -712,8 +712,9 @@ class collaboraAPP extends EgwApp
 				this.egw.json('EGroupware\\Api\\Sharing::ajax_create',
 					['collabora', widget.get_value(), false, false, {share_expires: date('Y-m-d',expires)}],
 					function(value) {
-						// Tell Collabora about it
-						this.WOPIPostMessage('Action_InsertGraphic', {url:value.share_link});
+						// Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
+						// (WebDAV/Server.php line 247
+						this.WOPIPostMessage('Action_InsertGraphic', {url:value.share_link+'/'});
 					},
 					this, true,this.egw).sendRequest();
 			}
