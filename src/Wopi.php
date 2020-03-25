@@ -112,18 +112,22 @@ class Wopi extends Sharing
 	 *
 	 * @param string $path either path in temp_dir or vfs with optional vfs scheme
 	 * @param string $mode self::LINK: copy file in users tmp-dir or self::READABLE share given vfs file,
-	 *	if no vfs behave as self::LINK
+	 *  if no vfs behave as self::LINK
 	 * @param string $name filename to use for $mode==self::LINK, default basename of $path
 	 * @param string|array $recipients one or more recipient email addresses
 	 * @param array $extra =array() extra data to store
+	 * @return array with share data, eg. value for key 'share_token'
 	 * @throw Api\Exception\NotFound if $path not found
 	 * @throw Api\Exception\AssertionFailed if user temp. directory does not exist and can not be created
-	 * @return array with share data, eg. value for key 'share_token'
 	 */
-	public static function create($path, $mode, $name, $recipients, $extra=array())
+	public static function create($path, $mode, $name, $recipients, $extra = array())
 	{
-
-		$result = parent::create($path, $mode, $name, $recipients, $extra);
+		// Hidden uploads are readonly, enforce it here too
+		if($extra['share_writable'] == Wopi::WOPI_WRITABLE && isset($GLOBALS['egw']->sharing) && $GLOBALS['egw']->sharing->share['share_writable'] == static::HIDDEN_UPLOAD)
+		{
+			$extra['share_writable'] = static::WOPI_READONLY;
+		}
+		$result = parent::create('', $path, $mode, $name, $recipients, $extra);
 
 
 		// If path needs password, get credentials and add on the ID so we can
@@ -164,12 +168,10 @@ class Wopi extends Sharing
 		$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
 		$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
 		Bo::reset_vfs();
-		$share = Wopi::create($share['path'],
-			$writable ? Wopi::WRITABLE : Wopi::READONLY,
-			'', '', array(
-			'share_passwd' => null,
-			'share_expires'  =>  time() + Wopi::TOKEN_TTL,
-			'share_writable' =>  $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+		$share = Wopi::create($share['path'], $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
+				'share_passwd' => null,
+				'share_expires' => time() + Wopi::TOKEN_TTL,
+				'share_writable' => $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 		));
 		$GLOBALS['egw_info']['server']['vfs_fstab'] = $fstab;
 		$GLOBALS['egw']->sharing->share = $pwd_share;
@@ -274,11 +276,9 @@ class Wopi extends Sharing
 			$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
 			$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
 			Bo::reset_vfs();
-			$share = Wopi::create($share['path'].$path,
-				$writable ? Wopi::WRITABLE : Wopi::READONLY,
-				'', '', array(
-				'share_expires'  =>  time() + Wopi::TOKEN_TTL,
-				'share_writable' =>  $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
+			$share = Wopi::create($share['path'] . $path, $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
+					'share_expires' => time() + Wopi::TOKEN_TTL,
+					'share_writable' => $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 			));
 			$GLOBALS['egw_info']['server']['vfs_fstab'] = $fstab;
 			$GLOBALS['egw']->sharing->share = $dir_share;
