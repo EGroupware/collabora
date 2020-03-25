@@ -11,9 +11,9 @@
 namespace EGroupware\Collabora;
 
 use EGroupware\Api;
+use EGroupware\Api\Etemplate;
 use EGroupware\Api\Framework;
 use EGroupware\Api\Json\Response;
-use EGroupware\Api\Etemplate;
 use EGroupware\Api\Vfs;
 
 /**
@@ -450,10 +450,8 @@ class Ui {
 
 		// Create a token for access
 		// Use WOPI_SHARED to limit filesystem (Save As)
-		$token = Bo::get_token($selected, Api\Vfs\Sharing::create($selected,
-			Vfs::is_writable($selected) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
-			'', '', array(
-			'share_writable' =>  Vfs::is_writable($selected) ? Wopi::WOPI_SHARED : Wopi::WOPI_READONLY,
+		$token = Bo::get_token($selected, Api\Vfs\Sharing::create('', $selected, Vfs::is_writable($selected) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY, '', '', array(
+				'share_writable' => Vfs::is_writable($selected) ? Wopi::WOPI_SHARED : Wopi::WOPI_READONLY,
 		)));
 
 		$arr['share_link'] = Wopi::share2link($token['token']);
