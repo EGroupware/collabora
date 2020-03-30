@@ -24,6 +24,7 @@ failed to update collabora configuration in %1!	collabora	en	Failed to update Co
 file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
 insert	collabora	en	Insert
+latest revision	collabora	en	Latest revision
 link is appended to email allowing recipients to edit the file	collabora	en	Link is appended to email allowing recipients to edit the file
 local collabora server	collabora	en	Local Collabora Online server
 no active user 'anonymous' found!	collabora	en	No active user 'anonymous' found!
@@ -31,6 +32,7 @@ open as new	filemanager	en	Open as new
 please enter your file name	filemanager	en	Please enter your file name
 presentation	filemanager	en	Presentation
 requirements / please note	collabora	en	Requirements / please note
+revision history	collabora	en	Revision History
 save as mail	collabora	en	Send as email
 spreadsheet	filemanager	en	Spreadsheet
 support-key	collabora	en	Support-key
