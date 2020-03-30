@@ -245,7 +245,7 @@ class Bo {
 		$fileinfo = Vfs::getExtraInfo($path);
 		foreach($fileinfo as $tab)
 		{
-			if($tab['label'] == lang('Versions'))
+			if($tab['label'] == 'Versions')
 			{
 				return true;
 			}
