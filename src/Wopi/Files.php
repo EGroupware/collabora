@@ -633,7 +633,7 @@ class Files
 		}
 
 		// Ok, check target
-		if(!Vfs::is_writable(dirname($target)))
+		if(!Vfs::is_writable(dirname($target)) || !$this->allow_save_as($path))
 		{
 			// User not authorised, 401 is used for invalid token
 			http_response_code(404);

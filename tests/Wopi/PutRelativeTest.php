@@ -219,8 +219,9 @@ class PutRelativeTest extends SharingBase
 		// Response code should be 404
 		$this->assertEquals(404, http_response_code());
 		$this->assertNull($response);
+
+		// Make sure no other changes
 		$this->assertFalse(Vfs::file_exists($target));
-		// Note still using share path (/) since that's the only file available here
-		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.'/'));
+		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.$url));
 	}
 }
