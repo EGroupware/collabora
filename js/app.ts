@@ -716,7 +716,7 @@ class collaboraAPP extends EgwApp
 						// (WebDAV/Server.php line 247
 						this.WOPIPostMessage('Action_InsertGraphic', {url:value.share_link+'/'});
 					},
-					this, true,this.egw).sendRequest();
+					this, true,this,this.egw).sendRequest();
 			}
 		}.bind(this);
 		let attrs = {

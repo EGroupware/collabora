@@ -618,7 +618,7 @@ var collaboraAPP = /** @class */ (function (_super) {
                     // Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
                     // (WebDAV/Server.php line 247
                     this.WOPIPostMessage('Action_InsertGraphic', { url: value.share_link + '/' });
-                }, this, true, this.egw).sendRequest();
+                }, this, true, this, this.egw).sendRequest();
             }
         }.bind(this);
         var attrs = {
