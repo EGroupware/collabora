@@ -14,6 +14,7 @@ namespace EGroupware\Collabora;
 require_once(__DIR__.'/../../api/src/Vfs/Sharing.php');
 
 use EGroupware\Api;
+use EGroupware\Api\Vfs;
 use EGroupware\Api\Vfs\Sharing;
 use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
 
@@ -210,7 +211,67 @@ class Wopi extends Sharing
 	 */
 	public static function setup_share($keep_session, &$share)
 	{
-		parent::setup_share($keep_session, $share);
+		// need to reset fs_tab, as resolve_url does NOT work with just share mounted
+		if (empty($GLOBALS['egw_info']['server']['vfs_fstab']) || count($GLOBALS['egw_info']['server']['vfs_fstab']) <= 1)
+		{
+			unset($GLOBALS['egw_info']['server']['vfs_fstab']);	// triggers reset of fstab in mount()
+			$GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
+			Vfs::clearstatcache();
+		}
+		$share['resolve_url'] = Vfs::resolve_url($share['share_path'], true, true, true, true);	// true = fix evtl. contained url parameter
+		// if share not writable append ro=1 to mount url to make it readonly
+		if (!($share['share_writable'] & 1))
+		{
+			$share['resolve_url'] .= (strpos($share['resolve_url'], '?') ? '&' : '?').'ro=1';
+		}
+		//_debug_array($share);
+
+		if ($keep_session)	// add share to existing session
+		{
+			$share['share_root'] = '/'.$share['share_token'];
+
+			// if current user is not the share owner, we cant just mount share
+			if (Vfs::$user != $share['share_owner'])
+			{
+				$keep_session = false;
+			}
+		}
+		if (!$keep_session)	// do NOT change to else, as we might have set $keep_session=false!
+		{
+			// only allow filemanager app & collabora
+			// (In some cases, $GLOBALS['egw_info']['apps'] is not yet set)
+			$apps = $GLOBALS['egw']->acl->get_user_applications($share['share_owner']);
+			$GLOBALS['egw_info']['user']['apps'] = array(
+					'filemanager' => $GLOBALS['egw_info']['apps']['filemanager'] || true,
+					'collabora' => $GLOBALS['egw_info']['apps']['collabora'] || $apps['collabora']
+			);
+
+			$share['share_root'] = '/';
+			Vfs::$user = $share['share_owner'];
+
+			// Need to re-init stream wrapper, as some of them look at
+			// preferences or permissions
+			$scheme = Vfs\StreamWrapper::scheme2class(Vfs::parse_url($share['resolve_url'],PHP_URL_SCHEME));
+			if($scheme && method_exists($scheme, 'init_static'))
+			{
+				$scheme::init_static();
+			}
+		}
+
+		// mounting share
+		Vfs::$is_root = true;
+		if (!Vfs::mount($share['resolve_url'], $share['share_root'], false, false, !$keep_session))
+		{
+			sleep(1);
+			return static::share_fail(
+					'404 Not Found',
+					"Requested resource '/".htmlspecialchars($share['share_token'])."' does NOT exist!\n"
+			);
+		}
+		Vfs::$is_root = false;
+		Vfs::clearstatcache();
+		// clear link-cache and load link registry without permission check to access /apps
+		Api\Link::init_static(true);
 
 		if(self::$credentials && $share)
 		{
