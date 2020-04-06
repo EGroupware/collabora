@@ -16,6 +16,7 @@ namespace EGroupware\Collabora;
 require_once __DIR__ . '/../../api/tests/Vfs/SharingBase.php';
 
 use \EGroupware\Api\Vfs;
+use EGroupware\Api\Vfs\TestSharing;
 
 class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 {
@@ -142,4 +143,78 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 		parent::checkDirectory($dir, $mode);
 	}
 
+	/**
+	* Test that readable shares are actually readable
+	*
+	* @param string $path
+	*/
+	public function createShare($path, $mode, $extra = array())
+	{
+		// Make sure the path is there
+		if(!Vfs::is_readable($path))
+		{
+			$this->assertTrue(
+					Vfs::is_dir($path) ? Vfs::mkdir($path,0750,true) : Vfs::touch($path),
+					"Share path $path does not exist"
+			);
+		}
+
+		// Create share
+		$this->shares[] = $share = TestWopiSharing::create($path, $mode, $name, $recipients, $extra);
+
+		return $share;
+	}
+
+	protected function setup_info()
+	{
+		// Copied from share.php
+		$GLOBALS['egw_info'] = array(
+			'flags' => array(
+				'disable_Template_class' => true,
+				'noheader'  => true,
+				'nonavbar' => 'always',	// true would cause eTemplate to reset it to false for non-popups!
+				'currentapp' => 'filemanager',
+				'autocreate_session_callback' => 'EGroupware\\Collabora\\TestWopiSharing::create_session',
+				'no_exception_handler' => 'basic_auth',	// we use a basic auth exception handler (sends exception message as basic auth realm)
+			)
+		);
+
+		ob_start();
+		static::load_egw('anonymous','','',$GLOBALS['egw_info']);
+		if(static::LOG_LEVEL > 1)
+		{
+			ob_end_flush();
+		}
+		else
+		{
+			ob_end_clean();
+		}
+	}
+}
+
+/**
+ * Use this class for sharing so we can make sure we get a session ID, even
+ * though we're on the command line
+ */
+if(!class_exists('TestWopiSharing'))
+{
+	class TestWopiSharing extends \EGroupware\Collabora\Wopi {
+
+		public static function create_new_session()
+		{
+			if (!($sessionid = $GLOBALS['egw']->session->create('anonymous@'.$GLOBALS['egw_info']['user']['domain'],
+					'', 'text', false, false)))
+			{
+				// Allow for testing
+				$sessionid = 'CLI_TEST ' . time();
+				$GLOBALS['egw']->session->sessionid = $sessionid;
+			}
+			return $sessionid;
+		}
+
+		public static function get_share_class($share)
+		{
+			return __CLASS__;
+		}
+	}
 }
