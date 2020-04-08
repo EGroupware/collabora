@@ -1,5 +1,19 @@
+%1 supported document types	collabora	es-es	% 1 tipos de documentos soportados
+(requires username and password below)	collabora	es-es	(requiere nombre de usuario y contraseña a continuación)
+collabora	common	es-es	Collabora Online
+collabora is not configured!	collabora	es-es	¡Collabora Online no está configurado!
+collabora server	collabora	es-es	Servidor de Collabora Online
 create	collabora	es-es	Crear
+create new %1	filemanager	es-es	Crear nuevo %1
 document	filemanager	es-es	Documento
+edit %1 in collabora	collabora	es-es	Editar %1 en Collabora
+failed to create file %1!	collabora	es-es	¡Error al crear el archivo %1!
+failed to create file %1: file already exists!	collabora	es-es	¡Error al crear el archivo %1: el archivo ya existe!
 file	collabora	es-es	archivo
+insert	collabora	es-es	Insertar
+latest revision	collabora	es-es	Última revisión
+open as new	filemanager	es-es	Abrir como nuevo
+presentation	filemanager	es-es	Presentación
+save as mail	collabora	es-es	Enviar como correo-e
 spreadsheet	filemanager	es-es	Hoja de cálculo
 versions	collabora	es-es	Versiones

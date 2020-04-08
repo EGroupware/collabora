@@ -22,6 +22,8 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	de	Kann Collabora Konfiguration in %1 nicht aktualisieren!
 file	collabora	de	Datei
 file %1 has been created successfully.	collabora	de	Datei %1 wurde erfolgreich angelegt.
+insert	collabora	de	Einfügen
+latest revision	collabora	de	Aktuelle Version
 link is appended to email allowing recipients to edit the file	collabora	de	Der Link wird an die E-Mail angehängt, so dass die Empfänger die Datei bearbeiten können.
 local collabora server	collabora	de	Lokaler Collabora Server
 no active user 'anonymous' found!	collabora	de	Kein aktiver Benutzer 'anonymous' gefunden!
@@ -29,6 +31,7 @@ open as new	filemanager	de	Als neu bearbeiten
 please enter your file name	filemanager	de	Bitte Dateiname eingeben
 presentation	filemanager	de	Präsentation
 requirements / please note	collabora	de	Voraussetzungen / bitte beachten
+revision history	collabora	de	Änderungshistorie
 save as mail	collabora	de	Senden als E-Mail
 spreadsheet	filemanager	de	Tabellendokument
 support-key	collabora	de	Support-Key
