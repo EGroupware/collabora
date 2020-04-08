@@ -24,6 +24,7 @@ failed to update collabora configuration in %1!	collabora	bg	Неуспешна 
 file	collabora	bg	Файл
 file %1 has been created successfully.	collabora	bg	Файл %1 е създаден успешно.
 insert	collabora	bg	Вмъкни
+latest revision	collabora	bg	Последна редакция
 link is appended to email allowing recipients to edit the file	collabora	bg	Връзката е добавена към имейла, което позволява на получателите да редактират файла.
 local collabora server	collabora	bg	Локален сървър Collabora Online
 no active user 'anonymous' found!	collabora	bg	Не е намерен активен "Анонимен" потребител!
@@ -31,6 +32,7 @@ open as new	filemanager	bg	Отвори като нов(а)
 please enter your file name	filemanager	bg	Моля, въведете името на файла си
 presentation	filemanager	bg	Представяне
 requirements / please note	collabora	bg	Моля, отбележете Вашите изисквания.
+revision history	collabora	bg	История на редакциите
 save as mail	collabora	bg	Изпрати като имейл
 spreadsheet	filemanager	bg	Spreadsheet (електронна таблица)
 support-key	collabora	bg	Ключ за поддръжка
