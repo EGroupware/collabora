@@ -632,8 +632,8 @@ class Files
 			$target = $relative_target;
 		}
 
-		// Ok, check target
-		if(!Vfs::is_writable(dirname($target)) || !$this->allow_save_as($path))
+		// Ok, check target - rely on Vfs for permissions
+		if(!Vfs::is_writable(dirname($target)))
 		{
 			// User not authorised, 401 is used for invalid token
 			http_response_code(404);
