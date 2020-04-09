@@ -197,7 +197,7 @@ class Ui {
 			$fileinfo = Vfs::getExtraInfo($path);
 			foreach($fileinfo as $tab)
 			{
-				if($tab['label'] == lang('Versions'))
+				if($tab['label'] == 'Versions')
 				{
 					$content['revisions'] = $tab['data']['versions'];
 					$content['revisions'][0] = $content;
