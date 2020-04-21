@@ -1,0 +1,37 @@
+%1 supported document types	collabora	el	1% Υποστηριζόμενοι τύποι αρχείων
+(requires username and password below)	collabora	el	(απαιτείται να εισαχθεί όνομα χρήστη και κωδικός παρακάτω)
+active user 'anonymous' found.	collabora	el	Βρέθηκε ενεργός χρήστης τύπου 'anonymous'
+admin console	collabora	el	Πίνακας διαχείρισης
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	el	Για την πρόσβαση του Collabora Online σε αρχεία και για την κοινοποίηση αρχείων απαιτείται η ύπαρξη ενός χρήστη τύπου 'anonymous'
+can not read collobora configuration in %1!	collabora	el	Αδυναμία ανάγνωσης παραμετροποίησης Collabora Online από το %1
+checking for user 'anonymous'	collabora	el	Έλεγχος ύπαρξης χρήστη τύπου  'anonymous'
+collabora	common	el	Collabora Online
+collabora is not configured!	collabora	el	Το Collabora Online δεν έχει παραμετροποιηθεί
+collabora server	collabora	el	Collabora Online server
+create	collabora	el	Δημιουργία
+create new %1	filemanager	el	Δημιουργία νέου %1
+document	filemanager	el	Αρχείο κειμένου
+edit %1 in collabora	collabora	el	Επεξεργασία %1 στο Collabora
+editable share link	collabora	el	Σύνδεσμος  κοινοποίησης  με δικαίωμα επεξεργασίας
+failed to create file %1!	collabora	el	Απέτυχε η δημιουργία του αρχείου %1!
+failed to create file %1: file already exists!	collabora	el	Απέτυχε η δημιουργία του αρχείου %1: το αρχείο υφίσταται ήδη!
+failed to update collabora configuration in %1!	collabora	el	Αδυναμία ενημέρωσης παραμετροποίησης Collabora Online στην διαδρομή %1
+file	collabora	el	αρχείο
+file %1 has been created successfully.	collabora	el	Το αρχείο 1% δημιουργήθηκε επιτυχώς
+insert	collabora	el	Εισαγωγή
+latest revision	collabora	el	Τελευταία έκδοση
+local collabora server	collabora	el	Τοπικός Collabora Online server
+no active user 'anonymous' found!	collabora	el	Δεν βρέθηκε ενεργός χρήστης τύπου 'anonymous'
+open as new	filemanager	el	Άνοιγμα ως νέο
+please enter your file name	filemanager	el	Παρακαλώ συμπληρώστε το όνομα του αρχείου σας
+presentation	filemanager	el	Παρουσίαση
+requirements / please note	collabora	el	Προδιαγραφές / παρακαλώ σημειώστε
+revision history	collabora	el	Ιστορικό αναθεωρήσεων
+save as mail	collabora	el	Αποστολή ως E-Mail
+spreadsheet	filemanager	el	Υπολογιστικό φύλλο
+support-key	collabora	el	Κλειδί υποστήριξης (Support-key)
+unable to connect	collabora	el	Αδυναμία σύνδεσης
+unable to contact collabora server	collabora	el	Αδυναμία επικοινωνίας με τον Collabora Online server
+versions	collabora	el	Εκδόσεις
+writable collabora link	collabora	el	Σύνδεσμος  Collabora Online με δικαίωμα επεξεργασίας
+writable collabora share	collabora	el	Σύνδεσμος  κοινοποίησης Collabora Online με δικαίωμα επεξεργασίας
