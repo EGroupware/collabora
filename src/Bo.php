@@ -58,15 +58,19 @@ class Bo {
 			throw new Api\Exception\WrongUserinput(lang('Collabora is not configured!'));
 		}
 
+		$server_url = $server . self::DISCOVERY_URL;
+		$discovery = array();
+
 		// if server is configured server AND we have a cached discovery --> use it
-		if ($server === self::get_server() &&
-			($cached = Cache::getInstance('collabora', 'discovery')))
+		$cached = Cache::getInstance('collabora', 'discovery');
+		if ($server === self::get_server() && !is_null($cached))
 		{
 			return $cached;
 		}
-
-		$server_url = $server . self::DISCOVERY_URL;
-		$discovery = array();
+		else if ($cached === false)
+		{
+			throw new Api\Exception\WrongParameter('Unable to load ' . $server_url);
+		}
 
 		try
 		{
@@ -86,6 +90,8 @@ class Bo {
 			}
 			if ($response_xml_data  === false)
 			{
+				// Cache the response for a bit so we don't keep asking
+				Cache::setInstance('collabora', 'discovery', false, self::DISCOVERY_CACHE_TIME);
 				throw new Api\Exception\WrongParameter('Unable to load ' . $server_url);
 			}
 			libxml_use_internal_errors(true);

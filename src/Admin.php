@@ -64,8 +64,8 @@ class Admin
 		try
 		{
 			$discovery = Bo::discover($data['server']);
-			$data['server_status'] = lang('%1 supported document types', count($discovery));
-			$data['server_status_class'] = count($discovery) ? 'ok' : 'error';
+			$data['server_status'] = $discovery ? lang('%1 supported document types', count($discovery)) : lang('unable to contact collabora server');
+			$data['server_status_class'] = $discovery && count($discovery) ? 'ok' : 'error';
 		}
 		catch (\Exception $e)
 		{
@@ -123,7 +123,7 @@ class Admin
 	public static function validate($data)
 	{
 		// Validate server by checking discovery
-		Api\Cache::setInstance('collabora', 'discovery', false);
+		Api\Cache::setInstance('collabora', 'discovery', null);
 
 		if (!isset($data['server']) && ($server = self::get_managed_server()))
 		{
