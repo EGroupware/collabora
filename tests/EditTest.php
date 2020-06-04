@@ -97,7 +97,7 @@ class EditTest extends SharingBase
 			echo "Didn't find editor\n";
 			if(static::LOG_LEVEL > 1)
 			{
-				echo $form."\n\n";
+				echo "Got this instead:\n".($form?$form:$html)."\n\n";
 			}
 		}
 		$this->assertNotNull($form, "Didn't find editor");
