@@ -14,9 +14,11 @@ namespace EGroupware\Api\Vfs;
 
 require_once __DIR__ . '/SharingBase.php';
 
+use EGroupware\Api\Exception;
 use EGroupware\Api\LoggedInTest as LoggedInTest;
 use EGroupware\Api\Vfs;
 use EGroupware\Collabora\Wopi;
+use EGroupware\Collabora\Bo;
 
 
 class EditTest extends SharingBase
@@ -27,6 +29,18 @@ class EditTest extends SharingBase
 	 */
 	public function testEditorTemplateIsLoaded()
 	{
+		try
+		{
+			$discover = Bo::discover();
+		}
+		catch (Exception $e)
+		{
+			$discover = false;
+		}
+		if(!$discover)
+		{
+			$this->markTestSkipped("No Collabora server");
+		}
 		$dir = Vfs::get_home_dir().'/';
 
 		// Plain text file
