@@ -1,0 +1,46 @@
+%1 supported document types	collabora	fr	%1 types de documents suportés
+(requires username and password below)	collabora	fr	(nécessite un login et mot de passe ci-dessous)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	fr	Un serveur Collabora Online local peut être installé avec le module 'egroupware-collabora-key'
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	fr	Une installation locale non accessible depuis internet ne fonctionnera PAS avec un serveur Collabora Online public
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	fr	Une version support de Collabora Online permet de l'utiliser avec le nombre d'utilisateurs commandé - plus que la version démo ou développeur, installée par défaut.
+active user 'anonymous' found.	collabora	fr	Utilisateur 'anonymous' actif trouvé.
+admin console	collabora	fr	Console Admin
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	fr	Un utilisateur "anonymous" est nécessaire à Collabora Online pour accéder aux fichiers et pour partager les fichiers.
+can not read collobora configuration in %1!	collabora	fr	Echec de lecture sur la configuration Collabora Online dans %1 !
+checking for user 'anonymous'	collabora	fr	Vérification de l'utilisateur 'Anonymous'
+collabora	common	fr	Collabora Online
+collabora is not configured!	collabora	fr	Collabora Online n'est pas configuré !
+collabora server	collabora	fr	Serveur Collabora Online
+create	collabora	fr	Créer
+create new %1	filemanager	fr	Créer un nouveau %1
+document	filemanager	fr	Document
+edit %1 in collabora	collabora	fr	Modifier %1 dans Collabora
+editable share link	collabora	fr	Lien de dossier en lecture-écriture
+egroupware epl is required to configure a custom collabora server.	collabora	fr	EGroupware EPL est nécessaire pour configurer un serveur Collabora Online personnalisé
+failed to create file %1!	collabora	fr	Echec à la création du fichier %1 !
+failed to create file %1: file already exists!	collabora	fr	Echec à la création du fichier %1 : le fichier existe déjà !
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	fr	Echec à la création du fichier %1 ! Vous n'avez pas les droits sur le dossier %1 !
+failed to update collabora configuration in %1!	collabora	fr	Echec de la mise à jour de la configuration de Collabora Online pour %1 !
+file	collabora	fr	fichier
+file %1 has been created successfully.	collabora	fr	Le fichier %1 a été créé avec succès.
+insert	collabora	fr	Insérer
+latest revision	collabora	fr	Dernière révision
+link is appended to email allowing recipients to edit the file	collabora	fr	Le lien est ajouté à la fin, permettant aux destinataire de modifier le fichier
+local collabora server	collabora	fr	Serveur Collabora Online local
+no active user 'anonymous' found!	collabora	fr	Aucun utilisateur "Anonymous" trouvé !
+open as new	filemanager	fr	Ouvrir en tant que nouveau document
+please enter your file name	filemanager	fr	Veuillez entrer le nom de votre fichier
+presentation	filemanager	fr	Présentation
+requirements / please note	collabora	fr	Prérequis / veuillez noter
+revision history	collabora	fr	Historique des révision
+save as mail	collabora	fr	Envoyer comme email
+spreadsheet	filemanager	fr	Feuille de calcul
+status:	collabora	fr	Statut :
+support-key	collabora	fr	Support-key
+the collabora server must be able to access your egroupware installation!	collabora	fr	The serveur Collabora Online doit pouvoir accéder à votre installation EGroupware !
+unable to connect	collabora	fr	Connexion échouée
+unable to contact collabora server	collabora	fr	Echec de la connexion au serveur Collabora Online
+versions	collabora	fr	Versions
+writable collabora link	collabora	fr	Lien Collabora Online en lecture-écriture
+writable collabora share	collabora	fr	Dossier Collabora Online en lecture-écriture
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	fr	Vous devez avoir une support-key de la boutique en ligne EGroupware GmbH, pomur une installation Collabora Online supportée

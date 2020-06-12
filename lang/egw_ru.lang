@@ -1,0 +1,45 @@
+%1 supported document types	collabora	ru	%1 поддерживаемых типов документа
+(requires username and password below)	collabora	ru	(требуется имя пользователя и ниже пароль)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	ru	Локальный сервер Collabora Online может быть установлен пакетом 'egroupware-collabora-key'
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	ru	Локальная установка, не доступная через интернет, может не работать с публичным сервером Collabora Online
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	ru	Поддерживаемая Collabora Online разрешает работу определённого количества пользователей - больше чем демо или версии разработчика, установленного по умолчанию
+active user 'anonymous' found.	collabora	ru	Найден активный пользователь 'anonymous'
+admin console	collabora	ru	Консоль администратора
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	ru	Пользователь 'anonymous' нужен Collabora Online для доступа к файлам и их совместного использования
+can not read collobora configuration in %1!	collabora	ru	Невозможно прочитать конфигурацию Collabora Online в %1!
+checking for user 'anonymous'	collabora	ru	Проверка пользователя 'anonymous'
+collabora	common	ru	Collabora Online
+collabora is not configured!	collabora	ru	Collabora Online не настроена!
+collabora server	collabora	ru	Сервер Collabora Online
+create	collabora	ru	Создать
+create new %1	filemanager	ru	Создайте новый %1
+document	filemanager	ru	Документ
+edit %1 in collabora	collabora	ru	Редактировать %1 в Collabora
+editable share link	collabora	ru	Редактируемая ссылка на общий ресурс
+egroupware epl is required to configure a custom collabora server.	collabora	ru	Для настройки пользовательского сервера Collabora Online требуется EGroupware EPL
+failed to create file %1!	collabora	ru	Не удалось создать файл %1!
+failed to create file %1: file already exists!	collabora	ru	Не удалось создать файл %1: файл уже существует!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	ru	Не удалось создать файл, недостаточно прав на папку %1!
+failed to update collabora configuration in %1!	collabora	ru	Не удалось обновить настройки Collabora Online в %1!
+file	collabora	ru	файл
+file %1 has been created successfully.	collabora	ru	Файл %1 успешно создан
+insert	collabora	ru	Вставка
+latest revision	collabora	ru	Последняя версия
+link is appended to email allowing recipients to edit the file	collabora	ru	Ссылка добавлена к электронной почте, что позволяет получателям редактировать файл
+local collabora server	collabora	ru	Локальный сервер Collabora Online
+no active user 'anonymous' found!	collabora	ru	Не найден активный пользователь 'anonymous'!
+open as new	filemanager	ru	Открыть как новый
+please enter your file name	filemanager	ru	Пожалуйста введите имя вашего файла
+presentation	filemanager	ru	Представление
+requirements / please note	collabora	ru	Требования / обратите внимание
+revision history	collabora	ru	История редакций
+save as mail	collabora	ru	Отправить как email
+spreadsheet	filemanager	ru	Электронная таблица
+support-key	collabora	ru	Ключ поддержки
+the collabora server must be able to access your egroupware installation!	collabora	ru	Сервер Collabora Online должен иметь доступ к вашей установке EGroupware!
+unable to connect	collabora	ru	Невозможно установить подключение
+unable to contact collabora server	collabora	ru	Невозможно соединиться с сервером Collabora Online
+versions	collabora	ru	Версии
+writable collabora link	collabora	ru	Перезаписываемая ссылка Collabora Online
+writable collabora share	collabora	ru	Перезаписываемый общий ресурс Collabora Online
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	ru	Для поддерживаемой установки Collabora Online вам нужен ключ поддержки из магазина EGroupware GmbH
