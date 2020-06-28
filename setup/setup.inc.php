@@ -8,7 +8,7 @@
 
 $setup_info['collabora']['name']    = 'collabora';
 $setup_info['collabora']['title']   = 'Collabora';
-$setup_info['collabora']['version'] = '19.1.001';
+$setup_info['collabora']['version'] = '20.1';
 $setup_info['collabora']['app_order'] = 1;
 $setup_info['collabora']['enable']  = 2;
 $setup_info['collabora']['autoinstall'] = true;	// install automatically on update
@@ -35,9 +35,9 @@ $setup_info['collabora']['hooks']['etemplate2_before_exec'] = 'EGroupware\Collab
 /* Dependencies for this app to work */
 $setup_info['collabora']['depends'][] = array(
 	'appname' => 'filemanager',
-	'versions' => array('19.1')
+	'versions' => array('20.1')
 );
 $setup_info['collabora']['depends'][] = array(
 	'appname' => 'api',
-	'versions' => array('19.1')
+	'versions' => array('20.1')
 );
