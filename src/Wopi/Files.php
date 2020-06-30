@@ -81,6 +81,10 @@ class Files
 				return $this->put($path);
 			case 'PUT_RELATIVE':
 				return $this->put_relative_file($path);
+			case 'DELETE':
+				return $this->delete_file($path);
+			case 'RENAME_FILE':
+				return $this->rename_file($path);
 			default:
 				if(preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)/contents#',$_SERVER['REQUEST_URI']))
 				{
@@ -289,6 +293,10 @@ class Files
 		if($old_lock && $old_lock !== $lock['token'])
 		{
 			// Conflict
+			if(Wopi::DEBUG)
+			{
+				error_log(__METHOD__ . "($path) unable to lock, already locked with " . array2string($old_lock));
+			}
 			header('X-WOPI-Lock: ' . $lock['token']);
 			http_response_code(409);
 			return;
@@ -303,6 +311,11 @@ class Files
 
 		// Lock the file, refresh if the tokens match
 		$result = Vfs::lock($path, $token, $timeout, $owner, $scope, $type, $lock['token'] == $token);
+
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__ . "($path) " . ($result ? "successfully" : "failed!  Not") . " locked");
+		}
 
 		header('X-WOPI-Lock: ' . $token);
 		http_response_code($result ? 200 : 409);
@@ -505,6 +518,7 @@ class Files
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutRelativeFile.html
 	 *
 	 * @param string $url VFS url (Vfs::PREFIX+path) of the file we're operating on
+	 * @return array|void
 	 */
 	public function put_relative_file($url)
 	{
@@ -667,6 +681,57 @@ class Files
 	}
 
 	/**
+	 * Delete a file
+	 *
+	 * @see https://wopi.readthedocs.io/projects/wopirest/en/latest/files/DeleteFile.html#deletefile
+	 *
+	 * @param $path
+	 * @throws Vfs\Exception\ProtectedDirectory
+	 */
+	public function delete_file($path)
+	{
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__."('$path') ");
+		}
+
+		if(!$this->check_lock($path))
+		{
+			return;
+		}
+		Vfs::remove($path);
+	}
+
+	/**
+	 * Rename a file
+	 *
+	 * The requested file name only has the file name, no path or extension.
+	 * While the Url response property is not mentioned in the docs, Collabora
+	 * complains if it is not there.
+	 *
+	 * @see https://wopi.readthedocs.io/projects/wopirest/en/latest/files/RenameFile.html
+	 *
+	 * @param String $original_path
+	 * @return array
+	 */
+	public function rename_file($original_path)
+	{
+		$suggested_target = Api\Translation::convert($this->header('X-WOPI-RequestedName'), 'utf-7', 'utf-8');
+		$target = $this->clean_filename(pathinfo($original_path, PATHINFO_DIRNAME) . '/'.$suggested_target . '.'.pathinfo($original_path, PATHINFO_EXTENSION));
+
+		if(Wopi::DEBUG)
+		{
+			error_log(__METHOD__."('$original_path' -> $target) ");
+		}
+		Vfs::rename($original_path, $target);
+
+		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
+					'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
+
+		return Array('Name' => Vfs::basename($target), 'Url' => $url);
+	}
+
+	/**
 	 * Make a filename valid, even if we have to modify it a little.
 	 *
 	 * @param String $original_path
@@ -714,5 +779,33 @@ class Files
 
 		$share = Wopi::get_share();
 		return $share['share_writable'] == Wopi::WOPI_WRITABLE;
+	}
+
+	/**
+	 * Checks the lock and sets the appropriate header (409) if there's a mismatch.
+	 *
+	 * @return bool
+	 */
+	protected function check_lock($path)
+	{
+		// Lock token, might not be there
+		$token = $this->header('X-WOPI-Lock');
+		$lock = Vfs::checkLock($path);
+
+		if(!$token && $lock || $token && $lock['token'] !== $token)
+		{
+			// Conflict
+			http_response_code(409);
+			if ($lock)
+			{
+				header('X-WOPI-Lock: ' . $lock['token']);
+			}
+			if (Wopi::DEBUG)
+			{
+				error_log(__METHOD__ . "() '$path' is locked --> 409 Conflict");
+			}
+			return false;
+		}
+		return true;
 	}
 }
