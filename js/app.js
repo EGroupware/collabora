@@ -540,6 +540,9 @@ app.classes.collabora = AppJS.extend(
 					}
 				}
 				break;
+			case "File_Rename":
+				this.egw.message(this.egw.lang("File renamed"));
+				break;
 		}
 	},
 
