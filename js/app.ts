@@ -541,6 +541,9 @@ class collaboraAPP extends EgwApp
 					}
 				}
 				break;
+			case "File_Rename":
+				this.egw.message(this.egw.lang("File renamed"));
+				break;
 		}
 	}
 

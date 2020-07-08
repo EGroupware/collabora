@@ -472,6 +472,9 @@ var collaboraAPP = /** @class */ (function (_super) {
                     }
                 }
                 break;
+            case "File_Rename":
+                this.egw.message(this.egw.lang("File renamed"));
+                break;
         }
     };
     /**
