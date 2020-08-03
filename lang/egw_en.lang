@@ -23,6 +23,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	en	Failed to update Collabora Online configuration in %1!
 file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
+file renamed	collabora	en	File renamed
 insert	collabora	en	Insert
 latest revision	collabora	en	Latest revision
 link is appended to email allowing recipients to edit the file	collabora	en	Link is appended to email allowing recipients to edit the file
