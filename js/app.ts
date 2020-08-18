@@ -310,23 +310,24 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	 * Method to create a new document
 	 *
 	 * @param {object} _action either action or node
-	 * @param {object} _selected either widget or selected row
+	 * @param {object} _nm nm widget
 	 *
 	 * @return {boolean} returns true
 	 *
 	 * @TODO Implementing of create new type of the file for collabora
 	 */
-	create_new(_action, _selected) {
+	create_new(_action, _nm) {
 		let is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
-		let type = (typeof _selected._type != 'undefined')? _selected.get_value(): _action.id;
+		let new_widget = this.et2.getWidgetById('new');
+		let type = (typeof new_widget._type != 'undefined')? new_widget.get_value(): _action.id;
 		if (is_collabora)
 		{
-			let id = _selected[0] && _selected[0].id ? _selected[0].id : null;
+			let id = new_widget[0] && new_widget[0].id ? new_widget[0].id : null;
 			let elem = id ? egw.dataGetUIDdata(id) : null;
 			let data;
 			if (_action.id == 'openasnew')
 			{
-				data = egw.dataGetUIDdata(_selected[0].id);
+				data = egw.dataGetUIDdata(new_widget[0].id);
 			}
 			let path = id ?	id.split('filemanager::')[1]: this.et2.getWidgetById('path').get_value();
 			if (elem && elem.data && !elem.data.is_dir) path = this.dirname(path);
@@ -335,7 +336,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		}
 		else
 		{
-			return super.create_new(_action, _selected);
+			return super.create_new(_action, new_widget);
 		}
 		return true;
 	}

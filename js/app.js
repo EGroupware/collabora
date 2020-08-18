@@ -285,21 +285,22 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * Method to create a new document
      *
      * @param {object} _action either action or node
-     * @param {object} _selected either widget or selected row
+     * @param {object} _nm nm widget
      *
      * @return {boolean} returns true
      *
      * @TODO Implementing of create new type of the file for collabora
      */
-    collaboraFilemanagerAPP.prototype.create_new = function (_action, _selected) {
+    collaboraFilemanagerAPP.prototype.create_new = function (_action, _nm) {
         var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
-        var type = (typeof _selected._type != 'undefined') ? _selected.get_value() : _action.id;
+        var new_widget = this.et2.getWidgetById('new');
+        var type = (typeof new_widget._type != 'undefined') ? new_widget.get_value() : _action.id;
         if (is_collabora) {
-            var id = _selected[0] && _selected[0].id ? _selected[0].id : null;
+            var id = new_widget[0] && new_widget[0].id ? new_widget[0].id : null;
             var elem = id ? egw.dataGetUIDdata(id) : null;
             var data = void 0;
             if (_action.id == 'openasnew') {
-                data = egw.dataGetUIDdata(_selected[0].id);
+                data = egw.dataGetUIDdata(new_widget[0].id);
             }
             var path = id ? id.split('filemanager::')[1] : this.et2.getWidgetById('path').get_value();
             if (elem && elem.data && !elem.data.is_dir)
@@ -307,7 +308,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             this._dialog_create_new(type, data ? data.data.path : undefined, path);
         }
         else {
-            return _super.prototype.create_new.call(this, _action, _selected);
+            return _super.prototype.create_new.call(this, _action, new_widget);
         }
         return true;
     };
