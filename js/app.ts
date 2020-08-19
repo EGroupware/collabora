@@ -245,11 +245,11 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 				ext_default = 'odp';
 				break;
 			case 'more':
-				for (let i in Object.keys(this.discovery))
+				for (let key in this.discovery)
 				{
-					if (this.discovery[i][1].name == 'edit' && exclusive_ext.filter(function(v){
-						return (self.discovery[i][1]['ext'] == v);
-					}).length == 0) extensions[this.discovery[i][1]['ext']] = '(.'+this.discovery[i][1]['ext']+') '+ this.discovery[i][0];
+					if (this.discovery[key].name == 'edit' && exclusive_ext.filter(function(v){
+						return (self.discovery[key]['ext'] == v);
+					}).length == 0) extensions[this.discovery[key]['ext']] = '(.'+this.discovery[key]['ext']+') '+ key;
 				}
 				break;
 		}
