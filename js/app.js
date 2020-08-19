@@ -223,15 +223,15 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
                 ext_default = 'odp';
                 break;
             case 'more':
-                var _loop_1 = function (i) {
-                    if (this_1.discovery[i][1].name == 'edit' && exclusive_ext.filter(function (v) {
-                        return (self.discovery[i][1]['ext'] == v);
+                var _loop_1 = function (key) {
+                    if (this_1.discovery[key].name == 'edit' && exclusive_ext.filter(function (v) {
+                        return (self.discovery[key]['ext'] == v);
                     }).length == 0)
-                        extensions[this_1.discovery[i][1]['ext']] = '(.' + this_1.discovery[i][1]['ext'] + ') ' + this_1.discovery[i][0];
+                        extensions[this_1.discovery[key]['ext']] = '(.' + this_1.discovery[key]['ext'] + ') ' + key;
                 };
                 var this_1 = this;
-                for (var i in Object.keys(this.discovery)) {
-                    _loop_1(i);
+                for (var key in this.discovery) {
+                    _loop_1(key);
                 }
                 break;
         }
