@@ -45,10 +45,10 @@ class Files
 			header('X-WOPI-ServerError: Missing file ID');
 			return;
 		}
-		$path = Wopi::get_path_from_id($id);
+		$path = Wopi::get_path_from_token();
 		if($path == '')
 		{
-			$path = \EGroupware\collabora\Wopi::get_path_from_token();
+			$path = Wopi::get_path_from_id($id);
 			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".$this->header('X-WOPI-Override').", path (from token) = $path");
 		}
 		else if(Wopi::DEBUG)
@@ -56,7 +56,8 @@ class Files
 			error_log(__METHOD__."($id) _REQUEST=".array2string($_REQUEST).", X-WOPI-Override=".$this->header('X-WOPI-Override').", path (from id $id) = $path");
 		}
 
-		if(!$path || Vfs::is_dir($path))
+		if ($path[0] === '/') $path = Vfs::PREFIX.$path;
+		if(!$path || is_dir($path))
 		{
 			http_response_code(404);
 			header('X-WOPI-ServerError: Unable to find file / path is invalid');
@@ -221,7 +222,7 @@ class Files
 		}
 		if($path)
 		{
-			$stat = Vfs::stat($path);
+			$stat = stat($path);
 		}
 		if($stat)
 		{
@@ -253,15 +254,13 @@ class Files
 	 */
 	public function get_file($path)
 	{
-		$stat = Vfs::stat($path);
+		$stat = stat($path);
 
 		// send a content-disposition header, so browser knows how to name downloaded file
-		Api\Header\Content::disposition(Vfs::basename(Vfs::PREFIX . $path), false);
+		Api\Header\Content::disposition(Vfs::basename($path), false);
 		header('Content-Length: ' . $stat['size']);
 		header('Content-Type: ' . $stat['mime']);
-		readfile(Vfs::PREFIX . $path);
-
-		return;
+		readfile($path, null, Vfs\StreamWrapper::userContext($path));
 	}
 
 	/**
@@ -287,6 +286,7 @@ class Files
 		$owner = $GLOBALS['egw_info']['user']['account_id'];
 		$scope = 'exclusive';
 		$type = 'write';
+		$path = Vfs::parse_url($path, PHP_URL_PATH);
 		$lock = Vfs::checkLock($path);
 
 		// Unlock and relock if old lock is provided
@@ -330,7 +330,7 @@ class Files
 	 */
 	public function get_lock($path)
 	{
-		$lock = Vfs::checkLock($path);
+		$lock = Vfs::checkLock(Vfs::parse_url($path, PHP_URL_PATH));
 
 		header('X-WOPI-Lock: ' . $lock['token']);
 		http_response_code(200);
@@ -357,7 +357,7 @@ class Files
 		$scope = 'exclusive';
 		$type = 'write';
 
-		$result = Vfs::lock($path, $token, $timeout, $owner, $scope, $type, true);
+		$result = Vfs::lock(Vfs::parse_url($path, PHP_URL_PATH), $token, $timeout, $owner, $scope, $type, true);
 
 		header('X-WOPI-Lock: ' . $token);
 		http_response_code($result ? 200 : 409);
@@ -379,6 +379,7 @@ class Files
 			http_response_code(400);
 		}
 
+		$path=Vfs::parse_url($path, PHP_URL_PATH);
 		$lock = Vfs::checkLock($path);
 		if(!$lock)
 		{
@@ -429,7 +430,7 @@ class Files
 		$token = $this->header('X-WOPI-Lock');
 
 		// Check lock
-		$lock = Vfs::checkLock($path);
+		$lock = Vfs::checkLock(Vfs::parse_url($path, PHP_URL_PATH));
 		if(!$lock)
 		{
 			/* Collabora Online does not support locking, and never locks
@@ -477,14 +478,14 @@ class Files
 		}
 		// let VFS via context know, to NOT create a new version for consecutive autosaves
 		// or explicit save after an autosave (minimize automatic versions)
-		$context = stream_context_create($c=array(
-			Vfs::SCHEME => array(
-				'versioning' => array(
+		$context = Vfs\StreamWrapper::userContext($path, [
+			Vfs::SCHEME => [
+				'versioning' => [
 					'disable' => $is_autosaved,
 					'min_version' => 0,	// do NOT stop explicit versioning for non autosave and new opened of files
-				),
-			),
-		));
+				],
+			],
+		]);
 		//error_log(__METHOD__."('$path') prop=".array2string($prop).", is_autosaved=".array2string($is_autosaved).", X-LOOL-WOPI-IsAutosave={$this->header('X-LOOL-WOPI-IsAutosave')} --> context=".array2string($c));
 
 		if (False === file_put_contents($path, $content, 0, $context))
@@ -500,7 +501,7 @@ class Files
 			'val' => $this->header('X-LOOL-WOPI-IsAutosave') === 'true' ? filemtime($path) : null,
 		)));
 
-		$stat = Vfs::stat($path);
+		$stat = stat($path);
 		$data = array('status' => 'success');
 		if($stat)
 		{
@@ -527,7 +528,7 @@ class Files
 		// Lock token, might not be there
 		$token = $this->header('X-WOPI-Lock');
 		$lock = Vfs::checkLock($path);
-		$dirname = Vfs::dirname($path);
+		$dirname = Vfs::dirname($url);
 
 		$suggested_target = Api\Translation::convert($this->header('X-WOPI-SuggestedTarget'), 'utf-7', 'utf-8');
 		$relative_target = Api\Translation::convert($this->header('X-WOPI-RelativeTarget'), 'utf-7', 'utf-8');
@@ -613,7 +614,7 @@ class Files
 				}
 				return;
 			}
-			if(Vfs::file_exists($relative_target))
+			if (file_exists($relative_target))
 			{
 				if(!$overwrite)
 				{
@@ -660,7 +661,7 @@ class Files
 
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
-		if(False === file_put_contents(Vfs::PREFIX . $target, $content))
+		if(False === file_put_contents($target, $content, 0, Vfs\StreamWrapper::userContext($target)))
 		{
 			http_response_code(500);
 			header('X-WOPI-ServerError: Unable to write file');
@@ -699,7 +700,7 @@ class Files
 		{
 			return;
 		}
-		Vfs::remove($path);
+		unlink($path);
 	}
 
 	/**
@@ -723,7 +724,7 @@ class Files
 		{
 			error_log(__METHOD__."('$original_path' -> $target) ");
 		}
-		Vfs::rename($original_path, $target);
+		rename($original_path, $target);
 
 		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
 					'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
@@ -754,7 +755,7 @@ class Files
 
 		// Avoid duplicates
 		$dupe_count = 0;
-		while($modify_filename && Vfs::file_exists($path.'/'.$file) && $dupe_count < 1000)
+		while($modify_filename && file_exists($path.'/'.$file) && $dupe_count < 1000)
 		{
 			$dupe_count++;
 			$file = $basename .
@@ -790,7 +791,7 @@ class Files
 	{
 		// Lock token, might not be there
 		$token = $this->header('X-WOPI-Lock');
-		$lock = Vfs::checkLock($path);
+		$lock = Vfs::checkLock(Vfs::parse_url($path, PHP_URL_PATH));
 
 		if(!$token && $lock || $token && $lock['token'] !== $token)
 		{
