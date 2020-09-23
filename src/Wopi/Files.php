@@ -453,12 +453,12 @@ class Files
 			header('X-WOPI-Lock: ' . $lock['token']);
 			return;
 		}
-
+/*
 		$api_config = Api\Config::read('phpgwapi');
 		$GLOBALS['egw_info']['server']['vfs_fstab'] = $api_config['vfs_fstab'];
 		Vfs\StreamWrapper::init_static();
 		Vfs::clearstatcache();
-
+*/
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
 		if (strpos($path, '://') === false) $path = Vfs::PREFIX.$path;
@@ -568,11 +568,11 @@ class Files
 			error_log(__METHOD__."() Directory: $dirname RelativeTarget='$relative_target' AND SuggestedTarget='$suggested_target'");
 		}
 
-		// Need access to full Vfs to check for existing files
+		/* Need access to full Vfs to check for existing files
 		$api_config = Api\Config::read('phpgwapi');
 		$GLOBALS['egw_info']['server']['vfs_fstab'] = $api_config['vfs_fstab'];
 		Vfs\StreamWrapper::init_static();
-		Vfs::clearstatcache();
+		Vfs::clearstatcache();*/
 
 		// seems targets can be relative
 		if (!empty($suggested_target) && $suggested_target[0] != '/') $suggested_target = Vfs::concat ($dirname, $suggested_target);

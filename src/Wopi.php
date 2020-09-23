@@ -64,7 +64,7 @@ class Wopi extends Sharing
 	public static function index()
 	{
 		// Check access token, start session
-		static::create_session(true);
+// already done		static::create_session(true);
 
 		// Determine the endpoint, get the ID
 		$matches = array();
@@ -128,7 +128,10 @@ class Wopi extends Sharing
 		{
 			$extra['share_writable'] = static::WOPI_READONLY;
 		}
-		$result = parent::create('', $path, $mode, $name, $recipients, $extra);
+		// store sessionid in Collabora share under share_with
+		$extra['share_with'] = $GLOBALS['egw']->session->sessionid;
+
+		$result = parent::create('', $path, $mode, $name, $extra['share_with'], $extra);
 
 
 		// If path needs password, get credentials and add on the ID so we can
@@ -145,6 +148,47 @@ class Wopi extends Sharing
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Collabora shares now container the sessionid and therefore use the original user session
+	 *
+	 * @param boolean $keep_session =null null: create a new session, true: try mounting it into existing (already verified) session
+	 * @return string with sessionid
+	 */
+	public static function create_session($keep_session=null)
+	{
+		$share = array();
+		static::check_token($keep_session=true, $share);
+		if($share)
+		{
+			if (!$GLOBALS['egw']->session->verify($share['share_with']))
+			{
+				return static::share_fail(
+					'404 Not Found',
+					"User session already ended / failed to verify!\n"
+				);
+			}
+			$classname = static::get_share_class($share);
+			$classname::setup_share($keep_session, $share);
+			return $classname::login($keep_session, $share);
+		}
+		return '';
+	}
+
+	/**
+	 * Overwritten to not temper with user session used by Collabora now
+	 *
+	 * @param $keep_session
+	 * @param $share
+	 * @return mixed
+	 */
+	protected static function login($keep_session, &$share)
+	{
+		// store sharing object in egw object and therefore in session
+		$GLOBALS['egw']->sharing = static::factory($share);
+
+		return $GLOBALS['egw']->session->sessionid;
 	}
 
 	/**
@@ -219,6 +263,11 @@ class Wopi extends Sharing
 			Vfs::clearstatcache();
 		}
 		$share['resolve_url'] = Vfs::resolve_url($share['share_path'], true, true, true, true);	// true = fix evtl. contained url parameter
+		// ToDo: do we need to call Vfs::resolve_url and if yes, maybe it should make sure to keep the user ...
+		if (($user = Vfs::parse_url($share['share_path'], PHP_URL_USER)))
+		{
+			$share['resolve_url'] = preg_replace('|://([^@]+@)?|', '://'.$user.'@', $share['resolve_url']);
+		}
 		// if share not writable append ro=1 to mount url to make it readonly
 		if (!($share['share_writable'] & 1))
 		{
