@@ -22,6 +22,8 @@ use \EGroupware\Api\Vfs;
  * This group of tests creates shares, but without logging out since it's not
  * necessary to get the file ID.
  *
+ * @TODO We're really testing that we get _something_ for the ID right now, not that multiple
+ *  shares for the same file get the same ID
  */
 class FileIDTest extends SharingBase
 {
