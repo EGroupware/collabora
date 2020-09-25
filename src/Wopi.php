@@ -78,9 +78,9 @@ class Wopi extends Sharing
 		}
 
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
-				ucfirst($endpoint),
-				FILTER_SANITIZE_SPECIAL_CHARS,
-				FILTER_FLAG_STRIP_LOW + FILTER_FLAG_STRIP_HIGH
+			ucfirst($endpoint),
+			FILTER_SANITIZE_SPECIAL_CHARS,
+			FILTER_FLAG_STRIP_LOW + FILTER_FLAG_STRIP_HIGH
 		);
 		$data = array();
 		if($endpoint_class && class_exists($endpoint_class))
@@ -134,6 +134,7 @@ class Wopi extends Sharing
 		$result = parent::create('', $path, $mode, $name, $extra['share_with'], $extra);
 
 
+		/* Not needed anymore, as we use the user-session
 		// If path needs password, get credentials and add on the ID so we can
 		// actually open the path with the anon user
 		if(static::path_needs_password($path))
@@ -145,7 +146,7 @@ class Wopi extends Sharing
 			}
 
 			$result['share_token'] .= ':'.$cred_id;
-		}
+		}*/
 
 		return $result;
 	}
@@ -160,8 +161,18 @@ class Wopi extends Sharing
 	{
 		$share = array();
 		static::check_token($keep_session=true, $share);
-		if($share)
+		if ($share)
 		{
+			// we need to restore egw_info, specially the user stuff from the session
+			// to not recreate it, which fails from the (anonymous) sharing UI, as anon user has eg. no collabora rights
+			if (Api\Session::init_handler($share['share_with']))
+			{
+				// marking the context as restored from the session, used by session->verify to not read the data from the db again
+				$GLOBALS['egw_info']['flags']['restored_from_session'] = true;
+
+				// restoring the egw_info-array
+				$GLOBALS['egw_info'] = array_merge($_SESSION[Api\Session::EGW_INFO_CACHE],array('flags' => $GLOBALS['egw_info']['flags']));
+			}
 			if (!$GLOBALS['egw']->session->verify($share['share_with']))
 			{
 				return static::share_fail(
@@ -170,7 +181,6 @@ class Wopi extends Sharing
 				);
 			}
 			$classname = static::get_share_class($share);
-			$classname::setup_share($keep_session, $share);
 			return $classname::login($keep_session, $share);
 		}
 		return '';
@@ -405,7 +415,7 @@ class Wopi extends Sharing
 	public static function is_writable()
 	{
 		$share = static::get_share();
-		return ((intval($share['share_writable']) & 1));
+		return (bool)((int)$share['share_writable'] & 1);
 	}
 
 	/**

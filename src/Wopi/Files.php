@@ -57,6 +57,7 @@ class Files
 		}
 
 		if ($path[0] === '/') $path = Vfs::PREFIX.$path;
+		Vfs::load_wrapper(Vfs::parse_url($path, PHP_URL_SCHEME));
 		if(!$path || is_dir($path))
 		{
 			http_response_code(404);
@@ -286,7 +287,6 @@ class Files
 		$owner = $GLOBALS['egw_info']['user']['account_id'];
 		$scope = 'exclusive';
 		$type = 'write';
-		$path = Vfs::parse_url($path, PHP_URL_PATH);
 		$lock = Vfs::checkLock($path);
 
 		// Unlock and relock if old lock is provided
@@ -330,7 +330,7 @@ class Files
 	 */
 	public function get_lock($path)
 	{
-		$lock = Vfs::checkLock(Vfs::parse_url($path, PHP_URL_PATH));
+		$lock = Vfs::checkLock($path);
 
 		header('X-WOPI-Lock: ' . $lock['token']);
 		http_response_code(200);
@@ -357,7 +357,7 @@ class Files
 		$scope = 'exclusive';
 		$type = 'write';
 
-		$result = Vfs::lock(Vfs::parse_url($path, PHP_URL_PATH), $token, $timeout, $owner, $scope, $type, true);
+		$result = Vfs::lock($path, $token, $timeout, $owner, $scope, $type, true);
 
 		header('X-WOPI-Lock: ' . $token);
 		http_response_code($result ? 200 : 409);
@@ -379,7 +379,6 @@ class Files
 			http_response_code(400);
 		}
 
-		$path=Vfs::parse_url($path, PHP_URL_PATH);
 		$lock = Vfs::checkLock($path);
 		if(!$lock)
 		{
