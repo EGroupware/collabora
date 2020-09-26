@@ -63,9 +63,6 @@ class Wopi extends Sharing
 	 */
 	public static function index()
 	{
-		// Check access token, start session
-// already done		static::create_session(true);
-
 		// Determine the endpoint, get the ID
 		$matches = array();
 		preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
@@ -128,11 +125,12 @@ class Wopi extends Sharing
 		{
 			$extra['share_writable'] = static::WOPI_READONLY;
 		}
-		// store sessionid in Collabora share under share_with
-		$extra['share_with'] = $GLOBALS['egw']->session->sessionid;
-
+		// store users sessionid in Collabora share under share_with, unless a writable Collabora share (no filemanager UI)
+		if ($mode !== self::WOPI_SHARED)
+		{
+			$extra['share_with'] = $GLOBALS['egw']->session->sessionid;
+		}
 		$result = parent::create('', $path, $mode, $name, $extra['share_with'], $extra);
-
 
 		/* Not needed anymore, as we use the user-session
 		// If path needs password, get credentials and add on the ID so we can
@@ -195,6 +193,20 @@ class Wopi extends Sharing
 	 */
 	protected static function login($keep_session, &$share)
 	{
+		// for writable Collabora share, we need to create and use now a copy with our newly created sessionid
+		if ($share['share_writable'] == Wopi::WOPI_SHARED && empty($share['share_with']))
+		{
+			$GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
+
+			$extra = [
+				'share_writable' => self::WOPI_WRITABLE,
+				'share_with'     => $GLOBALS['egw']->session->sessionid,
+			];
+			$share = parent::create('', $share['share_root'], self::WOPI_WRITABLE, Vfs::basename($share['share_path']), $extra['share_with'], $extra);
+
+			// we can't validate the token, as we just created a new one
+			$share['skip_validate_token'] = true;
+		}
 		// store sharing object in egw object and therefore in session
 		$GLOBALS['egw']->sharing = static::factory($share);
 
@@ -265,16 +277,9 @@ class Wopi extends Sharing
 	 */
 	public static function setup_share($keep_session, &$share)
 	{
-		// need to reset fs_tab, as resolve_url does NOT work with just share mounted
-		if (empty($GLOBALS['egw_info']['server']['vfs_fstab']) || count($GLOBALS['egw_info']['server']['vfs_fstab']) <= 1)
-		{
-			unset($GLOBALS['egw_info']['server']['vfs_fstab']);	// triggers reset of fstab in mount()
-			$GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
-			Vfs::clearstatcache();
-		}
 		$share['resolve_url'] = Vfs::resolve_url($share['share_path'], true, true, true, true);	// true = fix evtl. contained url parameter
 		// ToDo: do we need to call Vfs::resolve_url and if yes, maybe it should make sure to keep the user ...
-		if (($user = Vfs::parse_url($share['share_path'], PHP_URL_USER)))
+		if (($user = Vfs::parse_url($share['share_path'], PHP_URL_USER) ?: Api\Accounts::id2name($share['share_owner'])))
 		{
 			$share['resolve_url'] = preg_replace('|://([^@]+@)?|', '://'.$user.'@', $share['resolve_url']);
 		}
@@ -297,15 +302,11 @@ class Wopi extends Sharing
 		}
 		if (!$keep_session)	// do NOT change to else, as we might have set $keep_session=false!
 		{
-			// only allow filemanager app & collabora
-			// (In some cases, $GLOBALS['egw_info']['apps'] is not yet set)
-			$apps = $GLOBALS['egw']->acl->get_user_applications($share['share_owner']);
-			$GLOBALS['egw_info']['user']['apps'] = array(
-					'filemanager' => $GLOBALS['egw_info']['apps']['filemanager'] || true,
-					'collabora' => $GLOBALS['egw_info']['apps']['collabora'] || $apps['collabora']
-			);
+			$sessionid = static::create_new_session();
 
-			$share['share_root'] = '/';
+			static::after_login($share);
+
+			$share['share_root'] = '/'.Vfs::basename($share['share_path']);
 			Vfs::$user = $share['share_owner'];
 
 			// Need to re-init stream wrapper, as some of them look at
@@ -332,13 +333,14 @@ class Wopi extends Sharing
 		// clear link-cache and load link registry without permission check to access /apps
 		Api\Link::init_static(true);
 
+		/* Not neccesary anymore, as we use the users session
 		if(self::$credentials && $share)
 		{
 			$access = Credentials::read_credential(self::$credentials);
 
 			$GLOBALS['egw_info']['user']['account_lid'] = Api\Accounts::id2name($share['share_owner'], 'account_lid');
 			$GLOBALS['egw_info']['user']['passwd'] = $access['password'];
-		}
+		}*/
 	}
 
 	/**
@@ -512,7 +514,7 @@ class Wopi extends Sharing
 	public static function share2link($share)
 	{
 		return Api\Vfs\Sharing::share2link($share) .
-				($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
+			($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
 	}
 
 	/**
