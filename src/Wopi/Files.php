@@ -57,6 +57,8 @@ class Files
 		}
 
 		if ($path[0] === '/') $path = Vfs::PREFIX.$path;
+		// used the resolved path for locking, so the original file is locked, not the sharing-url
+		$lockpath = Vfs::resolve_url($path) ?: $path;
 		Vfs::load_wrapper(Vfs::parse_url($path, PHP_URL_SCHEME));
 		if(!$path || is_dir($path))
 		{
@@ -68,23 +70,23 @@ class Files
 		switch ($this->header('X-WOPI-Override'))
 		{
 			case 'LOCK':
-				$this->lock($path);
+				$this->lock($lockpath);
 				return;
 			case 'GET_LOCK':
-				$this->get_lock($path);
+				$this->get_lock($lockpath);
 				return;
 			case 'REFRESH_LOCK':
-				$this->refresh_lock($path);
+				$this->refresh_lock($lockpath);
 				return;
 			case 'UNLOCK':
-				$this->unlock($path);
+				$this->unlock($lockpath);
 				return;
 			case 'PUT':
-				return $this->put($path);
+				return $this->put($path, $lockpath);
 			case 'PUT_RELATIVE':
-				return $this->put_relative_file($path);
+				return $this->put_relative_file($path, $lockpath);
 			case 'DELETE':
-				return $this->delete_file($path);
+				return $this->delete_file($path, $lockpath);
 			case 'RENAME_FILE':
 				return $this->rename_file($path);
 			default:
@@ -100,7 +102,6 @@ class Files
 			http_response_code(404);
 			return null;
 		}
-
 
 		return $data;
 	}
@@ -414,8 +415,9 @@ class Files
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutFile.html
 	 *
 	 * @param string $path VFS path of the file we're operating on
+	 * @param string $lockpath =null resolved path for locking, default $path
 	 */
-	public function put($path)
+	public function put($path, $lockpath=null)
 	{
 		// Check if share _can_ be written to, before we bother with anything else
 		if(!Wopi::is_writable())
@@ -429,7 +431,7 @@ class Files
 		$token = $this->header('X-WOPI-Lock');
 
 		// Check lock
-		$lock = Vfs::checkLock(Vfs::parse_url($path, PHP_URL_PATH));
+		$lock = Vfs::checkLock($lockpath ?: $path);
 		if(!$lock)
 		{
 			/* Collabora Online does not support locking, and never locks
@@ -518,15 +520,16 @@ class Files
 	 * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/files/PutRelativeFile.html
 	 *
 	 * @param string $url VFS url (Vfs::PREFIX+path) of the file we're operating on
+	 * @param string $lockpath =null resolved path for locking, default $path
 	 * @return array|void
 	 */
-	public function put_relative_file($url)
+	public function put_relative_file($url, $lockpath=null)
 	{
 		$path = Vfs::parse_url($url, PHP_URL_PATH);
 
 		// Lock token, might not be there
 		$token = $this->header('X-WOPI-Lock');
-		$lock = Vfs::checkLock($path);
+		$lock = Vfs::checkLock($lockpath ?: $path);
 		$dirname = Vfs::dirname($url);
 
 		$suggested_target = Api\Translation::convert($this->header('X-WOPI-SuggestedTarget'), 'utf-7', 'utf-8');
@@ -686,16 +689,16 @@ class Files
 	 * @see https://wopi.readthedocs.io/projects/wopirest/en/latest/files/DeleteFile.html#deletefile
 	 *
 	 * @param $path
-	 * @throws Vfs\Exception\ProtectedDirectory
+	 * @param string $lockpath =null resolved path for locking, default $path
 	 */
-	public function delete_file($path)
+	public function delete_file($path, $lockpath=null)
 	{
 		if(Wopi::DEBUG)
 		{
-			error_log(__METHOD__."('$path') ");
+			error_log(__METHOD__."('$path', '$lockpath') ");
 		}
 
-		if(!$this->check_lock($path))
+		if(!$this->check_lock($lockpath ?: $path))
 		{
 			return;
 		}
