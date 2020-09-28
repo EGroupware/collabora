@@ -429,13 +429,13 @@ class Wopi extends Sharing
 	 * a new version a new fs_id will be generated, and the original file will
 	 * be moved to the attic, but the lowest share ID should stay the same.
 	 *
-	 * @param string $path Full file path
+	 * @param string $url Full file path
 	 *
 	 * @param Integer File ID, (0 if not found)
 	 */
-	public static function get_file_id($path)
+	public static function get_file_id($url)
 	{
-		$path = str_replace(Api\Vfs::PREFIX, '', $path);
+		$path = Vfs::parse_url($url, PHP_URL_PATH);
 		$file_id = Api\Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Fall back to the earliest valid share ID
@@ -444,7 +444,7 @@ class Wopi extends Sharing
 			self::so();
 
 			$where = array(
-				'share_path' => Api\Vfs::PREFIX.$path,
+				'share_path' => ($url[0] === '/' ? Api\Vfs::PREFIX : '').$url,
 				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
 			);
 			$append = 'ORDER BY share_id ASC';

@@ -663,6 +663,7 @@ class Files
 
 		// Read the contents of the file from the POST body and store.
 		$content = $this->get_sent_content();
+		if ($target[0] === '/') $target = Vfs::PREFIX.$target;
 		if(False === file_put_contents($target, $content, 0, Vfs\StreamWrapper::userContext($target)))
 		{
 			http_response_code(500);
