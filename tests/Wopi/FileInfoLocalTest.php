@@ -124,11 +124,14 @@ class FileInfoLocalTest extends SharingBase
 	 */
 	protected function checkFileInfo($_file)
 	{
+		$_file = Vfs::resolve_url_symlinks($_file);
+
 		// Ignore directories
 		if(Vfs::is_dir($_file) || !$_file) return;
 
 		$files = new Wopi\Files();
 		$info = $this->clean_info($files->check_file_info($_file));
+		$this->assertNotNull($info, "Did not get any file info. Usually caused by file not found.  \n$_file");
 
 		$file = basename($_file);
 		$stored = file_get_contents($this->get_info_fixture($file));

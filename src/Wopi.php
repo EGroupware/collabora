@@ -159,7 +159,7 @@ class Wopi extends Sharing
 	{
 		$share = array();
 		static::check_token($keep_session=true, $share);
-		if ($share)
+		if ($share && $share['share_with'])
 		{
 			// we need to restore egw_info, specially the user stuff from the session
 			// to not recreate it, which fails from the (anonymous) sharing UI, as anon user has eg. no collabora rights
@@ -180,6 +180,10 @@ class Wopi extends Sharing
 			}
 			$classname = static::get_share_class($share);
 			return $classname::login($keep_session, $share);
+		}
+		else if ($share)
+		{
+			return parent::create_session($keep_session);
 		}
 		return '';
 	}

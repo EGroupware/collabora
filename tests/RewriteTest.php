@@ -42,8 +42,15 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 	 */
 	public function testHomeUrl()
 	{
+		$path = '/home';
 
-		$token = Bo::get_token('/home');
+		$share = Wopi::create($path,
+			Wopi::WOPI_SHARED,
+			'', '', array(
+			'share_expires'  =>  time() + Wopi::TOKEN_TTL,
+			'share_writable' =>  Api\Vfs::is_writable($path) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY
+		));
+		$token = Bo::get_token($path, $share);
 
 		// home dir gets ID 2 normally
 		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/2?access_token=' . urlencode($token['token'])));
