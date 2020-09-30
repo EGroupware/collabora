@@ -85,6 +85,8 @@ class FileInfoLocalTest extends SharingBase
 		$bo = new \infolog_bo();
 		$dir = "/apps/infolog/$info_id/";
 
+		$this->mountLinks("/apps");
+
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 
 		$this->files = $this->addFiles($dir, static::CONTENT);
