@@ -80,6 +80,7 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 
 		$files = new Wopi\Files();
 		$info = $files->check_file_info($file);
+		$this->assertNotNull($info, "Could not get file info for '$file'");
 		if(static::LOG_LEVEL > 1)
 		{
 			error_log($file . ' FileInfo: ' .array2string($info));
@@ -122,6 +123,10 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 	protected function getShareExtra($dir, $mode, &$extra)
 	{
 		parent::getShareExtra($dir, $mode, $extra);
+
+		// Most of the tests expect to not have session ID, so make sure it is not set
+		$extra['share_with'] = '';
+
 		switch($mode)
 		{
 			case Wopi::WOPI_WRITABLE:

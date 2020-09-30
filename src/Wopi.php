@@ -126,7 +126,7 @@ class Wopi extends Sharing
 			$extra['share_writable'] = static::WOPI_READONLY;
 		}
 		// store users sessionid in Collabora share under share_with, unless a writable Collabora share (no filemanager UI)
-		if ($mode !== self::WOPI_SHARED)
+		if ($mode !== self::WOPI_SHARED && !array_key_exists('share_with', $extra))
 		{
 			$extra['share_with'] = $GLOBALS['egw']->session->sessionid;
 		}
@@ -158,9 +158,10 @@ class Wopi extends Sharing
 	public static function create_session($keep_session=null)
 	{
 		$share = array();
-		static::check_token($keep_session=true, $share);
+		static::check_token(true, $share);
 		if ($share && $share['share_with'])
 		{
+			$keep_session=true;
 			// we need to restore egw_info, specially the user stuff from the session
 			// to not recreate it, which fails from the (anonymous) sharing UI, as anon user has eg. no collabora rights
 			if (Api\Session::init_handler($share['share_with']))
@@ -183,7 +184,7 @@ class Wopi extends Sharing
 		}
 		else if ($share)
 		{
-			return parent::create_session($keep_session);
+			return parent::create_session(null);
 		}
 		return '';
 	}
@@ -210,6 +211,10 @@ class Wopi extends Sharing
 
 			// we can't validate the token, as we just created a new one
 			$share['skip_validate_token'] = true;
+		}
+		else
+		{
+			return parent::login(null, $share);
 		}
 		// store sharing object in egw object and therefore in session
 		$GLOBALS['egw']->sharing = static::factory($share);
