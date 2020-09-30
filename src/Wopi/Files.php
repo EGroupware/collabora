@@ -419,11 +419,11 @@ class Files
 	 */
 	public function put($path, $lockpath=null)
 	{
-		// Check if share _can_ be written to, before we bother with anything else
-		if(!Wopi::is_writable())
+		// Check if file _can_ be written to, before we bother with anything else
+		if(!Vfs::is_writable($path))
 		{
 			http_response_code(404);
-			header('X-WOPI-ServerError: Share is readonly');
+			header('X-WOPI-ServerError: File is readonly');
 			return;
 		}
 
@@ -616,7 +616,7 @@ class Files
 				}
 				return;
 			}
-			if (file_exists($relative_target))
+			if (Vfs::file_exists($relative_target))
 			{
 				if(!$overwrite)
 				{

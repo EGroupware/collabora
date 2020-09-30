@@ -182,10 +182,6 @@ class Wopi extends Sharing
 			$classname = static::get_share_class($share);
 			return $classname::login($keep_session, $share);
 		}
-		else if ($share)
-		{
-			return parent::create_session(null);
-		}
 		return '';
 	}
 
@@ -212,10 +208,7 @@ class Wopi extends Sharing
 			// we can't validate the token, as we just created a new one
 			$share['skip_validate_token'] = true;
 		}
-		else
-		{
-			return parent::login(null, $share);
-		}
+
 		// store sharing object in egw object and therefore in session
 		$GLOBALS['egw']->sharing = static::factory($share);
 
@@ -416,17 +409,6 @@ class Wopi extends Sharing
 
 			return $share;
 		}
-	}
-
-	/**
-	 * Find out if the share is writable (regardless of file permissions)
-	 *
-	 * @return boolean
-	 */
-	public static function is_writable()
-	{
-		$share = static::get_share();
-		return (bool)((int)$share['share_writable'] & 1);
 	}
 
 	/**

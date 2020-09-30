@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/SharingBase.php';
+require_once __DIR__ . '/WopiBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -25,7 +25,7 @@ use \EGroupware\Api\Vfs;
  * @TODO We're really testing that we get _something_ for the ID right now, not that multiple
  *  shares for the same file get the same ID
  */
-class FileIDTest extends SharingBase
+class FileIDTest extends WopiBase
 {
 	public function testSqlfs()
 	{

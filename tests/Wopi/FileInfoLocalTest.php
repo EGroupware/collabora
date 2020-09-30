@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/../SharingBase.php';
+require_once __DIR__ . '/../WopiBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -26,7 +26,7 @@ use \EGroupware\Api\Vfs;
  *
  * @see http://wopi.readthedocs.io/projects/wopirest/en/latest/endpoints.html#files-endpoint
  */
-class FileInfoLocalTest extends SharingBase
+class FileInfoLocalTest extends WopiBase
 {
 	// Use consistant content since we're checking file size
 	const CONTENT = 'Test file for Collabora File tests';
@@ -129,7 +129,7 @@ class FileInfoLocalTest extends SharingBase
 		$_file = Vfs::resolve_url_symlinks($_file);
 
 		// Ignore directories
-		if(Vfs::is_dir($_file) || !$_file) return;
+		if(Vfs::is_dir($_file) || is_dir(Vfs::PREFIX.$_file) || !$_file) return;
 
 		$files = new Wopi\Files();
 		$info = $this->clean_info($files->check_file_info($_file));

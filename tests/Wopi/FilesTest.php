@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/../SharingBase.php';
+require_once __DIR__ . '/../WopiBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -23,7 +23,7 @@ use \EGroupware\Api\Vfs;
  *
  * @author nathan
  */
-class FilesTest extends SharingBase
+class FilesTest extends WopiBase
 {
 
 	// Collabora does not actually use locking last I heard (2017)

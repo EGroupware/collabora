@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/../SharingBase.php';
+require_once __DIR__ . '/../WopiBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -24,7 +24,7 @@ use \EGroupware\Api\Vfs;
  * These tests use Sharing to access the Vfs as Collabora does
  *
  */
-class PutTest extends SharingBase
+class PutTest extends WopiBase
 {
 	protected $file_contents = 'Test file - delete me if left over from testing';
 	protected $original_filename = 'testfile.txt';
@@ -57,11 +57,11 @@ class PutTest extends SharingBase
 
 		$this->assertFalse(Vfs::file_exists($url));
 
-		// Create and use link
+		// Create share - needed for permission check
 		$extra = array();
 		$mode = Wopi::WOPI_WRITABLE;
 		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
+		$GLOBALS['egw']->sharing = ['share' => $this->createShare($url, $mode, $extra)];
 
 		$response = $files->put($url);
 
@@ -91,12 +91,6 @@ class PutTest extends SharingBase
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
 		file_put_contents(Vfs::PREFIX.$url, 'Overwrite me');
 		$this->assertTrue(Vfs::file_exists($url));
-
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_WRITABLE;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
 
 		$response = $files->put($url);
 

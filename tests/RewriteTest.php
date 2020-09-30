@@ -45,7 +45,7 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		$path = '/home';
 
 		$share = Wopi::create($path,
-			Wopi::WOPI_SHARED,
+			Wopi::READONLY,
 			'', '', array(
 			'share_expires'  =>  time() + Wopi::TOKEN_TTL,
 			'share_writable' =>  Api\Vfs::is_writable($path) ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY
@@ -55,7 +55,16 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		// home dir gets ID 2 normally
 		$url = $this->fixLink(Egw::link('/collabora/index.php/wopi/files/2?access_token=' . urlencode($token['token'])));
 
-		$headers = get_headers($url, TRUE);
+		// Need to include our session ID
+		$context = stream_context_create(
+		    array(
+		        'http' => array(
+		            'method' => 'GET',
+				        'header' => "Cookie: XDEBUG_SESSION=PHPSTORM;".Api\Session::EGW_SESSION_NAME.'=' . $GLOBALS['egw']->session->sessionid
+		        )
+		    )
+		);
+		$headers = get_headers($url, 1, $context);
 
 		if($headers === FALSE)
 		{

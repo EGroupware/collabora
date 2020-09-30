@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\Api\Vfs;
+namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/SharingBase.php';
+require_once __DIR__ . '/WopiBase.php';
 
 use EGroupware\Api\Exception;
 use EGroupware\Api\LoggedInTest as LoggedInTest;
@@ -21,7 +21,7 @@ use EGroupware\Collabora\Wopi;
 use EGroupware\Collabora\Bo;
 
 
-class EditTest extends SharingBase
+class EditTest extends WopiBase
 {
 	/**
 	 * Test that a share link goes to the editor, and at least the etemplate is loaded.
