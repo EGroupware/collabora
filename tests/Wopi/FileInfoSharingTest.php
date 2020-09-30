@@ -30,17 +30,17 @@ class FileInfoSharingTest extends SharingBase
 {
 	public function testCheckFileOnSqlfsReadonly()
 	{
-		$this->checkDirectory(Vfs::get_home_dir(), Wopi::WOPI_READONLY);
+		$this->checkDirectory($this->getTestPath(), Wopi::WOPI_READONLY);
 	}
 
 	public function testCheckFileOnSqlfsWritable()
 	{
-		$this->checkDirectory(Vfs::get_home_dir(), Wopi::WOPI_WRITABLE);
+		$this->checkDirectory($this->getTestPath(), Wopi::WOPI_WRITABLE);
 	}
 
 	public function testCheckFileInfoOnVersioningReadonly()
 	{
-		$this->files[] = $dir = Vfs::get_home_dir().'/versioned/';
+		$this->files[] = $dir = $this->getTestPath().'/versioned/';
 
 		// Create versioned directory
 		if(Vfs::is_dir($dir)) Vfs::remove($dir);
@@ -53,7 +53,7 @@ class FileInfoSharingTest extends SharingBase
 
 	public function testCheckFileInfoOnVersioningWritable()
 	{
-		$this->files[] = $dir = Vfs::get_home_dir().'/versioned/';
+		$this->files[] = $dir = $this->getTestPath().'/versioned/';
 
 		// Create versioned directory
 		if(Vfs::is_dir($dir)) Vfs::remove($dir);
@@ -67,7 +67,7 @@ class FileInfoSharingTest extends SharingBase
 	public function testCheckFileInfoOnFilesystemReadonly()
 	{
 		// Don't add to files list or it deletes the folder from filesystem
-		$dir = '/filesystem/';
+		$dir = $this->getTestPath().'/filesystem/';
 
 		// Create versioned directory
 		if(Vfs::is_dir($dir)) Vfs::remove($dir);
@@ -81,7 +81,7 @@ class FileInfoSharingTest extends SharingBase
 	public function testCheckFileInfoOnFilesystemWritable()
 	{
 		// Don't add to files list or it deletes the folder from filesystem
-		$dir = '/filesystem/';
+		$dir = $this->getTestPath().'/filesystem/';
 
 		// Create versioned directory
 		if(Vfs::is_dir($dir)) Vfs::remove($dir);
@@ -99,6 +99,8 @@ class FileInfoSharingTest extends SharingBase
 		$bo = new \infolog_bo();
 		$dir = "/apps/infolog/$info_id/";
 
+		$this->mountLinks("/apps");
+
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 
 		$this->checkDirectory($dir, Wopi::WOPI_READONLY);
@@ -110,6 +112,8 @@ class FileInfoSharingTest extends SharingBase
 		$info_id = $this->make_infolog();
 		$bo = new \infolog_bo();
 		$dir = "/apps/infolog/$info_id/";
+
+		$this->mountLinks("/apps");
 
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 
@@ -123,7 +127,7 @@ class FileInfoSharingTest extends SharingBase
 			$this->markTestSkipped();
 			return;
 		}
-		$this->files[] = $dir = Vfs::get_home_dir().'/merged/';
+		$this->files[] = $dir = $this->getTestPath().'/merged/';
 
 		// Create versioned directory
 		if(Vfs::is_dir($dir)) Vfs::remove($dir);
@@ -141,7 +145,7 @@ class FileInfoSharingTest extends SharingBase
 			$this->markTestSkipped();
 			return;
 		}
-		$this->files[] = $dir = Vfs::get_home_dir().'/merged/';
+		$this->files[] = $dir = $this->getTestPath().'/merged/';
 
 		// Create versioned directory
 		if(Vfs::is_dir($dir)) Vfs::remove($dir);
@@ -152,6 +156,10 @@ class FileInfoSharingTest extends SharingBase
 		$this->checkDirectory($dir, Wopi::WOPI_WRITABLE);
 	}
 
+	protected function getTestPath()
+	{
+		return Vfs::get_home_dir() . '/' . $this->getName(false);
+	}
 	/**
 	 * Check the access permissions & file info for one file
 	 *
@@ -164,18 +172,19 @@ class FileInfoSharingTest extends SharingBase
 
 		$files = new Wopi\Files();
 		$info = $files->check_file_info($file);
+		$this->assertNotNull("Could not get info for '$file'");
 
 		// Check additional things
 		// - Readonly or sharing a single file does not give save as
 		switch($mode)
 		{
 			case Wopi::WOPI_READONLY:
-				$this->assertTrue($info['UserCanNotWriteRelative'], "Readonly share allows Save As");
-				$this->assertFalse($info['UserCanRename'], "Readonly allows rename");
+				$this->assertTrue($info['UserCanNotWriteRelative'], "Readonly share allows Save As for '$file'");
+				$this->assertFalse($info['UserCanRename'], "Readonly allows rename of '$file'");
 				break;
 			case Wopi::WOPI_WRITABLE:
-				$this->assertFalse($info['UserCanNotWriteRelative'], "Writable does not allow Save As");
-				$this->assertTrue($info['UserCanRename'], "Writable does not allow rename");
+				$this->assertFalse($info['UserCanNotWriteRelative'], "Writable does not allow Save As for '$file'");
+				$this->assertTrue($info['UserCanRename'], "Writable does not allow rename of '$file'");
 				break;
 			case Wopi::WOPI_SHARED:
 				// Same as readonly
