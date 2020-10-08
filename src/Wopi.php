@@ -63,9 +63,6 @@ class Wopi extends Sharing
 	 */
 	public static function index()
 	{
-		// Check access token, start session
-		static::create_session(true);
-
 		// Determine the endpoint, get the ID
 		$matches = array();
 		preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
@@ -78,9 +75,9 @@ class Wopi extends Sharing
 		}
 
 		$endpoint_class = __NAMESPACE__ . '\Wopi\\'. filter_var(
-				ucfirst($endpoint),
-				FILTER_SANITIZE_SPECIAL_CHARS,
-				FILTER_FLAG_STRIP_LOW + FILTER_FLAG_STRIP_HIGH
+			ucfirst($endpoint),
+			FILTER_SANITIZE_SPECIAL_CHARS,
+			FILTER_FLAG_STRIP_LOW + FILTER_FLAG_STRIP_HIGH
 		);
 		$data = array();
 		if($endpoint_class && class_exists($endpoint_class))
@@ -128,9 +125,14 @@ class Wopi extends Sharing
 		{
 			$extra['share_writable'] = static::WOPI_READONLY;
 		}
-		$result = parent::create('', $path, $mode, $name, $recipients, $extra);
+		// store users sessionid in Collabora share under share_with, unless a writable Collabora share (no filemanager UI)
+		if ($mode !== self::WOPI_SHARED && !array_key_exists('share_with', $extra))
+		{
+			$extra['share_with'] = $GLOBALS['egw']->session->sessionid;
+		}
+		$result = parent::create('', $path, $mode, $name, $extra['share_with'], $extra);
 
-
+		/* Not needed anymore, as we use the user-session
 		// If path needs password, get credentials and add on the ID so we can
 		// actually open the path with the anon user
 		if(static::path_needs_password($path))
@@ -142,9 +144,75 @@ class Wopi extends Sharing
 			}
 
 			$result['share_token'] .= ':'.$cred_id;
-		}
+		}*/
 
 		return $result;
+	}
+
+	/**
+	 * Collabora shares now container the sessionid and therefore use the original user session
+	 *
+	 * @param boolean $keep_session =null null: create a new session, true: try mounting it into existing (already verified) session
+	 * @return string with sessionid
+	 */
+	public static function create_session($keep_session=null)
+	{
+		$share = array();
+		static::check_token(true, $share);
+		if ($share && $share['share_with'])
+		{
+			$keep_session=true;
+			// we need to restore egw_info, specially the user stuff from the session
+			// to not recreate it, which fails from the (anonymous) sharing UI, as anon user has eg. no collabora rights
+			if (Api\Session::init_handler($share['share_with']))
+			{
+				// marking the context as restored from the session, used by session->verify to not read the data from the db again
+				$GLOBALS['egw_info']['flags']['restored_from_session'] = true;
+
+				// restoring the egw_info-array
+				$GLOBALS['egw_info'] = array_merge($_SESSION[Api\Session::EGW_INFO_CACHE],array('flags' => $GLOBALS['egw_info']['flags']));
+			}
+			if (!$GLOBALS['egw']->session->verify($share['share_with']))
+			{
+				return static::share_fail(
+					'404 Not Found',
+					"User session already ended / failed to verify!\n"
+				);
+			}
+			$classname = static::get_share_class($share);
+			return $classname::login($keep_session, $share);
+		}
+		return '';
+	}
+
+	/**
+	 * Overwritten to not temper with user session used by Collabora now
+	 *
+	 * @param $keep_session
+	 * @param $share
+	 * @return mixed
+	 */
+	protected static function login($keep_session, &$share)
+	{
+		// for writable Collabora share, we need to create and use now a copy with our newly created sessionid
+		if ($share['share_writable'] == Wopi::WOPI_SHARED && empty($share['share_with']))
+		{
+			$GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
+
+			$extra = [
+				'share_writable' => self::WOPI_WRITABLE,
+				'share_with'     => $GLOBALS['egw']->session->sessionid,
+			];
+			$share = parent::create('', $share['share_root'], self::WOPI_WRITABLE, Vfs::basename($share['share_path']), $extra['share_with'], $extra);
+
+			// we can't validate the token, as we just created a new one
+			$share['skip_validate_token'] = true;
+		}
+
+		// store sharing object in egw object and therefore in session
+		$GLOBALS['egw']->sharing = static::factory($share);
+
+		return $GLOBALS['egw']->session->sessionid;
 	}
 
 	/**
@@ -211,14 +279,12 @@ class Wopi extends Sharing
 	 */
 	public static function setup_share($keep_session, &$share)
 	{
-		// need to reset fs_tab, as resolve_url does NOT work with just share mounted
-		if (empty($GLOBALS['egw_info']['server']['vfs_fstab']) || count($GLOBALS['egw_info']['server']['vfs_fstab']) <= 1)
-		{
-			unset($GLOBALS['egw_info']['server']['vfs_fstab']);	// triggers reset of fstab in mount()
-			$GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
-			Vfs::clearstatcache();
-		}
 		$share['resolve_url'] = Vfs::resolve_url($share['share_path'], true, true, true, true);	// true = fix evtl. contained url parameter
+		// ToDo: do we need to call Vfs::resolve_url and if yes, maybe it should make sure to keep the user ...
+		if (($user = Vfs::parse_url($share['share_path'], PHP_URL_USER) ?: Api\Accounts::id2name($share['share_owner'])))
+		{
+			$share['resolve_url'] = preg_replace('|://([^@]+@)?|', '://'.$user.'@', $share['resolve_url']);
+		}
 		// if share not writable append ro=1 to mount url to make it readonly
 		if (!($share['share_writable'] & 1))
 		{
@@ -238,15 +304,11 @@ class Wopi extends Sharing
 		}
 		if (!$keep_session)	// do NOT change to else, as we might have set $keep_session=false!
 		{
-			// only allow filemanager app & collabora
-			// (In some cases, $GLOBALS['egw_info']['apps'] is not yet set)
-			$apps = $GLOBALS['egw']->acl->get_user_applications($share['share_owner']);
-			$GLOBALS['egw_info']['user']['apps'] = array(
-					'filemanager' => $GLOBALS['egw_info']['apps']['filemanager'] || true,
-					'collabora' => $GLOBALS['egw_info']['apps']['collabora'] || $apps['collabora']
-			);
+			$sessionid = static::create_new_session();
 
-			$share['share_root'] = '/';
+			static::after_login($share);
+
+			$share['share_root'] = '/'.Vfs::basename($share['share_path']);
 			Vfs::$user = $share['share_owner'];
 
 			// Need to re-init stream wrapper, as some of them look at
@@ -273,13 +335,14 @@ class Wopi extends Sharing
 		// clear link-cache and load link registry without permission check to access /apps
 		Api\Link::init_static(true);
 
+		/* Not neccesary anymore, as we use the users session
 		if(self::$credentials && $share)
 		{
 			$access = Credentials::read_credential(self::$credentials);
 
 			$GLOBALS['egw_info']['user']['account_lid'] = Api\Accounts::id2name($share['share_owner'], 'account_lid');
 			$GLOBALS['egw_info']['user']['passwd'] = $access['password'];
-		}
+		}*/
 	}
 
 	/**
@@ -349,17 +412,6 @@ class Wopi extends Sharing
 	}
 
 	/**
-	 * Find out if the share is writable (regardless of file permissions)
-	 *
-	 * @return boolean
-	 */
-	public static function is_writable()
-	{
-		$share = static::get_share();
-		return ((intval($share['share_writable']) & 1));
-	}
-
-	/**
 	 * Get a WOPI file ID from a path
 	 *
 	 * File ID is the lowest fs_id for the path, if available.  If no fs_id is
@@ -368,13 +420,13 @@ class Wopi extends Sharing
 	 * a new version a new fs_id will be generated, and the original file will
 	 * be moved to the attic, but the lowest share ID should stay the same.
 	 *
-	 * @param string $path Full file path
+	 * @param string $url Full file path
 	 *
 	 * @param Integer File ID, (0 if not found)
 	 */
-	public static function get_file_id($path)
+	public static function get_file_id($url)
 	{
-		$path = str_replace(Api\Vfs::PREFIX, '', $path);
+		$path = Vfs::parse_url($url, PHP_URL_PATH);
 		$file_id = Api\Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Fall back to the earliest valid share ID
@@ -383,7 +435,7 @@ class Wopi extends Sharing
 			self::so();
 
 			$where = array(
-				'share_path' => Api\Vfs::PREFIX.$path,
+				'share_path' => ($url[0] === '/' ? Api\Vfs::PREFIX : '').$url,
 				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
 			);
 			$append = 'ORDER BY share_id ASC';
@@ -453,7 +505,7 @@ class Wopi extends Sharing
 	public static function share2link($share)
 	{
 		return Api\Vfs\Sharing::share2link($share) .
-				($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
+			($GLOBALS['egw_info']['user']['apps']['stylite'] ? '?edit&cd=no' : '');
 	}
 
 	/**

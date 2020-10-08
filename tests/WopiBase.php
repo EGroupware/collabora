@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../api/tests/Vfs/SharingBase.php';
 use \EGroupware\Api\Vfs;
 use EGroupware\Api\Vfs\TestSharing;
 
-class SharingBase extends \EGroupware\Api\Vfs\SharingBase
+class WopiBase extends \EGroupware\Api\Vfs\SharingBase
 {
 	/**
 	 * Mock the Files object for testing, overriding the header & get_sent_content
@@ -80,6 +80,7 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 
 		$files = new Wopi\Files();
 		$info = $files->check_file_info($file);
+		$this->assertNotNull($info, "Could not get file info for '$file'");
 		if(static::LOG_LEVEL > 1)
 		{
 			error_log($file . ' FileInfo: ' .array2string($info));
@@ -122,6 +123,7 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 	protected function getShareExtra($dir, $mode, &$extra)
 	{
 		parent::getShareExtra($dir, $mode, $extra);
+
 		switch($mode)
 		{
 			case Wopi::WOPI_WRITABLE:
@@ -199,7 +201,19 @@ class SharingBase extends \EGroupware\Api\Vfs\SharingBase
 if(!class_exists('TestWopiSharing'))
 {
 	class TestWopiSharing extends \EGroupware\Collabora\Wopi {
-
+		public static function create_session($keep_session = null)
+		{
+			// Copied from base class
+			$share = array();
+			static::check_token($keep_session, $share);
+			if($share)
+			{
+				$classname = static::get_share_class($share);
+				$classname::setup_share($keep_session, $share);
+				return $classname::login($keep_session, $share);
+			}
+			return '';
+		}
 		public static function create_new_session()
 		{
 			if (!($sessionid = $GLOBALS['egw']->session->create('anonymous@'.$GLOBALS['egw_info']['user']['domain'],

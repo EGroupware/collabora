@@ -164,15 +164,14 @@ class Ui {
 
 		$token = Bo::get_token($path);
 		$token = Wopi::get_no_password_share($token);
-		$resolved_path = $token['root'] && $token['root'] != '/' &&
-			!Vfs::is_dir($token['root']) ? $token['root'] : $path;
+		$resolved_path = $token['root'] && !Vfs::is_dir($token['root']) ? $token['root'] : $path;
 		$content = array(
 			'url'	=> Bo::get_action_url($resolved_path),
 			'filename' => Vfs::basename($path),
 		) + $token;
 
 		// No permissions or Vfs could not resolve a file mounted to root
-		if(!$content['url'] && $token['root'] == '/' && !is_dir($token['root']))
+		/*if(!$content['url'] && $token['root'] == '/' && !is_dir($token['root']))
 		{
 			$parsed_path = Vfs::parse_url($token['path']);
 			$parsed_url = Vfs::parse_url($token['resolve_url']);
@@ -189,7 +188,7 @@ class Ui {
 			$content = Bo::get_token($path, $file_share) + array(
 				'url'	=> Bo::get_action_url(str_replace(Vfs::PREFIX,'',$file_share['share_path']))
 			) + $content;
-		}
+		}*/
 
 		// Revision list
 		if(Bo::is_versioned($path))

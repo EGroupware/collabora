@@ -10,9 +10,9 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 
-namespace EGroupware\Api\Vfs;
+namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/SharingBase.php';
+require_once __DIR__ . '/WopiBase.php';
 
 use EGroupware\Api\Exception;
 use EGroupware\Api\LoggedInTest as LoggedInTest;
@@ -21,7 +21,7 @@ use EGroupware\Collabora\Wopi;
 use EGroupware\Collabora\Bo;
 
 
-class EditTest extends SharingBase
+class EditTest extends WopiBase
 {
 	/**
 	 * Test that a share link goes to the editor, and at least the etemplate is loaded.
@@ -61,12 +61,6 @@ class EditTest extends SharingBase
 		$share = $this->createShare($file, Wopi::WOPI_READONLY, $extra);
 		$link = Wopi::share2link($share);
 
-		// Re-init, since they look at user, fstab, etc.
-		// Also, further tests that access the filesystem fail if we don't
-		Vfs::clearstatcache();
-		Vfs::init_static();
-		Vfs\StreamWrapper::init_static();
-
 		// Log out & clear cache
 		LoggedInTest::tearDownAfterClass();
 
@@ -79,9 +73,10 @@ class EditTest extends SharingBase
 
 		// Check we got some kind of target in the URL
 		$url = $data->data->content->url;
+		$this->assertNotEmpty($url, "Target URL is missing.  Usually caused by file issues, check Bo::get_action_url()");
 		$query = array();
 		parse_str(parse_url($url, PHP_URL_QUERY), $query);
-		$this->assertNotEmpty($query['WOPISrc']);
+		$this->assertNotEmpty($query['WOPISrc'], "WOPISrc is missing from url '$url'");
 	}
 
 	public function getEditor($link, &$data)
@@ -90,6 +85,9 @@ class EditTest extends SharingBase
 		$curl = curl_init($link);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+		// Setting this lets us debug the request too
+		$cookie = 'XDEBUG_SESSION=PHPSTORM';
+		curl_setopt($curl, CURLOPT_COOKIE, $cookie);
 		$html = curl_exec($curl);
 		curl_close($curl);
 

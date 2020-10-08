@@ -12,7 +12,7 @@
 
 namespace EGroupware\Collabora;
 
-require_once __DIR__ . '/../SharingBase.php';
+require_once __DIR__ . '/../WopiBase.php';
 
 use \EGroupware\Api\Vfs;
 
@@ -24,7 +24,7 @@ use \EGroupware\Api\Vfs;
  * These tests use Sharing to access the Vfs as Collabora does
  *
  */
-class PutRelativeTest extends SharingBase
+class PutRelativeTest extends WopiBase
 {
 	protected $file_contents = 'Test file - delete me if left over from testing';
 	protected $original_filename = 'testfile.txt';
@@ -66,12 +66,6 @@ class PutRelativeTest extends SharingBase
 		// Mock Files
 		$files = $this->mock_files($header_map, $this->file_contents);
 
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_WRITABLE;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
-
 		$response = $files->put_relative_file($url);
 
 		// Response code should be 200, which we set in setUp
@@ -101,12 +95,6 @@ class PutRelativeTest extends SharingBase
 
 		// Mock Files - no content, since it should conflict on name
 		$files = $this->mock_files($header_map);
-
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_WRITABLE;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
 
 		$response = $files->put_relative_file($this->original_filename);
 
@@ -138,19 +126,13 @@ class PutRelativeTest extends SharingBase
 		// Mock Files
 		$files = $this->mock_files($header_map, $this->file_contents);
 
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_WRITABLE;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
-
 		$response = $files->put_relative_file($this->original_filename);
 
 		// Response code should be 200, which we set in setUp
 		$this->assertEquals(200, http_response_code());
 		// File is already there, should generate a new name
 		$this->assertNotNull($response['Name']);
-		$this->assertNotEquals($this->new_filename, $response['Name']);
+		$this->assertEquals($this->new_filename, $response['Name']);
 		$this->assertEquals(file_get_contents(Vfs::PREFIX.$url), file_get_contents(Vfs::PREFIX.$target));
 
 		$this->files[] = $home_dir.'/'.$response['Name'];
@@ -174,54 +156,11 @@ class PutRelativeTest extends SharingBase
 		// Mock Files - no content, should stop at path check
 		$files = $this->mock_files($this->header_map);
 
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_WRITABLE;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
-
 		$response = $files->put_relative_file($this->original_filename);
 
 		// Response code should be 404, target not found/valid
 		$this->assertEquals(404, http_response_code());
 		$this->assertNull($response);
 		$this->assertFalse(Vfs::file_exists($target));
-	}
-
-	/**
-	 * Test save as on readonly share - this one should fail
-	 */
-	public function testPutRelativeFileReadonly()
-	{
-		// Create test file
-		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
-		$this->files[] = $target = Vfs::get_home_dir() . '/'. $this->new_filename;
-		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
-		$this->assertTrue(Vfs::file_exists($url), "Test file $url is missing");
-		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.$url));
-
-		// Set headers for this test
-		$header_map = array_merge($this->header_map, array(
-			'X-WOPI-RelativeTarget' => $target
-		));
-
-		// Mock Files - no content, since it will fail before that
-		$files = $this->mock_files($header_map);
-
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_READONLY;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
-
-		$response = $files->put_relative_file($url);
-
-		// Response code should be 404
-		$this->assertEquals(404, http_response_code());
-		$this->assertNull($response);
-
-		// Make sure no other changes
-		$this->assertFalse(Vfs::file_exists($target));
-		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.$url));
 	}
 }
