@@ -294,7 +294,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
     collaboraFilemanagerAPP.prototype.create_new = function (_action, _nm) {
         var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
         var new_widget = this.et2.getWidgetById('new');
-        var type = (typeof new_widget._type != 'undefined') ? new_widget.get_value() : _action.id;
+        var type = (typeof new_widget._type != 'undefined' && _action['type'] != 'popup') ? new_widget.get_value() : _action.id;
         if (is_collabora) {
             var id = new_widget[0] && new_widget[0].id ? new_widget[0].id : null;
             var elem = id ? egw.dataGetUIDdata(id) : null;
