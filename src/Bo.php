@@ -107,30 +107,38 @@ class Bo {
 			// Iterate through & extract the data
 			foreach($data->{'net-zone'}->app as $app)
 			{
-				$info = array();
-				foreach($app->action[0]->attributes() as $name => $value)
+				foreach($app->action as $filetype)
 				{
-					$info[$name] = (string)$value;
-				}
-				$name = (string)$app['name'];
-				if (!isset($discovery[$name]))
-				{
-					$discovery[$name] = $info;
-				}
-				else
-				{
-					switch($info['ext'])
+					$info = array();
+					foreach($filetype->attributes() as $name => $value)
 					{
-						case 'ppt':	// prefer these main extensions over their template conterparts
-						case 'xls':
-						case 'doc':
-							$extra_extensions = (array)$discovery[$name]['extra_extensions'];
-							$extra_extensions[] = $discovery[$name]['ext'];
-							$discovery[$name] = $info;
-							$discovery[$name]['extra_extensions'] = $extra_extensions;
-							break;
-						default:
-							$discovery[$name]['extra_extensions'][] = $info['ext'];
+						$info[$name] = (string)$value;
+					}
+					if(!$info['ext'] && $app->attributes()->name)
+					{
+						$info['ext'] = Api\MimeMagic::mime2ext($app->attributes()->name);
+					}
+					$info['favIconUrl'] = (string)$app->attributes()->favIconUrl;
+					$name = Api\MimeMagic::ext2mime($info['ext']);
+					if (!isset($discovery[$name]))
+					{
+						$discovery[$name] = $info;
+					}
+					else
+					{
+						switch ($info['ext'])
+						{
+							case 'ppt':  // prefer these main extensions over their template conterparts
+							case 'xls':
+							case 'doc':
+								$extra_extensions = (array)$discovery[$name]['extra_extensions'];
+								$extra_extensions[] = $discovery[$name]['ext'];
+								$discovery[$name] = $info;
+								$discovery[$name]['extra_extensions'] = $extra_extensions;
+								break;
+							default:
+								$discovery[$name]['extra_extensions'][] = $info['ext'];
+						}
 					}
 				}
 			}
