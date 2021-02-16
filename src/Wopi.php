@@ -179,6 +179,10 @@ class Wopi extends Sharing
 					"User session already ended / failed to verify!\n"
 				);
 			}
+			// Setting restored flag avoids re-loading from DB, but we need to run this to
+			// get egw sub-objects (acl, preferences, etc.) properly set
+			$GLOBALS['egw']->session->read_repositories();
+
 			$classname = static::get_share_class($share);
 			return $classname::login($keep_session, $share);
 		}
