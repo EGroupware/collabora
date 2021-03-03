@@ -201,7 +201,8 @@ class Wopi extends Sharing
 		// for writable Collabora share, we need to create and use now a copy with our newly created sessionid
 		if ($share['share_writable'] == Wopi::WOPI_SHARED && empty($share['share_with']))
 		{
-			$GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
+			// Need to save the fstab into the session so Collabora can find the file
+			$_SESSION[Api\Session::EGW_INFO_CACHE]['server']['vfs_fstab'] = $GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
 
 			$extra = [
 				'share_writable' => self::WOPI_WRITABLE,
@@ -283,29 +284,12 @@ class Wopi extends Sharing
 	 */
 	public static function setup_share($keep_session, &$share)
 	{
-		$share['resolve_url'] = Vfs::resolve_url($share['share_path'], true, true, true, true);	// true = fix evtl. contained url parameter
-		// ToDo: do we need to call Vfs::resolve_url and if yes, maybe it should make sure to keep the user ...
-		if (($user = Vfs::parse_url($share['share_path'], PHP_URL_USER) ?: Api\Accounts::id2name($share['share_owner'])))
+		// for a regular user session, mount the share into "shares" subdirectory of his home-directory
+		if ($keep_session && $GLOBALS['egw_info']['user']['account_lid'] && $GLOBALS['egw_info']['user']['account_lid'] !== 'anonymous')
 		{
-			$share['resolve_url'] = preg_replace('|://([^@]+@)?|', '://'.$user.'@', $share['resolve_url']);
+			return parent::setup_share($keep_session, $share);
 		}
-		// if share not writable append ro=1 to mount url to make it readonly
-		if (!($share['share_writable'] & 1))
-		{
-			$share['resolve_url'] .= (strpos($share['resolve_url'], '?') ? '&' : '?').'ro=1';
-		}
-		//_debug_array($share);
 
-		if ($keep_session)	// add share to existing session
-		{
-			$share['share_root'] = '/'.$share['share_token'];
-
-			// if current user is not the share owner, we cant just mount share
-			if (Vfs::$user != $share['share_owner'])
-			{
-				$keep_session = false;
-			}
-		}
 		if (!$keep_session)	// do NOT change to else, as we might have set $keep_session=false!
 		{
 			$sessionid = static::create_new_session();
@@ -338,15 +322,6 @@ class Wopi extends Sharing
 		Vfs::clearstatcache();
 		// clear link-cache and load link registry without permission check to access /apps
 		Api\Link::init_static(true);
-
-		/* Not neccesary anymore, as we use the users session
-		if(self::$credentials && $share)
-		{
-			$access = Credentials::read_credential(self::$credentials);
-
-			$GLOBALS['egw_info']['user']['account_lid'] = Api\Accounts::id2name($share['share_owner'], 'account_lid');
-			$GLOBALS['egw_info']['user']['passwd'] = $access['password'];
-		}*/
 	}
 
 	/**
