@@ -208,7 +208,7 @@ class Wopi extends Sharing
 				'share_writable' => self::WOPI_WRITABLE,
 				'share_with'     => $GLOBALS['egw']->session->sessionid,
 			];
-			$share = parent::create('', $share['share_root'], self::WOPI_WRITABLE, Vfs::basename($share['share_path']), $extra['share_with'], $extra);
+			$share = parent::create('', $share['share_root'] ?: $share['share_path'], self::WOPI_WRITABLE, Vfs::basename($share['share_path']), $extra['share_with'], $extra);
 
 			// we can't validate the token, as we just created a new one
 			$share['skip_validate_token'] = true;
