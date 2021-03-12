@@ -121,7 +121,9 @@ class Wopi extends Sharing
 	public static function create($path, $mode, $name, $recipients, $extra = array())
 	{
 		// Hidden uploads are readonly, enforce it here too
-		if($extra['share_writable'] == Wopi::WOPI_WRITABLE && isset($GLOBALS['egw']->sharing) && $GLOBALS['egw']->sharing->share['share_writable'] == static::HIDDEN_UPLOAD)
+		if($extra['share_writable'] == Wopi::WOPI_WRITABLE &&
+				isset($GLOBALS['egw']->sharing[static::get_token()]) &&
+				$GLOBALS['egw']->sharing[static::get_token()]->share['share_writable'] == static::HIDDEN_UPLOAD)
 		{
 			$extra['share_writable'] = static::WOPI_READONLY;
 		}
@@ -198,6 +200,13 @@ class Wopi extends Sharing
 	 */
 	protected static function login($keep_session, &$share)
 	{
+		// store sharing object in egw object and therefore in session
+		if(!isset($GLOBALS['egw']->sharing))
+		{
+			$GLOBALS['egw']->sharing = Array();
+		}
+		$GLOBALS['egw']->sharing[$share['share_token']] = static::factory($share);
+
 		// for writable Collabora share, we need to create and use now a copy with our newly created sessionid
 		if ($share['share_writable'] == Wopi::WOPI_SHARED && empty($share['share_with']))
 		{
@@ -208,14 +217,15 @@ class Wopi extends Sharing
 				'share_writable' => self::WOPI_WRITABLE,
 				'share_with'     => $GLOBALS['egw']->session->sessionid,
 			];
+			$old_share = $share;
 			$share = parent::create('', $share['share_root'] ?: $share['share_path'], self::WOPI_WRITABLE, Vfs::basename($share['share_path']), $extra['share_with'], $extra);
 
 			// we can't validate the token, as we just created a new one
 			$share['skip_validate_token'] = true;
+			// Need to sort of re-direct, so we serve the response from correct share
+			$_SERVER['REQUEST_URI'] = str_replace($old_share['share_token'],$share['share_token'], $_SERVER['REQUEST_URI']);
 		}
-
-		// store sharing object in egw object and therefore in session
-		$GLOBALS['egw']->sharing = static::factory($share);
+		$GLOBALS['egw']->sharing[$share['share_token']] = static::factory($share);
 
 		return $GLOBALS['egw']->session->sessionid;
 	}
@@ -238,9 +248,8 @@ class Wopi extends Sharing
 		{
 			return $share;
 		}
-		$pwd_share = $GLOBALS['egw']->sharing->share;
 		$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
-		$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
+		$writable = Api\Vfs::is_writable($share['share_path']) && $share['writable'] & 1;
 		Bo::reset_vfs();
 		$share = Wopi::create($share['path'], $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
 				'share_passwd' => null,
@@ -248,7 +257,6 @@ class Wopi extends Sharing
 				'share_writable' => $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 		));
 		$GLOBALS['egw_info']['server']['vfs_fstab'] = $fstab;
-		$GLOBALS['egw']->sharing->share = $pwd_share;
 
 		// Cleanup to match expected
 		foreach($share as $key => $value)
@@ -273,7 +281,7 @@ class Wopi extends Sharing
 		// Strip out possible credentials ID if path needs password
 		list($token, self::$credentials) = explode(':', $token);
 
-		return $token;
+		return $token ?: parent::get_token();
 	}
 
 	/**
@@ -284,10 +292,12 @@ class Wopi extends Sharing
 	 */
 	public static function setup_share($keep_session, &$share)
 	{
+		parent::setup_share($keep_session, $share);
+
 		// for a regular user session, mount the share into "shares" subdirectory of his home-directory
 		if ($keep_session && $GLOBALS['egw_info']['user']['account_lid'] && $GLOBALS['egw_info']['user']['account_lid'] !== 'anonymous')
 		{
-			return parent::setup_share($keep_session, $share);
+			return;
 		}
 
 		if (!$keep_session)	// do NOT change to else, as we might have set $keep_session=false!
@@ -341,12 +351,12 @@ class Wopi extends Sharing
 	 */
 	public static function get_share()
 	{
-		return isset($GLOBALS['egw']->sharing) ? $GLOBALS['egw']->sharing->share : array();
+		return isset($GLOBALS['egw']->sharing) ? $GLOBALS['egw']->sharing[static::get_token()]->share : array();
 	}
 
 	public static function get_path_from_token()
 	{
-		return $GLOBALS['egw']->sharing->share['share_path'];
+		return $GLOBALS['egw']->sharing[static::get_token()]->share['share_path'];
 	}
 
 	/**
@@ -375,7 +385,6 @@ class Wopi extends Sharing
 		{
 			// Editing file in a shared directory, need to have share for just
 			// the file
-			$dir_share = $GLOBALS['egw']->sharing->share;
 			$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
 			$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
 			Bo::reset_vfs();
@@ -384,7 +393,6 @@ class Wopi extends Sharing
 					'share_writable' => $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 			));
 			$GLOBALS['egw_info']['server']['vfs_fstab'] = $fstab;
-			$GLOBALS['egw']->sharing->share = $dir_share;
 
 			return $share;
 		}
