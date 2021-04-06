@@ -46,6 +46,11 @@ class Ui {
 			'icon' => 'mime128_application_vnd.oasis.opendocument.presentation.png',
 			'onExecute' => 'javaScript:app.filemanager.create_new',
 		),
+		'drawing' => array (
+			'caption' => 'Drawing',
+			'icon' => 'mime128_application_vnd.koan.png',
+			'onExecute' => 'javaScript:app.filemanager.create_new',
+		),
 		'more' => array (
 			'caption' => 'More',
 			'icon' => 'mime128_unknown.png',
