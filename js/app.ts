@@ -231,7 +231,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		title = title.charAt(0).toUpperCase() + title.slice(1);
 
 		//list of extensions that we don't want to offer for create new file
-		let exclusive_ext = ['odg','fodg', 'odz', 'otg', 'odb', 'dif', 'slk', 'dbf', 'oth', 'oxt'];
+		let exclusive_ext = ['odz', 'odb', 'dif', 'slk', 'dbf', 'oxt'];
 		switch (type)
 		{
 			case 'document':
@@ -243,6 +243,10 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 			case 'presentation':
 				extensions = {odp:'(.odp) OpenDocument Presentation', pptx: '(.pptx) MS PowerPoint'};
 				ext_default = 'odp';
+				break;
+			case 'drawing':
+				extensions = {odg:'(.odg) OpenDocument Drawing Document Format', otg:'(.otg) OpenDocument Drawing Template Format', fodg:'(.fodg) OpenDocument Flat XML Drawing Format'};
+				ext_default = 'odg';
 				break;
 			case 'more':
 				for (let key in this.discovery)
@@ -629,11 +633,6 @@ class collaboraAPP extends EgwApp
 				mime_types.push(mime);
 			}
 		}
-
-		// TODO: this is a hack to get rtf format into as available mime type in
-		// saveas dialog. This should be removed as soon as Collabora provides
-		// .rtf as export formats.
-		if (ext.match(/odt|doc|docx/)) mime_types.push('application/rtf');
 
 		// create file selector
 		let vfs_select = et2_createWidget('vfs-select', {

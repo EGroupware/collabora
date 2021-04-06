@@ -209,7 +209,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
         // Make first char uppercase, as some languages (German) put the type first
         title = title.charAt(0).toUpperCase() + title.slice(1);
         //list of extensions that we don't want to offer for create new file
-        var exclusive_ext = ['odg', 'fodg', 'odz', 'otg', 'odb', 'dif', 'slk', 'dbf', 'oth', 'oxt'];
+        var exclusive_ext = ['odz', 'odb', 'dif', 'slk', 'dbf', 'oxt'];
         switch (type) {
             case 'document':
                 extensions = { odt: '(.odt) OpenDocument Text', doc: '(.doc) MS Word 97-2003', docx: '(.docx) MS Word' };
@@ -221,6 +221,10 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             case 'presentation':
                 extensions = { odp: '(.odp) OpenDocument Presentation', pptx: '(.pptx) MS PowerPoint' };
                 ext_default = 'odp';
+                break;
+            case 'drawing':
+                extensions = { odg: '(.odg) OpenDocument Drawing Document Format', otg: '(.otg) OpenDocument Drawing Template Format', fodg: '(.fodg) OpenDocument Flat XML Drawing Format' };
+                ext_default = 'odg';
                 break;
             case 'more':
                 var _loop_1 = function (key) {
@@ -547,11 +551,6 @@ var collaboraAPP = /** @class */ (function (_super) {
                 mime_types.push(mime);
             }
         }
-        // TODO: this is a hack to get rtf format into as available mime type in
-        // saveas dialog. This should be removed as soon as Collabora provides
-        // .rtf as export formats.
-        if (ext.match(/odt|doc|docx/))
-            mime_types.push('application/rtf');
         // create file selector
         var vfs_select = et2_createWidget('vfs-select', {
             id: 'savefile',
