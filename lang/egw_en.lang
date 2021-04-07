@@ -14,6 +14,7 @@ collabora server	collabora	en	Collabora Online server
 create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
 document	filemanager	en	Document
+drawing	filemanager	en	Drawing
 edit %1 in collabora	collabora	en	Edit %1 in Collabora
 editable share link	collabora	en	Editable share link
 egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora Online server.
