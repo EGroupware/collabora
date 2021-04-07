@@ -177,7 +177,7 @@ class Bo {
 				$share && $share['share_path'] != $path && $share['share_path'] != Vfs::PREFIX . $path
 		)
 		{
-			$share = Wopi::create($path,
+			$share = Wopi::create('', $path,
 				$share['share_writable'] & 1 ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 				'', '', array(
 				'share_expires'  =>  time() + Wopi::TOKEN_TTL,

@@ -108,6 +108,7 @@ class Wopi extends Sharing
 	/**
 	 * Create a new share for Collabora to use while editing
 	 *
+	 * @param string $action_id NOT used, but required by function signature
 	 * @param string $path either path in temp_dir or vfs with optional vfs scheme
 	 * @param string $mode self::LINK: copy file in users tmp-dir or self::READABLE share given vfs file,
 	 *  if no vfs behave as self::LINK
@@ -118,8 +119,9 @@ class Wopi extends Sharing
 	 * @throw Api\Exception\NotFound if $path not found
 	 * @throw Api\Exception\AssertionFailed if user temp. directory does not exist and can not be created
 	 */
-	public static function create($path, $mode, $name, $recipients, $extra = array())
+	public static function create(string $action_id, $path, $mode, $name, $recipients, $extra = array())
 	{
+		$action_id = '';
 		// Hidden uploads are readonly, enforce it here too
 		if($extra['share_writable'] == Wopi::WOPI_WRITABLE &&
 				isset($GLOBALS['egw']->sharing[static::get_token()]) &&
@@ -132,7 +134,7 @@ class Wopi extends Sharing
 		{
 			$extra['share_with'] = $GLOBALS['egw']->session->sessionid;
 		}
-		$result = parent::create('', $path, $mode, $name, $extra['share_with'], $extra);
+		$result = parent::create($action_id, $path, $mode, $name, $extra['share_with'], $extra);
 
 		/* Not needed anymore, as we use the user-session
 		// If path needs password, get credentials and add on the ID so we can
@@ -254,7 +256,7 @@ class Wopi extends Sharing
 		$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
 		$writable = Api\Vfs::is_writable($share['share_path']) && $share['writable'] & 1;
 		Bo::reset_vfs();
-		$share = Wopi::create($share['path'], $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
+		$share = Wopi::create('', $share['path'], $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
 				'share_passwd' => null,
 				'share_expires' => time() + Wopi::TOKEN_TTL,
 				'share_writable' => $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
@@ -276,7 +278,7 @@ class Wopi extends Sharing
 	/**
 	 * Get token from url
 	 */
-	public static function get_token()
+	public static function get_token($path=null)
 	{
 		// Access token is encoded, as it may have + in it
 		$token = urldecode(filter_var($_GET['access_token'],FILTER_SANITIZE_SPECIAL_CHARS));
@@ -391,7 +393,7 @@ class Wopi extends Sharing
 			$fstab = $GLOBALS['egw_info']['server']['vfs_fstab'];
 			$writable = Api\Vfs::is_writable($path) && $share['writable'] & 1;
 			Bo::reset_vfs();
-			$share = Wopi::create($share['path'] . $path, $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
+			$share = Wopi::create('', $share['path'] . $path, $writable ? Wopi::WRITABLE : Wopi::READONLY, '', '', array(
 					'share_expires' => time() + Wopi::TOKEN_TTL,
 					'share_writable' => $writable ? Wopi::WOPI_WRITABLE : Wopi::WOPI_READONLY,
 			));
