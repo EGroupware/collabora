@@ -13,6 +13,8 @@
 
 import {filemanagerAPP} from "../../filemanager/js/app";
 import {EgwApp} from "../../api/js/jsapi/egw_app";
+import {et2_dialog} from "../../api/js/etemplate/et2_widget_dialog";
+import {et2_createWidget} from "../../api/js/etemplate/et2_core_widget";
 
 /**
  * UI for filemanager in collabora
@@ -611,6 +613,8 @@ class collaboraAPP extends EgwApp
 	 */
 	on_close()
 	{
+		// Do not ask if they're sure, it's too late.  Just reset dirty
+		this.et2.iterateOver(function(w) {w.resetDirty();},this,et2_IInput);
 		window.close();
 	}
 

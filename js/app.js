@@ -26,6 +26,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var app_1 = require("../../filemanager/js/app");
 var egw_app_1 = require("../../api/js/jsapi/egw_app");
+var et2_widget_dialog_1 = require("../../api/js/etemplate/et2_widget_dialog");
+var et2_core_widget_1 = require("../../api/js/etemplate/et2_core_widget");
 /**
  * UI for filemanager in collabora
  */
@@ -239,7 +241,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
                 }
                 break;
         }
-        et2_createWidget("dialog", {
+        et2_core_widget_1.et2_createWidget("dialog", {
             callback: function (_button_id, _val) {
                 if (_button_id == 'create' && _val && _val.name != '') {
                     self._request_createNew({
@@ -260,7 +262,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             value: { content: { extension: ext_default, openasnew: _openasnew }, 'sel_options': { extension: extensions } },
             template: egw.webserverUrl + '/collabora/templates/default/new.xet?1',
             resizable: false
-        }, et2_dialog._create_parent('collabora'));
+        }, et2_widget_dialog_1.et2_dialog._create_parent('collabora'));
     };
     /**
      * Method to request create new file or open as new file
@@ -531,6 +533,8 @@ var collaboraAPP = /** @class */ (function (_super) {
      * This is just the default, not sure if we need any more
      */
     collaboraAPP.prototype.on_close = function () {
+        // Do not ask if they're sure, it's too late.  Just reset dirty
+        this.et2.iterateOver(function (w) { w.resetDirty(); }, this, et2_IInput);
         window.close();
     };
     /**
@@ -552,7 +556,7 @@ var collaboraAPP = /** @class */ (function (_super) {
             }
         }
         // create file selector
-        var vfs_select = et2_createWidget('vfs-select', {
+        var vfs_select = et2_core_widget_1.et2_createWidget('vfs-select', {
             id: 'savefile',
             mode: 'saveas',
             name: filename,
@@ -630,7 +634,7 @@ var collaboraAPP = /** @class */ (function (_super) {
             button_label: this.egw.lang('Insert'),
             onchange: image_selected
         };
-        var select = et2_createWidget('vfs-select', attrs, this.et2);
+        var select = et2_core_widget_1.et2_createWidget('vfs-select', attrs, this.et2);
         select.loadingFinished();
         select.click();
     };
