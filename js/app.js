@@ -396,6 +396,12 @@ var collaboraAPP = /** @class */ (function (_super) {
             value: values.token,
             type: "hidden"
         }).appendTo(form_html);
+        var ui_preferences = "UIMode=" + (egw.preference("collabora_ui", "filemanager") || 'notebookbar');
+        jQuery(document.createElement('input')).attr({
+            name: "ui_defaults",
+            value: ui_preferences,
+            type: "hidden"
+        }).appendTo(form_html);
         jQuery('body').append(form_html);
         var frameholder = jQuery('.editor_frame');
         var frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen="" style="height:100%;position:absolute;"/>';
