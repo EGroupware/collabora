@@ -418,7 +418,11 @@ class Wopi extends Sharing
 	 */
 	public static function get_file_id($url)
 	{
-		$path = Vfs::parse_url($url, PHP_URL_PATH);
+		$path = Vfs::parse_url(Vfs::resolve_url( $url), PHP_URL_PATH);
+		if(is_link($url))
+		{
+			//$path
+		}
 		$file_id = Api\Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Fall back to the earliest valid share ID
