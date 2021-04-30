@@ -441,7 +441,7 @@ class collaboraAPP extends EgwApp
 			type: "hidden"
 		}).appendTo(form_html);
 
-		let ui_preferences = "UIMode="+ (egw.preference("collabora_ui","filemanager") || 'notebookbar');
+		let ui_preferences = "UIMode="+ (egw.preference("ui_mode","filemanager") || 'notebookbar');
 		jQuery(document.createElement('input')).attr({
 			name: "ui_defaults",
 			value: ui_preferences,
