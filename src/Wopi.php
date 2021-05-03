@@ -188,7 +188,16 @@ class Wopi extends Sharing
 			}
 			// Setting restored flag avoids re-loading from DB, but we need to run this to
 			// get egw sub-objects (acl, preferences, etc.) properly set
-			$GLOBALS['egw']->session->read_repositories();
+			$GLOBALS['egw_info']['user'] = $GLOBALS['egw']->session->read_repositories();
+
+			// Make sure preference mounts are mounted, file could be in there
+			$is_root = Vfs::$is_root;
+			Vfs::$is_root = true;
+			foreach($GLOBALS['egw_info']['user']['preferences']['common']['vfs_fstab'] as $path => $url)
+			{
+				Vfs::mount($url, $path,false,false);
+			}
+			Vfs::$is_root = $is_root;
 
 			$classname = static::get_share_class($share);
 			return $classname::login($keep_session, $share);
