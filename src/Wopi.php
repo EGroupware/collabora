@@ -188,7 +188,11 @@ class Wopi extends Sharing
 			}
 			// Setting restored flag avoids re-loading from DB, but we need to run this to
 			// get egw sub-objects (acl, preferences, etc.) properly set
-			$GLOBALS['egw_info']['user'] = $GLOBALS['egw']->session->read_repositories();
+			$user = $GLOBALS['egw']->session->read_repositories();
+			if($user['account_lid'] !== 'anonymous')
+			{
+				$GLOBALS['egw_info']['user'] = $user;
+			}
 
 			// Make sure preference mounts are mounted, file could be in there
 			$is_root = Vfs::$is_root;
