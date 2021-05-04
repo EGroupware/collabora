@@ -162,7 +162,7 @@ class WopiBase extends \EGroupware\Api\Vfs\SharingBase
 		}
 
 		// Create share
-		$this->shares[] = $share = TestWopiSharing::create($path, $mode, $name, $recipients, $extra);
+		$this->shares[] = $share = TestWopiSharing::create('', $path, $mode, $name, $recipients, $extra);
 
 		return $share;
 	}
