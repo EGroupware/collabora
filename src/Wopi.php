@@ -197,7 +197,7 @@ class Wopi extends Sharing
 			// Make sure preference mounts are mounted, file could be in there
 			$is_root = Vfs::$is_root;
 			Vfs::$is_root = true;
-			foreach($GLOBALS['egw_info']['user']['preferences']['common']['vfs_fstab'] as $path => $url)
+			foreach((array)$GLOBALS['egw_info']['user']['preferences']['common']['vfs_fstab'] as $path => $url)
 			{
 				Vfs::mount($url, $path,false,false);
 			}
