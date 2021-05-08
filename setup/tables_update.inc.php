@@ -42,3 +42,13 @@ function collabora_upgrade19_1_001()
 {
 	return $GLOBALS['setup_info']['collabora']['currentver'] = '20.1';
 }
+
+/**
+ * Bump version to 21.1
+ *
+ * @return string
+ */
+function collabora_upgrade20_1()
+{
+	return $GLOBALS['setup_info']['collabora']['currentver'] = '21.1';
+}
