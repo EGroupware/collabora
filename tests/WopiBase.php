@@ -226,7 +226,7 @@ if(!class_exists('TestWopiSharing'))
 			return $sessionid;
 		}
 
-		public static function get_share_class($share)
+		public static function get_share_class(array $share)
 		{
 			return __CLASS__;
 		}
