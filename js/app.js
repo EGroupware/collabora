@@ -1,45 +1,31 @@
-"use strict";
 /**
  * Collabora integration javascript
  *
  * @link http://www.egroupware.org
  * @author Nathan Gray
  * @package collabora
- * @copyright (c) 2017  Nathan Gray
+ * @copyright (c) 2017-201  Nathan Gray
  */
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
 /*egw:uses
     /filemanager/js/app.js;
  */
-var app_1 = require("../../filemanager/js/app");
-var egw_app_1 = require("../../api/js/jsapi/egw_app");
-var et2_widget_dialog_1 = require("../../api/js/etemplate/et2_widget_dialog");
-var et2_core_widget_1 = require("../../api/js/etemplate/et2_core_widget");
+import { filemanagerAPP } from "../../filemanager/js/app";
+import { EgwApp } from "../../api/js/jsapi/egw_app";
+import { et2_dialog } from "../../api/js/etemplate/et2_widget_dialog";
+import { et2_createWidget } from "../../api/js/etemplate/et2_core_widget";
+import { egw_get_file_editor_prefered_mimes } from "../../api/js/jsapi/egw_global";
+import { et2_IInput } from "../../api/js/etemplate/et2_core_interfaces";
 /**
  * UI for filemanager in collabora
  */
-var collaboraFilemanagerAPP = /** @class */ (function (_super) {
-    __extends(collaboraFilemanagerAPP, _super);
+class collaboraFilemanagerAPP extends filemanagerAPP {
     /**
      * Constructor
      *
      * @memberOf app.filemanager
      */
-    function collaboraFilemanagerAPP() {
-        return _super.call(this) || this;
+    constructor() {
+        super();
     }
     /**
      * This function is called when the etemplate2 object is loaded
@@ -49,19 +35,19 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param et2 etemplate2 Newly ready object
      * @param {string} name template name
      */
-    collaboraFilemanagerAPP.prototype.et2_ready = function (et2, name) {
+    et2_ready(et2, name) {
         // call parent
-        _super.prototype.et2_ready.call(this, et2, name);
-    };
+        super.et2_ready(et2, name);
+    }
     /**
      * Open a file in collabora
      * @param {egwAction} action
      * @param {egwActionObject[]} selected
      */
-    collaboraFilemanagerAPP.prototype.open = function (action, selected) {
-        var data = egw.dataGetUIDdata(selected[0].id);
-        var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
-        var dblclick_action = egw.preference('document_doubleclick_action', 'filemanager');
+    open(action, selected) {
+        let data = egw.dataGetUIDdata(selected[0].id);
+        let is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
+        let dblclick_action = egw.preference('document_doubleclick_action', 'filemanager');
         // Check to see if it's something we can handle
         if (is_collabora && this.isEditable(action, selected) &&
             (!dblclick_action || dblclick_action == 'collabora')) {
@@ -73,9 +59,9 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             }));
         }
         else {
-            return _super.prototype.open.call(this, action, selected);
+            return super.open(action, selected);
         }
-    };
+    }
     /**
      * Check to see if the file is editable
      *
@@ -83,11 +69,11 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param {egwActionObject[]} _senders
      * @returns {boolean} returns true if is editable otherwise false
      */
-    collaboraFilemanagerAPP.prototype.isEditable = function (_egwAction, _senders) {
-        var data = egw.dataGetUIDdata(_senders[0].id);
-        var mime = data && data.data && data.data.mime ? data.data.mime : '';
+    isEditable(_egwAction, _senders) {
+        let data = egw.dataGetUIDdata(_senders[0].id);
+        let mime = data && data.data && data.data.mime ? data.data.mime : '';
         if (data && mime && this.discovery && this.discovery[mime]) {
-            var fe = egw_get_file_editor_prefered_mimes(mime);
+            let fe = egw_get_file_editor_prefered_mimes(mime);
             if (fe && fe.mime && !fe.mime[mime]) {
                 return false;
             }
@@ -97,9 +83,9 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             return ['edit'].indexOf(this.discovery[mime].name) !== -1;
         }
         else {
-            return _super.prototype.isEditable.call(this, _egwAction, _senders);
+            return super.isEditable(_egwAction, _senders);
         }
-    };
+    }
     /**
      * Check to see if we can make a sharable edit link
      *
@@ -107,13 +93,13 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param {egwActionObject[]} _selected
      * @returns {Boolean}
      */
-    collaboraFilemanagerAPP.prototype.isSharableFile = function (_egwAction, _selected) {
+    isSharableFile(_egwAction, _selected) {
         if (_selected.length !== 1)
             return false;
-        var data = egw.dataGetUIDdata(_selected[0].id);
-        var mime = data && data.data && data.data.mime ? data.data.mime : '';
+        let data = egw.dataGetUIDdata(_selected[0].id);
+        let mime = data && data.data && data.data.mime ? data.data.mime : '';
         if (data && mime && this.discovery && this.discovery[mime]) {
-            var fe = egw_get_file_editor_prefered_mimes();
+            let fe = egw_get_file_editor_prefered_mimes();
             if (fe && fe.mime && !fe.mime[mime])
                 return false;
             return ['edit'].indexOf(this.discovery[mime].name) !== -1;
@@ -121,7 +107,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
         else {
             return false;
         }
-    };
+    }
     /**
      * Set the list of what the collabora server can handle.
      *
@@ -133,24 +119,24 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param {string} settings[].urlsrc URL to edit the file.  It still needs
      *	a WOPISrc parameter added though.
      */
-    collaboraFilemanagerAPP.prototype.set_discovery = function (settings) {
+    set_discovery(settings) {
         this.discovery = settings;
-    };
+    }
     /**
      * create a share-link for the given file
      * @param {object} _action egw actions
      * @param {object} _selected selected nm row
      * @returns {Boolean} returns false if not successful
      */
-    collaboraFilemanagerAPP.prototype.share_collabora_link = function (_action, _selected) {
+    share_collabora_link(_action, _selected) {
         // Check to see if it's something we can handle
         if (this.isEditable(_action, _selected)) {
-            var path = this.id2path(_selected[0].id);
+            let path = this.id2path(_selected[0].id);
             egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path], this._share_link_callback, this, true, this).sendRequest();
             return true;
         }
         return false;
-    };
+    }
     /**
      * Mail files action: open compose with already linked files
      * We're only interested in collabora shares here, the super can handle
@@ -159,14 +145,14 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param {egwAction} _action
      * @param {egwActionObject[]} _selected
      */
-    collaboraFilemanagerAPP.prototype.mail = function (_action, _selected) {
+    mail(_action, _selected) {
         if (_action.id.indexOf('collabora') < 0) {
-            return _super.prototype.mail.call(this, _action, _selected);
+            return super.mail(_action, _selected);
         }
-        var path = this.id2path(_selected[0].id);
+        let path = this.id2path(_selected[0].id);
         egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path], this._mail_link_callback, this, true, this).sendRequest();
         return true;
-    };
+    }
     /**
      * Callback with the share link to append to an email
      *
@@ -175,19 +161,19 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param {String} _data.title Title for the link
      * @param {String} [_data.msg] Error message
      */
-    collaboraFilemanagerAPP.prototype._mail_link_callback = function (_data) {
+    _mail_link_callback(_data) {
         if (_data.msg || !_data.share_link)
             window.egw_refresh(_data.msg, this.appname);
-        var params = {
+        let params = {
             'preset[body]': '<a href="' + _data.share_link + '">' + _data.title + '</a>',
             'mimeType': 'html' // always open compose in html mode, as attachment links look a lot nicer in html
         };
-        var content = {
+        let content = {
             mail_htmltext: ['<br /><a href="' + _data.share_link + '">' + _data.title + '</a>'],
             mail_plaintext: ["\n" + _data.share_link]
         };
         return egw.openWithinWindow("mail", "setCompose", content, params, /mail.mail_compose.compose/);
-    };
+    }
     /**
      * Build a dialog to get name and ext of new file
      *
@@ -200,18 +186,18 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      * @param {string} _openasnew path of file to be opened as new
      * @param {string} _path path to store the file
      */
-    collaboraFilemanagerAPP.prototype._dialog_create_new = function (_type, _openasnew, _path) {
-        var current_path = _path || this.et2.getWidgetById('path').get_value();
-        var extensions = {};
-        var type = _type || 'document';
-        var self = this;
-        var ext_default = 'odt';
-        var title = _openasnew ? this.egw.lang('Open as new') :
+    _dialog_create_new(_type, _openasnew, _path) {
+        let current_path = _path || this.et2.getWidgetById('path').get_value();
+        let extensions = {};
+        let type = _type || 'document';
+        let self = this;
+        let ext_default = 'odt';
+        let title = _openasnew ? this.egw.lang('Open as new') :
             this.egw.lang('Create new %1', type == 'more' ? this.egw.lang('file') : this.egw.lang(type));
         // Make first char uppercase, as some languages (German) put the type first
         title = title.charAt(0).toUpperCase() + title.slice(1);
         //list of extensions that we don't want to offer for create new file
-        var exclusive_ext = ['odz', 'odb', 'dif', 'slk', 'dbf', 'oxt'];
+        let exclusive_ext = ['odz', 'odb', 'dif', 'slk', 'dbf', 'oxt'];
         switch (type) {
             case 'document':
                 extensions = { odt: '(.odt) OpenDocument Text', doc: '(.doc) MS Word 97-2003', docx: '(.docx) MS Word' };
@@ -229,19 +215,15 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
                 ext_default = 'odg';
                 break;
             case 'more':
-                var _loop_1 = function (key) {
-                    if (this_1.discovery[key].name == 'edit' && exclusive_ext.filter(function (v) {
+                for (let key in this.discovery) {
+                    if (this.discovery[key].name == 'edit' && exclusive_ext.filter(function (v) {
                         return (self.discovery[key]['ext'] == v);
                     }).length == 0)
-                        extensions[this_1.discovery[key]['ext']] = '(.' + this_1.discovery[key]['ext'] + ') ' + key;
-                };
-                var this_1 = this;
-                for (var key in this.discovery) {
-                    _loop_1(key);
+                        extensions[this.discovery[key]['ext']] = '(.' + this.discovery[key]['ext'] + ') ' + key;
                 }
                 break;
         }
-        et2_core_widget_1.et2_createWidget("dialog", {
+        et2_createWidget("dialog", {
             callback: function (_button_id, _val) {
                 if (_button_id == 'create' && _val && _val.name != '') {
                     self._request_createNew({
@@ -262,8 +244,8 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             value: { content: { extension: ext_default, openasnew: _openasnew }, 'sel_options': { extension: extensions } },
             template: egw.webserverUrl + '/collabora/templates/default/new.xet?1',
             resizable: false
-        }, et2_widget_dialog_1.et2_dialog._create_parent('collabora'));
-    };
+        }, et2_dialog._create_parent('collabora'));
+    }
     /**
      * Method to request create new file or open as new file
      * @param {object} data
@@ -274,7 +256,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      *		openasnew: //path of the file to be opened as new
      *	}
      */
-    collaboraFilemanagerAPP.prototype._request_createNew = function (data) {
+    _request_createNew(data) {
         egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [data.ext, data.dir, data.name, data.openasnew], function (_data) {
             if (_data.path) {
                 self.egw.refresh('', 'filemanager');
@@ -286,7 +268,7 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
             }
             egw.message(_data.message);
         }).sendRequest(true);
-    };
+    }
     /**
      * Method to create a new document
      *
@@ -297,54 +279,51 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
      *
      * @TODO Implementing of create new type of the file for collabora
      */
-    collaboraFilemanagerAPP.prototype.create_new = function (_action, _nm) {
-        var is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
-        var new_widget = this.et2.getWidgetById('new');
-        var type = (typeof new_widget._type != 'undefined' && _action['type'] != 'popup') ? new_widget.get_value() : _action.id;
+    create_new(_action, _nm) {
+        let is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
+        let new_widget = this.et2.getWidgetById('new');
+        let type = (typeof new_widget._type != 'undefined' && _action['type'] != 'popup') ? new_widget.get_value() : _action.id;
         if (is_collabora) {
-            var id = new_widget[0] && new_widget[0].id ? new_widget[0].id : null;
-            var elem = id ? egw.dataGetUIDdata(id) : null;
-            var data = void 0;
+            let id = new_widget[0] && new_widget[0].id ? new_widget[0].id : null;
+            let elem = id ? egw.dataGetUIDdata(id) : null;
+            let data;
             if (_action.id == 'openasnew') {
                 data = egw.dataGetUIDdata(new_widget[0].id);
             }
-            var path = id ? id.split('filemanager::')[1] : this.et2.getWidgetById('path').get_value();
+            let path = id ? id.split('filemanager::')[1] : this.et2.getWidgetById('path').get_value();
             if (elem && elem.data && !elem.data.is_dir)
                 path = this.dirname(path);
             this._dialog_create_new(type, data ? data.data.path : undefined, path);
         }
         else {
-            return _super.prototype.create_new.call(this, _action, new_widget);
+            return super.create_new(_action, new_widget);
         }
         return true;
-    };
-    return collaboraFilemanagerAPP;
-}(app_1.filemanagerAPP));
+    }
+}
 app.classes.filemanager = collaboraFilemanagerAPP;
 /**
 * UI for collabora stuff
 *
 * @augments AppJS
 */
-var collaboraAPP = /** @class */ (function (_super) {
-    __extends(collaboraAPP, _super);
+class collaboraAPP extends EgwApp {
     /**
      * Constructor
      */
-    function collaboraAPP() {
-        var _this = _super.call(this, "collabora") || this;
+    constructor() {
+        super("collabora");
         // Handy reference to iframe
-        _this.editor_iframe = null;
+        this.editor_iframe = null;
         // Flag for if we've customized & bound the editor
-        _this.loaded = false;
+        this.loaded = false;
         // Mime types supported for export/save as the openned file
-        _this.export_formats = {};
+        this.export_formats = {};
         // Filemanager has some handy utilites, but we need to be careful what
         // we use, since it's not actually available
         if (typeof app.filemanager === 'undefined') {
             app.filemanager = new app.classes.filemanager;
         }
-        return _this;
     }
     /**
      * This function is called when the etemplate2 object is loaded
@@ -354,28 +333,28 @@ var collaboraAPP = /** @class */ (function (_super) {
      * @param et2 etemplate2 Newly ready object
      * @param {string} name template name
      */
-    collaboraAPP.prototype.et2_ready = function (et2, name) {
+    et2_ready(et2, name) {
         // call parent
-        _super.prototype.et2_ready.call(this, et2, name);
+        super.et2_ready(et2, name);
         if (name === 'collabora.editor') {
             this.init_editor();
         }
-    };
+    }
     /**
      * Override the default to use the file name as title
      */
-    collaboraAPP.prototype.getWindowTitle = function () {
+    getWindowTitle() {
         return egw.config('site_title', 'phpgwapi') + '[' +
             this.et2.getArrayMgr('content').getEntry('path', true) +
             ']';
-    };
+    }
     /**
      * Initialize editor and post the form that starts it
      *
      * @see https://wopi.readthedocs.io/en/latest/hostpage.html
      * @param {Object} values
      */
-    collaboraAPP.prototype.init_editor = function (values) {
+    init_editor(values) {
         // We allow additional calls and reset, since we're replacing the editor
         this.loaded = false;
         if (typeof values == 'undefined') {
@@ -384,7 +363,7 @@ var collaboraAPP = /** @class */ (function (_super) {
         values.url += '&user=' + this.egw.user('account_lid');
         values.url += '&lang=' + this.egw.preference('lang');
         values.url += '&title=' + encodeURIComponent(values.filename);
-        var form_html = jQuery(document.createElement('form')).attr({
+        let form_html = jQuery(document.createElement('form')).attr({
             id: "form",
             name: "form",
             target: "loleafletframe",
@@ -396,15 +375,15 @@ var collaboraAPP = /** @class */ (function (_super) {
             value: values.token,
             type: "hidden"
         }).appendTo(form_html);
-        var ui_preferences = "UIMode=" + (egw.preference("ui_mode", "filemanager") || 'notebookbar');
+        let ui_preferences = "UIMode=" + (egw.preference("ui_mode", "filemanager") || 'notebookbar');
         jQuery(document.createElement('input')).attr({
             name: "ui_defaults",
             value: ui_preferences,
             type: "hidden"
         }).appendTo(form_html);
         jQuery('body').append(form_html);
-        var frameholder = jQuery('.editor_frame');
-        var frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen="" style="height:100%;position:absolute;"/>';
+        let frameholder = jQuery('.editor_frame');
+        let frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen="" style="height:100%;position:absolute;"/>';
         jQuery('iframe', frameholder).remove();
         frameholder.append(frame);
         // Listen for messages
@@ -417,7 +396,7 @@ var collaboraAPP = /** @class */ (function (_super) {
             app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
         });
         document.getElementById('form').submit();
-    };
+    }
     /**
      * Handle messages sent from the editor
      *
@@ -427,8 +406,8 @@ var collaboraAPP = /** @class */ (function (_super) {
      * @param {String} e.MessageId
      * @param {Object} e.Values Depends on the message, but always an object, if present
      */
-    collaboraAPP.prototype._handle_messages = function (e) {
-        var message = JSON.parse(e.data);
+    _handle_messages(e) {
+        let message = JSON.parse(e.data);
         switch (message.MessageId) {
             case "App_LoadingStatus":
                 if (message.Values.Status === 'Document_Loaded' && !this.loaded) {
@@ -443,7 +422,7 @@ var collaboraAPP = /** @class */ (function (_super) {
                 }
                 if (message.Values.Status === 'Frame_Ready') {
                     if (window.opener && window.opener.app && window.opener.app.filemanager) {
-                        var nm = window.opener.app.filemanager.et2.getWidgetById('nm');
+                        let nm = window.opener.app.filemanager.et2.getWidgetById('nm');
                         // try to referesh opener nm list, it helps to keep the list up to date
                         // in save as changes.
                         if (nm)
@@ -473,11 +452,11 @@ var collaboraAPP = /** @class */ (function (_super) {
                 this.share();
                 break;
             case "Get_Export_Formats_Resp":
-                var fe = egw.link_get_registry('filemanager-editor');
-                var discovery = (fe && fe["mime"]) ? fe["mime"] : [];
+                let fe = egw.link_get_registry('filemanager-editor');
+                let discovery = (fe && fe["mime"]) ? fe["mime"] : [];
                 if (message.Values) {
-                    for (var i in message.Values) {
-                        for (var j in discovery) {
+                    for (let i in message.Values) {
+                        for (let j in discovery) {
                             if (discovery[j]['ext'] == message.Values[i]['Format']) {
                                 this.export_formats[j] = discovery[j];
                             }
@@ -489,30 +468,30 @@ var collaboraAPP = /** @class */ (function (_super) {
                 this.egw.message(this.egw.lang("File renamed"));
                 break;
         }
-    };
+    }
     /**
      * Pass a message into the editor
      *
      * @see https://www.collaboraoffice.com/collabora-online-editor-api-reference/#loleaflet-postmessage-actions
      *	for allowed actions
      */
-    collaboraAPP.prototype.WOPIPostMessage = function (msgId, values) {
+    WOPIPostMessage(msgId, values) {
         if (this.editor_iframe) {
-            var msg = {
+            let msg = {
                 'MessageId': msgId,
                 'SendTime': Date.now(),
                 'Values': values
             };
             this.editor_iframe.contentWindow.postMessage(JSON.stringify(msg), '*');
         }
-    };
+    }
     /**
      * Do our customizations of the editor
      *
      * This is where we add buttons and menu actions and such
      */
-    collaboraAPP.prototype._customize_editor = function () {
-        var baseUrl = egw.webserverUrl[0] == '/' ?
+    _customize_editor() {
+        let baseUrl = egw.webserverUrl[0] == '/' ?
             window.location.protocol + '//' + window.location.hostname + egw.webserverUrl
             : egw.webserverUrl;
         this.WOPIPostMessage('Insert_Button', {
@@ -525,35 +504,35 @@ var collaboraAPP = /** @class */ (function (_super) {
             imgurl: 'images/lc_saveas.svg',
             hint: this.egw.lang('Save As')
         });
-    };
+    }
     /**
      * Handle Save as mail button
      */
-    collaboraAPP.prototype.on_save_as_mail = function () {
-        var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
+    on_save_as_mail() {
+        let filepath = this.et2.getArrayMgr('content').getEntry('path', true);
         app.filemanager.mail({ id: "attach" }, [{ id: filepath }]);
-    };
+    }
     /**
      * Handle close button
      *
      * This is just the default, not sure if we need any more
      */
-    collaboraAPP.prototype.on_close = function () {
+    on_close() {
         // Do not ask if they're sure, it's too late.  Just reset dirty
         this.et2.iterateOver(function (w) { w.resetDirty(); }, this, et2_IInput);
         window.close();
-    };
+    }
     /**
      * Handle click on Save As
      */
-    collaboraAPP.prototype.on_save_as = function () {
-        var filepath = this.et2.getArrayMgr('content').getEntry('path', true);
-        var parts = app.filemanager.basename(filepath).split('.');
-        var ext = parts.pop();
-        var filename = parts.join('.');
+    on_save_as() {
+        let filepath = this.et2.getArrayMgr('content').getEntry('path', true);
+        let parts = app.filemanager.basename(filepath).split('.');
+        let ext = parts.pop();
+        let filename = parts.join('.');
         // select current mime-type
-        var mime_types = [];
-        for (var mime in this.export_formats) {
+        let mime_types = [];
+        for (let mime in this.export_formats) {
             if (this.export_formats[mime].ext == ext) {
                 mime_types.unshift(mime);
             }
@@ -562,7 +541,7 @@ var collaboraAPP = /** @class */ (function (_super) {
             }
         }
         // create file selector
-        var vfs_select = et2_core_widget_1.et2_createWidget('vfs-select', {
+        let vfs_select = et2_createWidget('vfs-select', {
             id: 'savefile',
             mode: 'saveas',
             name: filename,
@@ -571,12 +550,12 @@ var collaboraAPP = /** @class */ (function (_super) {
             button_label: egw.lang("Save as"),
             mime: mime_types
         }, this.et2);
-        var self = this;
+        let self = this;
         // bind change handler for setting the selected path and calling save
         window.setTimeout(function () {
             jQuery(vfs_select.getDOMNode()).on('change', function () {
-                var file_path = vfs_select.get_value();
-                var selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
+                let file_path = vfs_select.get_value();
+                let selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
                 // only add extension, if not already there
                 if (selectedMime && file_path.substr(-selectedMime.ext.length - 1) !== '.' + selectedMime.ext) {
                     file_path += '.' + selectedMime.ext;
@@ -590,42 +569,42 @@ var collaboraAPP = /** @class */ (function (_super) {
         }, 1);
         // start the file selector dialog
         vfs_select.click();
-    };
+    }
     /**
      * Show the revision history list for the file
      */
-    collaboraAPP.prototype.show_revision_history = function () {
+    show_revision_history() {
         jQuery(this.et2.getInstanceManager().DOMContainer).addClass('revisions');
-    };
+    }
     /**
      * Hide the revision history list
      */
-    collaboraAPP.prototype.close_revision_history = function () {
+    close_revision_history() {
         jQuery(this.et2.getInstanceManager().DOMContainer).removeClass('revisions');
-    };
+    }
     /**
      * Edit a particular revision of a file, selected from a list
      */
-    collaboraAPP.prototype.edit_revision = function (event, widget) {
-        var row = widget.getArrayMgr('content').explodeKey(widget.id).pop() || 0;
-        var revision = widget.getArrayMgr('content').getEntry(row);
+    edit_revision(event, widget) {
+        let row = widget.getArrayMgr('content').explodeKey(widget.id).pop() || 0;
+        let revision = widget.getArrayMgr('content').getEntry(row);
         window.location.href = egw.link('/index.php', {
             'menuaction': 'collabora.EGroupware\\collabora\\Ui.editor',
             'path': revision.path,
             'cd': 'no' // needed to not reload framework in sharing
         });
         return false;
-    };
+    }
     /**
      * Get a URL to insert into the document
      */
-    collaboraAPP.prototype.insert_image = function () {
-        var image_selected = function (node, widget) {
+    insert_image() {
+        let image_selected = function (node, widget) {
             if (widget.get_value()) {
                 // Collabora server probably doesn't have access to file, so share it
                 // It needs access, but only to fetch the file so expire tomorrow.
                 // Collabora will fail (hang) if share dissapears while the document is open
-                var expires = new Date();
+                let expires = new Date();
                 expires.setUTCDate(expires.getUTCDate() + 1);
                 this.egw.json('EGroupware\\Api\\Sharing::ajax_create', ['collabora', widget.get_value(), false, false, { share_expires: date('Y-m-d', expires) }], function (value) {
                     // Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
@@ -634,27 +613,26 @@ var collaboraAPP = /** @class */ (function (_super) {
                 }, this, true, this, this.egw).sendRequest();
             }
         }.bind(this);
-        var attrs = {
+        let attrs = {
             mode: 'open',
             dialog_title: this.egw.lang('Insert'),
             button_label: this.egw.lang('Insert'),
             onchange: image_selected
         };
-        var select = et2_core_widget_1.et2_createWidget('vfs-select', attrs, this.et2);
+        let select = et2_createWidget('vfs-select', attrs, this.et2);
         select.loadingFinished();
         select.click();
-    };
+    }
     /**
      * Share the current file (via mail)
      *
      * @returns {Boolean}
      */
-    collaboraAPP.prototype.share = function () {
-        var path = this.et2.getArrayMgr('content').getEntry('path');
+    share() {
+        let path = this.et2.getArrayMgr('content').getEntry('path');
         egw.json('EGroupware\\collabora\\Ui::ajax_share_link', ['mail_collabora', path], app.filemanager._mail_link_callback, this, true, this).sendRequest();
         return true;
-    };
-    return collaboraAPP;
-}(egw_app_1.EgwApp));
+    }
+}
 app.classes.collabora = collaboraAPP;
 //# sourceMappingURL=app.js.map

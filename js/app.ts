@@ -4,7 +4,7 @@
  * @link http://www.egroupware.org
  * @author Nathan Gray
  * @package collabora
- * @copyright (c) 2017  Nathan Gray
+ * @copyright (c) 2017-201  Nathan Gray
  */
 
 /*egw:uses
@@ -15,6 +15,8 @@ import {filemanagerAPP} from "../../filemanager/js/app";
 import {EgwApp} from "../../api/js/jsapi/egw_app";
 import {et2_dialog} from "../../api/js/etemplate/et2_widget_dialog";
 import {et2_createWidget} from "../../api/js/etemplate/et2_core_widget";
+import {egw_get_file_editor_prefered_mimes} from "../../api/js/jsapi/egw_global";
+import {et2_IInput} from "../../api/js/etemplate/et2_core_interfaces";
 
 /**
  * UI for filemanager in collabora
