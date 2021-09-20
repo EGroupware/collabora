@@ -529,9 +529,13 @@ class collaboraAPP extends EgwApp
 				{
 					this.on_save_as();
 				}
-				if (message.Values.Id === 'egwSaveAsMail')
+				if(message.Values.Id === 'egwSaveAsMail')
 				{
 					this.on_save_as_mail();
+				}
+				if(message.Values.Id === 'egwPlaceholder')
+				{
+					this.on_placeholder_click();
 				}
 				break;
 			case "UI_InsertGraphic":
@@ -540,7 +544,6 @@ class collaboraAPP extends EgwApp
 			case "UI_Share":
 				this.share();
 				break;
-
 			case "Get_Export_Formats_Resp":
 				let fe = egw.link_get_registry('filemanager-editor');
 				let discovery = (fe && fe["mime"]) ? fe["mime"]: [];
@@ -597,7 +600,7 @@ class collaboraAPP extends EgwApp
 
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAsMail',
-			imgurl: this.egw.image('save_as_mail','collabora').replace(egw.webserverUrl, baseUrl),
+			imgurl: this.egw.image('save_as_mail', 'collabora').replace(egw.webserverUrl, baseUrl),
 			hint: this.egw.lang('Save As Mail')
 		});
 
@@ -605,6 +608,16 @@ class collaboraAPP extends EgwApp
 			id: 'egwSaveAs',
 			imgurl: 'images/lc_saveas.svg',
 			hint: this.egw.lang('Save As')
+		});
+		this.WOPIPostMessage('Insert_Button', {
+			id: 'egwPlaceholder',
+			imgurl: 'images/lc_insertfieldctrl.svg',
+			hint: this.egw.lang('Insert merge placeholder')
+		});
+		this.WOPIPostMessage('Insert_Button', {
+			id: 'egwContactPlaceholder',
+			imgurl: this.egw.image('navbar', 'addressbook').replace(egw.webserverUrl, baseUrl),
+			hint: this.egw.lang('Insert address')
 		});
 	}
 
@@ -666,19 +679,36 @@ class collaboraAPP extends EgwApp
 				let file_path = vfs_select.get_value();
 				let selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
 				// only add extension, if not already there
-				if (selectedMime && file_path.substr(-selectedMime.ext.length-1) !== '.' + selectedMime.ext)
+				if(selectedMime && file_path.substr(-selectedMime.ext.length - 1) !== '.' + selectedMime.ext)
 				{
 					file_path += '.' + selectedMime.ext;
 				}
-				if (file_path)
+				if(file_path)
 				{
 					self.WOPIPostMessage('Action_SaveAs', {
 						Filename: file_path
 					});
 				}
-			});}, 1);
+			});
+		}, 1);
 		// start the file selector dialog
 		vfs_select.click();
+	}
+
+	/**
+	 * User wants to insert a merge placeholder.  Open the dialog
+	 */
+	on_placeholder_click()
+	{
+		// create placeholder selector
+		let selector = et2_createWidget('placeholder-select', {
+			id: 'placeholder',
+			insert_callback: (text) =>
+			{
+				this.insert_text(text);
+			}
+		}, this.et2);
+		selector.doLoadingFinished();
 	}
 
 	/**
@@ -742,9 +772,22 @@ class collaboraAPP extends EgwApp
 			button_label: this.egw.lang('Insert'),
 			onchange: image_selected
 		};
-		let select = et2_createWidget('vfs-select',attrs, this.et2);
+		let select = et2_createWidget('vfs-select', attrs, this.et2);
 		select.loadingFinished();
 		select.click();
+	}
+
+	/**
+	 * Insert (paste) some text into the document
+	 */
+	insert_text(text, mimetype = "text/plain;charset=utf-8")
+	{
+		console.log(text, mimetype);
+		this.WOPIPostMessage(
+			"Action_Paste",
+			{Mimetype: mimetype, Data: text}
+		);
+		debugger;
 	}
 
 	/**
