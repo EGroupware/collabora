@@ -670,6 +670,10 @@ class collaboraAPP extends EgwApp
 				}
 				if (file_path)
 				{
+					// Update our value for path, or next time we do something with it (Save as again, email)
+					// it will be the original value
+					self.et2.getArrayMgr('content').data.path = file_path;
+					
 					self.WOPIPostMessage('Action_SaveAs', {
 						Filename: file_path
 					});
