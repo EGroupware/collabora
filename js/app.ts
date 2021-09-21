@@ -529,13 +529,17 @@ class collaboraAPP extends EgwApp
 				{
 					this.on_save_as();
 				}
-				if(message.Values.Id === 'egwSaveAsMail')
+				switch(message.Values.Id)
 				{
-					this.on_save_as_mail();
-				}
-				if(message.Values.Id === 'egwPlaceholder')
-				{
-					this.on_placeholder_click();
+					case  'egwSaveAsMail':
+						this.on_save_as_mail();
+						break;
+					case 'egwPlaceholder':
+						this.on_placeholder_click();
+						break;
+					case 'egwContactPlaceholder':
+						this.on_placeholder_snippet_click();
+						break;
 				}
 				break;
 			case "UI_InsertGraphic":
@@ -611,7 +615,7 @@ class collaboraAPP extends EgwApp
 		});
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwPlaceholder',
-			imgurl: 'images/lc_insertfieldctrl.svg',
+			imgurl: this.egw.image('curly_brackets_icon', 'collabora').replace(egw.webserverUrl, baseUrl),
 			hint: this.egw.lang('Insert merge placeholder')
 		});
 		this.WOPIPostMessage('Insert_Button', {
@@ -703,6 +707,22 @@ class collaboraAPP extends EgwApp
 		// create placeholder selector
 		let selector = et2_createWidget('placeholder-select', {
 			id: 'placeholder',
+			insert_callback: (text) =>
+			{
+				this.insert_text(text);
+			}
+		}, this.et2);
+		selector.doLoadingFinished();
+	}
+
+	/**
+	 * User wants to insert a contact from placeholder.  Open the snippet dialog
+	 */
+	on_placeholder_snippet_click()
+	{
+		// create placeholder selector
+		let selector = et2_createWidget('placeholder-snippet', {
+			id: 'snippet',
 			insert_callback: (text) =>
 			{
 				this.insert_text(text);
