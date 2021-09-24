@@ -721,18 +721,22 @@ class Files
 	public function rename_file($original_path)
 	{
 		$suggested_target = Api\Translation::convert($this->header('X-WOPI-RequestedName'), 'utf-7', 'utf-8');
-		$target = $this->clean_filename(pathinfo($original_path, PATHINFO_DIRNAME) . '/'.$suggested_target . '.'.pathinfo($original_path, PATHINFO_EXTENSION));
+		$target = $this->clean_filename(pathinfo($original_path, PATHINFO_DIRNAME) . '/' . $suggested_target . '.' . pathinfo($original_path, PATHINFO_EXTENSION));
 
 		if(Wopi::DEBUG)
 		{
-			error_log(__METHOD__."('$original_path' -> $target) ");
+			error_log(__METHOD__ . "('$original_path' -> $target) ");
 		}
+		// Unlock the old filename
+		$lock = Vfs::checkLock($original_path);
+		Vfs::unlock($original_path, $lock['token']);
+
 		rename($original_path, $target);
 
-		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
-					'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
+		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/' . Wopi::get_file_id($target))) .
+			'?access_token=' . \EGroupware\Collabora\Bo::get_token($target)['token'];
 
-		return Array('Name' => Vfs::basename($target), 'Url' => $url);
+		return array('Name' => Vfs::basename($target), 'Url' => $url);
 	}
 
 	/**
