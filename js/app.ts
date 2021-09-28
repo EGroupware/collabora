@@ -557,7 +557,7 @@ class collaboraAPP extends EgwApp
 					{
 						for(let j in discovery)
 						{
-							if (discovery[j]['ext'] == message.Values[i]['Format'])
+							if(discovery[j]['ext'] == message.Values[i]['Format'])
 							{
 								this.export_formats[j] = discovery[j];
 							}
@@ -567,6 +567,9 @@ class collaboraAPP extends EgwApp
 				break;
 			case "File_Rename":
 				this.egw.message(this.egw.lang("File renamed"));
+				// Update our value for path, or next time we do something with it (Save as again, email)
+				// it will be the original value
+				this.et2.getArrayMgr('content').data.path = message.Values.NewName;
 				break;
 		}
 	}
