@@ -26,6 +26,8 @@ file	collabora	de	Datei
 file %1 has been created successfully.	collabora	de	Datei %1 wurde erfolgreich angelegt.
 file renamed	collabora	de	Datei umbenannt
 insert	collabora	de	Einfügen
+insert address	collabora	de	Adresse einfügen
+insert merged content	collabora	de	Zusammengeführten Inhalt einfügen
 latest revision	collabora	de	Aktuelle Version
 link is appended to email allowing recipients to edit the file	collabora	de	Der Link wird an die E-Mail angehängt, so dass die Empfänger die Datei bearbeiten können.
 local collabora server	collabora	de	Lokaler Collabora Online-Server

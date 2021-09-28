@@ -616,7 +616,7 @@ class collaboraAPP extends EgwApp
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwPlaceholder',
 			imgurl: this.egw.image('curly_brackets_icon', 'collabora').replace(egw.webserverUrl, baseUrl),
-			hint: this.egw.lang('Insert merge placeholder')
+			hint: this.egw.lang('Insert placeholder')
 		});
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwContactPlaceholder',
@@ -716,6 +716,10 @@ class collaboraAPP extends EgwApp
 				this.insert_text(text);
 			}
 		}, this.et2);
+		// Don't know what's going wrong with the parenting, selector fails to get parent which screws up
+		// where this.egw() points, which breaks getting the translations from Collabora lang files
+		this.et2.addChild(selector);
+
 		selector.doLoadingFinished();
 	}
 
@@ -732,6 +736,9 @@ class collaboraAPP extends EgwApp
 				this.insert_text(text);
 			}
 		}, this.et2);
+		// Don't know what's going wrong with the parenting, selector fails to get parent which screws up
+		// where this.egw() points, which breaks getting the translations from Collabora lang files
+		this.et2.addChild(selector);
 		selector.doLoadingFinished();
 	}
 
