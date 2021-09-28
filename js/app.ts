@@ -158,7 +158,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	share_collabora_link(_action, _selected) : boolean
 	{
 		// Check to see if it's something we can handle
-		if (this.isEditable(_action, _selected))
+		if(this.isEditable(_action, _selected))
 		{
 			let path = this.id2path(_selected[0].id);
 			egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path],
@@ -166,6 +166,50 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Use the Collabora conversion API to convert the file to a different format
+	 *
+	 * We use the same filename.
+	 *
+	 * @see https://sdk.collaboraonline.com/docs/conversion_api.html
+	 *
+	 * @param {egwAction} _action
+	 * @param {egwActionObject[]} _selected
+	 */
+	convert_to(_action, _selected)
+	{
+		let path = this.id2path(_selected[0].id);
+		let msg = this.egw.message(this.egw.lang("Converting..."), "info");
+		egw.json('EGroupware\\collabora\\Conversion::ajax_convert', [path, _action.id],
+			this._convert_to_callback, this, true, {app: this, msg: msg}).sendRequest();
+		return true;
+	}
+
+	/**
+	 * A file conversion was attempted, give user feedback
+	 *
+	 * @param data {
+	 *	success   : Boolean,
+	 *	error_message' : String,
+	 *	original_path  : String
+	 *	converted_path : String
+	 * }
+	 */
+	_convert_to_callback(data : { success : Boolean, error_message : String, original_path : String, converted_path : String })
+	{
+		// Clear converting message
+		this.msg.close();
+
+		if(!data || !data.success)
+		{
+			this.app.egw.message(this.app.egw.lang("Conversion failed") + (data.error_message ? "\n" + data.error_message : ""), "error");
+			return;
+		}
+		let msg = this.app.egw.lang("Converted") + "\n" + data.converted_path;
+
+		this.app.egw.refresh(msg, "filemanager", data.converted_path, "add");
 	}
 
 	/**
