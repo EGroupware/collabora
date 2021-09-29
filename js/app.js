@@ -488,6 +488,11 @@ var collaboraAPP = /** @class */ (function (_super) {
                 break;
             case "File_Rename":
                 this.egw.message(this.egw.lang("File renamed"));
+                // Update our value for path, or next time we do something with it (Save as again, email)
+                // it will be the original value
+                this.et2.getArrayMgr('content').data.path =
+                    app.filemanager.dirname(this.et2.getArrayMgr('content').data.path) + '/' +
+                        message.Values.NewName;
                 break;
         }
     };
@@ -583,6 +588,9 @@ var collaboraAPP = /** @class */ (function (_super) {
                     file_path += '.' + selectedMime.ext;
                 }
                 if (file_path) {
+                    // Update our value for path, or next time we do something with it (Save as again, email)
+                    // it will be the original value
+                    self.et2.getArrayMgr('content').data.path = file_path;
                     self.WOPIPostMessage('Action_SaveAs', {
                         Filename: file_path
                     });
