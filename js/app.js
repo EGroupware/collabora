@@ -442,7 +442,8 @@ var collaboraAPP = /** @class */ (function (_super) {
                     this.load = true;
                 }
                 if (message.Values.Status === 'Frame_Ready') {
-                    if (window.opener && window.opener.app && window.opener.app.filemanager) {
+                    // If current app is filemanager, refresh it.  Don't refresh non-visible nm or it will be blank.
+                    if (window.opener && window.opener.app && window.opener.app.filemanager && window.opener.egw_getAppName() === "filemanager") {
                         var nm = window.opener.app.filemanager.et2.getWidgetById('nm');
                         // try to referesh opener nm list, it helps to keep the list up to date
                         // in save as changes.
