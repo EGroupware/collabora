@@ -135,7 +135,7 @@ class FileInfoLocalTest extends WopiBase
 		$info = $this->clean_info($files->check_file_info($_file));
 		$this->assertNotNull($info, "Did not get any file info. Usually caused by file not found.  \n$_file");
 
-		$file = basename($_file);
+		$file = Vfs::basename($_file);
 		$stored = file_get_contents($this->get_info_fixture($file));
 		if(!$stored)
 		{
