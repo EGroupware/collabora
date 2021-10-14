@@ -156,7 +156,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	share_collabora_link(_action, _selected) : boolean
 	{
 		// Check to see if it's something we can handle
-		if (this.isEditable(_action, _selected))
+		if(this.isEditable(_action, _selected))
 		{
 			let path = this.id2path(_selected[0].id);
 			egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path],
@@ -164,6 +164,50 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Use the Collabora conversion API to convert the file to a different format
+	 *
+	 * We use the same filename.
+	 *
+	 * @see https://sdk.collaboraonline.com/docs/conversion_api.html
+	 *
+	 * @param {egwAction} _action
+	 * @param {egwActionObject[]} _selected
+	 */
+	convert_to(_action, _selected)
+	{
+		let path = this.id2path(_selected[0].id);
+		let msg = this.egw.message(this.egw.lang("Converting..."), "info");
+		egw.json('EGroupware\\collabora\\Conversion::ajax_convert', [path, _action.id],
+			this._convert_to_callback, this, true, {app: this, msg: msg}).sendRequest();
+		return true;
+	}
+
+	/**
+	 * A file conversion was attempted, give user feedback
+	 *
+	 * @param data {
+	 *	success   : Boolean,
+	 *	error_message' : String,
+	 *	original_path  : String
+	 *	converted_path : String
+	 * }
+	 */
+	_convert_to_callback(data : { success : Boolean, error_message : String, original_path : String, converted_path : String })
+	{
+		// Clear converting message
+		this.msg.close();
+
+		if(!data || !data.success)
+		{
+			this.app.egw.message(this.app.egw.lang("Conversion failed") + (data.error_message ? "\n" + data.error_message : ""), "error");
+			return;
+		}
+		let msg = this.app.egw.lang("Converted") + "\n" + data.converted_path;
+
+		this.app.egw.refresh(msg, "filemanager", data.converted_path, "add");
 	}
 
 	/**
@@ -527,9 +571,17 @@ class collaboraAPP extends EgwApp
 				{
 					this.on_save_as();
 				}
-				if (message.Values.Id === 'egwSaveAsMail')
+				switch(message.Values.Id)
 				{
-					this.on_save_as_mail();
+					case  'egwSaveAsMail':
+						this.on_save_as_mail();
+						break;
+					case 'egwPlaceholder':
+						this.on_placeholder_click();
+						break;
+					case 'egwContactPlaceholder':
+						this.on_placeholder_snippet_click();
+						break;
 				}
 				break;
 			case "UI_InsertGraphic":
@@ -538,7 +590,6 @@ class collaboraAPP extends EgwApp
 			case "UI_Share":
 				this.share();
 				break;
-
 			case "Get_Export_Formats_Resp":
 				let fe = egw.link_get_registry('filemanager-editor');
 				let discovery = (fe && fe["mime"]) ? fe["mime"]: [];
@@ -600,7 +651,7 @@ class collaboraAPP extends EgwApp
 
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAsMail',
-			imgurl: this.egw.image('save_as_mail','collabora').replace(egw.webserverUrl, baseUrl),
+			imgurl: this.egw.image('save_as_mail', 'collabora').replace(egw.webserverUrl, baseUrl),
 			hint: this.egw.lang('Save As Mail')
 		});
 
@@ -608,6 +659,16 @@ class collaboraAPP extends EgwApp
 			id: 'egwSaveAs',
 			imgurl: 'images/lc_saveas.svg',
 			hint: this.egw.lang('Save As')
+		});
+		this.WOPIPostMessage('Insert_Button', {
+			id: 'egwPlaceholder',
+			imgurl: this.egw.image('curly_brackets_icon', 'collabora').replace(egw.webserverUrl, baseUrl),
+			hint: this.egw.lang('Insert placeholder')
+		});
+		this.WOPIPostMessage('Insert_Button', {
+			id: 'egwContactPlaceholder',
+			imgurl: this.egw.image('navbar', 'addressbook').replace(egw.webserverUrl, baseUrl),
+			hint: this.egw.lang('Insert address')
 		});
 	}
 
@@ -669,11 +730,11 @@ class collaboraAPP extends EgwApp
 				let file_path = vfs_select.get_value();
 				let selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
 				// only add extension, if not already there
-				if (selectedMime && file_path.substr(-selectedMime.ext.length-1) !== '.' + selectedMime.ext)
+				if(selectedMime && file_path.substr(-selectedMime.ext.length - 1) !== '.' + selectedMime.ext)
 				{
 					file_path += '.' + selectedMime.ext;
 				}
-				if (file_path)
+				if(file_path)
 				{
 					// Update our value for path, or next time we do something with it (Save as again, email)
 					// it will be the original value
@@ -683,9 +744,49 @@ class collaboraAPP extends EgwApp
 						Filename: file_path
 					});
 				}
-			});}, 1);
+			});
+		}, 1);
 		// start the file selector dialog
 		vfs_select.click();
+	}
+
+	/**
+	 * User wants to insert a merge placeholder.  Open the dialog
+	 */
+	on_placeholder_click()
+	{
+		// create placeholder selector
+		let selector = et2_createWidget('placeholder-select', {
+			id: 'placeholder',
+			insert_callback: (text) =>
+			{
+				this.insert_text(text);
+			}
+		}, this.et2);
+		// Don't know what's going wrong with the parenting, selector fails to get parent which screws up
+		// where this.egw() points, which breaks getting the translations from Collabora lang files
+		this.et2.addChild(selector);
+
+		selector.doLoadingFinished();
+	}
+
+	/**
+	 * User wants to insert a contact from placeholder.  Open the snippet dialog
+	 */
+	on_placeholder_snippet_click()
+	{
+		// create placeholder selector
+		let selector = et2_createWidget('placeholder-snippet', {
+			id: 'snippet',
+			insert_callback: (text) =>
+			{
+				this.insert_text(text);
+			}
+		}, this.et2);
+		// Don't know what's going wrong with the parenting, selector fails to get parent which screws up
+		// where this.egw() points, which breaks getting the translations from Collabora lang files
+		this.et2.addChild(selector);
+		selector.doLoadingFinished();
 	}
 
 	/**
@@ -749,9 +850,22 @@ class collaboraAPP extends EgwApp
 			button_label: this.egw.lang('Insert'),
 			onchange: image_selected
 		};
-		let select = et2_createWidget('vfs-select',attrs, this.et2);
+		let select = et2_createWidget('vfs-select', attrs, this.et2);
 		select.loadingFinished();
 		select.click();
+	}
+
+	/**
+	 * Insert (paste) some text into the document
+	 */
+	insert_text(text, mimetype = "text/plain;charset=utf-8")
+	{
+		console.log(text, mimetype);
+		this.WOPIPostMessage(
+			"Action_Paste",
+			{Mimetype: mimetype, Data: text}
+		);
+		debugger;
 	}
 
 	/**

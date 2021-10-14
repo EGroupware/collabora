@@ -29,7 +29,7 @@ class FileIDTest extends WopiBase
 {
 	public function testSqlfs()
 	{
-		$this->checkDirectory(Vfs::get_home_dir());
+		$this->checkDirectory(Vfs::get_home_dir(), Wopi::READONLY);
 	}
 
 	public function testVersioning()
@@ -42,7 +42,7 @@ class FileIDTest extends WopiBase
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 		$this->mountVersioned($dir);
 
-		$this->checkDirectory($dir);
+		$this->checkDirectory($dir, Wopi::READONLY);
 	}
 
 	public function testFilesystem()
@@ -71,7 +71,7 @@ class FileIDTest extends WopiBase
 
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 
-		$this->checkDirectory($dir);
+		$this->checkDirectory($dir, Wopi::READONLY);
 	}
 
 	public function testMerge()
@@ -89,7 +89,7 @@ class FileIDTest extends WopiBase
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 		$this->mountMerge($dir);
 
-		$this->checkDirectory($dir);
+		$this->checkDirectory($dir, Wopi::READONLY);
 	}
 
 	/**
@@ -98,11 +98,11 @@ class FileIDTest extends WopiBase
 	 * @param string $dir
 	 * @param string $mode
 	 */
-	protected function checkDirectory($dir)
+	protected function checkDirectory($dir, $mode)
 	{
 		if(static::LOG_LEVEL)
 		{
-			echo "\n".__METHOD__ . "($dir, $mode)\n";
+			echo "\n" . __METHOD__ . "($dir, $mode)\n";
 		}
 		if(substr($dir, -1) != '/')
 		{
@@ -117,17 +117,18 @@ class FileIDTest extends WopiBase
 		{
 			if(Vfs::is_dir($file)) continue;
 
-			$this->checkOneFile($file);
+			$this->checkOneFile($file, $mode);
 		}
 	}
 
-	protected function checkOneFile($file)
+	protected function checkOneFile($file, $mode)
 	{
 		// Create and use link
 		$extra = array();
-		$this->getShareExtra($file, Wopi::WOPI_READONLY, $extra);
+		$this->getShareExtra($file, $mode, $extra);
 
-		$share = $this->createShare($file, Wopi::WOPI_READONLY, $extra);
+		$share = $this->createShare($file, $mode, $extra);
+
 
 		// Check to see that it can find a File ID
 		$file_id = Wopi::get_file_id($file);
@@ -135,6 +136,6 @@ class FileIDTest extends WopiBase
 		$this->assertNotEquals(0, $file_id, 'No File ID for ' . $file);
 
 		// Check the other way, but $file is missing the Vfs prefix
-		$this->assertStringEndsWith($file, Wopi::get_path_from_id($file_id) );
+		$this->assertStringEndsWith($file, Wopi::get_path_from_id($file_id));
 	}
 }

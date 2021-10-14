@@ -152,6 +152,42 @@ var collaboraFilemanagerAPP = /** @class */ (function (_super) {
         return false;
     };
     /**
+     * Use the Collabora conversion API to convert the file to a different format
+     *
+     * We use the same filename.
+     *
+     * @see https://sdk.collaboraonline.com/docs/conversion_api.html
+     *
+     * @param {egwAction} _action
+     * @param {egwActionObject[]} _selected
+     */
+    collaboraFilemanagerAPP.prototype.convert_to = function (_action, _selected) {
+        var path = this.id2path(_selected[0].id);
+        var msg = this.egw.message(this.egw.lang("Converting..."), "info");
+        egw.json('EGroupware\\collabora\\Conversion::ajax_convert', [path, _action.id], this._convert_to_callback, this, true, { app: this, msg: msg }).sendRequest();
+        return true;
+    };
+    /**
+     * A file conversion was attempted, give user feedback
+     *
+     * @param data {
+     *	success   : Boolean,
+     *	error_message' : String,
+     *	original_path  : String
+     *	converted_path : String
+     * }
+     */
+    collaboraFilemanagerAPP.prototype._convert_to_callback = function (data) {
+        // Clear converting message
+        this.msg.close();
+        if (!data || !data.success) {
+            this.app.egw.message(this.app.egw.lang("Conversion failed") + (data.error_message ? "\n" + data.error_message : ""), "error");
+            return;
+        }
+        var msg = this.app.egw.lang("Converted") + "\n" + data.converted_path;
+        this.app.egw.refresh(msg, "filemanager", data.converted_path, "add");
+    };
+    /**
      * Mail files action: open compose with already linked files
      * We're only interested in collabora shares here, the super can handle
      * the rest
@@ -463,8 +499,16 @@ var collaboraAPP = /** @class */ (function (_super) {
                 if (message.Values.Id === 'egwSaveAs' || message.MessageId === 'UI_SaveAs') {
                     this.on_save_as();
                 }
-                if (message.Values.Id === 'egwSaveAsMail') {
-                    this.on_save_as_mail();
+                switch (message.Values.Id) {
+                    case 'egwSaveAsMail':
+                        this.on_save_as_mail();
+                        break;
+                    case 'egwPlaceholder':
+                        this.on_placeholder_click();
+                        break;
+                    case 'egwContactPlaceholder':
+                        this.on_placeholder_snippet_click();
+                        break;
                 }
                 break;
             case "UI_InsertGraphic":
@@ -530,6 +574,16 @@ var collaboraAPP = /** @class */ (function (_super) {
             id: 'egwSaveAs',
             imgurl: 'images/lc_saveas.svg',
             hint: this.egw.lang('Save As')
+        });
+        this.WOPIPostMessage('Insert_Button', {
+            id: 'egwPlaceholder',
+            imgurl: this.egw.image('curly_brackets_icon', 'collabora').replace(egw.webserverUrl, baseUrl),
+            hint: this.egw.lang('Insert placeholder')
+        });
+        this.WOPIPostMessage('Insert_Button', {
+            id: 'egwContactPlaceholder',
+            imgurl: this.egw.image('navbar', 'addressbook').replace(egw.webserverUrl, baseUrl),
+            hint: this.egw.lang('Insert address')
         });
     };
     /**
@@ -601,6 +655,40 @@ var collaboraAPP = /** @class */ (function (_super) {
         vfs_select.click();
     };
     /**
+     * User wants to insert a merge placeholder.  Open the dialog
+     */
+    collaboraAPP.prototype.on_placeholder_click = function () {
+        var _this = this;
+        // create placeholder selector
+        var selector = et2_core_widget_1.et2_createWidget('placeholder-select', {
+            id: 'placeholder',
+            insert_callback: function (text) {
+                _this.insert_text(text);
+            }
+        }, this.et2);
+        // Don't know what's going wrong with the parenting, selector fails to get parent which screws up
+        // where this.egw() points, which breaks getting the translations from Collabora lang files
+        this.et2.addChild(selector);
+        selector.doLoadingFinished();
+    };
+    /**
+     * User wants to insert a contact from placeholder.  Open the snippet dialog
+     */
+    collaboraAPP.prototype.on_placeholder_snippet_click = function () {
+        var _this = this;
+        // create placeholder selector
+        var selector = et2_core_widget_1.et2_createWidget('placeholder-snippet', {
+            id: 'snippet',
+            insert_callback: function (text) {
+                _this.insert_text(text);
+            }
+        }, this.et2);
+        // Don't know what's going wrong with the parenting, selector fails to get parent which screws up
+        // where this.egw() points, which breaks getting the translations from Collabora lang files
+        this.et2.addChild(selector);
+        selector.doLoadingFinished();
+    };
+    /**
      * Show the revision history list for the file
      */
     collaboraAPP.prototype.show_revision_history = function () {
@@ -652,6 +740,15 @@ var collaboraAPP = /** @class */ (function (_super) {
         var select = et2_core_widget_1.et2_createWidget('vfs-select', attrs, this.et2);
         select.loadingFinished();
         select.click();
+    };
+    /**
+     * Insert (paste) some text into the document
+     */
+    collaboraAPP.prototype.insert_text = function (text, mimetype) {
+        if (mimetype === void 0) { mimetype = "text/plain;charset=utf-8"; }
+        console.log(text, mimetype);
+        this.WOPIPostMessage("Action_Paste", { Mimetype: mimetype, Data: text });
+        debugger;
     };
     /**
      * Share the current file (via mail)

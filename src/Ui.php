@@ -131,13 +131,24 @@ class Ui {
 				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
 			);
 			$changes['data']['nm']['actions']['share']['children']['share_mail']['children']['mail_collabora'] = array(
-				'caption' => lang('Writable collabora share'),
-				'icon' => 'api/link',
-				'hint' => lang('Link is appended to email allowing recipients to edit the file'),
-				'group' => 2,
-				'order' => 12,
-				'enabled' => 'javaScript:app.filemanager.isSharableFile',
+				'caption'   => lang('Writable collabora share'),
+				'icon'      => 'api/link',
+				'hint'      => lang('Link is appended to email allowing recipients to edit the file'),
+				'group'     => 2,
+				'order'     => 12,
+				'enabled'   => 'javaScript:app.filemanager.isSharableFile',
 				'onExecute' => 'javaScript:app.filemanager.mail',
+			);
+
+			$changes['data']['nm']['actions']['convert_to'] = array(
+				'caption'   => lang('Convert to'),
+				'group'     => 2,
+				'onExecute' => 'javaScript:app.filemanager.convert_to',
+				'enabled'   => 'javaScript:app.filemanager.isEditable',
+				'children'  => array(
+					'pdf' => array('caption' => 'PDF'),
+					'png' => array('caption' => 'PNG')
+				)
 			);
 		}
 

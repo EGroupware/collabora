@@ -11,6 +11,7 @@ checking for user 'anonymous'	collabora	de	Prüfung des Benutzer 'anonymous'
 collabora	common	de	Collabora Online
 collabora is not configured!	collabora	de	Collabora Online ist nicht konfiguriert!
 collabora server	collabora	de	Collabora Online-Server
+convert to	collabora	de	Umwandeln in
 create	collabora	de	Anlegen
 create new %1	filemanager	de	%1 neu anlegen
 document	filemanager	de	Textdokument
@@ -26,6 +27,8 @@ file	collabora	de	Datei
 file %1 has been created successfully.	collabora	de	Datei %1 wurde erfolgreich angelegt.
 file renamed	collabora	de	Datei umbenannt
 insert	collabora	de	Einfügen
+insert address	collabora	de	Adresse einfügen
+insert merged content	collabora	de	Zusammengeführten Inhalt einfügen
 latest revision	collabora	de	Aktuelle Version
 link is appended to email allowing recipients to edit the file	collabora	de	Der Link wird an die E-Mail angehängt, so dass die Empfänger die Datei bearbeiten können.
 local collabora server	collabora	de	Lokaler Collabora Online-Server

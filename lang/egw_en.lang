@@ -11,6 +11,7 @@ checking for user 'anonymous'	collabora	en	Checking for user 'anonymous'
 collabora	common	en	Collabora Online
 collabora is not configured!	collabora	en	Collabora Online is not configured!
 collabora server	collabora	en	Collabora Online server
+convert to	collabora	en	Convert to
 create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
 document	filemanager	en	Document
@@ -26,6 +27,8 @@ file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
 file renamed	collabora	en	File renamed
 insert	collabora	en	Insert
+insert address	collabora	en	Insert address
+insert merged content	collabora	en	Insert merged content
 latest revision	collabora	en	Latest revision
 link is appended to email allowing recipients to edit the file	collabora	en	Link is appended to email allowing recipients to edit the file
 local collabora server	collabora	en	Local Collabora Online server
