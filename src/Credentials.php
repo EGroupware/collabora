@@ -32,7 +32,7 @@ class Credentials extends Api\Mail\Credentials {
 	 * @param Array $share
 	 * @return int Credential ID
 	 */
-	public static function write($share)
+	public static function writeShare($share)
 	{
 		$cred_id = parent::write(
 				-$share['share_id'],
@@ -51,7 +51,7 @@ class Credentials extends Api\Mail\Credentials {
 	 * @param Array $share
 	 * @return int
 	 */
-	public static function read($share)
+	public static function readShare($share)
 	{
 		if (!$share['share_token'])
 		{
@@ -105,11 +105,11 @@ class Credentials extends Api\Mail\Credentials {
 	 * @param Array $share
 	 * @return int number of rows deleted
 	 */
-	public static function delete($share)
+	public static function deleteShare($share)
 	{
 		if(!$share['share_token'])
 		{
-			throw new \EGroupware\Api\Exception\WrongParameter("Missing share token");
+			throw new Api\Exception\WrongParameter("Missing share token");
 		}
 		$where = array(
 				'acc_id' => -$share['share_id'],
