@@ -141,10 +141,10 @@ class Wopi extends Sharing
 		// actually open the path with the anon user
 		if(static::path_needs_password($path))
 		{
-			$cred_id = Credentials::read($result);
+			$cred_id = Credentials::readShare($result);
 			if(!$cred_id)
 			{
-				$cred_id = Credentials::write($result);
+				$cred_id = Credentials::writeShare($result);
 			}
 
 			$result['share_token'] .= ':'.$cred_id;
@@ -530,7 +530,7 @@ class Wopi extends Sharing
 		}
 
 		// Delete credentials, if there
-		Credentials::delete($keys);
+		Credentials::deleteShare($keys);
 
 		return parent::delete($keys);
 	}
