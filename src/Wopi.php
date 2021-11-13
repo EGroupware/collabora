@@ -174,7 +174,7 @@ class Wopi extends Sharing
 				$GLOBALS['egw_info']['flags']['restored_from_session'] = true;
 
 				// restoring the egw_info-array
-				$GLOBALS['egw_info'] = array_merge($_SESSION[Api\Session::EGW_INFO_CACHE],array('flags' => $GLOBALS['egw_info']['flags']));
+				$GLOBALS['egw_info'] = array_merge((array)$_SESSION[Api\Session::EGW_INFO_CACHE], ['flags' => $GLOBALS['egw_info']['flags']]);
 			}
 			// we must NOT verify the IP of the user session against the IP of the Collabora server!
 			unset($GLOBALS['egw_info']['server']['sessions_checkip']);
