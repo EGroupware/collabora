@@ -22,8 +22,7 @@ use EGroupware\Api\Vfs;
 class Ui {
 
 	public $public_functions = array(
-		'editor' => TRUE,
-		'merge_edit' => TRUE
+		'editor' => TRUE
 	);
 
 	/**
