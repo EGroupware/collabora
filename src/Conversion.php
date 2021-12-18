@@ -9,7 +9,7 @@ use EGroupware\Api\Vfs;
 class Conversion
 {
 
-	const CONVERT_ENDPOINT = '/lool/convert-to/';
+	const CONVERT_ENDPOINT = '/convert-to/';
 
 	public $public_functions = array(
 		'ajax_convert' => true
@@ -53,7 +53,11 @@ class Conversion
 		$parts = explode('.', $filename);
 		array_pop($parts);
 		$destination = Vfs::make_unique($destination_path . '/' . implode('.', $parts) . '.' . $to_format);
-		$url = Bo::get_server() . self::CONVERT_ENDPOINT . $to_format;
+		$server = Bo::get_server();
+		$discovery = Bo::discover($server);
+		// Coolabora 21.11+ uses /cool instead of /lool
+		$cool = (strpos(current($discovery)['urlsrc'], '/loleaflet/') !== false ? '/lool' : '/cool');
+		$url = $server . $cool . self::CONVERT_ENDPOINT . $to_format;
 
 		/* Stream context options */
 		/* Not working

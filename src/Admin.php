@@ -66,6 +66,9 @@ class Admin
 			$discovery = Bo::discover($data['server']);
 			$data['server_status'] = $discovery ? lang('%1 supported document types', count($discovery)) : lang('unable to contact collabora server');
 			$data['server_status_class'] = $discovery && count($discovery) ? 'ok' : 'error';
+			// Coolabora 21.11+ uses /browser instead of /loleaflet
+			$data['admin_page'] = (strpos(current($discovery)['urlsrc'], '/loleaflet/') !== false ? '/loleaflet' : '/browser').
+				'/dist/admin/admin.html';
 		}
 		catch (\Exception $e)
 		{

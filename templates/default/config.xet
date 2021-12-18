@@ -55,7 +55,8 @@
 					<textbox rows="5" multiline="true" width="100%" id="newsettings[support_key]"/>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
-					<description value="Admin console" onclick="window.open('/loleaflet/dist/admin/admin.html', '_blank');" font_style="b"/>
+					<!-- hack to get value propagated: id="newsettings[admin_page]" -->
+					<description value="Admin console" onclick="window.open('{$cont['newsettings']['admin_page']}', '_blank');" font_style="b"/>
 					<description value="(requires username and password below)"/>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]">
