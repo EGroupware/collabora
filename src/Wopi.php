@@ -26,7 +26,7 @@ use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
 class Wopi extends Sharing
 {
 	// Debug flag
-	const DEBUG = false;
+	const DEBUG = true;
 
 	/**
 	 * Lifetime of WOPI shares: 1 day
@@ -374,7 +374,25 @@ class Wopi extends Sharing
 
 	public static function get_path_from_token()
 	{
-		return $GLOBALS['egw']->sharing[static::get_token()]->share['share_path'];
+		$token = static::get_token();
+		if(array_key_exists($token, $GLOBALS['egw']->sharing))
+		{
+			$share = $GLOBALS['egw']->sharing[static::get_token()]->share;
+		}
+		else
+		{
+			self::check_token(true, $share, $token);
+		}
+		$share_path = Vfs::file_exists($share['share_path']) || file_exists($share['share_path']) ? $share['share_path'] : $share['share_root'];
+		if(!$share_path)
+		{
+			$stat = Vfs::stat('/');
+			if($stat['url'] == $share['share_path'])
+			{
+				$share_path = $share['share_path'];
+			}
+		}
+		return $share_path;
 	}
 
 	/**
@@ -429,12 +447,19 @@ class Wopi extends Sharing
 	 *
 	 * @param Integer File ID, (0 if not found)
 	 */
-	public static function get_file_id($url)
+	public static function get_file_id($url, $share = false)
 	{
-		$path = Vfs::parse_url(Vfs::resolve_url( $url), PHP_URL_PATH);
+		$path = Vfs::parse_url(Vfs::resolve_url($url), PHP_URL_PATH);
 
 		$file_id = Api\Vfs::get_minimum_file_id($path);
 
+		// No fs_id?  Try looking up the file from the share
+		$token = $share['token'] ?: self::get_token($url) ?: Sharing::get_token($_SERVER['REQUEST_URI']);
+		if(!$file_id && $token && $share = ($share ?: $GLOBALS['egw']->sharing[$token]->share))
+		{
+			$stat = stat($share['resolve_url'] ?: $share['share_path'] ?: $share['path']);
+			$file_id = $stat ? $stat['ino'] : false;
+		}
 		// No fs_id?  Fall back to the earliest valid share ID
 		if (!$file_id)
 		{

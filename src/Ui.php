@@ -182,9 +182,9 @@ class Ui {
 		$token = Wopi::get_no_password_share($token);
 		$resolved_path = $token['root'] && !Vfs::is_dir($token['root']) ? $token['root'] : $path;
 		$content = array(
-			'url'	=> Bo::get_action_url($resolved_path),
-			'filename' => Vfs::basename($path),
-		) + $token;
+				'url'      => Bo::get_action_url($resolved_path, $token),
+				'filename' => Vfs::basename($path),
+			) + $token;
 
 		// No permissions or Vfs could not resolve a file mounted to root
 		/*if(!$content['url'] && $token['root'] == '/' && !is_dir($token['root']))
