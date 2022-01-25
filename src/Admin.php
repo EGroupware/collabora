@@ -63,11 +63,11 @@ class Admin
 		// Check server by trying discovery url and report supported
 		try
 		{
-			$discovery = Bo::discover($data['server']);
+			$discovery = Bo::discover($data['server']) ?: [];
 			$data['server_status'] = $discovery ? lang('%1 supported document types', count($discovery)) : lang('unable to contact collabora server');
 			$data['server_status_class'] = $discovery && count($discovery) ? 'ok' : 'error';
-			// Coolabora 21.11+ uses /browser instead of /loleaflet
-			$data['admin_page'] = (strpos(current($discovery)['urlsrc'], '/loleaflet/') !== false ? '/loleaflet' : '/browser').
+			// Collabora 21.11+ uses /browser instead of /loleaflet
+			$data['admin_page'] = (strpos(current($discovery)['urlsrc'] ?? '', '/loleaflet/') !== false ? '/loleaflet' : '/browser').
 				'/dist/admin/admin.html';
 		}
 		catch (\Exception $e)
@@ -101,7 +101,7 @@ class Admin
 			{
 				// try the managed server under EGroupware's own URL
 				try {
-					$discovery = Bo::discover($server);
+					$discovery = Bo::discover($server) ?: [];
 					if (count($discovery))
 					{
 						$data['server'] = $server;
@@ -157,6 +157,7 @@ class Admin
 				'host' => str_replace('.', '\\.', $server_parsed['host']),
 				'username' => $data['username'],
 				'password' => $data['password'],
+				'mode'     => 'default',    // required to switch via pref between classic and notebookbar
 			));
 		}
 		if($error)
