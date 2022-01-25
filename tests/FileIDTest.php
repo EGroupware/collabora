@@ -84,12 +84,52 @@ class FileIDTest extends WopiBase
 		$this->files[] = $dir = Vfs::get_home_dir().'/merged/';
 
 		// Create versioned directory
-		if(Vfs::is_dir($dir)) Vfs::remove($dir);
+		if(Vfs::is_dir($dir))
+		{
+			Vfs::remove($dir);
+		}
 		Vfs::mkdir($dir);
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 		$this->mountMerge($dir);
 
 		$this->checkDirectory($dir, Wopi::READONLY);
+	}
+
+	/**
+	 * Test that if we share a file (Writable Collabora Online link) that
+	 * the share and the original file both use the same file ID
+	 *
+	 * @return void
+	 */
+	public function testShareHasSameFileID()
+	{
+		// Create files
+		$this->files[] = $dir = Vfs::get_home_dir() . '/shared_dir/';
+
+		// Create versioned directory
+		if(Vfs::is_dir($dir))
+		{
+			Vfs::remove($dir);
+		}
+		Vfs::mkdir($dir);
+		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
+		$this->checkDirectory($dir, Wopi::WRITABLE);
+
+		// Test file
+		$test_path = $dir . 'test_file.txt';
+
+		// Get file ID
+		$original_file_id = Wopi::get_file_id($test_path);
+
+		// Create share & verify it
+		$mode = Wopi::WOPI_WRITABLE;
+		$extra = array();
+		$this->getShareExtra($test_path, $mode, $extra);
+		$this->shareLink($test_path, $mode, $extra);
+
+		// Check file ID
+		$share_file_id = Wopi::get_file_id($test_path);
+		$this->assertEquals($original_file_id, $share_file_id, "Share is using a different file ID from original");
 	}
 
 	/**
@@ -136,6 +176,7 @@ class FileIDTest extends WopiBase
 		$this->assertNotEquals(0, $file_id, 'No File ID for ' . $file);
 
 		// Check the other way, but $file is missing the Vfs prefix
-		$this->assertStringEndsWith($file, Wopi::get_path_from_id($file_id));
+		$resolved_file = Vfs::stat($file)['url'] ?: $file;
+		$this->assertStringContainsString(Wopi::get_path_from_id($file_id), $resolved_file);
 	}
 }

@@ -220,7 +220,7 @@ class Bo {
 	 *
 	 * @return String Action URL
 	 */
-	public static function get_action_url($path)
+	public static function get_action_url($path, $share = false)
 	{
 		$discovery = self::discover();
 		if(!$path || !Vfs::check_access($path, Vfs::READABLE))
@@ -229,7 +229,7 @@ class Bo {
 		}
 
 		$action = $discovery[Vfs::mime_content_type($path)];
-		$url = Api\Framework::getUrl(Egw::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($path)));
+		$url = Api\Framework::getUrl(Egw::link('/collabora/index.php/wopi/files/' . Wopi::get_file_id($path, $share)));
 
 		$url = $action['urlsrc'] . 'WOPISrc=' . urlencode($url);
 		$query = array(
