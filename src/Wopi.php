@@ -451,14 +451,15 @@ class Wopi extends Sharing
 	{
 		$path = Vfs::parse_url(Vfs::resolve_url($url), PHP_URL_PATH);
 
-		$file_id = Api\Vfs::get_minimum_file_id($path);
+		$file_id = Vfs::get_minimum_file_id($path);
 
 		// No fs_id?  Try looking up the file from the share
 		$token = $share['token'] ?: self::get_token($url) ?: Sharing::get_token($_SERVER['REQUEST_URI']);
 		if(!$file_id && $token && $share = ($share ?: $GLOBALS['egw']->sharing[$token]->share))
 		{
-			$stat = stat($share['resolve_url'] ?: $share['share_path'] ?: $share['path']);
-			$file_id = $stat ? $stat['ino'] : false;
+			$stat = stat($share['resolve_url'] ?: $share['share_path'] ?: $share['path']) ?:
+				stat($url);     // for writable Collabora shares
+			$file_id = $stat ? Vfs\Sqlfs\StreamWrapper::get_minimum_fs_id($stat['ino']) : false;
 		}
 		// No fs_id?  Fall back to the earliest valid share ID
 		if (!$file_id)
