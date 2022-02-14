@@ -26,7 +26,7 @@ use EGroupware\Api\Vfs\Sqlfs\StreamWrapper as Sql_Stream;
 class Wopi extends Sharing
 {
 	// Debug flag
-	const DEBUG = true;
+	const DEBUG = false;
 
 	/**
 	 * Lifetime of WOPI shares: 1 day
