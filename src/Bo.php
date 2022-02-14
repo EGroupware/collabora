@@ -241,7 +241,7 @@ class Bo {
 		}
 		if(!Vfs::is_writable($path))
 		{
-			$query['permission'] = 'view';
+			$query['permission'] = 'readonly';
 		}
 		$url .= '&' . http_build_query($query);
 
