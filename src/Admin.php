@@ -153,11 +153,11 @@ class Admin
 			$error = self::update_loolwsd_config(array(
 				'support_key' => $data['support_key'],
 				// we proxy and do ssl termination outside of container!
-				'termination' => $server_parsed['scheme'] === 'https' ? 'true' : 'false',
-				'host' => str_replace('.', '\\.', $server_parsed['host']),
-				'username' => $data['username'],
-				'password' => $data['password'],
-				'mode'     => 'default',    // required to switch via pref between classic and notebookbar
+				'ssl/termination' => $server_parsed['scheme'] === 'https' ? 'true' : 'false',
+				'storage/wopi/host' => str_replace('.', '\\.', $server_parsed['host']),
+				'admin_console/username' => $data['username'],
+				'admin_console/password' => $data['password'],
+				'user_interface/mode'     => 'default',    // required to switch via pref between classic and notebookbar
 			));
 		}
 		if($error)
@@ -182,24 +182,19 @@ class Admin
 			return lang('Can NOT read Collobora configuration in %1!', self::LOOLWSD_CONFIG);
 		}
 		$md5_before = md5($content);
-		foreach($data as $name => $value)
+		$config = new \SimpleXMLElement($content);
+		foreach($data as $xpath => $value)
 		{
-			$name_quoted = preg_quote($name, '|');
-			$value_escaped = htmlspecialchars($value, ENT_XML1);
-
-			$matches = null;
-			if (!preg_match("|<$name_quoted([^>]*)>(.*)</$name_quoted>|", $content, $matches))
+			$parts = explode('/', $xpath);
+			$name = array_pop($parts);
+			$object = $config;
+			foreach($parts as $part)
 			{
-				$content = preg_replace('|</config>|',
-					"    <$name>$value_escaped</$name>\n</config>", $content);
+				$object = $object->$part;
 			}
-			else
-			{
-				$value_regexp = $name !== 'host' ? ')>.*' : 'allow="true")>.+';
-				$content = preg_replace("|^((\s*<{$name_quoted}[^>]*$value_regexp</$name_quoted>\n)+|m",
-					"\\2>$value_escaped</$name>\n", $content);
-			}
+			$object->$name = $value;
 		}
+		$content = preg_replace('/^<\?xml.*\?>\n/', '', $config->asXML());
 		// do NOT update, if there is no change (as it caused Collabora to restart unnecessary)
 		if (md5($content) !== $md5_before && !file_put_contents(self::LOOLWSD_CONFIG, $content))
 		{
