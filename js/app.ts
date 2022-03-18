@@ -13,10 +13,10 @@
 
 import {filemanagerAPP} from "../../filemanager/js/filemanager";
 import {EgwApp} from "../../api/js/jsapi/egw_app";
-import {et2_dialog} from "../../api/js/etemplate/et2_widget_dialog";
 import {et2_createWidget} from "../../api/js/etemplate/et2_core_widget";
 import {egw_get_file_editor_prefered_mimes} from "../../api/js/jsapi/egw_global";
 import {et2_IInput} from "../../api/js/etemplate/et2_core_interfaces";
+import {Et2Dialog} from "../../api/js/etemplate/Et2Dialog/Et2Dialog";
 
 /**
  * UI for filemanager in collabora
@@ -297,39 +297,44 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 				ext_default = 'odg';
 				break;
 			case 'more':
-				for (let key in this.discovery)
+				for(let key in this.discovery)
 				{
-					if (this.discovery[key].name == 'edit' && exclusive_ext.filter(function(v){
+					if(this.discovery[key].name == 'edit' && exclusive_ext.filter(function(v)
+					{
 						return (self.discovery[key]['ext'] == v);
-					}).length == 0) extensions[this.discovery[key]['ext']] = '(.'+this.discovery[key]['ext']+') '+ key;
+					}).length == 0)
+					{
+						extensions[this.discovery[key]['ext']] = '(.' + this.discovery[key]['ext'] + ') ' + key;
+					}
 				}
 				break;
 		}
-		et2_createWidget("dialog",
+		let dialog = new Et2Dialog(this.egw);
+		dialog.transformAttributes({
+			callback: function(_button_id, _val)
 			{
-				callback: function(_button_id, _val)
+				if(_button_id == 'create' && _val && _val.name != '')
 				{
-					if (_button_id == 'create' && _val && _val.name != '')
-					{
-						self._request_createNew({
-							name: _val.name,
-							openasnew: _openasnew,
-							ext: _openasnew ? _openasnew.split('.').pop(): _val.extension,
-							dir: current_path
-						});
-					}
-				},
-				title: title,
-				buttons: [
-					{id:'create', text:egw.lang('Create'), image:'new', default: true},
-					{id:'cancel', text:egw.lang('Cancel'), image:'close'}
-				],
-				minWidth: 300,
-				minHeight: 200,
-				value:{content:{extension:ext_default, openasnew:_openasnew}, 'sel_options':{extension:extensions}},
-				template: egw.webserverUrl+'/collabora/templates/default/new.xet?1',
-				resizable: false
-			}, et2_dialog._create_parent('collabora'));
+					self._request_createNew({
+						name: _val.name,
+						openasnew: _openasnew,
+						ext: _openasnew ? _openasnew.split('.').pop() : _val.extension,
+						dir: current_path
+					});
+				}
+			},
+			title: title,
+			buttons: [
+				{id: 'create', label: egw.lang('Create'), image: 'new', default: true},
+				{id: 'cancel', label: egw.lang('Cancel'), image: 'close'}
+			],
+			minWidth: 300,
+			minHeight: 200,
+			value: {content: {extension: ext_default, openasnew: _openasnew}, 'sel_options': {extension: extensions}},
+			template: egw.webserverUrl + '/collabora/templates/default/new.xet?1',
+			resizable: false
+		});
+		document.body.appendChild(dialog);
 	}
 
 	/**
