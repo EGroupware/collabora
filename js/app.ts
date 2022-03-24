@@ -735,7 +735,7 @@ class collaboraAPP extends EgwApp
 		window.setTimeout(function() {
 			jQuery(vfs_select.getDOMNode()).on('change', function (){
 				let file_path = vfs_select.get_value();
-				let selectedMime = self.export_formats[vfs_select.dialog.options.value.content.mime];
+				let selectedMime = self.export_formats[vfs_select.dialog.value.mime];
 				// only add extension, if not already there
 				if(selectedMime && file_path.substr(-selectedMime.ext.length - 1) !== '.' + selectedMime.ext)
 				{
