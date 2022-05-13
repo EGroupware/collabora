@@ -376,7 +376,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	create_new(_action, _nm) {
 		let is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
 		let new_widget = this.et2.getWidgetById('new');
-		let type = (typeof new_widget._type != 'undefined' && _action['type'] != 'popup')? new_widget.get_value(): _action.id;
+		let type = (typeof new_widget != 'undefined' && _action['type'] != 'popup') ? new_widget.value : _action.id;
 		if (is_collabora)
 		{
 			let id = new_widget[0] && new_widget[0].id ? new_widget[0].id : null;
