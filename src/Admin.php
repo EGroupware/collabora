@@ -23,6 +23,7 @@ class Admin
 	/**
 	 * Collabora config managed by EGroupware
 	 */
+	const COOLWSD_CONFIG = '/var/lib/egroupware/default/loolwsd/coolwsd.xml';
 	const LOOLWSD_CONFIG = '/var/lib/egroupware/default/loolwsd/loolwsd.xml';
 
 	/**
@@ -168,7 +169,7 @@ class Admin
 	}
 
 	/**
-	 * Update config of managed Collbora at self::LOOLWSD_CONFIG
+	 * Update config of managed Collabora at self::(C|L)OOLWSD_CONFIG
 	 *
 	 * File is only updated, when there is a real change to avoid unnecessary reloads.
 	 *
@@ -177,28 +178,31 @@ class Admin
 	 */
 	protected static function update_loolwsd_config(array $data)
 	{
-		if (!($content = file_get_contents(self::LOOLWSD_CONFIG)))
+		foreach([self::COOLWSD_CONFIG, self::LOOLWSD_CONFIG] as $file)
 		{
-			return lang('Can NOT read Collobora configuration in %1!', self::LOOLWSD_CONFIG);
-		}
-		$md5_before = md5($content);
-		$config = new \SimpleXMLElement($content);
-		foreach($data as $xpath => $value)
-		{
-			$parts = explode('/', $xpath);
-			$name = array_pop($parts);
-			$object = $config;
-			foreach($parts as $part)
+			if (!($content = file_get_contents($file)))
 			{
-				$object = $object->$part;
+				return lang('Can NOT read Collobora configuration in %1!', $file);
 			}
-			$object->$name = $value;
-		}
-		$content = preg_replace('/^<\?xml.*\?>\n/', '', $config->asXML());
-		// do NOT update, if there is no change (as it caused Collabora to restart unnecessary)
-		if (md5($content) !== $md5_before && !file_put_contents(self::LOOLWSD_CONFIG, $content))
-		{
-			return lang('Failed to update Collabora configuration in %1!', self::LOOLWSD_CONFIG);
+			$md5_before = md5($content);
+			$config = new \SimpleXMLElement($content);
+			foreach($data as $xpath => $value)
+			{
+				$parts = explode('/', $xpath);
+				$name = array_pop($parts);
+				$object = $config;
+				foreach($parts as $part)
+				{
+					$object = $object->$part;
+				}
+				$object->$name = $value;
+			}
+			$content = preg_replace('/^<\?xml.*\?>\n/', '', $config->asXML());
+			// do NOT update, if there is no change (as it caused Collabora to restart unnecessary)
+			if (md5($content) !== $md5_before && !file_put_contents($file, $content))
+			{
+				return lang('Failed to update Collabora configuration in %1!', $file);
+			}
 		}
 	}
 
