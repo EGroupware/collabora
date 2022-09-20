@@ -17,8 +17,5 @@
             "name": "Nathan Gray",
             "email": "ng@egroupware.org"
         }
-    ],
-	"require": {
-		"egroupware/egroupware": "self.version"
-	}
+    ]
 }
