@@ -164,7 +164,7 @@ class Files
 	 */
 	public function check_file_info($path)
 	{
-		$origin = Api\Framework::getUrl($GLOBALS['egw_info']['server']['webserver_url']);
+		$origin = preg_replace('#(https://[^/]+).*$#', '$1', Api\Framework::getUrl($GLOBALS['egw_info']['server']['webserver_url']));
 		// Required response from http://wopi.readthedocs.io/projects/wopirest/en/latest/files/CheckFileInfo.html#checkfileinfo
 		$data = array(
 			// The string name of the file, including extension, without a path. Used for display in user interface (UI), and determining the extension of the file.
@@ -214,7 +214,7 @@ class Files
 			'DisableExport'     => false,
 			'DisableCopy'       => false,
 			'UserExtraInfo'		=> array(
-				'avatar'	=> $origin.'/api/avatar.php?account_id='.Vfs::$user
+				'avatar'	=> Api\Framework::getUrl(Api\Framework::link('/api/avatar.php?account_id='.Vfs::$user))
 			)
 		);
 
