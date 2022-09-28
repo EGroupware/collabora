@@ -375,7 +375,7 @@ class Wopi extends Sharing
 	public static function get_path_from_token()
 	{
 		$token = static::get_token();
-		if(array_key_exists($token, $GLOBALS['egw']->sharing))
+		if(isset($GLOBALS['egw']->sharing) && array_key_exists($token, $GLOBALS['egw']->sharing))
 		{
 			$share = $GLOBALS['egw']->sharing[static::get_token()]->share;
 		}
