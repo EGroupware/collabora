@@ -62,8 +62,8 @@ class Bo {
 		$discovery = array();
 
 		// if server is configured server AND we have a cached discovery --> use it
-		$cached = Cache::getInstance('collabora', 'discovery');
-		if ($server === self::get_server() && !is_null($cached))
+		$cached = Cache::getInstance('collabora', $location='discovery-'.parse_url($server, PHP_URL_HOST));
+		if (isset($cached))
 		{
 			return $cached;
 		}
@@ -142,12 +142,12 @@ class Bo {
 					}
 				}
 			}
-			Cache::setInstance('collabora', 'discovery', $discovery, self::DISCOVERY_CACHE_TIME);
+			Cache::setInstance('collabora', $location, $discovery, self::DISCOVERY_CACHE_TIME);
 			return $discovery;
 		}
 		catch (\Exception $e)
 		{
-			Cache::setInstance('collabora', 'discovery', false, self::DISCOVERY_CACHE_TIME);
+			Cache::setInstance('collabora', $location, false, self::DISCOVERY_CACHE_TIME);
 			throw $e;
 		}
 	}
@@ -160,6 +160,22 @@ class Bo {
 	public static function get_server()
 	{
 		$config = Config::read('collabora');
+
+		// check if EGroupware used a managed CO (on same host) but is called with a different name (eg. internal and external name differ)
+		if (!empty($config['server']) &&
+			($co_host = parse_url($config['server'], PHP_URL_HOST)) !== 'collabora.egroupware.org' &&
+			$co_host !== Api\Header\Http::host() &&
+			($manged_server = Admin::get_managed_server()))
+		{
+			try {
+				// verify the host by discovering it
+				self::discover($manged_server);
+				return $manged_server;
+			}
+			catch(\Exception $e) {
+				// use configured server as is
+			}
+		}
 		return $config['server'];
 	}
 

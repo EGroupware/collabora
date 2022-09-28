@@ -224,7 +224,7 @@ class Admin
 	public static function get_managed_server()
 	{
 		// disable local Collabora configuration, if not managed by EGroupware
-		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) || !file_exists(self::LOOLWSD_CONFIG))
+		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) && !file_exists(self::LOOLWSD_CONFIG))
 		{
 			return null;
 		}
