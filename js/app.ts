@@ -14,7 +14,7 @@
 import {filemanagerAPP} from "../../filemanager/js/filemanager";
 import {EgwApp} from "../../api/js/jsapi/egw_app";
 import {et2_createWidget} from "../../api/js/etemplate/et2_core_widget";
-import {egw_get_file_editor_prefered_mimes} from "../../api/js/jsapi/egw_global";
+import {egw} from "../../api/js/jsapi/egw_global";
 import {et2_IInput} from "../../api/js/etemplate/et2_core_interfaces";
 import {Et2Dialog} from "../../api/js/etemplate/Et2Dialog/Et2Dialog";
 
@@ -91,7 +91,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		let mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
-			let fe = egw_get_file_editor_prefered_mimes(mime);
+			let fe = egw.file_editor_prefered_mimes(mime);
 			if (fe && fe.mime && !fe.mime[mime])
 			{
 				return false;
@@ -123,7 +123,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		let mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
-			let fe = egw_get_file_editor_prefered_mimes();
+			let fe = egw.file_editor_prefered_mimes();
 			if (fe && fe.mime && !fe.mime[mime]) return false;
 			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
 		}
