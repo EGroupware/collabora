@@ -15,7 +15,10 @@ conversion failed	collabora	en	Conversion failed
 convert to	collabora	en	Convert to
 converted	collabora	en	Converted
 converting...	collabora	en	Converting...
+<<<<<<< Updated upstream
 conversion failed	collabora	en	Conversion failed
+=======
+>>>>>>> Stashed changes
 create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
 document	filemanager	en	Document
