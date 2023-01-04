@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2//EN" "http://www.egroupware.org/etemplate2.dtd">
-<!-- $Id$ -->
+<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2.0//EN" "https://www.egroupware.org/etemplate2.0.dtd">
 <overlay>
 	<template id="collabora.editor" template="" lang="" group="0" version="17.1">
-		<hbox>
-			<box class="editor_frame">
-				<vbox id="revisions">
-					<vbox class="revisions_header">
-						<hbox>
-							<label value="Revision History"/>
-							<button id="close_revisions" onclick="app.collabora.close_revision_history" image="close" align="right"/>
-						</hbox>
-						<description id="filename" value="@@filename"/>
-					</vbox>
+		<et2-hbox>
+			<et2-box  class="editor_frame">
+				<et2-vbox  id="revisions">
+					<et2-vbox  class="revisions_header">
+						<et2-hbox>
+							<et2-label  value="Revision History"></et2-label>
+							<et2-button-icon  id="close_revisions" onclick="app.collabora.close_revision_history" image="close" align="right"></et2-button-icon>
+						</et2-hbox>
+						<et2-description  id="filename" value="@@filename"></et2-description>
+					</et2-vbox>
 					<grid width="100%">
 						<columns>
 							<column width="20%"/>
@@ -21,19 +20,19 @@
 						</columns>
 						<rows>
 							<row>
-								<label/>
-								<label value="Latest revision"/>
-								<button id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"/>
+								<et2-label></et2-label>
+								<et2-label  value="Latest revision"></et2-label>
+								<et2-button-icon  id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"></et2-button-icon>
 							</row>
 							<row>
-								<box><vfs-mime id="$row" size="128"/></box>
-								<date-time readonly="true" id="${row}[mtime]"/>
-								<button id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"/>
+								<et2-box><et2-vfs-mime  id="$row"></et2-vfs-mime></et2-box>
+								<et2-date-time  readonly="true" id="${row}[mtime]"></et2-date-time>
+								<et2-button-icon  id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"></et2-button-icon>
 							</row>
 						</rows>
 					</grid>
-				</vbox>
-			</box>
-		</hbox>
+				</et2-vbox>
+			</et2-box>
+		</et2-hbox>
 	</template>
 </overlay>

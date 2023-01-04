@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2//EN" "http://www.egroupware.org/etemplate2.dtd">
-<!-- $Id$ -->
+<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2.0//EN" "https://www.egroupware.org/etemplate2.0.dtd">
 <overlay>
 	<template id="collabora.config" template="" lang="" group="0" version="17.1">
 		<grid width="100%" class="admin-config egwGridView_grid">
@@ -10,62 +9,61 @@
 			</columns>
 			<rows>
 				<row valign="middle" height="40">
-					<description value="Collabora server" label="%s:"/>
-					<hbox>
-						<url id="newsettings[server]" width="300px" readonly="true" disabled="@epl"/>
-						<url id="newsettings[server]" width="300px" disabled="!@epl"/>
-						<description id="newsettings[server_status]" label="Status:" disabled="!@newsettings[server_status]" class="@newsettings[server_status_class]"/>
+					<et2-description  value="Collabora server" label="%s:"></et2-description>
+					<et2-hbox>
+						<et2-url  id="newsettings[server]" width="300px" readonly="true" disabled="@epl"></et2-url>
+						<et2-url  id="newsettings[server]" width="300px" disabled="!@epl"></et2-url>
+						<et2-description  id="newsettings[server_status]" label="Status:" disabled="!@newsettings[server_status]" class="@newsettings[server_status_class]"></et2-description>
 						<!-- hack to get class propagated: id="newsettings[server_status_class]" -->
-					</hbox>
+					</et2-hbox>
 				</row>
 				<row disabled="@epl">
-					<description value="EGroupware EPL is required to configure a custom Collabora server." span="all" href="https://www.egroupware.org/EPL" extra_link_target="_blank"/>
+					<et2-description  value="EGroupware EPL is required to configure a custom Collabora server." span="all" href="https://www.egroupware.org/EPL" extraLinkTarget="_blank"></et2-description>
 				</row>
 				<row>
-					<description value="Requirements / please note" span="all" class="subHeader"/>
+					<et2-description  value="Requirements / please note" span="all" class="subHeader"></et2-description>
 				</row>
 				<row height="30" valign="bottom">
-					<description value="The Collabora server must be able to access your EGroupware installation!" span="all"/>
+					<et2-description  value="The Collabora server must be able to access your EGroupware installation!" span="all"></et2-description>
 				</row>
 				<row>
-					<description value="A local installation not accessible from the internet will NOT work with a public Collabora server." span="all"/>
+					<et2-description  value="A local installation not accessible from the internet will NOT work with a public Collabora server." span="all"></et2-description>
 				</row>
 				<row height="30" valign="bottom">
-					<description value="Checking for user 'anonymous'" label="%s:"/>
-					<description id="newsettings[anonymous_status]" class="@newsettings[anonymous_status_class]"/>
+					<et2-description  value="Checking for user 'anonymous'" label="%s:"></et2-description>
+					<et2-description  id="newsettings[anonymous_status]" class="@newsettings[anonymous_status_class]"></et2-description>
 					<!-- hack to get class propagated: id="newsettings[anonymous_status_class]" -->
 				</row>
 				<row>
-					<description span="2" value="An user 'anonymous' is required for Collabora to access files and also for sharing files."/>
+					<et2-description  span="2" value="An user 'anonymous' is required for Collabora to access files and also for sharing files."></et2-description>
 				</row>
 				<row height="30" valign="bottom">
-					<description value="Local Collabora server" span="all" class="subHeader"/>
+					<et2-description  value="Local Collabora server" span="all" class="subHeader"></et2-description>
 				</row>
 				<row height="60">
-					<vbox>
-						<description value="A local Collabora server can be installed with the 'egroupware-collabora-key' package."/>
-						<description value="You need a support-key from the EGroupware GmbH shop, for a supported Collabora installation."
-							href="https://www.egroupware.org/collabora-office/#order" extra_link_target="_blank"/>
-						<description value="A supported Collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default." colspan="2"/>
-					</vbox>
+					<et2-vbox>
+						<et2-description  value="A local Collabora server can be installed with the 'egroupware-collabora-key' package."></et2-description>
+						<et2-description  value="You need a support-key from the EGroupware GmbH shop, for a supported Collabora installation." href="https://www.egroupware.org/collabora-office/#order" extraLinkTarget="_blank"></et2-description>
+						<et2-description  value="A supported Collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default." colspan="2"></et2-description>
+					</et2-vbox>
 				</row>
 				<!-- hack to get class propagated: id="newsettings[no_managed_collabora]" -->
 				<row disabled="@newsettings[no_managed_collabora]">
-					<description value="Support-key"/>
-					<textbox rows="5" multiline="true" width="100%" id="newsettings[support_key]"/>
+					<et2-description  value="Support-key"></et2-description>
+					<et2-textarea  rows="5" width="100%" id="newsettings[support_key]"></et2-textarea>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
 					<!-- hack to get value propagated: id="newsettings[admin_page]" -->
-					<description value="Admin console" onclick="window.open('{$cont['newsettings']['admin_page']}', '_blank');" font_style="b"/>
-					<description value="(requires username and password below)"/>
+					<et2-description  value="Admin console" onclick="window.open('{$cont['newsettings']['admin_page']}', '_blank');" fontStyle="b"></et2-description>
+					<et2-description  value="(requires username and password below)"></et2-description>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]">
-					<description value="Username"/>
-					<textbox id="newsettings[username]"/>
+					<et2-description  value="Username"></et2-description>
+					<et2-textbox  id="newsettings[username]"></et2-textbox>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]">
-					<description value="Password"/>
-					<textbox type="passwd" id="newsettings[password]"/>
+					<et2-description  value="Password"></et2-description>
+					<et2-password  id="newsettings[password]"></et2-password>
 				</row>
 			</rows>
 		</grid>
