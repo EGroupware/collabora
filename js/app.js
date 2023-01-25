@@ -521,6 +521,10 @@ var collaboraAPP = /** @class */ (function (_super) {
                 var fe = egw.link_get_registry('filemanager-editor');
                 var discovery = (fe && fe["mime"]) ? fe["mime"] : [];
                 if (message.Values) {
+                    if (!message.Values.find(function (t) { return t.Format == "pdf"; })) {
+                        // Collabora doesn't admit to PDF, force it in anyway
+                        message.Values.push({ Label: 'PDF', Format: 'pdf' });
+                    }
                     for (var i in message.Values) {
                         for (var j in discovery) {
                             if (discovery[j]['ext'] == message.Values[i]['Format']) {
