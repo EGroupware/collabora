@@ -602,7 +602,12 @@ class collaboraAPP extends EgwApp
 				let discovery = (fe && fe["mime"]) ? fe["mime"]: [];
 				if (message.Values)
 				{
-					for (let i in message.Values)
+					if(!message.Values.find(t => t.Format == "pdf"))
+					{
+						// Collabora doesn't admit to PDF, force it in anyway
+						message.Values.push({Label: 'PDF', Format: 'pdf'});
+					}
+					for(let i in message.Values)
 					{
 						for(let j in discovery)
 						{
