@@ -1,0 +1,53 @@
+%1 supported document types	collabora	km	%1 ប្រភេទឯកសារដែលគាំទ្រ
+(requires username and password below)	collabora	km	(ទាមទារឈ្មោះអ្នកប្រើប្រាស់ និងពាក្យសម្ងាត់ខាងក្រោម)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	km	ម៉ាស៊ីនមេ Collabora Online ក្នុងស្រុកអាចត្រូវបានដំឡើងជាមួយកញ្ចប់ 'egroupware-collabora-key' ។
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	km	ការដំឡើងក្នុងតំបន់មិនអាចចូលប្រើបានពីអ៊ីនធឺណិតនឹងមិនដំណើរការជាមួយម៉ាស៊ីនមេ Collabora Online សាធារណៈទេ។
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	km	Collabora Online ដែលគាំទ្រអនុញ្ញាតឱ្យប្រើវាជាមួយនឹងចំនួនអ្នកប្រើប្រាស់ដែលបានបញ្ជាទិញ - ច្រើនជាងកំណែសាកល្បង ឬអ្នកអភិវឌ្ឍន៍ ដែលដំឡើងតាមលំនាំដើម។
+active user 'anonymous' found.	collabora	km	អ្នកប្រើប្រាស់សកម្ម 'អនាមិក' បានរកឃើញ។
+admin console	collabora	km	កុងសូលអ្នកគ្រប់គ្រង
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	km	អ្នកប្រើប្រាស់ 'អនាមិក' ត្រូវបានទាមទារសម្រាប់ Collabora Online ដើម្បីចូលប្រើឯកសារ និងសម្រាប់ការចែករំលែកឯកសារផងដែរ។
+can not read collobora configuration in %1!	collabora	km	មិនអាចអានការកំណត់រចនាសម្ព័ន្ធ Collabora Online ក្នុង %1 បានទេ!
+checking for user 'anonymous'	collabora	km	កំពុងពិនិត្យមើលអ្នកប្រើប្រាស់ 'អនាមិក'
+collabora	common	km	សហការតាមអុីនធឺណិត
+collabora is not configured!	collabora	km	Collabora Online មិនត្រូវបានកំណត់ទេ!
+collabora server	collabora	km	Collabora Online server
+conversion failed	collabora	km	ការបម្លែងបានបរាជ័យ
+convert to	collabora	km	បម្លែងទៅជា
+converted	collabora	km	បម្លែង
+converting...	collabora	km	កំពុងបម្លែង...
+create	collabora	km	បង្កើត
+create new %1	filemanager	km	បង្កើត%1ថ្មី។
+document	filemanager	km	ឯកសារ
+drawing	filemanager	km	គំនូរ
+edit %1 in collabora	collabora	km	កែសម្រួល %1 ក្នុងសហការ
+editable share link	collabora	km	តំណចែករំលែកដែលអាចកែសម្រួលបាន
+egroupware epl is required to configure a custom collabora server.	collabora	km	EGroupware EPL ត្រូវបានទាមទារដើម្បីកំណត់រចនាសម្ព័ន្ធម៉ាស៊ីនមេ Collabora Online ផ្ទាល់ខ្លួន។
+failed to create file %1!	collabora	km	បរាជ័យ​ក្នុង​ការ​បង្កើត​ឯកសារ %1!
+failed to create file %1: file already exists!	collabora	km	បរាជ័យ​ក្នុង​ការ​បង្កើត​ឯកសារ %1៖ ឯកសារ​មាន​រួច​ហើយ!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	km	បរាជ័យក្នុងការបង្កើតឯកសារ! ព្រោះ​អ្នក​មិន​មាន​សិទ្ធិ​គ្រប់គ្រាន់​ទៅ​កាន់​ថត% 1!
+failed to update collabora configuration in %1!	collabora	km	បានបរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពការកំណត់រចនាសម្ព័ន្ធ Collabora Online នៅក្នុង% 1!
+file	collabora	km	ឯកសារ
+file %1 has been created successfully.	collabora	km	ឯកសារ %1 ត្រូវបានបង្កើតដោយជោគជ័យ។
+file renamed	collabora	km	បានប្តូរឈ្មោះឯកសារ
+insert	collabora	km	បញ្ចូល
+insert address	collabora	km	បញ្ចូលអាសយដ្ឋាន
+insert merged content	collabora	km	បញ្ចូលមាតិកាដែលបានបញ្ចូលគ្នា
+latest revision	collabora	km	ការកែប្រែចុងក្រោយ
+link is appended to email allowing recipients to edit the file	collabora	km	តំណត្រូវបានបន្ថែមទៅអ៊ីមែលដែលអនុញ្ញាតឱ្យអ្នកទទួលកែសម្រួលឯកសារ
+local collabora server	collabora	km	ម៉ាស៊ីនមេ Collabora Online ក្នុងតំបន់
+no active user 'anonymous' found!	collabora	km	រកមិនឃើញអ្នកប្រើប្រាស់សកម្ម 'អនាមិក' ទេ!
+open as new	filemanager	km	បើកដូចថ្មី។
+please enter your file name	filemanager	km	សូមបញ្ចូលឈ្មោះឯកសាររបស់អ្នក
+presentation	filemanager	km	បទ​បង្ហាញ
+requirements / please note	collabora	km	តម្រូវការ / សូមចំណាំ
+revision history	collabora	km	ពិនិត្យ​ឡើង​វិញ​ប្រវត្តិសាស្ត្រ
+save as mail	collabora	km	ផ្ញើជាអ៊ីមែល
+spreadsheet	filemanager	km	សៀវភៅបញ្ជី
+support-key	collabora	km	គន្លឹះជំនួយ
+the collabora server must be able to access your egroupware installation!	collabora	km	ម៉ាស៊ីនមេ Collabora Online ត្រូវតែអាចចូលប្រើការដំឡើង EGroupware របស់អ្នកបាន!
+unable to connect	collabora	km	មិនអាច​ភ្ជាប់​បាន
+unable to contact collabora server	collabora	km	មិនអាចទាក់ទងម៉ាស៊ីនមេ Collabora Online បានទេ
+versions	collabora	km	កំណែ
+writable collabora link	collabora	km	តំណភ្ជាប់ដែលអាចសរសេរបាន Collabora Online
+writable collabora share	collabora	km	Writable Collabora Online បានចែករំលែក ការប្រកាស របស់ Writable Collabora Online
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	km	អ្នកត្រូវការគន្លឹះជំនួយពីហាង EGroupware GmbH សម្រាប់ការដំឡើង Collabora Online ដែលគាំទ្រ។
