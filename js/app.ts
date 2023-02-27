@@ -532,6 +532,9 @@ class collaboraAPP extends EgwApp
 	 */
 	_handle_messages(e)
 	{
+		// don't procced further for none json encoded responses
+		if (typeof e.data !='string') return;
+
 		let message = JSON.parse(e.data);
 
 		switch (message.MessageId)
