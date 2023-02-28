@@ -11,9 +11,14 @@ checking for user 'anonymous'	collabora	fr	Vérification de l'utilisateur 'Anony
 collabora	common	fr	Collabora Online
 collabora is not configured!	collabora	fr	Collabora Online n'est pas configuré !
 collabora server	collabora	fr	Serveur Collabora Online
+conversion failed	collabora	fr	Conversion échouée
+convert to	collabora	fr	Convertir en
+converted	collabora	fr	Converti en
+converting...	collabora	fr	Convertir...
 create	collabora	fr	Créer
 create new %1	filemanager	fr	Créer un nouveau %1
 document	filemanager	fr	Document
+drawing	filemanager	fr	Dessin
 edit %1 in collabora	collabora	fr	Modifier %1 dans Collabora
 editable share link	collabora	fr	Lien de dossier en lecture-écriture
 egroupware epl is required to configure a custom collabora server.	collabora	fr	EGroupware EPL est nécessaire pour configurer un serveur Collabora Online personnalisé
@@ -23,7 +28,10 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	fr	Echec de la mise à jour de la configuration de Collabora Online pour %1 !
 file	collabora	fr	fichier
 file %1 has been created successfully.	collabora	fr	Le fichier %1 a été créé avec succès.
+file renamed	collabora	fr	Fichier renommé
 insert	collabora	fr	Insérer
+insert address	collabora	fr	Insérer une adresse
+insert merged content	collabora	fr	Insérer un contenu fusionné
 latest revision	collabora	fr	Dernière révision
 link is appended to email allowing recipients to edit the file	collabora	fr	Le lien est ajouté à la fin, permettant aux destinataire de modifier le fichier
 local collabora server	collabora	fr	Serveur Collabora Online local
@@ -35,7 +43,6 @@ requirements / please note	collabora	fr	Prérequis / veuillez noter
 revision history	collabora	fr	Historique des révision
 save as mail	collabora	fr	Envoyer comme email
 spreadsheet	filemanager	fr	Feuille de calcul
-status:	collabora	fr	Statut :
 support-key	collabora	fr	Support-key
 the collabora server must be able to access your egroupware installation!	collabora	fr	The serveur Collabora Online doit pouvoir accéder à votre installation EGroupware !
 unable to connect	collabora	fr	Connexion échouée

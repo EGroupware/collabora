@@ -3,17 +3,26 @@
 collabora	common	es-es	Collabora Online
 collabora is not configured!	collabora	es-es	¡Collabora Online no está configurado!
 collabora server	collabora	es-es	Servidor de Collabora Online
+conversion failed	collabora	es-es	Conversión fallida
+convert to	collabora	es-es	Convertir a
+converted	collabora	es-es	Convertido
+converting...	collabora	es-es	Convirtiendo...
 create	collabora	es-es	Crear
 create new %1	filemanager	es-es	Crear nuevo %1
 document	filemanager	es-es	Documento
+drawing	filemanager	es-es	Dibujo
 edit %1 in collabora	collabora	es-es	Editar %1 en Collabora
 failed to create file %1!	collabora	es-es	¡Error al crear el archivo %1!
 failed to create file %1: file already exists!	collabora	es-es	¡Error al crear el archivo %1: el archivo ya existe!
 file	collabora	es-es	archivo
+file renamed	collabora	es-es	Archivo renombrado
 insert	collabora	es-es	Insertar
+insert address	collabora	es-es	Insertar dirección
+insert merged content	collabora	es-es	Insertar contenido fusionado
 latest revision	collabora	es-es	Última revisión
 open as new	filemanager	es-es	Abrir como nuevo
 presentation	filemanager	es-es	Presentación
+revision history	collabora	es-es	Historial de revisiones
 save as mail	collabora	es-es	Enviar como correo-e
 spreadsheet	filemanager	es-es	Hoja de cálculo
 versions	collabora	es-es	Versiones

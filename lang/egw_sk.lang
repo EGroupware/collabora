@@ -11,9 +11,15 @@ checking for user 'anonymous'	collabora	sk	Kontrolujem používateľa 'anonymous
 collabora	common	sk	Collabora
 collabora is not configured!	collabora	sk	Collabora nie je nastavená!
 collabora server	collabora	sk	Server Collabora
+conversion failed	collabora	sk	Konverzia zlyhala
+convert to	collabora	sk	Konvertovať na
+converted	collabora	sk	Konvertované
+converting...	collabora	sk	Konverzia...
 create	collabora	sk	Vytvoriť
 create new %1	filemanager	sk	Vytvoriť nový %1
 document	filemanager	sk	Dokument
+drawing	filemanager	sk	Kreslenie
+edit %1 in collabora	collabora	sk	Upraviť %1 v Collabora Online
 editable share link	collabora	sk	Upraviteľný zdieľaný odkaz
 egroupware epl is required to configure a custom collabora server.	collabora	sk	Pre vlastný Collabora server sa vyžaduje licencia EGroupware EPL
 failed to create file %1!	collabora	sk	Nepodarilo sa vytvoriť súbor %1!
@@ -22,6 +28,11 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	sk	Nepodarilo sa aktualizovať konfiguráciu Collabora v %1!
 file	collabora	sk	súbor
 file %1 has been created successfully.	collabora	sk	Súbor %1 bol úspešne vytvorený.
+file renamed	collabora	sk	Súbor sa premenoval
+insert	collabora	sk	Vložiť
+insert address	collabora	sk	Vložiť adresu
+insert merged content	collabora	sk	Vložiť zlúčený obsah
+latest revision	collabora	sk	Posledná revízia
 link is appended to email allowing recipients to edit the file	collabora	sk	K e-mailu sa pripojí odkaz, ktorý umožňuje adresátom upravovať daný súbor.
 local collabora server	collabora	sk	Lokálny server Collabora
 no active user 'anonymous' found!	collabora	sk	Nenašiel sa aktívny používateľ 'anonymous'!
@@ -29,6 +40,7 @@ open as new	filemanager	sk	Otvoriť ako nové
 please enter your file name	filemanager	sk	Prosím zadajte názov súboru
 presentation	filemanager	sk	Prezentácia
 requirements / please note	collabora	sk	Požiadavky / Upozornenia
+revision history	collabora	sk	História revízií
 save as mail	collabora	sk	Uložiť ako správu
 spreadsheet	filemanager	sk	Tabuľka
 support-key	collabora	sk	Kľúč podpory

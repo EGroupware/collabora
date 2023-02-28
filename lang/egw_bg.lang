@@ -11,9 +11,14 @@ checking for user 'anonymous'	collabora	bg	Проверка за "Анониме
 collabora	common	bg	Collabora Online
 collabora is not configured!	collabora	bg	Collabora Online не е конфигуриранa!
 collabora server	collabora	bg	Collabora Online сървър
+conversion failed	collabora	bg	Преобразуването е неуспешно
+convert to	collabora	bg	Конвертиране в
+converted	collabora	bg	Конвертиран
+converting...	collabora	bg	Конвертиране...
 create	collabora	bg	Създай
 create new %1	filemanager	bg	Създай нов(а) %1
 document	filemanager	bg	Документ
+drawing	filemanager	bg	Рисуване
 edit %1 in collabora	collabora	bg	Редактиране на % 1 в "Collabora"
 editable share link	collabora	bg	Редактираща споделена връзка
 egroupware epl is required to configure a custom collabora server.	collabora	bg	EGroupware EPL е необходим за конфигуриране на персонализиран Collabora Online сървър.
@@ -23,7 +28,10 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	bg	Неуспешна актуализация на "Collabora Online" конфигурацията в % 1!
 file	collabora	bg	Файл
 file %1 has been created successfully.	collabora	bg	Файл %1 е създаден успешно.
+file renamed	collabora	bg	Преименуване на файла
 insert	collabora	bg	Вмъкни
+insert address	collabora	bg	Вмъкване на адрес
+insert merged content	collabora	bg	Вмъкване на обединено съдържание
 latest revision	collabora	bg	Последна редакция
 link is appended to email allowing recipients to edit the file	collabora	bg	Връзката е добавена към имейла, което позволява на получателите да редактират файла.
 local collabora server	collabora	bg	Локален сървър Collabora Online

@@ -1,42 +1,52 @@
 %1 supported document types	collabora	it	%1 tipi di documenti supportati
 (requires username and password below)	collabora	it	(richiede nome utente e password qui sotto)
 a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	it	Un server locale Collabora Online, può essere installato con il pacchetto 'egroupware-collabora-key'
-a local installation not accessible from the internet will not work with a public collabora server.	collabora	it	Una installazione locale non accessibile via internet NON funzionerà con un server pubblico Collabora.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	it	Una installazione locale non accessibile via internet NON funzionerà con un server pubblico Collabora Online.
 a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	it	Una installazione Collabora Online con supporto, ne permette l'uso con il numero di utenti ordinato - maggiore di quello della demo oppure della versione per sviluppatori, installata di default
 active user 'anonymous' found.	collabora	it	Trovato utente "anonimo" attivo
 admin console	collabora	it	Console amministratore
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	it	Un utente "anonimo" è richiesto da parte di Collabora per accedere e condividere file
-can not read collobora configuration in %1!	collabora	it	Cobfigurazione Collabora non leggibile in %1!
+can not read collobora configuration in %1!	collabora	it	Cobfigurazione Collabora Online non leggibile in %1!
 checking for user 'anonymous'	collabora	it	Controllo l'esistenza di un utente "anonimo"
-collabora	common	it	Collabora
-collabora is not configured!	collabora	it	Collabora non è configurato!
-collabora server	collabora	it	Server Collabora
+collabora	common	it	Collabora Online
+collabora is not configured!	collabora	it	Collabora Online non è configurato!
+collabora server	collabora	it	Server Collabora Online
+conversion failed	collabora	it	Conversione fallita
+convert to	collabora	it	Convertire in
+converted	collabora	it	Convertito
+converting...	collabora	it	Conversione...
 create	collabora	it	Crea
 create new %1	filemanager	it	Crea nuovo %1
 document	filemanager	it	Documento
-edit %1 in collabora	collabora	it	Modifica %1 in Collabora
+drawing	filemanager	it	Disegno
+edit %1 in collabora	collabora	it	Modifica %1 in Collabora Online
 editable share link	collabora	it	Collegamento a condivisione modificabile
-egroupware epl is required to configure a custom collabora server.	collabora	it	È richiesto EGroupware EPL per configurare un server Collabora personalizzato
+egroupware epl is required to configure a custom collabora server.	collabora	it	È richiesto EGroupware EPL per configurare un server Collabora Online personalizzato
 failed to create file %1!	collabora	it	Creazione del file %1 fallita!
 failed to create file %1: file already exists!	collabora	it	Creazione del file %1 fallita! Il file estiste già!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	it	Creazione del file fallita per mancanza di permessi di accesso sufficienti alla cartella %1!
-failed to update collabora configuration in %1!	collabora	it	Aggiornamento della configurazione di Collabora fallita in %1!
+failed to update collabora configuration in %1!	collabora	it	Aggiornamento della configurazione di Collabora Online fallita in %1!
 file	collabora	it	file
 file %1 has been created successfully.	collabora	it	Il file %1 è stato creato con successo
+file renamed	collabora	it	File rinominato
 insert	collabora	it	Inserisci
+insert address	collabora	it	Inserisci indirizzo
+insert merged content	collabora	it	Inserisci contenuto unito
+latest revision	collabora	it	Ultima revisione
 link is appended to email allowing recipients to edit the file	collabora	it	Il link è aggiunto alla fine della mail permettendo ai destinatari di modificare il file
-local collabora server	collabora	it	Server Collabora locale
+local collabora server	collabora	it	Server Collabora Online locale
 no active user 'anonymous' found!	collabora	it	Non è stato trovato un utente "anonimo"!
 open as new	filemanager	it	Apri come nuovo
 please enter your file name	filemanager	it	Per favore inserisci il nome del tuo file
 presentation	filemanager	it	Presentazione
 requirements / please note	collabora	it	Requisiti/per favore prendere nota
+revision history	collabora	it	Cronologia delle revisioni
 save as mail	collabora	it	Invia come email
 spreadsheet	filemanager	it	Foglio di calcolo
 support-key	collabora	it	Chiave di supporto
 the collabora server must be able to access your egroupware installation!	collabora	it	Il server collabora deve poter accedere alla tua installazione EGroupware!
 unable to connect	collabora	it	Impossibile connettersi
-unable to contact collabora server	collabora	it	Impossibile contattare il server Collabora
+unable to contact collabora server	collabora	it	Impossibile contattare il server Collabora Online
 versions	collabora	it	Versioni
 writable collabora link	collabora	it	Collegamento con accesso in scrittura Collabora Online
 writable collabora share	collabora	it	Condivisione con accesso in scrittura Collabora Online
