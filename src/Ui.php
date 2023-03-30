@@ -118,16 +118,16 @@ class Ui {
 						'enabled' => 'javaScript:app.filemanager.isEditable',
 						'onExecute' => 'javaScript:app.filemanager.create_new',
 				));
-		if($GLOBALS['egw_info']['apps']['stylite'])
+		if($GLOBALS['egw_info']['user']['apps']['stylite'])
 		{
 			$changes['data']['nm']['actions']['share']['children']['shareCollaboraLink'] = array(
-				'caption' => lang('Writable Collabora link'),
-				'group' => 1,
-				'icon' => 'view',
-				'enabled' => 'javaScript:app.filemanager.isSharableFile',
+				'caption'        => lang('Writable Collabora link'),
+				'group'          => 1,
+				'icon'           => 'view',
+				'enabled'        => 'javaScript:app.filemanager.isSharableFile',
 				'hideOnDisabled' => true,
-				'order' => 12,
-				'onExecute' => 'javaScript:app.filemanager.share_collabora_link'
+				'order'          => 12,
+				'onExecute'      => 'javaScript:app.filemanager.share_collabora_link'
 			);
 			$changes['data']['nm']['actions']['share']['children']['share_mail']['children']['mail_collabora'] = array(
 				'caption'   => lang('Writable collabora share'),
