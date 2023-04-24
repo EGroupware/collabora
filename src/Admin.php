@@ -152,7 +152,7 @@ class Admin
 		{
 			$server_parsed = parse_url($data['server']);
 			$error = self::update_loolwsd_config(array(
-				'support_key' => $data['support_key'],
+				'support_key' => trim($data['support_key']),
 				// we proxy and do ssl termination outside of container!
 				'ssl/termination' => $server_parsed['scheme'] === 'https' ? 'true' : 'false',
 				'storage/wopi/host' => str_replace('.', '\\.', $server_parsed['host']),
