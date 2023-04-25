@@ -895,5 +895,36 @@ class collaboraAPP extends EgwApp
 			app.filemanager._mail_link_callback, this, true, this).sendRequest();
 		return true;
 	}
+
+	/**
+	 * Uploading a support key file (insted of opening and pasting it into the field)
+	 *
+	 * @param ev
+	 */
+	supportKeyUpload(ev)
+	{
+		const parent = ev.target.parentNode;
+		const file = document.createElement('input');
+		file.type = 'file';
+		file.accept = '.key';
+		file.style.display = 'none';
+		parent.appendChild(file);
+		file.addEventListener('change', (e) =>
+		{
+			if (file.files.length)
+			{
+				const reader = new FileReader();
+				reader.onload = (evt) =>
+				{
+					parent.getRoot().setValueById('newsettings[support_key]', evt.target.result);
+					parent.removeChild(file);
+				}
+				reader.readAsText(file.files[0]);
+			}
+		});
+		file.click();
+		return false;
+	}
+
 }
 app.classes.collabora = collaboraAPP;

@@ -49,7 +49,10 @@
 				</row>
 				<!-- hack to get class propagated: id="newsettings[no_managed_collabora]" -->
 				<row disabled="@newsettings[no_managed_collabora]">
-					<et2-description  value="Support-key"></et2-description>
+					<et2-vbox>
+						<et2-description  value="Support-key"></et2-description>
+						<et2-button noSubmit="true" image="attach" label="Choose file..." onclick="app.collabora.supportKeyUpload"></et2-button>
+					</et2-vbox>
 					<et2-textarea  rows="5" width="100%" id="newsettings[support_key]"></et2-textarea>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
