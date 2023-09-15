@@ -673,8 +673,11 @@ class Files
 		// remove evtl. set autosave TS, to force a new version
 		Vfs::proppatch($path, array(array('ns' => Vfs::DEFAULT_PROP_NAMESPACE, 'name' => self::PROP_AUTOSAVE_TS, 'val' => null)));
 
+		// This creates a new share for the new file.  Need to create it before Wopi::get_file_id(), or it doesn't always find the ID (SMB)
+		$share = \EGroupware\Collabora\Bo::get_token($target);
+
 		$url = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/files/'.Wopi::get_file_id($target))).
-			'?access_token='. \EGroupware\Collabora\Bo::get_token($target)['token'];
+			'?access_token=' . $share['token'];
 		$response = array('Name' => Vfs::basename($target), 'Url' => $url);
 
 		if(Wopi::DEBUG)
