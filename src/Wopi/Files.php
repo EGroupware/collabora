@@ -188,9 +188,9 @@ class Files
 			// Messaging
 			'PostMessageOrigin' => $origin,
 
-			// Support locking
-			'SupportsGetLock'   => true,
-			'SupportsLocks'     => true,
+			// Support locking - Collabora does not
+			//'SupportsGetLock'   => true,
+			//'SupportsLocks'     => true,
 
 			// Support Save As
 			'SupportsUpdate'    => true,
