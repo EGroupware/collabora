@@ -17,6 +17,7 @@ import {et2_createWidget} from "../../api/js/etemplate/et2_core_widget";
 import {egw} from "../../api/js/jsapi/egw_global";
 import {et2_IInput} from "../../api/js/etemplate/et2_core_interfaces";
 import {Et2Dialog} from "../../api/js/etemplate/Et2Dialog/Et2Dialog";
+import {formatDate} from "../../api/js/etemplate/Et2Date/Et2Date";
 
 /**
  * UI for filemanager in collabora
@@ -850,7 +851,7 @@ class collaboraAPP extends EgwApp
 				let expires = new Date();
 				expires.setUTCDate(expires.getUTCDate()+1);
 				this.egw.json('EGroupware\\Api\\Sharing::ajax_create',
-					['collabora', widget.get_value(), false, false, {share_expires: date('Y-m-d',expires)}],
+					['collabora', widget.get_value(), false, false, {share_expires: formatDate(expires, {dateFormat: 'Y-m-d'})}],
 					function(value) {
 						// Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
 						// (WebDAV/Server.php line 247
