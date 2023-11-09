@@ -864,11 +864,26 @@ class collaboraAPP extends EgwApp
 			mode: 'open',
 			dialog_title: this.egw.lang('Insert'),
 			button_label: this.egw.lang('Insert'),
-			onchange: image_selected
+			onchange: image_selected,
+			class: "hideme"
 		};
 		let select = et2_createWidget('vfs-select', attrs, this.et2);
 		select.loadingFinished();
 		select.click();
+
+		// vfs-select is legacy widget, need to use timeout to wait for the dialog to exist
+		window.setTimeout(() =>
+		{
+			if(!select.dialog)
+			{
+				return;
+			}
+			// Remove select button when complete
+			select.dialog.getComplete().then(() =>
+			{
+				select.destroy();
+			})
+		}, 1000);
 	}
 
 	/**
