@@ -1,1 +1,35 @@
+%1 supported document types	collabora	no	%1 støttede dokumenttyper
+(requires username and password below)	collabora	no	(krever brukernavn og passord nedenfor)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	no	En lokal Collabora Online-server kan installeres med pakken "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	no	En lokal installasjon som ikke er tilgjengelig fra Internett, vil IKKE fungere med en offentlig Collabora Online-server.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	no	En støttet Collabora Online gjør det mulig å bruke Collabora Online med det bestilte antallet brukere - flere enn demo- eller utviklerversjonen som er installert som standard.
+active user 'anonymous' found.	collabora	no	Aktiv bruker 'anonymous' funnet.
+admin console	collabora	no	Administrasjonskonsoll
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	no	En bruker 'anonymous' er nødvendig for at Collabora Online skal få tilgang til filer og for å dele filer.
+can not read collobora configuration in %1!	collabora	no	Kan IKKE lese Collabora Online-konfigurasjonen i %1!
+checking for user 'anonymous'	collabora	no	Søker etter brukeren 'anonymous'
 collabora	common	no	Collabora Online
+collabora is not configured!	collabora	no	Collabora Online er ikke konfigurert!
+collabora server	collabora	no	Collabora Online-server
+conversion failed	collabora	no	Konvertering mislyktes
+convert to	collabora	no	Konverter til
+converted	collabora	no	Konvertert
+converting...	collabora	no	Konverterer...
+create	collabora	no	Opprett
+create new %1	filemanager	no	Opprett nytt %1
+document	filemanager	no	Dokument
+drawing	filemanager	no	Tegning
+edit %1 in collabora	collabora	no	Rediger %1 i Collabora
+editable share link	collabora	no	Delingslenke som kan redigeres
+egroupware epl is required to configure a custom collabora server.	collabora	no	EGroupware EPL kreves for å konfigurere en egendefinert Collabora Online-server.
+failed to create file %1!	collabora	no	Kunne ikke opprette fil %1!
+failed to create file %1: file already exists!	collabora	no	Kunne ikke opprette fil %1: filen finnes allerede!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	no	Kunne ikke opprette filen! Fordi du ikke har tilstrekkelig tillatelse til %1-mappen!
+failed to update collabora configuration in %1!	collabora	no	Kunne ikke oppdatere Collabora Online-konfigurasjonen i %1!
+the collabora server must be able to access your egroupware installation!	collabora	no	Collabora Online-serveren må ha tilgang til EGroupware-installasjonen din!
+unable to connect	collabora	no	Kan ikke koble til
+unable to contact collabora server	collabora	no	Kan ikke kontakte Collabora Online-serveren
+versions	collabora	no	Versjoner
+writable collabora link	collabora	no	Skrivbar Collabora Online-lenke
+writable collabora share	collabora	no	Skrivbar Collabora Online-deling
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	no	Du trenger en supportnøkkel fra EGroupware GmbH-butikken for en støttet Collabora Online-installasjon.

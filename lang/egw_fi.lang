@@ -1,11 +1,53 @@
+%1 supported document types	collabora	fi	%1 tuetut asiakirjatyypit
+(requires username and password below)	collabora	fi	(vaatii käyttäjätunnuksen ja salasanan alla)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	fi	Paikallinen Collabora Online -palvelin voidaan asentaa egroupware-collabora-key-paketilla.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	fi	Paikallinen asennus, johon ei pääse internetistä, EI toimi julkisen Collabora Online -palvelimen kanssa.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	fi	Tuettu Collabora Online mahdollistaa sen käytön tilatulla käyttäjämäärällä - enemmän kuin oletusarvoisesti asennettu demo- tai kehittäjäversio.
+active user 'anonymous' found.	collabora	fi	Aktiivinen käyttäjä 'anonymous' löytyi.
+admin console	collabora	fi	Hallintakonsoli
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	fi	Collabora Online tarvitsee käyttäjän 'anonymous' tiedostojen käyttämiseen ja myös tiedostojen jakamiseen.
+can not read collobora configuration in %1!	collabora	fi	Collabora Online -asetuksia EI voi lukea osoitteessa %1!
+checking for user 'anonymous'	collabora	fi	Käyttäjän 'anonymous' tarkistaminen
 collabora	common	fi	Collabora Online
+collabora is not configured!	collabora	fi	Collabora Onlinea ei ole määritetty!
+collabora server	collabora	fi	Collabora Online -palvelin
 conversion failed	collabora	fi	Muunnos epäonnistui
 convert to	collabora	fi	Muunna
 converted	collabora	fi	Muunnettu
 converting...	collabora	fi	Muunnetaan...
+create	collabora	fi	Luo
+create new %1	filemanager	fi	Luo uusi %1
+document	filemanager	fi	Asiakirja
 drawing	filemanager	fi	Piirtäminen
+edit %1 in collabora	collabora	fi	Muokkaa %1 Collaborassa
+editable share link	collabora	fi	Muokattava jakolinkki
+egroupware epl is required to configure a custom collabora server.	collabora	fi	EGroupware EPL tarvitaan mukautetun Collabora Online -palvelimen konfigurointiin.
+failed to create file %1!	collabora	fi	Tiedoston %1 luominen epäonnistui!
+failed to create file %1: file already exists!	collabora	fi	Tiedoston %1 luominen epäonnistui: tiedosto on jo olemassa!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	fi	Tiedoston luominen epäonnistui! Koska sinulla ei ole tarpeeksi oikeuksia kansioon %1!
+failed to update collabora configuration in %1!	collabora	fi	Collabora Online -asetusten päivittäminen ei onnistunut %1-kansiossa!
+file	collabora	fi	Tiedosto
+file %1 has been created successfully.	collabora	fi	Tiedosto %1 on luotu onnistuneesti.
 file renamed	collabora	fi	Tiedosto nimetty uudelleen
+insert	collabora	fi	Lisää
 insert address	collabora	fi	Lisää osoite
 insert merged content	collabora	fi	Lisää yhdistetty sisältö
 latest revision	collabora	fi	Viimeisin versio
+link is appended to email allowing recipients to edit the file	collabora	fi	Sähköpostiin liitetään linkki, jonka avulla vastaanottajat voivat muokata tiedostoa.
+local collabora server	collabora	fi	Paikallinen Collabora Online -palvelin
+no active user 'anonymous' found!	collabora	fi	Aktiivista käyttäjää 'anonymous' ei löydy!
+open as new	filemanager	fi	Avaa uutena
+please enter your file name	filemanager	fi	Kirjoita tiedoston nimi
+presentation	filemanager	fi	Esitys
+requirements / please note	collabora	fi	Vaatimukset / huomioi
 revision history	collabora	fi	Revisiohistoria
+save as mail	collabora	fi	Lähetä sähköpostina
+spreadsheet	filemanager	fi	Taulukkolaskenta
+support-key	collabora	fi	Tuki-avain
+the collabora server must be able to access your egroupware installation!	collabora	fi	Collabora Online -palvelimen on voitava käyttää EGroupware-asennustasi!
+unable to connect	collabora	fi	Yhteyden muodostaminen ei onnistu
+unable to contact collabora server	collabora	fi	Collabora Online -palvelimeen ei saada yhteyttä
+versions	collabora	fi	Versiot
+writable collabora link	collabora	fi	Kirjoitettava Collabora Online -linkki
+writable collabora share	collabora	fi	Kirjoitettavissa oleva Collabora Online -jako
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	fi	Tarvitset EGroupware GmbH:n myymälästä saatavan tukiavaimen tuettua Collabora Online -asennusta varten.

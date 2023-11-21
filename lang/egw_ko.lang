@@ -1,1 +1,53 @@
+%1 supported document types	collabora	ko	지원되는 문서 유형 %1
+(requires username and password below)	collabora	ko	(아래 사용자 이름 및 암호 필요)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	ko	로컬 콜라보라 온라인 서버는 'egroupware-collabora-key' 패키지로 설치할 수 있습니다.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	ko	인터넷에서 액세스할 수 없는 로컬 설치는 공용 콜러보라 온라인 서버에서 작동하지 않습니다.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	ko	지원되는 콜러보라 온라인은 기본적으로 설치되는 데모 버전이나 개발자 버전보다 더 많은 사용자 수를 주문하여 사용할 수 있습니다.
+active user 'anonymous' found.	collabora	ko	활성 사용자 '익명'을 찾았습니다.
+admin console	collabora	ko	관리자 콘솔
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	ko	콜라보라 온라인에서 파일에 액세스하고 파일을 공유하려면 '익명' 사용자가 필요합니다.
+can not read collobora configuration in %1!	collabora	ko	%1에서 콜러보라 온라인 구성을 읽을 수 없습니다!
+checking for user 'anonymous'	collabora	ko	'익명' 사용자 확인 중
 collabora	common	ko	Collabora Online
+collabora is not configured!	collabora	ko	콜러보라 온라인이 구성되지 않았습니다!
+collabora server	collabora	ko	콜라보라 온라인 서버
+conversion failed	collabora	ko	전환 실패
+convert to	collabora	ko	다음으로 변환
+converted	collabora	ko	변환 완료
+converting...	collabora	ko	변환 중...
+create	collabora	ko	만들기
+create new %1	filemanager	ko	새 %1을(를) 만듭니다.
+document	filemanager	ko	문서
+drawing	filemanager	ko	도면
+edit %1 in collabora	collabora	ko	콜라보라에서 %1 편집
+editable share link	collabora	ko	편집 가능한 공유 링크
+egroupware epl is required to configure a custom collabora server.	collabora	ko	사용자 지정 콜러보라 온라인 서버를 구성하려면 E그룹웨어 EPL이 필요합니다.
+failed to create file %1!	collabora	ko	%1 파일을 만들지 못했습니다!
+failed to create file %1: file already exists!	collabora	ko	%1 파일을 만들지 못했습니다: 파일이 이미 있습니다!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	ko	파일을 만들지 못했습니다! 1 폴더에 대한 권한이 충분하지 않기 때문입니다!
+failed to update collabora configuration in %1!	collabora	ko	%1에서 콜라보라 온라인 구성을 업데이트하지 못했습니다!
+file	collabora	ko	파일
+file %1 has been created successfully.	collabora	ko	파일 %1이(가) 성공적으로 만들어졌습니다.
+file renamed	collabora	ko	파일 이름 변경
+insert	collabora	ko	삽입
+insert address	collabora	ko	수신자가 파일을 편집할 수 있도록 링크가 이메일에 추가됩니다.
+insert merged content	collabora	ko	병합된 콘텐츠 삽입
+latest revision	collabora	ko	최신 개정
+link is appended to email allowing recipients to edit the file	collabora	ko	수신자가 파일을 편집할 수 있도록 링크가 이메일에 추가됩니다.
+local collabora server	collabora	ko	로컬 콜러보라 온라인 서버
+no active user 'anonymous' found!	collabora	ko	활성 사용자 '익명'을 찾을 수 없습니다!
+open as new	filemanager	ko	새 파일로 열기
+please enter your file name	filemanager	ko	파일 이름을 입력하세요
+presentation	filemanager	ko	프레젠테이션
+requirements / please note	collabora	ko	요구 사항 / 참고 사항
+revision history	collabora	ko	개정 내역
+save as mail	collabora	ko	이메일로 보내기
+spreadsheet	filemanager	ko	스프레드시트
+support-key	collabora	ko	지원 키
+the collabora server must be able to access your egroupware installation!	collabora	ko	콜러보라 온라인 서버가 E그룹웨어 설치에 액세스할 수 있어야 합니다!
+unable to connect	collabora	ko	연결할 수 없습니다.
+unable to contact collabora server	collabora	ko	콜러보라 온라인 서버에 연결할 수 없습니다.
+versions	collabora	ko	버전
+writable collabora link	collabora	ko	쓰기 가능한 콜러보라 온라인 링크
+writable collabora share	collabora	ko	쓰기 가능한 콜러보라 온라인 공유
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	ko	지원되는 콜러보라 온라인 설치를 위해서는 EGroupware GmbH 샵의 지원 키가 필요합니다.
