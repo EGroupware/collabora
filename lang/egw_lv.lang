@@ -1,11 +1,53 @@
+%1 supported document types	collabora	lv	%1 atbalstītie dokumentu veidi
+(requires username and password below)	collabora	lv	(nepieciešams lietotājvārds un parole zemāk)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	lv	Vietējo Collabora Online serveri var instalēt, izmantojot pakotni "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	lv	Vietējā instalācija, kas nav pieejama no interneta, NEDarbosies ar publisko Collabora Online serveri.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	lv	Atbalstīta Collabora Online ļauj to izmantot ar pasūtīto lietotāju skaitu - vairāk nekā pēc noklusējuma instalētā demo vai izstrādātāja versija.
+active user 'anonymous' found.	collabora	lv	Atrasts aktīvs lietotājs 'anonymous'.
+admin console	collabora	lv	Administratora konsole
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	lv	Lietotājs 'anonymous' ir nepieciešams, lai Collabora Online varētu piekļūt failiem, kā arī failu koplietošanai.
+can not read collobora configuration in %1!	collabora	lv	Nevar nolasīt Collabora Online konfigurāciju %1!
+checking for user 'anonymous'	collabora	lv	Pārbauda lietotāja 'anonymous' esamību
 collabora	common	lv	Collabora Online
+collabora is not configured!	collabora	lv	Collabora Online nav konfigurēta!
+collabora server	collabora	lv	Collabora Online serveris
 conversion failed	collabora	lv	Konversija neizdevās
 convert to	collabora	lv	Konvertēt uz
 converted	collabora	lv	Konvertēts
 converting...	collabora	lv	Konvertēšana...
+create	collabora	lv	Izveidot
+create new %1	filemanager	lv	Izveidot jaunu %1
+document	filemanager	lv	Dokuments
 drawing	filemanager	lv	Zīmēšana
+edit %1 in collabora	collabora	lv	Rediģēt %1 programmā Collabora
+editable share link	collabora	lv	Rediģējama koplietošanas saite
+egroupware epl is required to configure a custom collabora server.	collabora	lv	Lai konfigurētu pielāgotu Collabora Online serveri, ir nepieciešams EGroupware EPL.
+failed to create file %1!	collabora	lv	Fail to create file %1!
+failed to create file %1: file already exists!	collabora	lv	Fail to create file %1: file already exists!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	lv	Fail to create the file! Jo jums nav pietiekamu tiesību %1 mapē!
+failed to update collabora configuration in %1!	collabora	lv	Neizdevās atjaunināt Collabora Online konfigurāciju mapē %1!
+file	collabora	lv	Faili
+file %1 has been created successfully.	collabora	lv	Fails %1 ir veiksmīgi izveidots.
 file renamed	collabora	lv	Datnes pārdēvēšana
+insert	collabora	lv	Ievietot
 insert address	collabora	lv	Ievietot adresi
 insert merged content	collabora	lv	Ievietot apvienoto saturu
 latest revision	collabora	lv	Jaunākā pārskatīšana
+link is appended to email allowing recipients to edit the file	collabora	lv	E-pastam tiek pievienota saite, kas ļauj saņēmējiem rediģēt failu.
+local collabora server	collabora	lv	Vietējais Collabora Online serveris
+no active user 'anonymous' found!	collabora	lv	Nav atrasts aktīvs lietotājs 'anonymous'!
+open as new	filemanager	lv	Atvērt kā jaunu
+please enter your file name	filemanager	lv	Lūdzu, ievadiet savu faila nosaukumu
+presentation	filemanager	lv	Prezentācija
+requirements / please note	collabora	lv	Prasības / Lūdzu, ņemiet vērā
 revision history	collabora	lv	Pārskatīšanas vēsture
+save as mail	collabora	lv	Nosūtīt kā e-pastu
+spreadsheet	filemanager	lv	Izklājlapa
+support-key	collabora	lv	Atbalsta atslēga
+the collabora server must be able to access your egroupware installation!	collabora	lv	Collabora Online serverim jāspēj piekļūt jūsu EGroupware instalācijai!
+unable to connect	collabora	lv	Nav iespējams izveidot savienojumu
+unable to contact collabora server	collabora	lv	Nevar sazināties ar Collabora Online serveri
+versions	collabora	lv	Versijas
+writable collabora link	collabora	lv	Rakstāma Collabora Online saite
+writable collabora share	collabora	lv	Rakstāma Collabora Online koplietošana
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	lv	Jums ir nepieciešams atbalsta atslēga no EGroupware GmbH veikala, lai atbalstītu Collabora Online instalāciju.

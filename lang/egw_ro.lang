@@ -1,11 +1,40 @@
+%1 supported document types	collabora	ro	%1 tipuri de documente acceptate
+(requires username and password below)	collabora	ro	(necesită numele de utilizator și parola de mai jos)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	ro	Un server local Collabora Online poate fi instalat cu pachetul "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	ro	O instalare locală care nu este accesibilă de pe internet NU va funcționa cu un server Collabora Online public.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	ro	Un Collabora Online susținut permite utilizarea acestuia cu numărul de utilizatori comandat - mai mult decât versiunea demo sau developer, instalată în mod implicit.
+active user 'anonymous' found.	collabora	ro	Utilizator activ 'anonymous' găsit.
+admin console	collabora	ro	Consola de administrare
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	ro	Un utilizator 'anonymous' este necesar pentru ca Collabora Online să acceseze fișierele și, de asemenea, pentru partajarea fișierelor.
+can not read collobora configuration in %1!	collabora	ro	NU se poate citi configurația Collabora Online în %1!
+checking for user 'anonymous'	collabora	ro	Se verifică dacă există utilizatorul 'anonymous'
 collabora	common	ro	Collabora Online
+collabora is not configured!	collabora	ro	Collabora Online nu este configurat!
+collabora server	collabora	ro	Serverul Collabora Online
 conversion failed	collabora	ro	Conversia a eșuat
 convert to	collabora	ro	Conversia în
 converted	collabora	ro	Convertit
 converting...	collabora	ro	Conversia...
+create	collabora	ro	Creați
+create new %1	filemanager	ro	Creați un nou %1
+document	filemanager	ro	Document
 drawing	filemanager	ro	Desenare
+edit %1 in collabora	collabora	ro	Editați %1 în Collabora
+editable share link	collabora	ro	Link de partajare editabil
+egroupware epl is required to configure a custom collabora server.	collabora	ro	EGroupware EPL este necesar pentru a configura un server Collabora Online personalizat.
+failed to create file %1!	collabora	ro	Nu s-a reușit crearea fișierului %1!
+failed to create file %1: file already exists!	collabora	ro	Nu s-a reușit crearea fișierului %1: fișierul există deja!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	ro	Nu s-a reușit crearea fișierului! Deoarece nu aveți suficiente permisiuni pentru folderul %1!
+failed to update collabora configuration in %1!	collabora	ro	A eșuat actualizarea configurației Collabora Online în %1!
 file renamed	collabora	ro	Fișier redenumit
 insert address	collabora	ro	Inserare adresă
 insert merged content	collabora	ro	Inserare conținut fuzionat
 latest revision	collabora	ro	Ultima revizuire
 revision history	collabora	ro	Istoric de revizuire
+the collabora server must be able to access your egroupware installation!	collabora	ro	Serverul Collabora Online trebuie să poată accesa instalarea EGroupware!
+unable to connect	collabora	ro	Nu se poate conecta
+unable to contact collabora server	collabora	ro	Nu se poate contacta serverul Collabora Online
+versions	collabora	ro	Versiuni
+writable collabora link	collabora	ro	Legătură Collabora Online care poate fi scrisă
+writable collabora share	collabora	ro	Collabora Online partajabil
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	ro	Aveți nevoie de o cheie de suport de la magazinul EGroupware GmbH, pentru o instalare Collabora Online compatibilă.

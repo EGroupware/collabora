@@ -1,11 +1,40 @@
+%1 supported document types	collabora	pl	%1 obsługiwane typy dokumentów
+(requires username and password below)	collabora	pl	(wymaga nazwy użytkownika i hasła poniżej)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	pl	Lokalny serwer Collabora Online można zainstalować za pomocą pakietu "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	pl	Lokalna instalacja niedostępna z Internetu NIE będzie działać z publicznym serwerem Collabora Online.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	pl	Obsługiwana Collabora Online umożliwia korzystanie z niej z zamówioną liczbą użytkowników - większą niż w wersji demonstracyjnej lub deweloperskiej, instalowanej domyślnie.
+active user 'anonymous' found.	collabora	pl	Znaleziono aktywnego użytkownika "anonymous".
+admin console	collabora	pl	Konsola administratora
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	pl	Użytkownik "anonymous" jest wymagany, aby Collabora Online miała dostęp do plików, a także do udostępniania plików.
+can not read collobora configuration in %1!	collabora	pl	NIE można odczytać konfiguracji Collabora Online w %1!
+checking for user 'anonymous'	collabora	pl	Sprawdzanie użytkownika "anonymous
 collabora	common	pl	Collabora Online
+collabora is not configured!	collabora	pl	Collabora Online nie jest skonfigurowana!
+collabora server	collabora	pl	Serwer Collabora Online
 conversion failed	collabora	pl	Konwersja nie powiodła się
 convert to	collabora	pl	Przekształcenie do
 converted	collabora	pl	Przekształcono
 converting...	collabora	pl	Konwersja...
+create	collabora	pl	Utwórz
+create new %1	filemanager	pl	Utwórz nowy %1
+document	filemanager	pl	Dokument
 drawing	filemanager	pl	Rysunek
+edit %1 in collabora	collabora	pl	Edytuj %1 w aplikacji Collabora
+editable share link	collabora	pl	Edytowalne łącze udostępniania
+egroupware epl is required to configure a custom collabora server.	collabora	pl	Do skonfigurowania niestandardowego serwera Collabora Online wymagany jest EGroupware EPL.
+failed to create file %1!	collabora	pl	Nie udało się utworzyć pliku %1!
+failed to create file %1: file already exists!	collabora	pl	Nie udało się utworzyć pliku %1: plik już istnieje!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	pl	Nie udało się utworzyć pliku! Ponieważ nie masz wystarczających uprawnień do folderu %1!
+failed to update collabora configuration in %1!	collabora	pl	Nie udało się zaktualizować konfiguracji Collabora Online w %1!
 file renamed	collabora	pl	Zmiana nazwy pliku
 insert address	collabora	pl	Wstaw adres
 insert merged content	collabora	pl	Wstaw połączoną zawartość
 latest revision	collabora	pl	Najnowsza wersja
 revision history	collabora	pl	Historia zmian
+the collabora server must be able to access your egroupware installation!	collabora	pl	Serwer Collabora Online musi mieć dostęp do instalacji EGroupware!
+unable to connect	collabora	pl	Nie można się połączyć
+unable to contact collabora server	collabora	pl	Nie można skontaktować się z serwerem Collabora Online
+versions	collabora	pl	Wersje
+writable collabora link	collabora	pl	Zapisywalne łącze Collabora Online
+writable collabora share	collabora	pl	Udział Collabora Online z możliwością zapisu
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	pl	Potrzebny jest klucz wsparcia ze sklepu EGroupware GmbH dla obsługiwanej instalacji Collabora Online.

@@ -1,11 +1,53 @@
+%1 supported document types	collabora	ja	サポートされるドキュメント・タイプ %1
+(requires username and password below)	collabora	ja	(以下のユーザ名とパスワードが必要です)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	ja	ローカルのCollabora Onlineサーバーは'egroupware-collabora-key'パッケージでインストールできます。
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	ja	インターネットからアクセスできないローカルインストールは、パブリックCollabora Onlineサーバーでは動作しません。
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	ja	サポートされているCollabora Onlineでは、デフォルトでインストールされているデモ版や開発版よりも多くのユーザー数で使用することができます。
+active user 'anonymous' found.	collabora	ja	アクティブユーザー'anonymous'が見つかりました。
+admin console	collabora	ja	管理コンソール
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	ja	ファイルへのアクセスやファイルの共有には、Collabora Onlineのユーザー'anonymous'が必要です。
+can not read collobora configuration in %1!	collabora	ja	%1 の Collabora Online 構成を読み取れません！
+checking for user 'anonymous'	collabora	ja	ユーザ 'anonymous' をチェックしています。
 collabora	common	ja	Collabora Online
+collabora is not configured!	collabora	ja	Collabora Online が設定されていません！
+collabora server	collabora	ja	Collabora Onlineサーバ
 conversion failed	collabora	ja	変換に失敗しました
 convert to	collabora	ja	変換先
 converted	collabora	ja	変換中
 converting...	collabora	ja	変換中...
+create	collabora	ja	新規作成
+create new %1	filemanager	ja	新しい %1 を作成してください。
+document	filemanager	ja	ドキュメント
 drawing	filemanager	ja	描画
+edit %1 in collabora	collabora	ja	Collabora で %1 を編集してください。
+editable share link	collabora	ja	編集可能な共有リンク
+egroupware epl is required to configure a custom collabora server.	collabora	ja	カスタムCollabora Onlineサーバーを構成するには、EGroupware EPLが必要です。
+failed to create file %1!	collabora	ja	ファイル %1 の作成に失敗しました！
+failed to create file %1: file already exists!	collabora	ja	ファイル %1 の作成に失敗しました: ファイルは既に存在します！
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	ja	ファイルの作成に失敗しました！1 フォルダに十分な権限がないためです！
+failed to update collabora configuration in %1!	collabora	ja	%1 で Collabora Online 構成の更新に失敗しました！
+file	collabora	ja	ファイル
+file %1 has been created successfully.	collabora	ja	ファイル %1 が正常に作成されました。
 file renamed	collabora	ja	ファイル名変更
+insert	collabora	ja	挿入
 insert address	collabora	ja	アドレスの挿入
 insert merged content	collabora	ja	マージされたコンテンツを挿入する
 latest revision	collabora	ja	最新リビジョン
+link is appended to email allowing recipients to edit the file	collabora	ja	受信者がファイルを編集できるように、メールにリンクが追加されます。
+local collabora server	collabora	ja	ローカル Collabora Online サーバー
+no active user 'anonymous' found!	collabora	ja	アクティブなユーザ 'anonymous' が見つかりません！
+open as new	filemanager	ja	新規で開く
+please enter your file name	filemanager	ja	ファイル名を入力してください
+presentation	filemanager	ja	プレゼンテーション
+requirements / please note	collabora	ja	要件 / ご注意ください
 revision history	collabora	ja	リビジョン履歴
+save as mail	collabora	ja	メールで送信
+spreadsheet	filemanager	ja	スプレッドシート
+support-key	collabora	ja	サポートキー
+the collabora server must be able to access your egroupware installation!	collabora	ja	Collabora OnlineサーバーがEGroupwareインストールにアクセスできる必要があります！
+unable to connect	collabora	ja	接続できない
+unable to contact collabora server	collabora	ja	Collabora Onlineサーバーに接続できません
+versions	collabora	ja	バージョン
+writable collabora link	collabora	ja	書き込み可能なCollabora Onlineリンク
+writable collabora share	collabora	ja	書き込み可能なCollabora Online共有
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	ja	サポートされているCollabora Onlineのインストールには、EGroupware GmbHのサポートキーが必要です。

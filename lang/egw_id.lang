@@ -1,11 +1,53 @@
+%1 supported document types	collabora	id	%1 jenis dokumen yang didukung
+(requires username and password below)	collabora	id	(membutuhkan nama pengguna dan kata sandi di bawah ini)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	id	Server Collabora Online lokal dapat diinstal dengan paket 'egroupware-collabora-key'.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	id	Instalasi lokal yang tidak dapat diakses dari internet TIDAK akan bekerja dengan server Collabora Online publik.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	id	Collabora Online yang didukung memungkinkan untuk menggunakannya dengan jumlah pengguna yang dipesan - lebih banyak daripada versi demo atau versi pengembang, yang diinstal secara default.
+active user 'anonymous' found.	collabora	id	Pengguna aktif 'anonymous' ditemukan.
+admin console	collabora	id	Konsol admin
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	id	Pengguna 'anonymous' diperlukan untuk Collabora Online untuk mengakses file dan juga untuk berbagi file.
+can not read collobora configuration in %1!	collabora	id	Tidak dapat membaca konfigurasi Collabora Online di %1!
+checking for user 'anonymous'	collabora	id	Memeriksa pengguna 'anonymous'
 collabora	common	id	Collabora Online
+collabora is not configured!	collabora	id	Collabora Online tidak dikonfigurasi!
+collabora server	collabora	id	Server Collabora Online
 conversion failed	collabora	id	Konversi gagal
 convert to	collabora	id	Konversi ke
 converted	collabora	id	Dikonversi
 converting...	collabora	id	Mengonversi...
+create	collabora	id	Membuat
+create new %1	filemanager	id	Buat %1 baru
+document	filemanager	id	Dokumen
 drawing	filemanager	id	Menggambar
-file renamed	collabora	id	File diganti namanya
+edit %1 in collabora	collabora	id	Mengedit %1 di Collabora
+editable share link	collabora	id	Tautan berbagi yang dapat diedit
+egroupware epl is required to configure a custom collabora server.	collabora	id	EGroupware EPL diperlukan untuk mengonfigurasi server Collabora Online khusus.
+failed to create file %1!	collabora	id	Gagal membuat file %1!
+failed to create file %1: file already exists!	collabora	id	Gagal membuat file %1: file sudah ada!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	id	Gagal membuat file! Karena Anda tidak memiliki izin yang cukup untuk folder %1!
+failed to update collabora configuration in %1!	collabora	id	Gagal memperbarui konfigurasi Collabora Online di %1!
+file	collabora	id	Berkas
+file %1 has been created successfully.	collabora	id	Berkas %1 telah berhasil dibuat.
+file renamed	collabora	id	Berkas diganti namanya
+insert	collabora	id	Menyisipkan
 insert address	collabora	id	Menyisipkan alamat
 insert merged content	collabora	id	Menyisipkan konten yang digabungkan
 latest revision	collabora	id	Revisi terbaru
+link is appended to email allowing recipients to edit the file	collabora	id	Tautan ditambahkan ke email yang memungkinkan penerima untuk mengedit file
+local collabora server	collabora	id	Server Collabora Online lokal
+no active user 'anonymous' found!	collabora	id	Tidak ditemukan pengguna aktif 'anonymous'!
+open as new	filemanager	id	Buka sebagai baru
+please enter your file name	filemanager	id	Masukkan nama file Anda
+presentation	filemanager	id	Presentasi
+requirements / please note	collabora	id	Persyaratan / harap diperhatikan
 revision history	collabora	id	Riwayat Revisi
+save as mail	collabora	id	Kirim sebagai email
+spreadsheet	filemanager	id	Spreadsheet
+support-key	collabora	id	Kunci dukungan
+the collabora server must be able to access your egroupware installation!	collabora	id	Server Collabora Online harus dapat mengakses instalasi EGroupware Anda!
+unable to connect	collabora	id	Tidak dapat terhubung
+unable to contact collabora server	collabora	id	Tidak dapat menghubungi server Collabora Online
+versions	collabora	id	Versi
+writable collabora link	collabora	id	Tautan Collabora Online yang dapat ditulis
+writable collabora share	collabora	id	Tautan Collabora Online yang dapat ditulis
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	id	Anda memerlukan kunci dukungan dari toko EGroupware GmbH, untuk instalasi Collabora Online yang didukung.

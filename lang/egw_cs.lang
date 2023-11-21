@@ -1,11 +1,53 @@
+%1 supported document types	collabora	cs	%1 podporované typy dokumentů
+(requires username and password below)	collabora	cs	(vyžaduje uživatelské jméno a heslo níže)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	cs	Místní server Collabora Online lze nainstalovat pomocí balíčku "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	cs	Místní instalace, která není přístupná z internetu, NEBUDE fungovat s veřejným serverem Collabora Online.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	cs	Podporovaný server Collabora Online umožňuje používat jej s objednaným počtem uživatelů - více než demo verze nebo verze pro vývojáře, která je nainstalována ve výchozím nastavení.
+active user 'anonymous' found.	collabora	cs	Nalezen aktivní uživatel 'anonymous'.
+admin console	collabora	cs	Konzola správce
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	cs	Uživatel 'anonymous' je vyžadován pro přístup k souborům Collabora Online a také pro sdílení souborů.
+can not read collobora configuration in %1!	collabora	cs	Nelze načíst konfiguraci Collabora Online v %1!
+checking for user 'anonymous'	collabora	cs	Kontrola uživatele 'anonymous'
 collabora	common	cs	Collabora Online
+collabora is not configured!	collabora	cs	Collabora Online není nakonfigurována!
+collabora server	collabora	cs	Server Collabora Online
 conversion failed	collabora	cs	Konverze se nezdařila
 convert to	collabora	cs	Převést na
 converted	collabora	cs	Převedeno
 converting...	collabora	cs	Převod...
+create	collabora	cs	Vytvořit
+create new %1	filemanager	cs	Vytvořit nový %1
+document	filemanager	cs	Dokument
 drawing	filemanager	cs	Kreslení
 edit %1 in collabora	collabora	cs	Upravit %1 v Collabora Online
+editable share link	collabora	cs	Upravitelný odkaz pro sdílení
+egroupware epl is required to configure a custom collabora server.	collabora	cs	Pro konfiguraci vlastního serveru Collabora Online je vyžadován EGroupware EPL.
+failed to create file %1!	collabora	cs	Nepodařilo se vytvořit soubor %1!
+failed to create file %1: file already exists!	collabora	cs	Nepodařilo se vytvořit soubor %1: soubor již existuje!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	cs	Nepodařilo se vytvořit soubor! Protože nemáte dostatečné oprávnění ke složce %1!
+failed to update collabora configuration in %1!	collabora	cs	Nepodařilo se aktualizovat konfiguraci Collabora Online ve složce %1!
+file	collabora	cs	Soubor
+file %1 has been created successfully.	collabora	cs	Soubor %1 byl úspěšně vytvořen.
 file renamed	collabora	cs	Soubor přejmenován
 insert	collabora	cs	Vložit
 insert address	collabora	cs	Vložit adresu
 insert merged content	collabora	cs	Vložit sloučený obsah
+latest revision	collabora	cs	Poslední revize
+link is appended to email allowing recipients to edit the file	collabora	cs	K e-mailu je připojen odkaz umožňující příjemcům upravit soubor.
+local collabora server	collabora	cs	Místní server Collabora Online
+no active user 'anonymous' found!	collabora	cs	Nebyl nalezen žádný aktivní uživatel 'anonymous'!
+open as new	filemanager	cs	Otevřít jako nový
+please enter your file name	filemanager	cs	Zadejte prosím název souboru
+presentation	filemanager	cs	Prezentace
+requirements / please note	collabora	cs	Požadavky / Vezměte prosím na vědomí
+revision history	collabora	cs	Historie revizí
+save as mail	collabora	cs	Odeslat jako e-mail
+spreadsheet	filemanager	cs	Tabulka
+support-key	collabora	cs	Podpora-klíč
+the collabora server must be able to access your egroupware installation!	collabora	cs	Server Collabora Online musí mít přístup k vaší instalaci EGroupware!
+unable to connect	collabora	cs	Nelze se připojit
+unable to contact collabora server	collabora	cs	Nelze se spojit se serverem Collabora Online
+versions	collabora	cs	Verze
+writable collabora link	collabora	cs	Zapsatelný odkaz na Collabora Online
+writable collabora share	collabora	cs	Zapisovatelné sdílení Collabora Online
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	cs	Pro podporovanou instalaci Collabora Online potřebujete klíč podpory z obchodu EGroupware GmbH.

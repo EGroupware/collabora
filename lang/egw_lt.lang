@@ -1,11 +1,53 @@
+%1 supported document types	collabora	lt	%1 palaikomi dokumentų tipai
+(requires username and password below)	collabora	lt	(reikalingas toliau nurodytas vartotojo vardas ir slaptažodis)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	lt	Vietinį "Collabora Online" serverį galima įdiegti naudojant paketą "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	lt	Vietinis diegimas, nepasiekiamas iš interneto, NEDIRBA su viešuoju "Collabora Online" serveriu.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	lt	Palaikomas "Collabora Online" leidžia naudoti jį su užsakytu naudotojų skaičiumi - daugiau nei pagal nutylėjimą įdiegta demonstracinė ar kūrėjo versija.
+active user 'anonymous' found.	collabora	lt	Rastas aktyvus naudotojas "anonymous".
+admin console	collabora	lt	Administratoriaus konsolė
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	lt	Naudotojas 'anonymous' reikalingas, kad "Collabora Online" galėtų pasiekti failus, taip pat dalytis failais.
+can not read collobora configuration in %1!	collabora	lt	Negalima nuskaityti "Collabora Online" konfigūracijos %1!
+checking for user 'anonymous'	collabora	lt	Tikrinama, ar yra naudotojas 'anonymous'
 collabora	common	lt	Collabora Online
+collabora is not configured!	collabora	lt	Collabora Online nėra sukonfigūruota!
+collabora server	collabora	lt	Collabora Online serveris
 conversion failed	collabora	lt	Konversija nepavyko
 convert to	collabora	lt	Konvertuoti į
 converted	collabora	lt	Konvertuota
 converting...	collabora	lt	Konvertuoti...
+create	collabora	lt	Sukurti
+create new %1	filemanager	lt	Sukurti naują %1
+document	filemanager	lt	Dokumentas
 drawing	filemanager	lt	Braižymas
+edit %1 in collabora	collabora	lt	Redaguoti %1 "Collabora" programoje
+editable share link	collabora	lt	Redaguojama bendrinimo nuoroda
+egroupware epl is required to configure a custom collabora server.	collabora	lt	Norint sukonfigūruoti pasirinktinį "Collabora Online" serverį, reikia "EGroupware EPL".
+failed to create file %1!	collabora	lt	Nepavyko sukurti %1 failo!
+failed to create file %1: file already exists!	collabora	lt	Nepavyko sukurti failo %1: failas jau egzistuoja!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	lt	Nepavyko sukurti failo! Nes neturite pakankamai teisių į aplanką %1!
+failed to update collabora configuration in %1!	collabora	lt	Nepavyko atnaujinti "Collabora Online" konfigūracijos %1!
+file	collabora	lt	Failas
+file %1 has been created successfully.	collabora	lt	Failas %1 sukurtas sėkmingai.
 file renamed	collabora	lt	Failo pavadinimas pakeistas
+insert	collabora	lt	Įterpkite
 insert address	collabora	lt	Įterpti adresą
 insert merged content	collabora	lt	Įterpti sujungtą turinį
 latest revision	collabora	lt	Paskutinė peržiūra
+link is appended to email allowing recipients to edit the file	collabora	lt	Prie el. laiško pridedama nuoroda, leidžianti gavėjams redaguoti failą
+local collabora server	collabora	lt	Vietinis Collabora Online serveris
+no active user 'anonymous' found!	collabora	lt	Nerastas aktyvus naudotojas 'anonymous'!
+open as new	filemanager	lt	Atidarykite kaip naują
+please enter your file name	filemanager	lt	Įveskite savo failo pavadinimą
+presentation	filemanager	lt	Pristatymas
+requirements / please note	collabora	lt	Reikalavimai / atkreipkite dėmesį
 revision history	collabora	lt	Peržiūrų istorija
+save as mail	collabora	lt	Siųsti el. paštu
+spreadsheet	filemanager	lt	Skaičiuoklės
+support-key	collabora	lt	Paramos raktas
+the collabora server must be able to access your egroupware installation!	collabora	lt	"Collabora Online" serveris turi turėti prieigą prie jūsų "EGroupware" diegimo!
+unable to connect	collabora	lt	Nepavyksta prisijungti
+unable to contact collabora server	collabora	lt	Nepavyksta susisiekti su "Collabora Online" serveriu
+versions	collabora	lt	Versijos
+writable collabora link	collabora	lt	Įrašoma "Collabora Online" nuoroda
+writable collabora share	collabora	lt	Įrašoma "Collabora Online" dalis
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	lt	Palaikomam "Collabora Online" diegimui reikalingas palaikymo raktas iš "EGroupware GmbH" parduotuvės.

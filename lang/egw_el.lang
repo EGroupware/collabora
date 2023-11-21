@@ -1,5 +1,8 @@
 %1 supported document types	collabora	el	1% Υποστηριζόμενοι τύποι αρχείων
 (requires username and password below)	collabora	el	(απαιτείται να εισαχθεί όνομα χρήστη και κωδικός παρακάτω)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	el	Ένας τοπικός διακομιστής Collabora Online μπορεί να εγκατασταθεί με το πακέτο 'egroupware-collabora-key'.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	el	Μια τοπική εγκατάσταση που δεν είναι προσβάσιμη από το διαδίκτυο ΔΕΝ θα λειτουργήσει με έναν δημόσιο διακομιστή Collabora Online.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	el	Ένα υποστηριζόμενο Collabora Online επιτρέπει τη χρήση του με τον παραγγελθέντα αριθμό χρηστών - περισσότερους από την έκδοση επίδειξης ή την έκδοση προγραμματιστή, που είναι εγκατεστημένη από προεπιλογή.
 active user 'anonymous' found.	collabora	el	Βρέθηκε ενεργός χρήστης τύπου 'anonymous'
 admin console	collabora	el	Πίνακας διαχείρισης
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	el	Για την πρόσβαση του Collabora Online σε αρχεία και για την κοινοποίηση αρχείων απαιτείται η ύπαρξη ενός χρήστη τύπου 'anonymous'
@@ -18,8 +21,10 @@ document	filemanager	el	Αρχείο κειμένου
 drawing	filemanager	el	Σχεδίαση
 edit %1 in collabora	collabora	el	Επεξεργασία %1 στο Collabora
 editable share link	collabora	el	Σύνδεσμος  κοινοποίησης  με δικαίωμα επεξεργασίας
+egroupware epl is required to configure a custom collabora server.	collabora	el	Το EGroupware EPL απαιτείται για τη διαμόρφωση ενός προσαρμοσμένου διακομιστή Collabora Online.
 failed to create file %1!	collabora	el	Απέτυχε η δημιουργία του αρχείου %1!
 failed to create file %1: file already exists!	collabora	el	Απέτυχε η δημιουργία του αρχείου %1: το αρχείο υφίσταται ήδη!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	el	Απέτυχε η δημιουργία του αρχείου! Επειδή δεν έχετε επαρκή δικαιώματα στο φάκελο %1!
 failed to update collabora configuration in %1!	collabora	el	Αδυναμία ενημέρωσης παραμετροποίησης Collabora Online στην διαδρομή %1
 file	collabora	el	αρχείο
 file %1 has been created successfully.	collabora	el	Το αρχείο 1% δημιουργήθηκε επιτυχώς
@@ -28,6 +33,7 @@ insert	collabora	el	Εισαγωγή
 insert address	collabora	el	Εισαγωγή διεύθυνσης
 insert merged content	collabora	el	Εισαγωγή συγχωνευμένου περιεχομένου
 latest revision	collabora	el	Τελευταία έκδοση
+link is appended to email allowing recipients to edit the file	collabora	el	Ο σύνδεσμος επισυνάπτεται στο email που επιτρέπει στους παραλήπτες να επεξεργαστούν το αρχείο
 local collabora server	collabora	el	Τοπικός Collabora Online server
 no active user 'anonymous' found!	collabora	el	Δεν βρέθηκε ενεργός χρήστης τύπου 'anonymous'
 open as new	filemanager	el	Άνοιγμα ως νέο
@@ -38,8 +44,10 @@ revision history	collabora	el	Ιστορικό αναθεωρήσεων
 save as mail	collabora	el	Αποστολή ως E-Mail
 spreadsheet	filemanager	el	Υπολογιστικό φύλλο
 support-key	collabora	el	Κλειδί υποστήριξης (Support-key)
+the collabora server must be able to access your egroupware installation!	collabora	el	Ο διακομιστής Collabora Online πρέπει να μπορεί να έχει πρόσβαση στην εγκατάσταση EGroupware!
 unable to connect	collabora	el	Αδυναμία σύνδεσης
 unable to contact collabora server	collabora	el	Αδυναμία επικοινωνίας με τον Collabora Online server
 versions	collabora	el	Εκδόσεις
 writable collabora link	collabora	el	Σύνδεσμος  Collabora Online με δικαίωμα επεξεργασίας
 writable collabora share	collabora	el	Σύνδεσμος  κοινοποίησης Collabora Online με δικαίωμα επεξεργασίας
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	el	Χρειάζεστε ένα κλειδί υποστήριξης από το κατάστημα EGroupware GmbH, για μια υποστηριζόμενη εγκατάσταση Collabora Online.

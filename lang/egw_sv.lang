@@ -1,11 +1,53 @@
+%1 supported document types	collabora	sv	%1 dokumenttyper som stöds
+(requires username and password below)	collabora	sv	(kräver användarnamn och lösenord nedan)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	sv	En lokal Collabora Online-server kan installeras med paketet 'egroupware-collabora-key'.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	sv	En lokal installation som inte är tillgänglig från internet fungerar INTE med en offentlig Collabora Online-server.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	sv	En Collabora Online som stöds gör det möjligt att använda den med det beställda antalet användare - fler än demo- eller utvecklarversionen, som är installerad som standard.
+active user 'anonymous' found.	collabora	sv	Aktiv användare 'anonymous' hittades.
+admin console	collabora	sv	Administratörskonsol
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	sv	Användaren 'anonymous' krävs för att Collabora Online ska kunna komma åt filer och även för att dela filer.
+can not read collobora configuration in %1!	collabora	sv	Kan INTE läsa Collabora Online-konfigurationen i %1!
+checking for user 'anonymous'	collabora	sv	Kontrollerar efter användaren 'anonymous'
 collabora	common	sv	Collabora Online
+collabora is not configured!	collabora	sv	Collabora Online är inte konfigurerat!
+collabora server	collabora	sv	Collabora Online-server
 conversion failed	collabora	sv	Omvandlingen misslyckades
 convert to	collabora	sv	Konverterad
 converted	collabora	sv	Konverterad
 converting...	collabora	sv	Konvertering...
+create	collabora	sv	Skapa
+create new %1	filemanager	sv	Skapa nytt %1
+document	filemanager	sv	Dokument
 drawing	filemanager	sv	Ritning
+edit %1 in collabora	collabora	sv	Redigera %1 i Collabora
+editable share link	collabora	sv	Redigerbar länk för delning
+egroupware epl is required to configure a custom collabora server.	collabora	sv	EGroupware EPL krävs för att konfigurera en anpassad Collabora Online-server.
+failed to create file %1!	collabora	sv	Det gick inte att skapa fil %1!
+failed to create file %1: file already exists!	collabora	sv	Det gick inte att skapa fil %1: filen finns redan!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	sv	Det gick inte att skapa filen! Eftersom du inte har tillräcklig behörighet till mappen %1!
+failed to update collabora configuration in %1!	collabora	sv	Det gick inte att uppdatera Collabora Online-konfigurationen i %1!
+file	collabora	sv	Fil
+file %1 has been created successfully.	collabora	sv	Filen %1 har skapats framgångsrikt.
 file renamed	collabora	sv	Filen har bytt namn
+insert	collabora	sv	Infoga
 insert address	collabora	sv	Infoga adress
 insert merged content	collabora	sv	Infoga sammanfogat innehåll
 latest revision	collabora	sv	Senaste revidering
+link is appended to email allowing recipients to edit the file	collabora	sv	Länk bifogas e-postmeddelandet så att mottagarna kan redigera filen
+local collabora server	collabora	sv	Lokal Collabora Online-server
+no active user 'anonymous' found!	collabora	sv	Ingen aktiv användare 'anonymous' hittades!
+open as new	filemanager	sv	Öppna som ny
+please enter your file name	filemanager	sv	Vänligen ange ditt filnamn
+presentation	filemanager	sv	Presentation
+requirements / please note	collabora	sv	Krav / Vänligen notera
 revision history	collabora	sv	Revideringshistorik
+save as mail	collabora	sv	Skicka som e-post
+spreadsheet	filemanager	sv	Kalkylblad
+support-key	collabora	sv	Stöd-nyckel
+the collabora server must be able to access your egroupware installation!	collabora	sv	Collabora Online-servern måste kunna komma åt din EGroupware-installation!
+unable to connect	collabora	sv	Kan inte ansluta
+unable to contact collabora server	collabora	sv	Det går inte att kontakta Collabora Online-servern
+versions	collabora	sv	Versioner
+writable collabora link	collabora	sv	Skrivbar Collabora Online-länk
+writable collabora share	collabora	sv	Skrivbar Collabora Online-delning
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	sv	Du behöver en supportnyckel från EGroupware GmbH-butiken för en Collabora Online-installation som stöds.

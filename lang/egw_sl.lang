@@ -1,13 +1,53 @@
+%1 supported document types	collabora	sl	%1 podprte vrste dokumentov
+(requires username and password below)	collabora	sl	(zahteva uporabniško ime in geslo spodaj)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	sl	Lokalni strežnik Collabora Online lahko namestite s paketom "egroupware-collabora-key".
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	sl	Lokalna namestitev, ki ni dostopna z interneta, NE deluje z javnim strežnikom Collabora Online.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	sl	Podprt strežnik Collabora Online omogoča uporabo z naročenim številom uporabnikov - več kot demo različica ali različica za razvijalce, ki je privzeto nameščena.
+active user 'anonymous' found.	collabora	sl	Najden aktivni uporabnik 'anonymous'.
+admin console	collabora	sl	Upraviteljska konzola
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	sl	Uporabnik 'anonymous' je potreben za dostop do datotek v programu Collabora Online in tudi za deljenje datotek.
+can not read collobora configuration in %1!	collabora	sl	Ni mogoče prebrati konfiguracije Collabora Online v %1!
+checking for user 'anonymous'	collabora	sl	Preverjanje za uporabnika 'anonymous'
 collabora	common	sl	Collabora Online
+collabora is not configured!	collabora	sl	Collabora Online ni konfigurirana!
+collabora server	collabora	sl	Strežnik Collabora Online
 conversion failed	collabora	sl	Pretvorba ni uspela
 convert to	collabora	sl	Pretvori v
 converted	collabora	sl	Pretvorjeno
 converting...	collabora	sl	Pretvarjanje...
+create	collabora	sl	Ustvarite
+create new %1	filemanager	sl	Ustvari novo %1
+document	filemanager	sl	Dokument
 drawing	filemanager	sl	Risanje
 edit %1 in collabora	collabora	sl	Uredi %1 v storitvi Collabora Online
+editable share link	collabora	sl	Uredljiva povezava za skupno rabo
+egroupware epl is required to configure a custom collabora server.	collabora	sl	Za konfiguriranje strežnika Collabora Online po meri je potreben program EGroupware EPL.
+failed to create file %1!	collabora	sl	Ni uspelo ustvariti datoteke %1!
+failed to create file %1: file already exists!	collabora	sl	Ni uspelo ustvariti datoteke %1: datoteka že obstaja!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	sl	Ni uspelo ustvariti datoteke! Ker nimate dovolj pravic za dostop do mape %1!
+failed to update collabora configuration in %1!	collabora	sl	Ni uspelo posodobiti konfiguracije Collabora Online v mapi %1!
+file	collabora	sl	Datoteka
+file %1 has been created successfully.	collabora	sl	Datoteka %1 je bila uspešno ustvarjena.
 file renamed	collabora	sl	Datoteka se preimenuje
 insert	collabora	sl	Vstavite
 insert address	collabora	sl	Vstavi naslov
 insert merged content	collabora	sl	Vstavljanje združene vsebine
 latest revision	collabora	sl	Zadnja revizija
+link is appended to email allowing recipients to edit the file	collabora	sl	Elektronskemu sporočilu je dodana povezava, ki prejemnikom omogoča urejanje datoteke.
+local collabora server	collabora	sl	Lokalni strežnik Collabora Online
+no active user 'anonymous' found!	collabora	sl	Aktivnega uporabnika 'anonymous' ni bilo mogoče najti!
+open as new	filemanager	sl	Odprite kot novega
+please enter your file name	filemanager	sl	Vnesite ime datoteke
+presentation	filemanager	sl	Predstavitev
+requirements / please note	collabora	sl	Zahteve / upoštevajte
 revision history	collabora	sl	Zgodovina revizij
+save as mail	collabora	sl	Pošljite kot e-pošto
+spreadsheet	filemanager	sl	Preglednica
+support-key	collabora	sl	Podporni ključ
+the collabora server must be able to access your egroupware installation!	collabora	sl	Strežnik Collabora Online mora imeti dostop do vaše namestitve EGroupware!
+unable to connect	collabora	sl	Ni mogoče vzpostaviti povezave
+unable to contact collabora server	collabora	sl	Ni mogoče vzpostaviti stika s strežnikom Collabora Online
+versions	collabora	sl	Različice
+writable collabora link	collabora	sl	Zapisljiva povezava Collabora Online
+writable collabora share	collabora	sl	Pisna skupna raba Collabora Online
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	sl	Za podprto namestitev Collabora Online potrebujete ključ podpore iz trgovine EGroupware GmbH.

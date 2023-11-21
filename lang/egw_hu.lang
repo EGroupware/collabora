@@ -1,13 +1,41 @@
+%1 supported document types	collabora	hu	%1 támogatott dokumentumtípusok
+(requires username and password below)	collabora	hu	(felhasználónév és jelszó szükséges)
+a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	hu	A helyi Collabora Online szerver az 'egroupware-collabora-key' csomaggal telepíthető.
+a local installation not accessible from the internet will not work with a public collabora server.	collabora	hu	Az internetről nem elérhető helyi telepítés NEM működik nyilvános Collabora Online szerverrel.
+a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	hu	A támogatott Collabora Online lehetővé teszi, hogy a megrendelt számú felhasználóval - több mint az alapértelmezés szerint telepített demó vagy fejlesztői verzió - használhassa.
+active user 'anonymous' found.	collabora	hu	Aktív 'anonymous' felhasználó található.
+admin console	collabora	hu	Admin konzol
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	hu	Az 'anonymous' felhasználó szükséges a Collabora Online-hoz a fájlok eléréséhez és a fájlok megosztásához is.
+can not read collobora configuration in %1!	collabora	hu	A Collabora Online konfigurációját NEM lehet beolvasni a %1-ben!
+checking for user 'anonymous'	collabora	hu	'anonymous' felhasználó keresése
 collabora	common	hu	Collabora Online
+collabora is not configured!	collabora	hu	A Collabora Online nincs konfigurálva!
+collabora server	collabora	hu	Collabora Online szerver
 conversion failed	collabora	hu	Az átalakítás sikertelen
 convert to	collabora	hu	Átalakítás
 converted	collabora	hu	Átalakítva
 converting...	collabora	hu	Átalakítás...
+create	collabora	hu	Hozzon létre
+create new %1	filemanager	hu	Új %1 létrehozása
+document	filemanager	hu	Dokumentum
 drawing	filemanager	hu	Rajzolás
-edit %1 in collabora	collabora	hu	%1 szerkesztése a Collabora Online-ban
+edit %1 in collabora	collabora	hu	%1 szerkesztése a Collaborában
+editable share link	collabora	hu	Szerkeszthető megosztási link
+egroupware epl is required to configure a custom collabora server.	collabora	hu	Az EGroupware EPL szükséges az egyéni Collabora Online kiszolgáló konfigurálásához.
+failed to create file %1!	collabora	hu	Nem sikerült létrehozni a %1 fájlt!
+failed to create file %1: file already exists!	collabora	hu	Nem sikerült létrehozni a %1 fájlt: a fájl már létezik!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	hu	Nem sikerült létrehozni a fájlt! Mert nincs elég jogosultsága a %1 mappához!
+failed to update collabora configuration in %1!	collabora	hu	Nem sikerült frissíteni a Collabora Online konfigurációt a %1 mappában!
 file renamed	collabora	hu	Fájl átnevezése
 insert	collabora	hu	beillesztése
 insert address	collabora	hu	Cím beillesztése
 insert merged content	collabora	hu	Összevont tartalom beillesztése
 latest revision	collabora	hu	Legutóbbi felülvizsgálat
 revision history	collabora	hu	Felülvizsgálati előzmények
+the collabora server must be able to access your egroupware installation!	collabora	hu	A Collabora Online kiszolgálónak képesnek kell lennie elérni az EGroupware telepítését!
+unable to connect	collabora	hu	Nem lehetséges a csatlakozás
+unable to contact collabora server	collabora	hu	Nem tud kapcsolatba lépni a Collabora Online szerverrel
+versions	collabora	hu	Verziók
+writable collabora link	collabora	hu	Írható Collabora Online kapcsolat
+writable collabora share	collabora	hu	Írható Collabora Online megosztás
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	hu	Támogatott Collabora Online telepítéshez az EGroupware GmbH üzletéből származó támogatási kulcsra van szüksége.
