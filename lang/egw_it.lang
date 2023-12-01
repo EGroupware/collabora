@@ -3,11 +3,11 @@
 a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	it	Un server locale Collabora Online, può essere installato con il pacchetto 'egroupware-collabora-key'
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	it	Una installazione locale non accessibile via internet NON funzionerà con un server pubblico Collabora Online.
 a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	it	Una installazione Collabora Online con supporto, ne permette l'uso con il numero di utenti ordinato - maggiore di quello della demo oppure della versione per sviluppatori, installata di default
-active user 'anonymous' found.	collabora	it	Trovato utente "anonimo" attivo
+active user 'anonymous' found.	collabora	it	Trovato utente "anonymous" attivo
 admin console	collabora	it	Console amministratore
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	it	Un utente "anonimo" è richiesto da parte di Collabora per accedere e condividere file
 can not read collobora configuration in %1!	collabora	it	Cobfigurazione Collabora Online non leggibile in %1!
-checking for user 'anonymous'	collabora	it	Controllo l'esistenza di un utente "anonimo"
+checking for user 'anonymous'	collabora	it	Controllo l'esistenza di un utente "anonymous"
 collabora	common	it	Collabora Online
 collabora is not configured!	collabora	it	Collabora Online non è configurato!
 collabora server	collabora	it	Server Collabora Online
@@ -35,7 +35,7 @@ insert merged content	collabora	it	Inserisci contenuto unito
 latest revision	collabora	it	Ultima revisione
 link is appended to email allowing recipients to edit the file	collabora	it	Il link è aggiunto alla fine della mail permettendo ai destinatari di modificare il file
 local collabora server	collabora	it	Server Collabora Online locale
-no active user 'anonymous' found!	collabora	it	Non è stato trovato un utente "anonimo"!
+no active user 'anonymous' found!	collabora	it	Non è stato trovato un utente "anonymous"!
 open as new	filemanager	it	Apri come nuovo
 please enter your file name	filemanager	it	Per favore inserisci il nome del tuo file
 presentation	filemanager	it	Presentazione

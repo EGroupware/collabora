@@ -19,7 +19,7 @@ create	collabora	nl	Aanmaken
 create new %1	filemanager	nl	Nieuw %1 aanmaken
 document	filemanager	nl	Document
 drawing	filemanager	nl	Tekening
-edit %1 in collabora	collabora	nl	Bewerk %1 in Collabora
+edit %1 in collabora	collabora	nl	Bewerk %1 in Collabora Online
 editable share link	collabora	nl	Bewerkbare link voor delen
 egroupware epl is required to configure a custom collabora server.	collabora	nl	EGroupware EPL is vereist om een aangepaste Collabora Online server te configureren.
 failed to create file %1!	collabora	nl	Fout bij het maken van bestand %1!

@@ -19,7 +19,7 @@ create	collabora	fi	Luo
 create new %1	filemanager	fi	Luo uusi %1
 document	filemanager	fi	Asiakirja
 drawing	filemanager	fi	Piirtäminen
-edit %1 in collabora	collabora	fi	Muokkaa %1 Collaborassa
+edit %1 in collabora	collabora	fi	Muokkaa %1 Collabora Online
 editable share link	collabora	fi	Muokattava jakolinkki
 egroupware epl is required to configure a custom collabora server.	collabora	fi	EGroupware EPL tarvitaan mukautetun Collabora Online -palvelimen konfigurointiin.
 failed to create file %1!	collabora	fi	Tiedoston %1 luominen epäonnistui!

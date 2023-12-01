@@ -3,11 +3,11 @@
 a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	pt	Um servidor local do Collabora Online pode ser instalado com o pacote 'egroupware-collabora-key'.
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	pt	Uma instalação local não acessível a partir da Internet NÃO funcionará com um servidor público Collabora Online.
 a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	pt	Um Collabora Online suportado permite a sua utilização com o número de utilizadores solicitado - mais do que a versão de demonstração ou de desenvolvimento, instalada por defeito.
-active user 'anonymous' found.	collabora	pt	Utilizador ativo 'anónimo' encontrado.
+active user 'anonymous' found.	collabora	pt	Utilizador ativo 'anonymous' encontrado.
 admin console	collabora	pt	Consola de administração
-an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	pt	É necessário um utilizador 'anónimo' para que o Collabora Online aceda aos ficheiros e também para partilhar ficheiros.
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	pt	É necessário um utilizador 'anonymous' para que o Collabora Online aceda aos ficheiros e também para partilhar ficheiros.
 can not read collobora configuration in %1!	collabora	pt	NÃO é possível ler a configuração do Collabora Online em %1!
-checking for user 'anonymous'	collabora	pt	Verificação do utilizador 'anónimo'
+checking for user 'anonymous'	collabora	pt	Verificação do utilizador 'anonymous'
 collabora	common	pt	Collabora Online
 collabora is not configured!	collabora	pt	Collabora Online não está configurado!
 collabora server	collabora	pt	Servidor Collabora Online
@@ -19,18 +19,31 @@ create	collabora	pt	Criar
 create new %1	filemanager	pt	Criar novo %1
 document	filemanager	pt	Documento
 drawing	filemanager	pt	Desenho
-edit %1 in collabora	collabora	pt	Editar %1 no Collabora
+edit %1 in collabora	collabora	pt	Editar %1 no Collabora Online
 editable share link	collabora	pt	Ligação de partilha editável
 egroupware epl is required to configure a custom collabora server.	collabora	pt	O EGroupware EPL é necessário para configurar um servidor Collabora Online personalizado.
 failed to create file %1!	collabora	pt	Falha ao criar o ficheiro %1!
 failed to create file %1: file already exists!	collabora	pt	Falha ao criar o ficheiro %1: o ficheiro já existe!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	pt	Falha ao criar o ficheiro! Porque não tem permissão suficiente para a pasta %1!
 failed to update collabora configuration in %1!	collabora	pt	Falha ao atualizar a configuração do Collabora Online em %1!
+file	collabora	pt	Ficheiro
+file %1 has been created successfully.	collabora	pt	O ficheiro %1 foi criado com sucesso.
 file renamed	collabora	pt	Ficheiro renomeado
+insert	collabora	pt	Inserir
 insert address	collabora	pt	Inserir morada
 insert merged content	collabora	pt	Inserir conteúdo fundido
 latest revision	collabora	pt	Revisão mais recente
+link is appended to email allowing recipients to edit the file	collabora	pt	O link é anexado ao e-mail permitindo que os destinatários editem o ficheiro
+local collabora server	collabora	pt	Servidor local do Collabora Online
+no active user 'anonymous' found!	collabora	pt	Não foi encontrado nenhum utilizador ativo 'anonymous'!
+open as new	filemanager	pt	Abrir como novo
+please enter your file name	filemanager	pt	Por favor, introduza o nome do seu ficheiro
+presentation	filemanager	pt	Apresentação do ficheiro
+requirements / please note	collabora	pt	Requisitos / por favor note
 revision history	collabora	pt	História da Revisão
+save as mail	collabora	pt	Enviar como correio eletrónico
+spreadsheet	filemanager	pt	Folha de cálculo
+support-key	collabora	pt	Chave de suporte
 the collabora server must be able to access your egroupware installation!	collabora	pt	O servidor Collabora Online deve poder aceder à sua instalação EGroupware!
 unable to connect	collabora	pt	Não é possível ligar
 unable to contact collabora server	collabora	pt	Não é possível contactar o servidor Collabora Online

@@ -19,7 +19,7 @@ create	collabora	id	Membuat
 create new %1	filemanager	id	Buat %1 baru
 document	filemanager	id	Dokumen
 drawing	filemanager	id	Menggambar
-edit %1 in collabora	collabora	id	Mengedit %1 di Collabora
+edit %1 in collabora	collabora	id	Mengedit %1 di Collabora Online
 editable share link	collabora	id	Tautan berbagi yang dapat diedit
 egroupware epl is required to configure a custom collabora server.	collabora	id	EGroupware EPL diperlukan untuk mengonfigurasi server Collabora Online khusus.
 failed to create file %1!	collabora	id	Gagal membuat file %1!

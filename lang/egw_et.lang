@@ -19,7 +19,7 @@ create	collabora	et	Looge
 create new %1	filemanager	et	Looge uus %1
 document	filemanager	et	Dokument
 drawing	filemanager	et	Joonistamine
-edit %1 in collabora	collabora	et	Muuda %1 Collaboras
+edit %1 in collabora	collabora	et	Muuda %1 Collabora Online
 editable share link	collabora	et	Redigeeritav jagamislink
 egroupware epl is required to configure a custom collabora server.	collabora	et	Kohandatud Collabora Online'i serveri konfigureerimiseks on vaja EGroupware EPL-i.
 failed to create file %1!	collabora	et	Faili %1 loomine ebaõnnestus!

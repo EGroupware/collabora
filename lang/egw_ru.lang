@@ -19,7 +19,7 @@ create	collabora	ru	Создать
 create new %1	filemanager	ru	Создайте новый %1
 document	filemanager	ru	Документ
 drawing	filemanager	ru	Рисунок
-edit %1 in collabora	collabora	ru	Редактировать %1 в Collabora
+edit %1 in collabora	collabora	ru	Редактировать %1 в Collabora Online
 editable share link	collabora	ru	Редактируемая ссылка на общий ресурс
 egroupware epl is required to configure a custom collabora server.	collabora	ru	Для настройки пользовательского сервера Collabora Online требуется EGroupware EPL
 failed to create file %1!	collabora	ru	Не удалось создать файл %1!

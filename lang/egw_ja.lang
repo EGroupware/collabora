@@ -19,7 +19,7 @@ create	collabora	ja	新規作成
 create new %1	filemanager	ja	新しい %1 を作成してください。
 document	filemanager	ja	ドキュメント
 drawing	filemanager	ja	描画
-edit %1 in collabora	collabora	ja	Collabora で %1 を編集してください。
+edit %1 in collabora	collabora	ja	Collabora Online で %1 を編集してください。
 editable share link	collabora	ja	編集可能な共有リンク
 egroupware epl is required to configure a custom collabora server.	collabora	ja	カスタムCollabora Onlineサーバーを構成するには、EGroupware EPLが必要です。
 failed to create file %1!	collabora	ja	ファイル %1 の作成に失敗しました！

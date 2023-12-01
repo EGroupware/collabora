@@ -10,7 +10,7 @@ can not read collobora configuration in %1!	collabora	zh	无法读取 %1 中的 
 checking for user 'anonymous'	collabora	zh	检查用户 "匿名
 collabora	common	zh	Collabora Online
 collabora is not configured!	collabora	zh	未配置 Collabora Online！
-collabora server	collabora	zh	Collabora 在线服务器
+collabora server	collabora	zh	Collabora Online 在线服务器
 conversion failed	collabora	zh	转换失败
 convert to	collabora	zh	转换为
 converted	collabora	zh	已转换
@@ -19,22 +19,35 @@ create	collabora	zh	创建
 create new %1	filemanager	zh	创建新 %1
 document	filemanager	zh	文档
 drawing	filemanager	zh	绘图
-edit %1 in collabora	collabora	zh	在 Collabora 中编辑 %1
+edit %1 in collabora	collabora	zh	在 Collabora Online 中编辑 %1
 editable share link	collabora	zh	可编辑的共享链接
 egroupware epl is required to configure a custom collabora server.	collabora	zh	配置自定义 Collabora Online 服务器需要 EGroupware EPL。
 failed to create file %1!	collabora	zh	创建文件 %1 失败！
 failed to create file %1: file already exists!	collabora	zh	创建文件 %1 失败：文件已存在！
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	zh	创建文件失败！因为您没有 %1 文件夹的足够权限！
 failed to update collabora configuration in %1!	collabora	zh	在 %1 中更新 Collabora Online 配置失败！
+file	collabora	zh	文件
+file %1 has been created successfully.	collabora	zh	文件 %1 已成功创建。
 file renamed	collabora	zh	文件重命名
+insert	collabora	zh	插入
 insert address	collabora	zh	插入地址
 insert merged content	collabora	zh	插入合并的内容
 latest revision	collabora	zh	最新修订
+link is appended to email allowing recipients to edit the file	collabora	zh	链接已附加到电子邮件中，允许收件人编辑文件
+local collabora server	collabora	zh	本地 Collabora Online 服务器
+no active user 'anonymous' found!	collabora	zh	未找到活动用户 "anonymous"！
+open as new	filemanager	zh	作为新用户打开
+please enter your file name	filemanager	zh	请输入您的文件名
+presentation	filemanager	zh	演示文稿
+requirements / please note	collabora	zh	要求/请注意
 revision history	collabora	zh	修订历史
+save as mail	collabora	zh	以电子邮件形式发送
+spreadsheet	filemanager	zh	电子表格
+support-key	collabora	zh	支持键
 the collabora server must be able to access your egroupware installation!	collabora	zh	Collabora Online 服务器必须能够访问您安装的 EGroupware！
 unable to connect	collabora	zh	无法连接
 unable to contact collabora server	collabora	zh	无法联系 Collabora Online 服务器
 versions	collabora	zh	版本
-writable collabora link	collabora	zh	可写入的 Collabora 在线链接
-writable collabora share	collabora	zh	可写入的 Collabora 在线共享
+writable collabora link	collabora	zh	可写入的 Collabora Online 在线链接
+writable collabora share	collabora	zh	可写入的 Collabora Online 在线共享
 you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	zh	您需要从 EGroupware GmbH 商店获得支持密钥，以安装受支持的 Collabora Online。

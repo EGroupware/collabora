@@ -19,18 +19,31 @@ create	collabora	pt-br	Criar
 create new %1	filemanager	pt-br	Criar novo %1
 document	filemanager	pt-br	Documento
 drawing	filemanager	pt-br	Desenho
-edit %1 in collabora	collabora	pt-br	Editar %1 no Collabora
+edit %1 in collabora	collabora	pt-br	Editar %1 no Collabora Online
 editable share link	collabora	pt-br	Link de compartilhamento editável
 egroupware epl is required to configure a custom collabora server.	collabora	pt-br	O EGroupware EPL é necessário para configurar um servidor Collabora Online personalizado.
 failed to create file %1!	collabora	pt-br	Falha ao criar o arquivo %1!
 failed to create file %1: file already exists!	collabora	pt-br	Falha ao criar o arquivo %1: o arquivo já existe!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	pt-br	Falha ao criar o arquivo! Porque você não tem permissão suficiente para a pasta %1!
 failed to update collabora configuration in %1!	collabora	pt-br	Falha ao atualizar a configuração do Collabora Online em %1!
+file	collabora	pt-br	Arquivo
+file %1 has been created successfully.	collabora	pt-br	O arquivo %1 foi criado com êxito.
 file renamed	collabora	pt-br	Arquivo renomeado
+insert	collabora	pt-br	Inserir
 insert address	collabora	pt-br	Inserir endereço
 insert merged content	collabora	pt-br	Inserir conteúdo fundido
 latest revision	collabora	pt-br	Revisão mais recente
+link is appended to email allowing recipients to edit the file	collabora	pt-br	O link é anexado ao e-mail, permitindo que os destinatários editem o arquivo
+local collabora server	collabora	pt-br	Servidor local do Collabora Online
+no active user 'anonymous' found!	collabora	pt-br	Nenhum usuário ativo 'anônimo' foi encontrado!
+open as new	filemanager	pt-br	Abrir como novo
+please enter your file name	filemanager	pt-br	Por favor, digite o nome do seu arquivo
+presentation	filemanager	pt-br	Apresentação do arquivo
+requirements / please note	collabora	pt-br	Requisitos / favor observar
 revision history	collabora	pt-br	Histórico de revisão
+save as mail	collabora	pt-br	Enviar como e-mail
+spreadsheet	filemanager	pt-br	Planilha eletrônica
+support-key	collabora	pt-br	Chave de suporte
 the collabora server must be able to access your egroupware installation!	collabora	pt-br	O servidor do Collabora Online deve ser capaz de acessar sua instalação do EGroupware!
 unable to connect	collabora	pt-br	Não é possível conectar
 unable to contact collabora server	collabora	pt-br	Não é possível entrar em contato com o servidor do Collabora Online

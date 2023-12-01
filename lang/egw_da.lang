@@ -19,7 +19,7 @@ create	collabora	da	Opret
 create new %1	filemanager	da	Opret nyt %1
 document	filemanager	da	Dokument
 drawing	filemanager	da	Tegning
-edit %1 in collabora	collabora	da	Rediger %1 i Collabora
+edit %1 in collabora	collabora	da	Rediger %1 i Collabora Online
 editable share link	collabora	da	Redigerbart link til deling
 egroupware epl is required to configure a custom collabora server.	collabora	da	EGroupware EPL er påkrævet for at konfigurere en brugerdefineret Collabora Online-server.
 failed to create file %1!	collabora	da	Det lykkedes ikke at oprette fil %1!
