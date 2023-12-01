@@ -19,7 +19,7 @@ create	collabora	ko	만들기
 create new %1	filemanager	ko	새 %1을(를) 만듭니다.
 document	filemanager	ko	문서
 drawing	filemanager	ko	도면
-edit %1 in collabora	collabora	ko	콜라보라에서 %1 편집
+edit %1 in collabora	collabora	ko	콜라보라 온라인에서 %1 편집
 editable share link	collabora	ko	편집 가능한 공유 링크
 egroupware epl is required to configure a custom collabora server.	collabora	ko	사용자 지정 콜러보라 온라인 서버를 구성하려면 E그룹웨어 EPL이 필요합니다.
 failed to create file %1!	collabora	ko	%1 파일을 만들지 못했습니다!

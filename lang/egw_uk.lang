@@ -19,18 +19,31 @@ create	collabora	uk	Створити
 create new %1	filemanager	uk	Створити новий %1
 document	filemanager	uk	Документ
 drawing	filemanager	uk	Малюнок
-edit %1 in collabora	collabora	uk	Відредагувати %1 у Collabora
+edit %1 in collabora	collabora	uk	Відредагувати %1 у Collabora Online
 editable share link	collabora	uk	Редагування посилання для спільного доступу
 egroupware epl is required to configure a custom collabora server.	collabora	uk	EGroupware EPL потрібен для налаштування спеціального сервера Collabora Online.
 failed to create file %1!	collabora	uk	Не вдалося створити файл %1!
 failed to create file %1: file already exists!	collabora	uk	Не вдалося створити файл %1: файл вже існує!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	uk	Не вдалося створити файл! Тому що у вас недостатньо прав на папку %1!
 failed to update collabora configuration in %1!	collabora	uk	Не вдалося оновити конфігурацію Collabora Online в %1!
+file	collabora	uk	Файл
+file %1 has been created successfully.	collabora	uk	Файл %1 успішно створено.
 file renamed	collabora	uk	Файл перейменовано
 insert	collabora	uk	Вставити
 insert address	collabora	uk	Вставити адресу
 insert merged content	collabora	uk	Вставити об'єднаний вміст
 latest revision	collabora	uk	Остання редакція
+link is appended to email allowing recipients to edit the file	collabora	uk	До імейлу додано посилання, що дозволяє одержувачам редагувати файл
+local collabora server	collabora	uk	Локальний сервер Collabora Online
+no active user 'anonymous' found!	collabora	uk	Не знайдено активного користувача 'anonymous'!
+open as new	filemanager	uk	Відкрити як новий
+please enter your file name	filemanager	uk	Будь ласка, введіть назву вашого файлу
+presentation	filemanager	uk	Презентація
+requirements / please note	collabora	uk	Вимоги / зверніть увагу
+revision history	collabora	uk	Історія змін
+save as mail	collabora	uk	Надішліть електронною поштою
+spreadsheet	filemanager	uk	Електронна таблиця
+support-key	collabora	uk	Клавіша підтримки
 the collabora server must be able to access your egroupware installation!	collabora	uk	Сервер Collabora Online повинен мати доступ до вашої інсталяції EGroupware!
 unable to connect	collabora	uk	Не вдається підключитися
 unable to contact collabora server	collabora	uk	Не вдається зв'язатися з сервером Collabora Online

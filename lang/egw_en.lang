@@ -15,12 +15,11 @@ conversion failed	collabora	en	Conversion failed
 convert to	collabora	en	Convert to
 converted	collabora	en	Converted
 converting...	collabora	en	Converting...
-conversion failed	collabora	en	Conversion failed
 create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
 document	filemanager	en	Document
 drawing	filemanager	en	Drawing
-edit %1 in collabora	collabora	en	Edit %1 in Collabora
+edit %1 in collabora	collabora	en	Edit %1 in Collabora Online
 editable share link	collabora	en	Editable share link
 egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora Online server.
 failed to create file %1!	collabora	en	Failed to create file %1!
@@ -51,4 +50,4 @@ unable to contact collabora server	collabora	en	Unable to contact Collabora Onli
 versions	collabora	en	Versions
 writable collabora link	collabora	en	Writable Collabora Online link
 writable collabora share	collabora	en	Writable Collabora Online share
-you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	en	You need a support-key from the EGroupware GmbH shop, for a supported Collabora Online installation.
+you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	en	You need a support-key from the <a href="https://www.egroupware.org/pricing#Onlineoffice" target="_blank">EGroupware GmbH shop</a>, for a supported Collabora Online installation.

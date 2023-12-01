@@ -19,19 +19,31 @@ create	collabora	hu	Hozzon létre
 create new %1	filemanager	hu	Új %1 létrehozása
 document	filemanager	hu	Dokumentum
 drawing	filemanager	hu	Rajzolás
-edit %1 in collabora	collabora	hu	%1 szerkesztése a Collaborában
+edit %1 in collabora	collabora	hu	%1 szerkesztése a Collabora Online
 editable share link	collabora	hu	Szerkeszthető megosztási link
 egroupware epl is required to configure a custom collabora server.	collabora	hu	Az EGroupware EPL szükséges az egyéni Collabora Online kiszolgáló konfigurálásához.
 failed to create file %1!	collabora	hu	Nem sikerült létrehozni a %1 fájlt!
 failed to create file %1: file already exists!	collabora	hu	Nem sikerült létrehozni a %1 fájlt: a fájl már létezik!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	hu	Nem sikerült létrehozni a fájlt! Mert nincs elég jogosultsága a %1 mappához!
 failed to update collabora configuration in %1!	collabora	hu	Nem sikerült frissíteni a Collabora Online konfigurációt a %1 mappában!
+file	collabora	hu	Fájl
+file %1 has been created successfully.	collabora	hu	A %1 fájl létrehozása sikeresen megtörtént.
 file renamed	collabora	hu	Fájl átnevezése
-insert	collabora	hu	beillesztése
+insert	collabora	hu	Beillesztése
 insert address	collabora	hu	Cím beillesztése
 insert merged content	collabora	hu	Összevont tartalom beillesztése
 latest revision	collabora	hu	Legutóbbi felülvizsgálat
+link is appended to email allowing recipients to edit the file	collabora	hu	Linket csatoltunk az e-mailhez, amely lehetővé teszi a címzettek számára a fájl szerkesztését.
+local collabora server	collabora	hu	Helyi Collabora Online szerver
+no active user 'anonymous' found!	collabora	hu	Nem találtunk aktív 'anonymous' felhasználót!
+open as new	filemanager	hu	Újként nyissa meg
+please enter your file name	filemanager	hu	Kérjük, adja meg a fájl nevét
+presentation	filemanager	hu	Prezentáció
+requirements / please note	collabora	hu	Követelmények / kérjük, vegye figyelembe
 revision history	collabora	hu	Felülvizsgálati előzmények
+save as mail	collabora	hu	E-mailben küldje el
+spreadsheet	filemanager	hu	Táblázat
+support-key	collabora	hu	Támogatás-kulcs
 the collabora server must be able to access your egroupware installation!	collabora	hu	A Collabora Online kiszolgálónak képesnek kell lennie elérni az EGroupware telepítését!
 unable to connect	collabora	hu	Nem lehetséges a csatlakozás
 unable to contact collabora server	collabora	hu	Nem tud kapcsolatba lépni a Collabora Online szerverrel

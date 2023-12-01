@@ -5,9 +5,9 @@ a local installation not accessible from the internet will not work with a publi
 a supported collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default.	admin	es-es	Un Collabora Online soportado permite utilizarlo con el número de usuarios ordenado - más que la versión demo o de desarrollador, instalada por defecto.
 active user 'anonymous' found.	collabora	es-es	Usuario activo 'anonymous' encontrado.
 admin console	collabora	es-es	Consola de administración
-an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	es-es	Un usuario 'anónimo' es necesario para Collabora Online para acceder a los archivos y también para compartir archivos.
+an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	es-es	Un usuario 'anonymous' es necesario para Collabora Online para acceder a los archivos y también para compartir archivos.
 can not read collobora configuration in %1!	collabora	es-es	¡NO se puede leer la configuración de Collabora Online en %1!
-checking for user 'anonymous'	collabora	es-es	Comprobando usuario 'anonymous
+checking for user 'anonymous'	collabora	es-es	Comprobando usuario 'anonymous'
 collabora	common	es-es	Collabora Online
 collabora is not configured!	collabora	es-es	¡Collabora Online no está configurado!
 collabora server	collabora	es-es	Servidor de Collabora Online
@@ -19,7 +19,7 @@ create	collabora	es-es	Crear
 create new %1	filemanager	es-es	Crear nuevo %1
 document	filemanager	es-es	Documento
 drawing	filemanager	es-es	Dibujo
-edit %1 in collabora	collabora	es-es	Editar %1 en Collabora
+edit %1 in collabora	collabora	es-es	Editar %1 en Collabora Online
 editable share link	collabora	es-es	Enlace para compartir editable
 egroupware epl is required to configure a custom collabora server.	collabora	es-es	EGroupware EPL es necesario para configurar un servidor Collabora Online personalizado.
 failed to create file %1!	collabora	es-es	¡Error al crear el archivo %1!

@@ -19,7 +19,7 @@ create	collabora	lv	Izveidot
 create new %1	filemanager	lv	Izveidot jaunu %1
 document	filemanager	lv	Dokuments
 drawing	filemanager	lv	Zīmēšana
-edit %1 in collabora	collabora	lv	Rediģēt %1 programmā Collabora
+edit %1 in collabora	collabora	lv	Rediģēt %1 programmā Collabora Online
 editable share link	collabora	lv	Rediģējama koplietošanas saite
 egroupware epl is required to configure a custom collabora server.	collabora	lv	Lai konfigurētu pielāgotu Collabora Online serveri, ir nepieciešams EGroupware EPL.
 failed to create file %1!	collabora	lv	Fail to create file %1!

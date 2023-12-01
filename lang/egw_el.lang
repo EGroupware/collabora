@@ -19,7 +19,7 @@ create	collabora	el	Δημιουργία
 create new %1	filemanager	el	Δημιουργία νέου %1
 document	filemanager	el	Αρχείο κειμένου
 drawing	filemanager	el	Σχεδίαση
-edit %1 in collabora	collabora	el	Επεξεργασία %1 στο Collabora
+edit %1 in collabora	collabora	el	Επεξεργασία %1 στο Collabora Online
 editable share link	collabora	el	Σύνδεσμος  κοινοποίησης  με δικαίωμα επεξεργασίας
 egroupware epl is required to configure a custom collabora server.	collabora	el	Το EGroupware EPL απαιτείται για τη διαμόρφωση ενός προσαρμοσμένου διακομιστή Collabora Online.
 failed to create file %1!	collabora	el	Απέτυχε η δημιουργία του αρχείου %1!

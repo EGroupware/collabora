@@ -19,18 +19,31 @@ create	collabora	ro	Creați
 create new %1	filemanager	ro	Creați un nou %1
 document	filemanager	ro	Document
 drawing	filemanager	ro	Desenare
-edit %1 in collabora	collabora	ro	Editați %1 în Collabora
+edit %1 in collabora	collabora	ro	Editați %1 în Collabora Online
 editable share link	collabora	ro	Link de partajare editabil
 egroupware epl is required to configure a custom collabora server.	collabora	ro	EGroupware EPL este necesar pentru a configura un server Collabora Online personalizat.
 failed to create file %1!	collabora	ro	Nu s-a reușit crearea fișierului %1!
 failed to create file %1: file already exists!	collabora	ro	Nu s-a reușit crearea fișierului %1: fișierul există deja!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	ro	Nu s-a reușit crearea fișierului! Deoarece nu aveți suficiente permisiuni pentru folderul %1!
 failed to update collabora configuration in %1!	collabora	ro	A eșuat actualizarea configurației Collabora Online în %1!
+file	collabora	ro	Fișier
+file %1 has been created successfully.	collabora	ro	Fișierul %1 a fost creat cu succes.
 file renamed	collabora	ro	Fișier redenumit
+insert	collabora	ro	Introduceți
 insert address	collabora	ro	Inserare adresă
 insert merged content	collabora	ro	Inserare conținut fuzionat
 latest revision	collabora	ro	Ultima revizuire
+link is appended to email allowing recipients to edit the file	collabora	ro	Link-ul este atașat la e-mail, permițând destinatarilor să editeze fișierul
+local collabora server	collabora	ro	Server local Collabora Online
+no active user 'anonymous' found!	collabora	ro	Nu s-a găsit niciun utilizator activ "anonymous"!
+open as new	filemanager	ro	Deschideți ca nou
+please enter your file name	filemanager	ro	Vă rugăm să introduceți numele fișierului dvs.
+presentation	filemanager	ro	Prezentare
+requirements / please note	collabora	ro	Cerințe / vă rugăm să rețineți
 revision history	collabora	ro	Istoric de revizuire
+save as mail	collabora	ro	Trimiteți ca e-mail
+spreadsheet	filemanager	ro	Foaie de calcul
+support-key	collabora	ro	Cheie de sprijin
 the collabora server must be able to access your egroupware installation!	collabora	ro	Serverul Collabora Online trebuie să poată accesa instalarea EGroupware!
 unable to connect	collabora	ro	Nu se poate conecta
 unable to contact collabora server	collabora	ro	Nu se poate contacta serverul Collabora Online

@@ -26,12 +26,24 @@ failed to create file %1!	collabora	tr	%1 dosyası oluşturulamadı!
 failed to create file %1: file already exists!	collabora	tr	%1 dosyası oluşturulamadı: dosya zaten var!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	tr	Dosya oluşturulamadı! Çünkü %1 klasörü için yeterli izniniz yok!
 failed to update collabora configuration in %1!	collabora	tr	Collabora Online yapılandırması %1 içinde güncellenemedi!
+file	collabora	tr	Dosya
+file %1 has been created successfully.	collabora	tr	Dosya %1 başarıyla oluşturuldu.
 file renamed	collabora	tr	Dosya yeniden adlandırıldı
 insert	collabora	tr	Ekleme
 insert address	collabora	tr	Adres giriniz
 insert merged content	collabora	tr	Birleştirilmiş içerik ekleme
 latest revision	collabora	tr	Son revizyon
+link is appended to email allowing recipients to edit the file	collabora	tr	Alıcıların dosyayı düzenlemesine olanak tanıyan bağlantı e-postaya eklenir
+local collabora server	collabora	tr	Yerel Collabora Online sunucusu
+no active user 'anonymous' found!	collabora	tr	Aktif kullanıcı 'anonymous' bulunamadı!
+open as new	filemanager	tr	Yeni olarak aç
+please enter your file name	filemanager	tr	Lütfen dosya adınızı girin
+presentation	filemanager	tr	Sunum
+requirements / please note	collabora	tr	Gereksinimler / lütfen dikkat
 revision history	collabora	tr	Revizyon Geçmişi
+save as mail	collabora	tr	E-posta olarak gönder
+spreadsheet	filemanager	tr	Elektronik tablo
+support-key	collabora	tr	Destek anahtarı
 the collabora server must be able to access your egroupware installation!	collabora	tr	Collabora Online sunucusu EGroupware kurulumunuza erişebilmelidir!
 unable to connect	collabora	tr	Bağlanılamıyor
 unable to contact collabora server	collabora	tr	Collabora Online sunucusuyla bağlantı kurulamıyor

@@ -7,7 +7,7 @@ active user 'anonymous' found.	collabora	pl	Znaleziono aktywnego użytkownika "a
 admin console	collabora	pl	Konsola administratora
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	pl	Użytkownik "anonymous" jest wymagany, aby Collabora Online miała dostęp do plików, a także do udostępniania plików.
 can not read collobora configuration in %1!	collabora	pl	NIE można odczytać konfiguracji Collabora Online w %1!
-checking for user 'anonymous'	collabora	pl	Sprawdzanie użytkownika "anonymous
+checking for user 'anonymous'	collabora	pl	Sprawdzanie użytkownika "anonymous"
 collabora	common	pl	Collabora Online
 collabora is not configured!	collabora	pl	Collabora Online nie jest skonfigurowana!
 collabora server	collabora	pl	Serwer Collabora Online
@@ -19,18 +19,31 @@ create	collabora	pl	Utwórz
 create new %1	filemanager	pl	Utwórz nowy %1
 document	filemanager	pl	Dokument
 drawing	filemanager	pl	Rysunek
-edit %1 in collabora	collabora	pl	Edytuj %1 w aplikacji Collabora
+edit %1 in collabora	collabora	pl	Edytuj %1 w aplikacji Collabora Online
 editable share link	collabora	pl	Edytowalne łącze udostępniania
 egroupware epl is required to configure a custom collabora server.	collabora	pl	Do skonfigurowania niestandardowego serwera Collabora Online wymagany jest EGroupware EPL.
 failed to create file %1!	collabora	pl	Nie udało się utworzyć pliku %1!
 failed to create file %1: file already exists!	collabora	pl	Nie udało się utworzyć pliku %1: plik już istnieje!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	pl	Nie udało się utworzyć pliku! Ponieważ nie masz wystarczających uprawnień do folderu %1!
 failed to update collabora configuration in %1!	collabora	pl	Nie udało się zaktualizować konfiguracji Collabora Online w %1!
+file	collabora	pl	Plik
+file %1 has been created successfully.	collabora	pl	Plik %1 został utworzony pomyślnie.
 file renamed	collabora	pl	Zmiana nazwy pliku
+insert	collabora	pl	Wstaw
 insert address	collabora	pl	Wstaw adres
 insert merged content	collabora	pl	Wstaw połączoną zawartość
 latest revision	collabora	pl	Najnowsza wersja
+link is appended to email allowing recipients to edit the file	collabora	pl	Link jest dołączany do wiadomości e-mail, umożliwiając odbiorcom edycję pliku.
+local collabora server	collabora	pl	Lokalny serwer Collabora Online
+no active user 'anonymous' found!	collabora	pl	Nie znaleziono aktywnego użytkownika "anonymous"!
+open as new	filemanager	pl	Otwórz jako nowy
+please enter your file name	filemanager	pl	Wprowadź nazwę pliku
+presentation	filemanager	pl	Prezentacja
+requirements / please note	collabora	pl	Wymagania / uwaga
 revision history	collabora	pl	Historia zmian
+save as mail	collabora	pl	Wyślij jako e-mail
+spreadsheet	filemanager	pl	Arkusz kalkulacyjny
+support-key	collabora	pl	Klucz pomocniczy
 the collabora server must be able to access your egroupware installation!	collabora	pl	Serwer Collabora Online musi mieć dostęp do instalacji EGroupware!
 unable to connect	collabora	pl	Nie można się połączyć
 unable to contact collabora server	collabora	pl	Nie można skontaktować się z serwerem Collabora Online

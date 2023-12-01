@@ -1,4 +1,4 @@
-%1 supported document types	collabora	bg	% 1 поддържа типове документи
+%1 supported document types	collabora	bg	%1 поддържа типове документи
 (requires username and password below)	collabora	bg	(изисква потребителско име и парола)
 a local collabora server can be installed with the 'egroupware-collabora-key' package.	admin	bg	Локален Collabora Online сървър може да бъде инсталиран с пакета 'egroupware-collabora-key'.
 a local installation not accessible from the internet will not work with a public collabora server.	collabora	bg	Локалната инсталация, недостъпна от интернет, НЯМА да работи с обществения Collabora Online сървър.
@@ -6,7 +6,7 @@ a supported collabora allows to use it with the ordered number of users - more t
 active user 'anonymous' found.	collabora	bg	Намерен е активен "Анонимен" потребител
 admin console	collabora	bg	Административна конзола
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	bg	"Анонимен" потребител е необходим за сървъра Collabora Online при достъп до файлове, а също и за споделяне на файлове.
-can not read collobora configuration in %1!	collabora	bg	НЕ МОЖЕ да разчете конфигурация на Collobora Online в% 1!
+can not read collobora configuration in %1!	collabora	bg	НЕ МОЖЕ да разчете конфигурация на Collobora Online в%1!
 checking for user 'anonymous'	collabora	bg	Проверка за "Анонимен" потребител
 collabora	common	bg	Collabora Online
 collabora is not configured!	collabora	bg	Collabora Online не е конфигуриранa!
@@ -19,13 +19,13 @@ create	collabora	bg	Създай
 create new %1	filemanager	bg	Създай нов(а) %1
 document	filemanager	bg	Документ
 drawing	filemanager	bg	Рисуване
-edit %1 in collabora	collabora	bg	Редактиране на % 1 в "Collabora"
+edit %1 in collabora	collabora	bg	Редактиране на %1 в Collabora Online
 editable share link	collabora	bg	Редактираща споделена връзка
 egroupware epl is required to configure a custom collabora server.	collabora	bg	EGroupware EPL е необходим за конфигуриране на персонализиран Collabora Online сървър.
-failed to create file %1!	collabora	bg	Неуспешно създаване на файл % 1!
-failed to create file %1: file already exists!	collabora	bg	Неуспешно създаване на файл% 1: файлът вече съществува!
-failed to create the file! because you do not have enough permission to %1 folder!	collabora	bg	Неуспешно създаване на файла! Нямате достатъчно права за % 1 папка!
-failed to update collabora configuration in %1!	collabora	bg	Неуспешна актуализация на "Collabora Online" конфигурацията в % 1!
+failed to create file %1!	collabora	bg	Неуспешно създаване на файл %1!
+failed to create file %1: file already exists!	collabora	bg	Неуспешно създаване на файл %1: файлът вече съществува!
+failed to create the file! because you do not have enough permission to %1 folder!	collabora	bg	Неуспешно създаване на файла! Нямате достатъчно права за %1 папка!
+failed to update collabora configuration in %1!	collabora	bg	Неуспешна актуализация на "Collabora Online" конфигурацията в %1!
 file	collabora	bg	Файл
 file %1 has been created successfully.	collabora	bg	Файл %1 е създаден успешно.
 file renamed	collabora	bg	Преименуване на файла
