@@ -673,7 +673,7 @@ class collaboraAPP extends EgwApp
 
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAs',
-			imgurl: 'images/lc_saveas.svg',
+			imgurl: 'lc_saveas.svg',
 			hint: this.egw.lang('Save As')
 		});
 		this.WOPIPostMessage('Insert_Button', {
