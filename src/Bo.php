@@ -216,12 +216,16 @@ class Bo {
 		$token['token'] = urlencode($token['token']);
 
 		// Make sure expiry is timestamp
-		if(!is_numeric($token['expires']))
+		if(!is_numeric($token['expires']) && $token['expires'])
 		{
 			$token['expires'] = DateTime::to($token['expires'], 'ts');
 
 			// Note that this is _not_ time to live, but expiry (per WOPI spec)
 			$share['access_token_ttl'] = $token['expires'];
+		}
+		else
+		{
+			unset($token['expires']);
 		}
 
 		return $token;

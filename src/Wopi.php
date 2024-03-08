@@ -174,7 +174,16 @@ class Wopi extends Sharing
 				$GLOBALS['egw_info']['flags']['restored_from_session'] = true;
 
 				// restoring the egw_info-array
-				$GLOBALS['egw_info'] = array_merge((array)$_SESSION[Api\Session::EGW_INFO_CACHE], ['flags' => $GLOBALS['egw_info']['flags']]);
+				$GLOBALS['egw_info'] = array_merge(
+					$GLOBALS['egw_info'],
+					(array)$_SESSION[Api\Session::EGW_INFO_CACHE],
+					['flags' => $GLOBALS['egw_info']['flags']]
+				);
+				$GLOBALS['egw_info']['user']['expires'] = -1;
+				$GLOBALS['egw']->session->account_lid = $GLOBALS['egw']->accounts->id2name($share['share_owner']);
+				$_SESSION[Api\Session::EGW_SESSION_VAR] = $_SESSION[Api\Session::EGW_SESSION_VAR] ??
+					['session_dla' => time(),
+					 'session_lid' => $GLOBALS['egw']->session->account_lid];
 			}
 			// we must NOT verify the IP of the user session against the IP of the Collabora server!
 			unset($GLOBALS['egw_info']['server']['sessions_checkip']);
@@ -230,6 +239,7 @@ class Wopi extends Sharing
 		{
 			// Need to save the fstab into the session so Collabora can find the file
 			$_SESSION[Api\Session::EGW_INFO_CACHE]['server']['vfs_fstab'] = $GLOBALS['egw_info']['server']['vfs_fstab'] = Vfs::mount();
+			Vfs::$user = $GLOBALS['egw_info']['user']['account_id'];
 
 			$extra = [
 				'share_writable' => self::WOPI_WRITABLE,
@@ -237,6 +247,9 @@ class Wopi extends Sharing
 			];
 			$old_share = $share;
 			$share = parent::create('', $share['share_root'] ?: $share['share_path'], self::WOPI_WRITABLE, Vfs::basename($share['share_path']), $extra['share_with'], $extra);
+
+			// Sleep to avoid condition where a reload is required before Collabora can get the file
+			sleep(0);
 
 			// we can't validate the token, as we just created a new one
 			$share['skip_validate_token'] = true;
