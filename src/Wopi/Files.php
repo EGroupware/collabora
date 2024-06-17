@@ -214,8 +214,11 @@ class Files
 			'DisableExport'     => false,
 			'DisableCopy'       => false,
 			'UserExtraInfo'		=> array(
-				'avatar'	=> Api\Framework::getUrl(Api\Framework::link('/api/avatar.php?account_id='.Vfs::$user))
-			)
+				'avatar'	    => Api\Framework::getUrl(Api\Framework::link('/api/avatar.php?account_id='.Vfs::$user)),
+				'mail'          => $GLOBALS['egw_info']['user']['account_email'],
+			),
+			'IsAdminUser'       => !empty($GLOBALS['egw_info']['user']['apps']['admin']),
+			'IsAnonymousUser'   => $GLOBALS['egw_info']['user']['account_lid'] === 'anonymous' || $GLOBALS['egw']->session->session_flags == 'A',
 		);
 
 		if($path)
