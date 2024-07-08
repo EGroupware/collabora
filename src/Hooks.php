@@ -60,4 +60,16 @@ class Hooks {
 			'mime' => $discover
 		);
 	}
+
+	public static function isCollaborable($_mime)
+	{
+		try {
+			$discover = Bo::discover();
+		}
+		catch (\Exception $e) {
+			unset($e);
+			return false;
+		}
+		return array_key_exists($_mime, $discover)?? false;
+	}
 }

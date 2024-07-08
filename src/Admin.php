@@ -158,7 +158,8 @@ class Admin
 				'storage/wopi/host' => str_replace('.', '\\.', $server_parsed['host']),
 				'admin_console/username' => $data['username'],
 				'admin_console/password' => $data['password'],
-				'user_interface/mode'     => 'default',    // required to switch via pref between classic and notebookbar
+				'user_interface/mode'    => 'default',    // required to switch via pref between classic and notebookbar
+				'per_document/pdf_resolution_dpi' => $data['pdf_resolution_dpi'] ?: 96,
 			));
 		}
 		if($error)

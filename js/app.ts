@@ -18,6 +18,8 @@ import {egw} from "../../api/js/jsapi/egw_global";
 import {et2_IInput} from "../../api/js/etemplate/et2_core_interfaces";
 import {Et2Dialog} from "../../api/js/etemplate/Et2Dialog/Et2Dialog";
 import {formatDate} from "../../api/js/etemplate/Et2Date/Et2Date";
+import {loadWebComponent} from "../../api/js/etemplate/Et2Widget/Et2Widget";
+import {Et2VfsSelectDialog} from "../../api/js/etemplate/Et2Vfs/Et2VfsSelectDialog";
 
 /**
  * UI for filemanager in collabora
@@ -721,49 +723,56 @@ class collaboraAPP extends EgwApp
 		// select current mime-type
 		let mime_types = [];
 		for(let mime in this.export_formats) {
+			let type = {value: mime, label: mime /*, icon: this.export_formats[mime].favIconUrl*/};
 			if (this.export_formats[mime].ext == ext) {
-				mime_types.unshift(mime);
+				mime_types.unshift(type);
 			} else {
-				mime_types.push(mime);
+				mime_types.push(type);
 			}
 		}
 
 		// create file selector
-		let vfs_select = et2_createWidget('vfs-select', {
-			id:'savefile',
+		let vfs_select = <Et2VfsSelectDialog><unknown>loadWebComponent('et2-vfs-select-dialog', {
+			id: 'savefile',
 			mode: 'saveas',
-			name: filename,
-			path: app.filemanager.dirname(filepath),
-			button_caption: "",
-			button_label: egw.lang("Save as"),
-			mime: mime_types
+			filename: filename,
+			path: app.filemanager.dirname(filepath).replace(/^(vfs:\/\/default)/, ""),
+			buttonLabel: this.egw.lang("Save as"),
+			mimeList: mime_types,
+			mime: mime_types[0].value ?? ""
 		}, this.et2);
 		let self = this;
+		vfs_select.show();
 
-		// bind change handler for setting the selected path and calling save
-		window.setTimeout(function() {
-			jQuery(vfs_select.getDOMNode()).on('change', function (){
-				let file_path = vfs_select.get_value();
-				let selectedMime = self.export_formats[vfs_select.dialog.value.mime];
-				// only add extension, if not already there
-				if(selectedMime && file_path.substr(-selectedMime.ext.length - 1) !== '.' + selectedMime.ext)
-				{
-					file_path += '.' + selectedMime.ext;
-				}
-				if(file_path)
-				{
-					// Update our value for path, or next time we do something with it (Save as again, email)
-					// it will be the original value
-					self.et2.getArrayMgr('content').data.path = file_path;
-					
-					self.WOPIPostMessage('Action_SaveAs', {
-						Filename: file_path
-					});
-				}
-			});
-		}, 1);
-		// start the file selector dialog
-		vfs_select.click();
+		// Wait until user is done
+		vfs_select.getComplete().then(([button, file_paths]) =>
+		{
+			// Single use
+			vfs_select.remove();
+			if(!button)
+			{
+				return;
+			}
+
+			let file_path = file_paths[0] ?? false;
+
+			let selectedMime = this.export_formats[<string>vfs_select.mime];
+			// only add extension, if not already there
+			if(selectedMime && file_path.substr(-selectedMime.ext.length - 1) !== '.' + selectedMime.ext)
+			{
+				file_path += '.' + selectedMime.ext;
+			}
+			if(file_path)
+			{
+				// Update our value for path, or next time we do something with it (Save as again, email)
+				// it will be the original value
+				this.et2.getArrayMgr('content').data.path = file_path;
+
+				this.WOPIPostMessage('Action_SaveAs', {
+					Filename: file_path
+				});
+			}
+		});
 	}
 
 	/**
@@ -841,49 +850,37 @@ class collaboraAPP extends EgwApp
 	 */
 	insert_image()
 	{
-		let image_selected = function(node, widget)
+		let image_selected = function(event)
 		{
-			if(widget.get_value())
+			let filenames = event.target.value ?? [];
+			event.target.remove();
+			filenames.forEach((filename) =>
 			{
 				// Collabora server probably doesn't have access to file, so share it
 				// It needs access, but only to fetch the file so expire tomorrow.
-				// Collabora will fail (hang) if share dissapears while the document is open
+				// Collabora will fail (hang) if share disappears while the document is open
 				let expires = new Date();
 				expires.setUTCDate(expires.getUTCDate()+1);
 				this.egw.json('EGroupware\\Api\\Sharing::ajax_create',
-					['collabora', widget.get_value(), false, false, {share_expires: formatDate(expires, {dateFormat: 'Y-m-d'})}],
+					['collabora', filename, false, false, {share_expires: formatDate(expires, {dateFormat: 'Y-m-d'})}],
 					function(value) {
 						// Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
 						// (WebDAV/Server.php line 247
 						this.WOPIPostMessage('Action_InsertGraphic', {url:value.share_link+'/'});
 					},
 					this, true,this,this.egw).sendRequest();
-			}
+			});
 		}.bind(this);
 		let attrs = {
 			mode: 'open',
-			dialog_title: this.egw.lang('Insert'),
-			button_label: this.egw.lang('Insert'),
-			onchange: image_selected,
-			class: "hideme"
+			open: true,
+			title: this.egw.lang('Insert'),
+			buttonLabel: this.egw.lang('Insert'),
+			mime: 'image/'
 		};
-		let select = et2_createWidget('vfs-select', attrs, this.et2);
-		select.loadingFinished();
-		select.click();
-
-		// vfs-select is legacy widget, need to use timeout to wait for the dialog to exist
-		window.setTimeout(() =>
-		{
-			if(!select.dialog)
-			{
-				return;
-			}
-			// Remove select button when complete
-			select.dialog.getComplete().then(() =>
-			{
-				select.destroy();
-			})
-		}, 1000);
+		let select = loadWebComponent('et2-vfs-select-dialog', attrs, this.et2);
+		select.show();
+		select.addEventListener("change", image_selected);
 	}
 
 	/**

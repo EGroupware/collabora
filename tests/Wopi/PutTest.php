@@ -14,6 +14,7 @@ namespace EGroupware\Collabora;
 
 require_once __DIR__ . '/../WopiBase.php';
 
+use EGroupware\Api\Sharing;
 use \EGroupware\Api\Vfs;
 
 /**
@@ -61,7 +62,8 @@ class PutTest extends WopiBase
 		$extra = array();
 		$mode = Wopi::WOPI_WRITABLE;
 		$this->getShareExtra($url, $mode, $extra);
-		$GLOBALS['egw']->sharing = ['share' => $this->createShare($url, $mode, $extra)];
+		$share = $this->createShare($url, $mode, $extra);
+		$GLOBALS['egw']->sharing = [$share['share_token'] => Sharing::factory($share)];
 
 		$response = $files->put($url);
 

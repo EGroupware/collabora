@@ -68,6 +68,10 @@
 					<et2-description  value="Password"></et2-description>
 					<et2-password  id="newsettings[password]"></et2-password>
 				</row>
+				<row disabled="@newsettings[no_managed_collabora]">
+					<et2-description value="PDF resolution (dpi)"></et2-description>
+					<et2-number id="newsettings[pdf_resolution_dpi]" min="96" max="385" step="1"></et2-number>
+				</row>
 			</rows>
 		</grid>
 	</template>

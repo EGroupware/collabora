@@ -153,7 +153,7 @@ class FileIDTest extends WopiBase
 		$files = Vfs::find($dir, static::VFS_OPTIONS);
 
 		// Make sure all are there
-		foreach($files as $file)
+		foreach($this->files as $file)
 		{
 			if(Vfs::is_dir($file)) continue;
 
