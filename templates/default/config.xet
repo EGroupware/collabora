@@ -43,7 +43,8 @@
 				<row height="60">
 					<et2-vbox>
 						<et2-description  value="A local Collabora server can be installed with the 'egroupware-collabora-key' package."></et2-description>
-						<et2-description  value="You need a support-key from the EGroupware GmbH shop, for a supported Collabora installation." href="https://www.egroupware.org/collabora-office/#order" extraLinkTarget="_blank"></et2-description>
+						<et2-description value="You need a support-key from the EGroupware GmbH shop, for a supported Collabora installation."
+							href="https://www.egroupware.org/pricing#Onlineoffice" extraLinkTarget="_blank"></et2-description>
 						<et2-description  value="A supported Collabora allows to use it with the ordered number of users - more than the demo or developer version, installed by default." colspan="2"></et2-description>
 					</et2-vbox>
 				</row>
@@ -57,8 +58,10 @@
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]" height="30" valign="bottom">
 					<!-- hack to get value propagated: id="newsettings[admin_page]" -->
-					<et2-description  value="Admin console" onclick="window.open('{$cont['newsettings']['admin_page']}', '_blank');" fontStyle="b"></et2-description>
-					<et2-description  value="(requires username and password below)"></et2-description>
+					<et2-description  value="Admin console" onclick="window.open('{$cont['newsettings']['admin_page']}', '_blank');" style="font-weight: bold"></et2-description>
+					<et2-description value="{$cont['newsettings']['server']}{$cont['newsettings']['admin_page']}"
+						statustext="(requires username and password below)" extraLinkTarget="_blank"
+						href="{$cont['newsettings']['server']}{$cont['newsettings']['admin_page']}"></et2-description>
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]">
 					<et2-description  value="Username"></et2-description>
@@ -70,7 +73,7 @@
 				</row>
 				<row disabled="@newsettings[no_managed_collabora]">
 					<et2-description value="PDF resolution (dpi)"></et2-description>
-					<et2-number id="newsettings[pdf_resolution_dpi]" min="96" max="385" step="1"></et2-number>
+					<et2-number id="newsettings[pdf_resolution_dpi]" placeholder="96" min="96" max="385" step="1"></et2-number>
 				</row>
 			</rows>
 		</grid>
