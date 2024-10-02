@@ -44,15 +44,6 @@ class Hooks {
 			unset($e);
 			return;
 		}
-		// Allow extra extensions
-		$extraExt = array (
-			'pdf'
-		);
-		foreach($discover as $mime => &$val)
-		{
-			if ($val['name'] != 'edit' && !in_array($val['ext'], $extraExt)) unset($discover[$mime]);
-			$val['mime_popup'] = ''; // try to avoid mime_open exception
-		}
 		return array (
 			'edit' => array(
 				'menuaction' => 'collabora.EGroupware\\Collabora\\Ui.editor',
