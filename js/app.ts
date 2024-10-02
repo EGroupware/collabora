@@ -63,9 +63,10 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		let data = egw.dataGetUIDdata(selected[0].id);
 		let is_collabora = this.et2.getArrayMgr('content').getEntry('is_collabora');
 		let dblclick_action = egw.preference('document_doubleclick_action', 'filemanager');
+		let mime = data && data.data && data.data.mime ? data.data.mime : '';
 
 		// Check to see if it's something we can handle
-		if (is_collabora && this.isEditable(action, selected) &&
+		if(is_collabora && this.egw.isCollaborable(mime) &&
 			(!dblclick_action || dblclick_action == 'collabora'))
 		{
 			// Open the editor in a new window, still under our control
@@ -94,16 +95,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		let mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
-			let fe = egw.file_editor_prefered_mimes(mime);
-			if (fe && fe.mime && !fe.mime[mime])
-			{
-				return false;
-			}
-			else if (fe && fe.mime && fe.mime[mime] && ['edit'].indexOf(this.discovery[mime].name) == -1)
-			{
-				return true;
-			}
-			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
+			return this.egw.isEditable(mime);
 		}
 		else
 		{
