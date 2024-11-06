@@ -89,7 +89,7 @@ class Admin
 		}
 
 		// disable local Collabora configuration, if not manged by EGroupware
-		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) || !file_exists(self::LOOLWSD_CONFIG))
+		if (!file_exists(dirname(self::COOLWSD_CONFIG)) || !file_exists(self::COOLWSD_CONFIG))
 		{
 			$data['no_managed_collabora'] = true;
 		}
@@ -148,10 +148,10 @@ class Admin
 		}
 		// check if we have a local Collabora instance managed by EGroupware
 		if (!$error && $data['location'] === 'config_validate' &&
-			file_exists(dirname(self::LOOLWSD_CONFIG)) && file_exists(self::LOOLWSD_CONFIG))
+			file_exists(dirname(self::COOLWSD_CONFIG)) && file_exists(self::COOLWSD_CONFIG))
 		{
 			$server_parsed = parse_url($data['server']);
-			$error = self::update_loolwsd_config(array(
+			$error = self::update_config(array(
 				'support_key' => trim($data['support_key']),
 				// we proxy and do ssl termination outside of container!
 				'ssl/termination' => $server_parsed['scheme'] === 'https' ? 'true' : 'false',
@@ -177,7 +177,7 @@ class Admin
 	 * @param array $data key => value pairs to replace
 	 * @return string error-message or null on success
 	 */
-	protected static function update_loolwsd_config(array $data)
+	protected static function update_config(array $data)
 	{
 		foreach([self::COOLWSD_CONFIG, self::LOOLWSD_CONFIG] as $file)
 		{
@@ -225,7 +225,7 @@ class Admin
 	public static function get_managed_server()
 	{
 		// disable local Collabora configuration, if not managed by EGroupware
-		if (!file_exists(dirname(self::LOOLWSD_CONFIG)) && !file_exists(self::LOOLWSD_CONFIG))
+		if (!file_exists(dirname(self::COOLWSD_CONFIG)) && !file_exists(self::COOLWSD_CONFIG))
 		{
 			return null;
 		}
