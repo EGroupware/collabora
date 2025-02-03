@@ -161,19 +161,27 @@ class Bo {
 	{
 		$config = Config::read('collabora');
 
-		// check if EGroupware used a managed CO (on same host) but is called with a different name (eg. internal and external name differ)
-		if (!empty($config['server']) &&
-			($co_host = parse_url($config['server'], PHP_URL_HOST)) !== 'collabora.egroupware.org' &&
-			$co_host !== Api\Header\Http::host() &&
-			($manged_server = Admin::get_managed_server()))
+		if (!empty($config['server']))
 		{
 			try {
 				// verify the host by discovering it
-				self::discover($manged_server);
-				return $manged_server;
+				self::discover($config['server']);
+				return $config['server'];
 			}
 			catch(\Exception $e) {
-				// use configured server as is
+				// check if EGroupware used a managed CO (on same host) but is called with a different name (eg. internal and external name differ)
+				if (($co_host = parse_url($config['server'], PHP_URL_HOST)) !== Api\Header\Http::host() &&
+					($manged_server = Admin::get_managed_server()))
+				{
+					try {
+						// verify the host by discovering it
+						self::discover($manged_server);
+						return $manged_server;
+					}
+					catch(\Exception $e) {
+						// use configured server as is
+					}
+				}
 			}
 		}
 		return $config['server'];
