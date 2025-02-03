@@ -527,7 +527,7 @@ class collaboraAPP extends EgwApp
 	 */
 	_handle_messages(e)
 	{
-		// don't procced further for none json encoded responses
+		// don't proceed further for none json encoded responses
 		if (typeof e.data !='string') return;
 
 		let message = JSON.parse(e.data);
@@ -653,33 +653,46 @@ class collaboraAPP extends EgwApp
 	 *
 	 * This is where we add buttons and menu actions and such
 	 */
-	_customize_editor() {
-
+	_customize_editor()
+	{
+		const notebookbar = (egw.preference("ui_mode","filemanager") || 'notebookbar') === 'notebookbar';
+		const suffix = notebookbar ? '_white' : '';
 		let baseUrl = egw.webserverUrl[0] == '/' ?
 			window.location.protocol+'//'+window.location.hostname+egw.webserverUrl
 			: egw.webserverUrl;
 
+		if (notebookbar)
+		{
+			this.WOPIPostMessage('Insert_Button', {
+				id: 'egwSaveAs',
+				imgurl: this.egw.image('save_as'+suffix, 'collabora').replace(egw.webserverUrl, baseUrl),
+				hint: this.egw.lang('Save As')
+			});
+		}
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwSaveAsMail',
-			imgurl: this.egw.image('save_as_mail', 'collabora').replace(egw.webserverUrl, baseUrl),
+			imgurl: this.egw.image('save_as_mail'+suffix, 'collabora').replace(egw.webserverUrl, baseUrl),
 			hint: this.egw.lang('Save As Mail')
 		});
 
 		this.WOPIPostMessage('Insert_Button', {
-			id: 'egwSaveAs',
-			imgurl: 'images/lc_saveas.svg',
-			hint: this.egw.lang('Save As')
-		});
-		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwPlaceholder',
-			imgurl: this.egw.image('curly_brackets_icon', 'collabora').replace(egw.webserverUrl, baseUrl),
+			imgurl: this.egw.image('curly_brackets_icon'+suffix, 'collabora').replace(egw.webserverUrl, baseUrl),
 			hint: this.egw.lang('Insert placeholder')
 		});
 		this.WOPIPostMessage('Insert_Button', {
 			id: 'egwContactPlaceholder',
-			imgurl: this.egw.image('navbar', 'addressbook').replace(egw.webserverUrl, baseUrl),
+			imgurl: this.egw.image('addressbook'+suffix, 'collabora').replace(egw.webserverUrl, baseUrl),
 			hint: this.egw.lang('Insert address')
 		});
+		if (!notebookbar)
+		{
+			this.WOPIPostMessage('Insert_Button', {
+				id: 'egwSaveAs',
+				imgurl: this.egw.image('save_as'+suffix, 'collabora').replace(egw.webserverUrl, baseUrl),
+				hint: this.egw.lang('Save As')
+			});
+		}
 	}
 
 	/**
