@@ -497,7 +497,7 @@ class collaboraAPP extends EgwApp
 		jQuery('body').append(form_html);
 
 		let frameholder = jQuery('.editor_frame');
-		let frame = '<iframe id="loleafletframe" name= "loleafletframe" allowfullscreen="" style="height:100%;position:absolute;"/>';
+		let frame = '<iframe id="loleafletframe" name= "loleafletframe" allow="fullscreen; clipboard-read *; clipboard-write *" style="height:100%;position:absolute;"/>';
 
 		jQuery('iframe',frameholder).remove();
 		frameholder.append(frame);
