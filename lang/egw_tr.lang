@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	tr	Collabora Online yapılandırması %1 içinde güncellenemedi!
 file	collabora	tr	Dosya
 file %1 has been created successfully.	collabora	tr	Dosya %1 başarıyla oluşturuldu.
-file renamed	collabora	tr	Dosya yeniden adlandırıldı
+file renamed	collabora	tr	Dosya yeniden adlandırıldı.
 insert	collabora	tr	Ekleme
 insert address	collabora	tr	Adres giriniz
 insert merged content	collabora	tr	Birleştirilmiş içerik ekleme

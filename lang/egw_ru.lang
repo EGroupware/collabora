@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	ru	Не удалось обновить настройки Collabora Online в %1!
 file	collabora	ru	файл
 file %1 has been created successfully.	collabora	ru	Файл %1 успешно создан
-file renamed	collabora	ru	Файл переименован
+file renamed	collabora	ru	Файл переименован.
 insert	collabora	ru	Вставка
 insert address	collabora	ru	Вставить адрес
 insert merged content	collabora	ru	Вставить объединенное содержимое

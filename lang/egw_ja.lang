@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	ja	%1 で Collabora Online 構成の更新に失敗しました！
 file	collabora	ja	ファイル
 file %1 has been created successfully.	collabora	ja	ファイル %1 が正常に作成されました。
-file renamed	collabora	ja	ファイル名変更
+file renamed	collabora	ja	ファイル名変更。
 insert	collabora	ja	挿入
 insert address	collabora	ja	アドレスの挿入
 insert merged content	collabora	ja	マージされたコンテンツを挿入する

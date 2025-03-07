@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	pl	Nie udało się zaktualizować konfiguracji Collabora Online w %1!
 file	collabora	pl	Plik
 file %1 has been created successfully.	collabora	pl	Plik %1 został utworzony pomyślnie.
-file renamed	collabora	pl	Zmiana nazwy pliku
+file renamed	collabora	pl	Zmiana nazwy pliku.
 insert	collabora	pl	Wstaw
 insert address	collabora	pl	Wstaw adres
 insert merged content	collabora	pl	Wstaw połączoną zawartość

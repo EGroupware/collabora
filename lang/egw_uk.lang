@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	uk	Не вдалося оновити конфігурацію Collabora Online в %1!
 file	collabora	uk	Файл
 file %1 has been created successfully.	collabora	uk	Файл %1 успішно створено.
-file renamed	collabora	uk	Файл перейменовано
+file renamed	collabora	uk	Файл перейменовано.
 insert	collabora	uk	Вставити
 insert address	collabora	uk	Вставити адресу
 insert merged content	collabora	uk	Вставити об'єднаний вміст

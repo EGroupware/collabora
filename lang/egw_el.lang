@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	el	Αδυναμία ενημέρωσης παραμετροποίησης Collabora Online στην διαδρομή %1
 file	collabora	el	αρχείο
 file %1 has been created successfully.	collabora	el	Το αρχείο 1% δημιουργήθηκε επιτυχώς
-file renamed	collabora	el	Μετονομασία αρχείου
+file renamed	collabora	el	Μετονομασία αρχείου.
 insert	collabora	el	Εισαγωγή
 insert address	collabora	el	Εισαγωγή διεύθυνσης
 insert merged content	collabora	el	Εισαγωγή συγχωνευμένου περιεχομένου

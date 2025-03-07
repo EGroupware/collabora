@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	sv	Det gick inte att uppdatera Collabora Online-konfigurationen i %1!
 file	collabora	sv	Fil
 file %1 has been created successfully.	collabora	sv	Filen %1 har skapats framgångsrikt.
-file renamed	collabora	sv	Filen har bytt namn
+file renamed	collabora	sv	Filen har bytt namn.
 insert	collabora	sv	Infoga
 insert address	collabora	sv	Infoga adress
 insert merged content	collabora	sv	Infoga sammanfogat innehåll

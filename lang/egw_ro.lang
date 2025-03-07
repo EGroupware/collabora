@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	ro	A eșuat actualizarea configurației Collabora Online în %1!
 file	collabora	ro	Fișier
 file %1 has been created successfully.	collabora	ro	Fișierul %1 a fost creat cu succes.
-file renamed	collabora	ro	Fișier redenumit
+file renamed	collabora	ro	Fișier redenumit.
 insert	collabora	ro	Introduceți
 insert address	collabora	ro	Inserare adresă
 insert merged content	collabora	ro	Inserare conținut fuzionat

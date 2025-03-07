@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	es-es	Error al actualizar la configuración de Collabora Online en %1.
 file	collabora	es-es	Archivo
 file %1 has been created successfully.	collabora	es-es	El fichero %1 se ha creado correctamente.
-file renamed	collabora	es-es	Archivo renombrado
+file renamed	collabora	es-es	Archivo renombrado.
 insert	collabora	es-es	Insertar
 insert address	collabora	es-es	Insertar dirección
 insert merged content	collabora	es-es	Insertar contenido fusionado

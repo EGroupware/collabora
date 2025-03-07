@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	nl	Het bijwerken van de Collabora Online configuratie in %1 is mislukt!
 file	collabora	nl	Bestand
 file %1 has been created successfully.	collabora	nl	Bestand %1 is succesvol aangemaakt.
-file renamed	collabora	nl	Bestand hernoemd
+file renamed	collabora	nl	Bestand hernoemd.
 insert	collabora	nl	Invoegen
 insert address	collabora	nl	Adres invoegen
 insert merged content	collabora	nl	Samengevoegde inhoud invoegen

@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	lv	Neizdevās atjaunināt Collabora Online konfigurāciju mapē %1!
 file	collabora	lv	Faili
 file %1 has been created successfully.	collabora	lv	Fails %1 ir veiksmīgi izveidots.
-file renamed	collabora	lv	Datnes pārdēvēšana
+file renamed	collabora	lv	Datnes pārdēvēšana.
 insert	collabora	lv	Ievietot
 insert address	collabora	lv	Ievietot adresi
 insert merged content	collabora	lv	Ievietot apvienoto saturu

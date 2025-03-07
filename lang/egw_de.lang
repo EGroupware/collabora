@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	de	Kann Collabora Online-Konfiguration in %1 nicht aktualisieren!
 file	collabora	de	Datei
 file %1 has been created successfully.	collabora	de	Datei %1 wurde erfolgreich angelegt.
-file renamed	collabora	de	Datei umbenannt
+file renamed	collabora	de	Datei umbenannt.
 insert	collabora	de	Einfügen
 insert address	collabora	de	Adresse einfügen
 insert merged content	collabora	de	Zusammengeführten Inhalt einfügen
