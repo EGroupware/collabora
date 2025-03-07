@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	zh	在 %1 中更新 Collabora Online 配置失败！
 file	collabora	zh	文件
 file %1 has been created successfully.	collabora	zh	文件 %1 已成功创建。
-file renamed	collabora	zh	文件重命名
+file renamed	collabora	zh	文件重命名。
 insert	collabora	zh	插入
 insert address	collabora	zh	插入地址
 insert merged content	collabora	zh	插入合并的内容

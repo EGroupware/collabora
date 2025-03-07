@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	cs	Nepodařilo se aktualizovat konfiguraci Collabora Online ve složce %1!
 file	collabora	cs	Soubor
 file %1 has been created successfully.	collabora	cs	Soubor %1 byl úspěšně vytvořen.
-file renamed	collabora	cs	Soubor přejmenován
+file renamed	collabora	cs	Soubor přejmenován.
 insert	collabora	cs	Vložit
 insert address	collabora	cs	Vložit adresu
 insert merged content	collabora	cs	Vložit sloučený obsah

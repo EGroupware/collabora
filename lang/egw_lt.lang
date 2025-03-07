@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	lt	Nepavyko atnaujinti "Collabora Online" konfigūracijos %1!
 file	collabora	lt	Failas
 file %1 has been created successfully.	collabora	lt	Failas %1 sukurtas sėkmingai.
-file renamed	collabora	lt	Failo pavadinimas pakeistas
+file renamed	collabora	lt	Failo pavadinimas pakeistas.
 insert	collabora	lt	Įterpkite
 insert address	collabora	lt	Įterpti adresą
 insert merged content	collabora	lt	Įterpti sujungtą turinį

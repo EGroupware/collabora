@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	fi	Collabora Online -asetusten päivittäminen ei onnistunut %1-kansiossa!
 file	collabora	fi	Tiedosto
 file %1 has been created successfully.	collabora	fi	Tiedosto %1 on luotu onnistuneesti.
-file renamed	collabora	fi	Tiedosto nimetty uudelleen
+file renamed	collabora	fi	Tiedosto nimetty uudelleen.
 insert	collabora	fi	Lisää
 insert address	collabora	fi	Lisää osoite
 insert merged content	collabora	fi	Lisää yhdistetty sisältö

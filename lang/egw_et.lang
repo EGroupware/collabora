@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	et	Collabora Online'i konfiguratsiooni uuendamine ei õnnestunud %1-s!
 file	collabora	et	Faili
 file %1 has been created successfully.	collabora	et	Faili %1 on edukalt loodud.
-file renamed	collabora	et	Faili ümbernimetamine
+file renamed	collabora	et	Faili ümbernimetamine.
 insert	collabora	et	Sisesta
 insert address	collabora	et	Sisesta aadress
 insert merged content	collabora	et	Sisestage ühendatud sisu

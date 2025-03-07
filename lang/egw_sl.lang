@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	sl	Ni uspelo posodobiti konfiguracije Collabora Online v mapi %1!
 file	collabora	sl	Datoteka
 file %1 has been created successfully.	collabora	sl	Datoteka %1 je bila uspešno ustvarjena.
-file renamed	collabora	sl	Datoteka se preimenuje
+file renamed	collabora	sl	Datoteka se preimenuje.
 insert	collabora	sl	Vstavite
 insert address	collabora	sl	Vstavi naslov
 insert merged content	collabora	sl	Vstavljanje združene vsebine

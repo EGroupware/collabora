@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	it	Aggiornamento della configurazione di Collabora Online fallita in %1!
 file	collabora	it	file
 file %1 has been created successfully.	collabora	it	Il file %1 è stato creato con successo
-file renamed	collabora	it	File rinominato
+file renamed	collabora	it	File rinominato.
 insert	collabora	it	Inserisci
 insert address	collabora	it	Inserisci indirizzo
 insert merged content	collabora	it	Inserisci contenuto unito

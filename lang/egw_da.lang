@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	da	Det lykkedes ikke at opdatere Collabora Online-konfigurationen i %1!
 file	collabora	da	Fil
 file %1 has been created successfully.	collabora	da	Filen %1 er blevet oprettet med succes.
-file renamed	collabora	da	Fil omdøbt
+file renamed	collabora	da	Fil omdøbt.
 insert	collabora	da	Indsæt
 insert address	collabora	da	Indsæt adresse
 insert merged content	collabora	da	Indsæt flettet indhold

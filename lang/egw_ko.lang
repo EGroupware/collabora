@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	ko	%1에서 콜라보라 온라인 구성을 업데이트하지 못했습니다!
 file	collabora	ko	파일
 file %1 has been created successfully.	collabora	ko	파일 %1이(가) 성공적으로 만들어졌습니다.
-file renamed	collabora	ko	파일 이름 변경
+file renamed	collabora	ko	파일 이름 변경.
 insert	collabora	ko	삽입
 insert address	collabora	ko	수신자가 파일을 편집할 수 있도록 링크가 이메일에 추가됩니다.
 insert merged content	collabora	ko	병합된 콘텐츠 삽입

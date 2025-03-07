@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	id	Gagal memperbarui konfigurasi Collabora Online di %1!
 file	collabora	id	Berkas
 file %1 has been created successfully.	collabora	id	Berkas %1 telah berhasil dibuat.
-file renamed	collabora	id	Berkas diganti namanya
+file renamed	collabora	id	Berkas diganti namanya.
 insert	collabora	id	Menyisipkan
 insert address	collabora	id	Menyisipkan alamat
 insert merged content	collabora	id	Menyisipkan konten yang digabungkan

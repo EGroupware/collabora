@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	bg	Неуспешна актуализация на "Collabora Online" конфигурацията в %1!
 file	collabora	bg	Файл
 file %1 has been created successfully.	collabora	bg	Файл %1 е създаден успешно.
-file renamed	collabora	bg	Преименуване на файла
+file renamed	collabora	bg	Преименуване на файла.
 insert	collabora	bg	Вмъкни
 insert address	collabora	bg	Вмъкване на адрес
 insert merged content	collabora	bg	Вмъкване на обединено съдържание

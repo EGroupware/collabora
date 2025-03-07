@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	no	Kunne ikke oppdatere Collabora Online-konfigurasjonen i %1!
 file	collabora	no	Fil
 file %1 has been created successfully.	collabora	no	Filen %1 er opprettet.
-file renamed	collabora	no	Filen har fått nytt navn
+file renamed	collabora	no	Filen har fått nytt navn.
 insert	collabora	no	Sett inn
 insert address	collabora	no	Sett inn adresse
 insert merged content	collabora	no	Sett inn sammenslått innhold

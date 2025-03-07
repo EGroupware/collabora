@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	hu	Nem sikerült frissíteni a Collabora Online konfigurációt a %1 mappában!
 file	collabora	hu	Fájl
 file %1 has been created successfully.	collabora	hu	A %1 fájl létrehozása sikeresen megtörtént.
-file renamed	collabora	hu	Fájl átnevezése
+file renamed	collabora	hu	Fájl átnevezése.
 insert	collabora	hu	Beillesztése
 insert address	collabora	hu	Cím beillesztése
 insert merged content	collabora	hu	Összevont tartalom beillesztése

@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	sk	Nepodarilo sa aktualizovať konfiguráciu Collabora v %1!
 file	collabora	sk	súbor
 file %1 has been created successfully.	collabora	sk	Súbor %1 bol úspešne vytvorený.
-file renamed	collabora	sk	Súbor sa premenoval
+file renamed	collabora	sk	Súbor sa premenoval.
 insert	collabora	sk	Vložiť
 insert address	collabora	sk	Vložiť adresu
 insert merged content	collabora	sk	Vložiť zlúčený obsah
