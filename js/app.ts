@@ -471,8 +471,8 @@ class collaboraAPP extends EgwApp
 		{
 			values = this.et2.getArrayMgr('content').data || {};
 		}
-		values.url += '&user='+this.egw.user('account_lid');
-		values.url += '&lang=' + this.egw.preference('lang');
+		values.url += '&user=' + (this.egw.user('account_lid') ?? 'anonymous');
+		values.url += '&lang=' + (this.egw.preference('lang') ?? 'en');
 		values.url += '&title=' + encodeURIComponent(values.filename);
 		let form_html = jQuery(document.createElement('form')).attr({
 			id: "form",
@@ -508,9 +508,9 @@ class collaboraAPP extends EgwApp
 		}, this));
 
 		this.editor_iframe = <HTMLIFrameElement>jQuery('#loleafletframe')[0];
-		jQuery(frame).on('load', function(){
+		jQuery(frame).on('load', () => {
 			// Tell the iframe that we are ready now
-			app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+			this.WOPIPostMessage('Host_PostmessageReady', {});
 		});
 
 		(<HTMLFormElement>document.getElementById('form')).submit();
@@ -538,13 +538,13 @@ class collaboraAPP extends EgwApp
 				if (message.Values.Status === 'Document_Loaded' && !this.loaded)
 				{
 					// Tell the iframe that we are ready now
-					app.collabora.WOPIPostMessage('Host_PostmessageReady', {});
+					this.WOPIPostMessage('Host_PostmessageReady', {});
 
 					// Get supported export formats
-					app.collabora.WOPIPostMessage('Get_Export_Formats');
+					this.WOPIPostMessage('Get_Export_Formats');
 
 					// enable FollowUser option by default
-					app.collabora.WOPIPostMessage('Action_FollowUser');
+					this.WOPIPostMessage('Action_FollowUser');
 
 					this._customize_editor();
 					this.load = true;

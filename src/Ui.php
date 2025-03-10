@@ -170,6 +170,9 @@ class Ui {
 			$path = $_GET['path'];
 		}
 		Framework::includeJS('.','app','collabora',true);
+		Framework::includeJS('/api/config.php');
+		Framework::includeJS('/api/images.php');
+		Framework::includeJS('/api/user.php');
 		Framework::includeCSS('collabora', 'app');
 
 		//Allow Collabora frame to pass the CSP check
