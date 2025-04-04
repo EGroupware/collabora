@@ -8,6 +8,16 @@
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
 /** Editor page CSS **/
+div#popupMainDiv.popupMainDiv {
+	width: 100vw;
+	height: 100vh;
+	padding: 0;
+}
+
+#collabora-editor {
+	width: 100vw;
+	height: 100vh;
+}
 #loleafletframe {
 	top: 0px;
 	width: 100%;
