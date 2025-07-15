@@ -14,7 +14,7 @@ collabora server	collabora	lv	Collabora Online serveris
 conversion failed	collabora	lv	Konversija neizdevās
 convert to	collabora	lv	Konvertēt uz
 converted	collabora	lv	Konvertēts
-converting...	collabora	lv	Konvertēšana...
+converting...	collabora	lv	Konvertēšana ...
 create	collabora	lv	Izveidot
 create new %1	filemanager	lv	Izveidot jaunu %1
 document	filemanager	lv	Dokuments
@@ -33,7 +33,7 @@ insert	collabora	lv	Ievietot
 insert address	collabora	lv	Ievietot adresi
 insert merged content	collabora	lv	Ievietot apvienoto saturu
 latest revision	collabora	lv	Jaunākā pārskatīšana
-link is appended to email allowing recipients to edit the file	collabora	lv	E-pastam tiek pievienota saite, kas ļauj saņēmējiem rediģēt failu.
+link is appended to email allowing recipients to edit the file	collabora	lv	E-pastam tiek pievienota saite, kas ļauj saņēmējiem rediģēt failu
 local collabora server	collabora	lv	Vietējais Collabora Online serveris
 no active user 'anonymous' found!	collabora	lv	Nav atrasts aktīvs lietotājs 'anonymous'!
 open as new	filemanager	lv	Atvērt kā jaunu
@@ -41,7 +41,7 @@ please enter your file name	filemanager	lv	Lūdzu, ievadiet savu faila nosaukumu
 presentation	filemanager	lv	Prezentācija
 requirements / please note	collabora	lv	Prasības / Lūdzu, ņemiet vērā
 revision history	collabora	lv	Pārskatīšanas vēsture
-save as mail	collabora	lv	Nosūtīt kā e-pastu
+save as mail	collabora	lv	Dokumenta nosūtīšana pa e-pastu
 spreadsheet	filemanager	lv	Izklājlapa
 support-key	collabora	lv	Atbalsta atslēga
 the collabora server must be able to access your egroupware installation!	collabora	lv	Collabora Online serverim jāspēj piekļūt jūsu EGroupware instalācijai!

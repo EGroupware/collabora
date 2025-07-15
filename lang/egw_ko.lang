@@ -14,9 +14,9 @@ collabora server	collabora	ko	콜라보라 온라인 서버
 conversion failed	collabora	ko	전환 실패
 convert to	collabora	ko	다음으로 변환
 converted	collabora	ko	변환 완료
-converting...	collabora	ko	변환 중...
+converting...	collabora	ko	변환 중 ...
 create	collabora	ko	만들기
-create new %1	filemanager	ko	새 %1을(를) 만듭니다.
+create new %1	filemanager	ko	새 %1을(를) 만듭니다
 document	filemanager	ko	문서
 drawing	filemanager	ko	도면
 edit %1 in collabora	collabora	ko	콜라보라 온라인에서 %1 편집
@@ -30,10 +30,10 @@ file	collabora	ko	파일
 file %1 has been created successfully.	collabora	ko	파일 %1이(가) 성공적으로 만들어졌습니다.
 file renamed	collabora	ko	파일 이름 변경.
 insert	collabora	ko	삽입
-insert address	collabora	ko	수신자가 파일을 편집할 수 있도록 링크가 이메일에 추가됩니다.
+insert address	collabora	ko	주소 입력
 insert merged content	collabora	ko	병합된 콘텐츠 삽입
 latest revision	collabora	ko	최신 개정
-link is appended to email allowing recipients to edit the file	collabora	ko	수신자가 파일을 편집할 수 있도록 링크가 이메일에 추가됩니다.
+link is appended to email allowing recipients to edit the file	collabora	ko	수신자가 파일을 편집할 수 있도록 링크가 이메일에 추가됩니다
 local collabora server	collabora	ko	로컬 콜러보라 온라인 서버
 no active user 'anonymous' found!	collabora	ko	활성 사용자 '익명'을 찾을 수 없습니다!
 open as new	filemanager	ko	새 파일로 열기
@@ -41,7 +41,7 @@ please enter your file name	filemanager	ko	파일 이름을 입력하세요
 presentation	filemanager	ko	프레젠테이션
 requirements / please note	collabora	ko	요구 사항 / 참고 사항
 revision history	collabora	ko	개정 내역
-save as mail	collabora	ko	이메일로 보내기
+save as mail	collabora	ko	이메일로 문서 보내기
 spreadsheet	filemanager	ko	스프레드시트
 support-key	collabora	ko	지원 키
 the collabora server must be able to access your egroupware installation!	collabora	ko	콜러보라 온라인 서버가 E그룹웨어 설치에 액세스할 수 있어야 합니다!

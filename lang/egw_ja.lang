@@ -14,7 +14,7 @@ collabora server	collabora	ja	Collabora Onlineサーバ
 conversion failed	collabora	ja	変換に失敗しました
 convert to	collabora	ja	変換先
 converted	collabora	ja	変換中
-converting...	collabora	ja	変換中...
+converting...	collabora	ja	変換中 ...
 create	collabora	ja	新規作成
 create new %1	filemanager	ja	新しい %1 を作成してください。
 document	filemanager	ja	ドキュメント
@@ -41,7 +41,7 @@ please enter your file name	filemanager	ja	ファイル名を入力してくだ�
 presentation	filemanager	ja	プレゼンテーション
 requirements / please note	collabora	ja	要件 / ご注意ください
 revision history	collabora	ja	リビジョン履歴
-save as mail	collabora	ja	メールで送信
+save as mail	collabora	ja	電子メールで文書を送信
 spreadsheet	filemanager	ja	スプレッドシート
 support-key	collabora	ja	サポートキー
 the collabora server must be able to access your egroupware installation!	collabora	ja	Collabora OnlineサーバーがEGroupwareインストールにアクセスできる必要があります！

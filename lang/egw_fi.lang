@@ -14,7 +14,7 @@ collabora server	collabora	fi	Collabora Online -palvelin
 conversion failed	collabora	fi	Muunnos epäonnistui
 convert to	collabora	fi	Muunna
 converted	collabora	fi	Muunnettu
-converting...	collabora	fi	Muunnetaan...
+converting...	collabora	fi	Muunnetaan ...
 create	collabora	fi	Luo
 create new %1	filemanager	fi	Luo uusi %1
 document	filemanager	fi	Asiakirja
@@ -41,7 +41,7 @@ please enter your file name	filemanager	fi	Kirjoita tiedoston nimi
 presentation	filemanager	fi	Esitys
 requirements / please note	collabora	fi	Vaatimukset / huomioi
 revision history	collabora	fi	Revisiohistoria
-save as mail	collabora	fi	Lähetä sähköpostina
+save as mail	collabora	fi	Lähetä asiakirja sähköpostitse
 spreadsheet	filemanager	fi	Taulukkolaskenta
 support-key	collabora	fi	Tuki-avain
 the collabora server must be able to access your egroupware installation!	collabora	fi	Collabora Online -palvelimen on voitava käyttää EGroupware-asennustasi!

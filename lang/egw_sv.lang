@@ -14,7 +14,7 @@ collabora server	collabora	sv	Collabora Online-server
 conversion failed	collabora	sv	Omvandlingen misslyckades
 convert to	collabora	sv	Konverterad
 converted	collabora	sv	Konverterad
-converting...	collabora	sv	Konvertering...
+converting...	collabora	sv	Konvertering ...
 create	collabora	sv	Skapa
 create new %1	filemanager	sv	Skapa nytt %1
 document	filemanager	sv	Dokument
@@ -41,7 +41,7 @@ please enter your file name	filemanager	sv	Vänligen ange ditt filnamn
 presentation	filemanager	sv	Presentation
 requirements / please note	collabora	sv	Krav / Vänligen notera
 revision history	collabora	sv	Revideringshistorik
-save as mail	collabora	sv	Skicka som e-post
+save as mail	collabora	sv	Skicka dokument via e-post
 spreadsheet	filemanager	sv	Kalkylblad
 support-key	collabora	sv	Stöd-nyckel
 the collabora server must be able to access your egroupware installation!	collabora	sv	Collabora Online-servern måste kunna komma åt din EGroupware-installation!

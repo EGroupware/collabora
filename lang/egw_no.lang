@@ -14,7 +14,7 @@ collabora server	collabora	no	Collabora Online-server
 conversion failed	collabora	no	Konvertering mislyktes
 convert to	collabora	no	Konverter til
 converted	collabora	no	Konvertert
-converting...	collabora	no	Konverterer...
+converting...	collabora	no	Konverterer ...
 create	collabora	no	Opprett
 create new %1	filemanager	no	Opprett nytt %1
 document	filemanager	no	Dokument
@@ -33,7 +33,7 @@ insert	collabora	no	Sett inn
 insert address	collabora	no	Sett inn adresse
 insert merged content	collabora	no	Sett inn sammenslått innhold
 latest revision	collabora	no	Siste revisjon
-link is appended to email allowing recipients to edit the file	collabora	no	Lenke legges til i e-posten slik at mottakerne kan redigere filen.
+link is appended to email allowing recipients to edit the file	collabora	no	Lenke legges til i e-posten slik at mottakerne kan redigere filen
 local collabora server	collabora	no	Lokal Collabora Online-server
 no active user 'anonymous' found!	collabora	no	Ingen aktiv bruker 'anonymous' funnet!
 open as new	filemanager	no	Åpne som ny
@@ -41,7 +41,7 @@ please enter your file name	filemanager	no	Vennligst skriv inn filnavnet ditt
 presentation	filemanager	no	Presentasjon
 requirements / please note	collabora	no	Krav / vær oppmerksom på
 revision history	collabora	no	Revisjonshistorikk
-save as mail	collabora	no	Send som e-post
+save as mail	collabora	no	Send dokumentet via e-post
 spreadsheet	filemanager	no	Regneark
 support-key	collabora	no	Støtte-nøkkel
 the collabora server must be able to access your egroupware installation!	collabora	no	Collabora Online-serveren må ha tilgang til EGroupware-installasjonen din!

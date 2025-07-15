@@ -14,7 +14,7 @@ collabora server	collabora	zh	Collabora Online 在线服务器
 conversion failed	collabora	zh	转换失败
 convert to	collabora	zh	转换为
 converted	collabora	zh	已转换
-converting...	collabora	zh	正在转换...
+converting...	collabora	zh	正在转换 ...
 create	collabora	zh	创建
 create new %1	filemanager	zh	创建新 %1
 document	filemanager	zh	文档
@@ -41,7 +41,7 @@ please enter your file name	filemanager	zh	请输入您的文件名
 presentation	filemanager	zh	演示文稿
 requirements / please note	collabora	zh	要求/请注意
 revision history	collabora	zh	修订历史
-save as mail	collabora	zh	以电子邮件形式发送
+save as mail	collabora	zh	通过电子邮件发送文件
 spreadsheet	filemanager	zh	电子表格
 support-key	collabora	zh	支持键
 the collabora server must be able to access your egroupware installation!	collabora	zh	Collabora Online 服务器必须能够访问您安装的 EGroupware！

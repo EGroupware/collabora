@@ -14,7 +14,7 @@ collabora server	collabora	cs	Server Collabora Online
 conversion failed	collabora	cs	Konverze se nezdařila
 convert to	collabora	cs	Převést na
 converted	collabora	cs	Převedeno
-converting...	collabora	cs	Převod...
+converting...	collabora	cs	Převod ...
 create	collabora	cs	Vytvořit
 create new %1	filemanager	cs	Vytvořit nový %1
 document	filemanager	cs	Dokument
@@ -41,7 +41,7 @@ please enter your file name	filemanager	cs	Zadejte prosím název souboru
 presentation	filemanager	cs	Prezentace
 requirements / please note	collabora	cs	Požadavky / Vezměte prosím na vědomí
 revision history	collabora	cs	Historie revizí
-save as mail	collabora	cs	Odeslat jako e-mail
+save as mail	collabora	cs	Odeslání dokumentu e-mailem
 spreadsheet	filemanager	cs	Tabulka
 support-key	collabora	cs	Podpora-klíč
 the collabora server must be able to access your egroupware installation!	collabora	cs	Server Collabora Online musí mít přístup k vaší instalaci EGroupware!

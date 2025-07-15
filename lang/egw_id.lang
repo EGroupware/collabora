@@ -14,7 +14,7 @@ collabora server	collabora	id	Server Collabora Online
 conversion failed	collabora	id	Konversi gagal
 convert to	collabora	id	Konversi ke
 converted	collabora	id	Dikonversi
-converting...	collabora	id	Mengonversi...
+converting...	collabora	id	Mengonversi ...
 create	collabora	id	Membuat
 create new %1	filemanager	id	Buat %1 baru
 document	filemanager	id	Dokumen
@@ -41,7 +41,7 @@ please enter your file name	filemanager	id	Masukkan nama file Anda
 presentation	filemanager	id	Presentasi
 requirements / please note	collabora	id	Persyaratan / harap diperhatikan
 revision history	collabora	id	Riwayat Revisi
-save as mail	collabora	id	Kirim sebagai email
+save as mail	collabora	id	Kirim dokumen melalui email
 spreadsheet	filemanager	id	Spreadsheet
 support-key	collabora	id	Kunci dukungan
 the collabora server must be able to access your egroupware installation!	collabora	id	Server Collabora Online harus dapat mengakses instalasi EGroupware Anda!

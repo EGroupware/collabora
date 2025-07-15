@@ -14,7 +14,7 @@ collabora server	collabora	pt	Servidor Collabora Online
 conversion failed	collabora	pt	A conversão falhou
 convert to	collabora	pt	Converter para
 converted	collabora	pt	Convertido
-converting...	collabora	pt	A conversão...
+converting...	collabora	pt	A conversão ...
 create	collabora	pt	Criar
 create new %1	filemanager	pt	Criar novo %1
 document	filemanager	pt	Documento
@@ -41,7 +41,7 @@ please enter your file name	filemanager	pt	Por favor, introduza o nome do seu fi
 presentation	filemanager	pt	Apresentação do ficheiro
 requirements / please note	collabora	pt	Requisitos / por favor note
 revision history	collabora	pt	História da Revisão
-save as mail	collabora	pt	Enviar como correio eletrónico
+save as mail	collabora	pt	Enviar documento por correio eletrónico
 spreadsheet	filemanager	pt	Folha de cálculo
 support-key	collabora	pt	Chave de suporte
 the collabora server must be able to access your egroupware installation!	collabora	pt	O servidor Collabora Online deve poder aceder à sua instalação EGroupware!

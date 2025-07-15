@@ -14,7 +14,7 @@ collabora server	collabora	bg	Collabora Online сървър
 conversion failed	collabora	bg	Преобразуването е неуспешно
 convert to	collabora	bg	Конвертиране в
 converted	collabora	bg	Конвертиран
-converting...	collabora	bg	Конвертиране...
+converting...	collabora	bg	Конвертиране ...
 create	collabora	bg	Създай
 create new %1	filemanager	bg	Създай нов(а) %1
 document	filemanager	bg	Документ
@@ -41,7 +41,7 @@ please enter your file name	filemanager	bg	Моля, въведете името
 presentation	filemanager	bg	Представяне
 requirements / please note	collabora	bg	Моля, отбележете Вашите изисквания.
 revision history	collabora	bg	История на редакциите
-save as mail	collabora	bg	Изпрати като имейл
+save as mail	collabora	bg	Изпращане на документ по електронна поща
 spreadsheet	filemanager	bg	Spreadsheet (електронна таблица)
 support-key	collabora	bg	Ключ за поддръжка
 the collabora server must be able to access your egroupware installation!	collabora	bg	Сървърът на Collabora Online трябва да има достъп до вашата инсталация на EGroupware!
