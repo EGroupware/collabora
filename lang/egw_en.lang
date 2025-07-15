@@ -28,7 +28,7 @@ failed to create the file! because you do not have enough permission to %1 folde
 failed to update collabora configuration in %1!	collabora	en	Failed to update Collabora Online configuration in %1!
 file	collabora	en	file
 file %1 has been created successfully.	collabora	en	File %1 has been created successfully.
-file renamed	collabora	en	File renamed
+file renamed	collabora	en	File renamed.
 insert	collabora	en	Insert
 insert address	collabora	en	Insert address
 insert merged content	collabora	en	Insert merged content
@@ -41,7 +41,7 @@ please enter your file name	filemanager	en	Please enter your file name
 presentation	filemanager	en	Presentation
 requirements / please note	collabora	en	Requirements / please note
 revision history	collabora	en	Revision History
-save as mail	collabora	en	Send as email
+save as mail	collabora	en	Send document by e-mail
 spreadsheet	filemanager	en	Spreadsheet
 support-key	collabora	en	Support-key
 the collabora server must be able to access your egroupware installation!	collabora	en	The Collabora Online server must be able to access your EGroupware installation!

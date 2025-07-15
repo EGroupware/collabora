@@ -14,7 +14,7 @@ collabora server	collabora	pl	Serwer Collabora Online
 conversion failed	collabora	pl	Konwersja nie powiodła się
 convert to	collabora	pl	Przekształcenie do
 converted	collabora	pl	Przekształcono
-converting...	collabora	pl	Konwersja...
+converting...	collabora	pl	Konwersja ...
 create	collabora	pl	Utwórz
 create new %1	filemanager	pl	Utwórz nowy %1
 document	filemanager	pl	Dokument
@@ -33,7 +33,7 @@ insert	collabora	pl	Wstaw
 insert address	collabora	pl	Wstaw adres
 insert merged content	collabora	pl	Wstaw połączoną zawartość
 latest revision	collabora	pl	Najnowsza wersja
-link is appended to email allowing recipients to edit the file	collabora	pl	Link jest dołączany do wiadomości e-mail, umożliwiając odbiorcom edycję pliku.
+link is appended to email allowing recipients to edit the file	collabora	pl	Link jest dołączany do wiadomości e-mail, umożliwiając odbiorcom edycję pliku
 local collabora server	collabora	pl	Lokalny serwer Collabora Online
 no active user 'anonymous' found!	collabora	pl	Nie znaleziono aktywnego użytkownika "anonymous"!
 open as new	filemanager	pl	Otwórz jako nowy
@@ -41,7 +41,7 @@ please enter your file name	filemanager	pl	Wprowadź nazwę pliku
 presentation	filemanager	pl	Prezentacja
 requirements / please note	collabora	pl	Wymagania / uwaga
 revision history	collabora	pl	Historia zmian
-save as mail	collabora	pl	Wyślij jako e-mail
+save as mail	collabora	pl	Wyślij dokument pocztą e-mail
 spreadsheet	filemanager	pl	Arkusz kalkulacyjny
 support-key	collabora	pl	Klucz pomocniczy
 the collabora server must be able to access your egroupware installation!	collabora	pl	Serwer Collabora Online musi mieć dostęp do instalacji EGroupware!

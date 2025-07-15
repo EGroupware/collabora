@@ -14,7 +14,7 @@ collabora server	collabora	et	Collabora Online server
 conversion failed	collabora	et	Konversioon ebaõnnestus
 convert to	collabora	et	Teisenda
 converted	collabora	et	Konverteeritud
-converting...	collabora	et	Konverteerimine...
+converting...	collabora	et	Konverteerimine ...
 create	collabora	et	Looge
 create new %1	filemanager	et	Looge uus %1
 document	filemanager	et	Dokument
@@ -41,7 +41,7 @@ please enter your file name	filemanager	et	Palun sisestage oma faili nimi
 presentation	filemanager	et	Esitlus
 requirements / please note	collabora	et	Nõuded / palun võtke arvesse
 revision history	collabora	et	Revisjoni ajalugu
-save as mail	collabora	et	Saada e-kirjana
+save as mail	collabora	et	Dokumendi saatmine e-posti teel
 spreadsheet	filemanager	et	Tabel
 support-key	collabora	et	Support-key
 the collabora server must be able to access your egroupware installation!	collabora	et	Collabora Online'i server peab olema võimeline pääsema ligi teie EGroupware'i installatsioonile!

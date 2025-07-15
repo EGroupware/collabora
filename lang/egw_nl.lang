@@ -14,7 +14,7 @@ collabora server	collabora	nl	Collabora Online server
 conversion failed	collabora	nl	Conversie mislukt
 convert to	collabora	nl	Geconverteerd naar
 converted	collabora	nl	Geconverteerd
-converting...	collabora	nl	Converteren...
+converting...	collabora	nl	Converteren ...
 create	collabora	nl	Aanmaken
 create new %1	filemanager	nl	Nieuw %1 aanmaken
 document	filemanager	nl	Document
@@ -41,7 +41,7 @@ please enter your file name	filemanager	nl	Voer uw bestandsnaam in
 presentation	filemanager	nl	Presentatie
 requirements / please note	collabora	nl	Vereisten / let op
 revision history	collabora	nl	Revisie geschiedenis
-save as mail	collabora	nl	Verzenden als e-mail
+save as mail	collabora	nl	Document per e-mail verzenden
 spreadsheet	filemanager	nl	Werkblad
 support-key	collabora	nl	Ondersteuningstoets
 the collabora server must be able to access your egroupware installation!	collabora	nl	De Collabora Online server moet toegang hebben tot uw EGroupware installatie!

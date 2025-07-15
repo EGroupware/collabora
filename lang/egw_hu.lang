@@ -14,7 +14,7 @@ collabora server	collabora	hu	Collabora Online szerver
 conversion failed	collabora	hu	Az átalakítás sikertelen
 convert to	collabora	hu	Átalakítás
 converted	collabora	hu	Átalakítva
-converting...	collabora	hu	Átalakítás...
+converting...	collabora	hu	Átalakítás ...
 create	collabora	hu	Hozzon létre
 create new %1	filemanager	hu	Új %1 létrehozása
 document	filemanager	hu	Dokumentum
@@ -33,7 +33,7 @@ insert	collabora	hu	Beillesztése
 insert address	collabora	hu	Cím beillesztése
 insert merged content	collabora	hu	Összevont tartalom beillesztése
 latest revision	collabora	hu	Legutóbbi felülvizsgálat
-link is appended to email allowing recipients to edit the file	collabora	hu	Linket csatoltunk az e-mailhez, amely lehetővé teszi a címzettek számára a fájl szerkesztését.
+link is appended to email allowing recipients to edit the file	collabora	hu	Linket csatoltunk az e-mailhez, amely lehetővé teszi a címzettek számára a fájl szerkesztését
 local collabora server	collabora	hu	Helyi Collabora Online szerver
 no active user 'anonymous' found!	collabora	hu	Nem találtunk aktív 'anonymous' felhasználót!
 open as new	filemanager	hu	Újként nyissa meg
@@ -41,7 +41,7 @@ please enter your file name	filemanager	hu	Kérjük, adja meg a fájl nevét
 presentation	filemanager	hu	Prezentáció
 requirements / please note	collabora	hu	Követelmények / kérjük, vegye figyelembe
 revision history	collabora	hu	Felülvizsgálati előzmények
-save as mail	collabora	hu	E-mailben küldje el
+save as mail	collabora	hu	Dokumentum küldése e-mailben
 spreadsheet	filemanager	hu	Táblázat
 support-key	collabora	hu	Támogatás-kulcs
 the collabora server must be able to access your egroupware installation!	collabora	hu	A Collabora Online kiszolgálónak képesnek kell lennie elérni az EGroupware telepítését!
