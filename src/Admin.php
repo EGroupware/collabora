@@ -44,7 +44,7 @@ class Admin
 			}
 			else
 			{
-				display_sidebox($appname, lang('Configuration'), $file);
+				$GLOBALS['egw']->framework->sidebox($appname, lang('Configuration'), $file);
 			}
 		}
 	}
