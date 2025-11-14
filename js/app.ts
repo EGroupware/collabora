@@ -898,7 +898,6 @@ class collaboraAPP extends EgwApp
 			"Action_Paste",
 			{Mimetype: mimetype, Data: text}
 		);
-		debugger;
 	}
 
 	/**
