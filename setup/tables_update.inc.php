@@ -1,9 +1,9 @@
 <?php
 /**
- * EGroupware - Calendar setup
+ * EGroupware - Collabora setup
  *
  * @link http://www.egroupware.org
- * @package calendar
+ * @package collabora
  * @author Ralf Becker <RalfBecker-AT-outdoor-training.de>
  * @license http://opensource.org/licenses/gpl-license.php GPL - GNU General Public License
  */
@@ -61,4 +61,14 @@ function collabora_upgrade20_1()
 function collabora_upgrade21_1()
 {
 	return $GLOBALS['setup_info']['collabora']['currentver'] = '23.1';
+}
+
+/**
+ * Bump version to 26.1
+ *
+ * @return string
+ */
+function collabora_upgrade23_1()
+{
+	return $GLOBALS['setup_info']['collabora']['currentver'] = '26.1';
 }
