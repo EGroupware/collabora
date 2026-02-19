@@ -41,7 +41,7 @@ class Files
 	{
 		if(!$id)
 		{
-			http_response_code(404);
+			$this->set_http_response_code(404);
 			header('X-WOPI-ServerError: Missing file ID');
 			return;
 		}
@@ -62,7 +62,7 @@ class Files
 		Vfs::load_wrapper(Vfs::parse_url($path, PHP_URL_SCHEME));
 		if(!$path || is_dir($path))
 		{
-			http_response_code(404);
+			$this->set_http_response_code(404);
 			header('X-WOPI-ServerError: Unable to find file / path is invalid');
 			return;
 		}
@@ -99,7 +99,7 @@ class Files
 
 		if($data == null)
 		{
-			http_response_code(404);
+			$this->set_http_response_code(404);
 			return null;
 		}
 
@@ -281,7 +281,7 @@ class Files
 		// Required
 		if(!($token = $this->header('X-WOPI-Lock')))
 		{
-			http_response_code(400);
+			$this->set_http_response_code(400);
 			return;
 		}
 		// Optional old lock code
@@ -302,7 +302,7 @@ class Files
 				error_log(__METHOD__ . "($path) unable to lock, already locked with " . array2string($old_lock));
 			}
 			header('X-WOPI-Lock: ' . $lock['token']);
-			http_response_code(409);
+			$this->set_http_response_code(409);
 			return;
 		}
 		else
@@ -322,7 +322,7 @@ class Files
 		}
 
 		header('X-WOPI-Lock: ' . $token);
-		http_response_code($result ? 200 : 409);
+		$this->set_http_response_code($result ? 200 : 409);
 	}
 
 	/**
@@ -337,7 +337,7 @@ class Files
 		$lock = Vfs::checkLock($path);
 
 		header('X-WOPI-Lock: ' . $lock['token']);
-		http_response_code(200);
+		$this->set_http_response_code(200);
 	}
 
 	/**
@@ -353,7 +353,7 @@ class Files
 		if(!$token)
 		{
 			// Bad request
-			http_response_code(400);
+			$this->set_http_response_code(400);
 		}
 
 		$timeout = static::LOCK_DURATION;
@@ -364,7 +364,7 @@ class Files
 		$result = Vfs::lock($path, $token, $timeout, $owner, $scope, $type, true);
 
 		header('X-WOPI-Lock: ' . $token);
-		http_response_code($result ? 200 : 409);
+		$this->set_http_response_code($result ? 200 : 409);
 	}
 
 	/**
@@ -380,14 +380,14 @@ class Files
 		if(!$token)
 		{
 			// Bad request
-			http_response_code(400);
+			$this->set_http_response_code(400);
 		}
 
 		$lock = Vfs::checkLock($path);
 		if(!$lock)
 		{
 			// File was already unlocked
-			http_response_code(200);
+			$this->set_http_response_code(200);
 			return;
 		}
 
@@ -395,12 +395,12 @@ class Files
 		{
 			header('X-WOPI-Lock: ' . $lock['token']);
 			// Conflict
-			http_response_code(409);
+			$this->set_http_response_code(409);
 		}
 
 		$result = Vfs::unlock($path, $token);
 
-		http_response_code($result ? 200 : 409);
+		$this->set_http_response_code($result ? 200 : 409);
 	}
 
 	/**
@@ -425,7 +425,7 @@ class Files
 		// Check if file _can_ be written to, before we bother with anything else
 		if(!Vfs::is_writable($path))
 		{
-			http_response_code(404);
+			$this->set_http_response_code(404);
 			header('X-WOPI-ServerError: File is readonly');
 			return;
 		}
@@ -445,7 +445,7 @@ class Files
 			if($stat['size'] != 0)
 			{
 				// Conflict
-				http_response_code(409);
+				$this->set_http_response_code(409);
 				return;
 			}
 
@@ -454,7 +454,7 @@ class Files
 		else if ($token && $lock['token'] !== $token)
 		{
 			// Conflict
-			http_response_code(409);
+			$this->set_http_response_code(409);
 			header('X-WOPI-Lock: ' . $lock['token']);
 			return;
 		}
@@ -494,7 +494,7 @@ class Files
 
 		if (False === file_put_contents($path, $content, 0, $context))
 		{
-			http_response_code(500);
+			$this->set_http_response_code(500);
 			header('X-WOPI-ServerError: Unable to write file');
 			return;
 		}
@@ -548,7 +548,7 @@ class Files
 		if($suggested_target && $relative_target)
 		{
 			// Specifying both is invalid, we give Not Implemented
-			http_response_code(501);
+			$this->set_http_response_code(501);
 			if(Wopi::DEBUG)
 			{
 				error_log(__METHOD__."() RelativeTarget='$relative_target' AND SuggestedTarget='$suggested_target' is invalid --> 501 Not implemented");
@@ -611,7 +611,7 @@ class Files
 			$clean = $this->clean_filename($relative_target, false);
 			if($relative_target !== $clean)
 			{
-				http_response_code(400);
+				$this->set_http_response_code(400);
 				header('X-WOPI-ValidRelativeTarget: ' . $clean);
 				if (Wopi::DEBUG)
 				{
@@ -623,7 +623,7 @@ class Files
 			{
 				if(!$overwrite)
 				{
-					http_response_code(409); // Conflict
+					$this->set_http_response_code(409); // Conflict
 					if($lock)
 					{
 						header('X-WOPI-Lock: ' . $lock['token']);
@@ -637,7 +637,7 @@ class Files
 				if(!$token && $lock || $token && $lock['token'] !== $token)
 				{
 					// Conflict
-					http_response_code(409);
+					$this->set_http_response_code(409);
 					if($lock)
 					{
 						header('X-WOPI-Lock: ' . $lock['token']);
@@ -656,7 +656,7 @@ class Files
 		if(!Vfs::is_writable(dirname($target)))
 		{
 			// User not authorised, 401 is used for invalid token
-			http_response_code(404);
+			$this->set_http_response_code(404);
 			if(Wopi::DEBUG)
 			{
 				error_log(__METHOD__."() Vfs::is_writable(Vfs::dirname('$target')) = ". array2string(Vfs::is_writable(Vfs::dirname($target))).' --> 404 Not Found');
@@ -669,7 +669,7 @@ class Files
 		if ($target[0] === '/') $target = Vfs::PREFIX.$target;
 		if(False === file_put_contents($target, $content, 0, Vfs\StreamWrapper::userContext($target)))
 		{
-			http_response_code(500);
+			$this->set_http_response_code(500);
 			header('X-WOPI-ServerError: Unable to write file');
 			return;
 		}
@@ -809,7 +809,7 @@ class Files
 		if(!$token && $lock || $token && $lock['token'] !== $token)
 		{
 			// Conflict
-			http_response_code(409);
+			$this->set_http_response_code(409);
 			if ($lock)
 			{
 				header('X-WOPI-Lock: ' . $lock['token']);
@@ -821,5 +821,10 @@ class Files
 			return false;
 		}
 		return true;
+	}
+
+	protected function set_http_response_code($code)
+	{
+		http_response_code($code);
 	}
 }

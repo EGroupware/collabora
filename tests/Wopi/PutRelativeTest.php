@@ -40,13 +40,6 @@ class PutRelativeTest extends WopiBase
 		'X-WOPI-OverwriteRelativeTarget' => false
 	);
 
-	protected function setUp() : void
-	{
-		parent::setUp();
-
-		// Since we're checking response codes, it's a good idea to clear it first
-		http_response_code(200);
-	}
 	/**
 	 * Test save as - this one should work and copy the file to a new name
 	 */
@@ -64,12 +57,13 @@ class PutRelativeTest extends WopiBase
 		));
 
 		// Mock Files
-		$files = $this->mock_files($header_map, $this->file_contents);
+		$status = 200;
+		$files = $this->mock_files($header_map, $this->file_contents, $status);
 
 		$response = $files->put_relative_file($url);
 
 		// Response code should be 200, which we set in setUp
-		$this->assertEquals(200, http_response_code());
+		$this->assertEquals(200, $status);
 		$this->assertEquals($this->new_filename, $response['Name']);
 		$this->assertNotEmpty(file_get_contents(Vfs::PREFIX.$target));
 		$this->assertEquals(file_get_contents(Vfs::PREFIX.$url), file_get_contents(Vfs::PREFIX.$target));
@@ -94,12 +88,13 @@ class PutRelativeTest extends WopiBase
 		));
 
 		// Mock Files - no content, since it should conflict on name
-		$files = $this->mock_files($header_map);
+		$status = 200;
+		$files = $this->mock_files($header_map, null, $status);
 
 		$response = $files->put_relative_file($this->original_filename);
 
 		// Response code should be 409 Conflict, since the target is already there
-		$this->assertEquals(409, http_response_code());
+		$this->assertEquals(409, $status);
 		$this->assertNull($response);
 		$this->assertNotEquals(file_get_contents(Vfs::PREFIX.$url), file_get_contents(Vfs::PREFIX.$target));
 	}
@@ -124,12 +119,13 @@ class PutRelativeTest extends WopiBase
 		));
 
 		// Mock Files
-		$files = $this->mock_files($header_map, $this->file_contents);
+		$status = 200;
+		$files = $this->mock_files($header_map, $this->file_contents, $status);
 
 		$response = $files->put_relative_file($this->original_filename);
 
 		// Response code should be 200, which we set in setUp
-		$this->assertEquals(200, http_response_code());
+		$this->assertEquals(200, $status);
 		// File is already there, should generate a new name
 		$this->assertNotNull($response['Name']);
 		$this->assertEquals($this->new_filename, $response['Name']);
@@ -154,12 +150,13 @@ class PutRelativeTest extends WopiBase
 		));
 
 		// Mock Files - no content, should stop at path check
-		$files = $this->mock_files($this->header_map);
+		$status = 200;
+		$files = $this->mock_files($this->header_map, null, $status);
 
 		$response = $files->put_relative_file($this->original_filename);
 
 		// Response code should be 404, target not found/valid
-		$this->assertEquals(404, http_response_code());
+		$this->assertEquals(404, $status);
 		$this->assertNull($response);
 		$this->assertFalse(Vfs::file_exists($target));
 	}

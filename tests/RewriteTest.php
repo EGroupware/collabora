@@ -73,7 +73,7 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		}
 
 		// /home is a directory, which is invalid - files only
-		$this->assertEquals('401', substr($headers[0], 9, 3), "Testing home directory $url");
+		$this->assertEquals('404', substr($headers[0], 9, 3), "Testing home directory $url");
 	}
 
 	protected function fixLink($url)
