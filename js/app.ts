@@ -517,63 +517,6 @@ class collaboraAPP extends EgwApp
 	}
 
 	/**
-	 * Initialize the settings and post the form that starts it
-	 * @see https://sdk.collaboraonline.com/docs/advanced_integration.html?highlight=browser#setup-settings-iframe
-	 */
-	init_settings_iframe(iframe, values)
-	{
-		values = values ?? (iframe.closest("et2-template").getRoot().getArrayMgr("content").data.newsettings || {});
-		if(!values.token)
-		{
-			return;
-		}
-		let form_html = Object.assign(document.createElement('form'), {
-			id: "form",
-			name: "form",
-			target: iframe.name,
-			action: values.collabora_settings_iframe,
-			method: "post",
-		});
-		form_html.append(Object.assign(document.createElement('input'), {
-			name: "wopi_setting_base_url",
-			value: values.wopi_url,
-			type: "hidden"
-		}));
-		form_html.append(Object.assign(document.createElement('input'), {
-			name: "iframe_type",
-			value: values.iframe_type || "admin",
-			type: "hidden"
-		}));
-		form_html.append(Object.assign(document.createElement('input'), {
-			name: "access_token",
-			value: values.token,
-			type: "hidden"
-		}));
-		form_html.append(Object.assign(document.createElement('input'), {
-			type: "hidden",
-			name: "ui_theme",
-			value: document.body.parentElement.dataset?.darkmode == '1' ? 'dark' : 'light'
-		}));
-		/* If we need to override CSS
-		// https://sdk.collaboraonline.com/docs/advanced_integration.html#theming-settings-iframe
-		form_html.append(Object.assign(document.createElement('input'), {
-			type: "hidden",
-			name: "css_variables",
-			value: "--co-settings-btn-primary: #0b87e7;" +
-				"--co-settings-btn-primary-text: #fff; --co-settings-btn-light: #83beec;" +
-				"--co-settings-btn-light-text: #0e242f; --co-settings-border: #b6b6b6;" +
-				"--co--settings-border-contrast: #cecece; --co-settings-text: #fff;" +
-				"--co-settings-text-maxcontrast: #f1f1f1; --co-settings-background: #F8F9FA;" +
-				"--co-settings-background-hover: #e8e8e8;"
-		}))
-		*/
-		jQuery('body').append(form_html);
-		(<HTMLFormElement>document.getElementById('form')).submit();
-		debugger;
-		form_html.remove();
-	}
-
-	/**
 	 * Handle messages sent from the editor
 	 *
 	 * @see https://www.collaboraoffice.com/collabora-online-editor-api-reference/#loleaflet-postmessage-actions

@@ -142,17 +142,7 @@ class Bo {
 					}
 				}
 			}
-			//Cache::setInstance('collabora', $location, $discovery, self::DISCOVERY_CACHE_TIME);
-
-			if($settings = $data->xpath('//net-zone/app[@name = "Settings"]/action'))
-			{
-				$collabora_settings = [];
-				foreach($settings as $cs)
-				{
-					$collabora_settings[(string)$cs['name']] = (string)$cs['urlsrc'];
-				}
-				Cache::setInstance('collabora', 'settings-' . parse_url($server, PHP_URL_HOST), $collabora_settings, self::DISCOVERY_CACHE_TIME);
-			}
+			Cache::setInstance('collabora', $location, $discovery, self::DISCOVERY_CACHE_TIME);
 			return $discovery;
 		}
 		catch (\Exception $e)
@@ -160,39 +150,6 @@ class Bo {
 			Cache::setInstance('collabora', $location, false, self::DISCOVERY_CACHE_TIME);
 			throw $e;
 		}
-	}
-
-	/**
-	 * Get Collabora settings information
-	 *
-	 * @param $server
-	 * @return array|mixed|string|null
-	 * @throws Api\Exception\AssertionFailed
-	 * @throws Api\Exception\WrongParameter
-	 */
-	public static function settings($server)
-	{
-		if(empty($server))
-		{
-			$server = self::get_server();
-		}
-		// if the server is configured AND we have cached settings --> use it
-		$cached = Cache::getInstance('collabora', $location = 'settings-' . parse_url($server, PHP_URL_HOST));
-		if(isset($cached))
-		{
-			return $cached;
-		}
-		else
-		{
-			if($cached === false)
-			{
-				throw new Api\Exception\WrongParameter('Unable to load ' . $server);
-			}
-		}
-
-		// Settings are passed along with discovery
-		self::discover($server);
-		return Cache::getInstance('collabora', $location);
 	}
 
 	/**

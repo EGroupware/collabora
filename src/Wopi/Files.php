@@ -246,32 +246,7 @@ class Files
 
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
-		// User preferences
-		$stamp = new Api\DateTime();
-		$stamp->setTimezone(new \DateTimeZone('UTC'));
-		$stamp->format(static::DATE_FORMAT);
-		if($GLOBALS['egw_info']['user']['preferences']['collabora']['settings_path'])
-		{
-			/*
-			$data['UserSettings'] = [
-				'uri'   => Api\Framework::getUrl(Api\Framework::link(
-					'/collabora/index.php/wopi/settings',
-					['access_token' => Wopi::get_token(), 'type' => 'userconfig', 'fileId' => '-1']
-				)
-				),
-				'stamp' => $stamp->format(static::DATE_FORMAT)
-			];
-			*/
-		}
-		$data['SharedSettings'] = [
-			'uri'   => Api\Framework::getUrl(Api\Framework::link(
-				'/collabora/index.php/wopi/settings',
-				['access_token' => Wopi::get_token(), 'type' => 'systemconfig', 'fileId' => '-1'],
-			)
-			),
-			'stamp' => $stamp->format(static::DATE_FORMAT)
-		];
-		error_log(array2string($data));
+
 		return $data;
 	}
 
