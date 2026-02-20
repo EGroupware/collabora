@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2.0//EN" "https://www.egroupware.org/etemplate2.0.dtd">
 <overlay>
-	<template id="collabora.config" template="" lang="" group="0" version="17.1">
+    <template id="admin-config">
 		<grid width="100%" class="admin-config egwGridView_grid">
 			<columns>
 				<column width="250px"/>
@@ -75,7 +75,45 @@
 					<et2-description value="PDF resolution (dpi)"></et2-description>
 					<et2-number id="newsettings[pdf_resolution_dpi]" placeholder="96" min="96" max="385" step="1"></et2-number>
 				</row>
+                <row>
+                    <et2-description value="Collabora settings directory"></et2-description>
+                    <et2-hbox>
+                        <et2-vfs-select id="newsettings[settings_directory]" mode="select-dir"
+                                        path="@newsettings[settings_directory][0]"
+                                        onchange="widget.nextSibling.value=widget.value[0]"
+                        ></et2-vfs-select>
+                        <et2-description id="newsettings[settings_directory]"></et2-description>
+                    </et2-hbox>
+                </row>
 			</rows>
 		</grid>
-	</template>
+    </template>
+    <!-- Copy of collabora-config.xet, needed due to security check in admin_config line 293 -->
+    <template id="collabora-config">
+        <iframe name="collabora_settings_iframe" width="100%" height="99%"></iframe>
+        <et2-textbox id="newsettings[collabora_settings_iframe]" type="hidden"></et2-textbox>
+        <et2-textbox id="newsettings[token]" type="hidden"></et2-textbox>
+        <et2-textbox id="newsettings[wopi_url]" type="hidden"></et2-textbox>
+        <script>
+            // Collabora needs this in its iframe
+            document.addEventListener('load',(e) => {
+            const iframe = e.target.querySelector('iframe');
+            iframe.closest('et2-template').egw().applyFunc('app.collabora.init_settings_iframe',[iframe]);
+            }, {once: true}
+            );
+        </script>
+    </template>
+
+    <template id="collabora.config" template="" lang="" group="0" version="17.1">
+        <et2-tabbox>
+            <tabs>
+                <tab id="egroupware" label="EGroupware"></tab>
+                <tab id="collabora" label="Collabora"></tab>
+            </tabs>
+            <tabpanels>
+                <template template="admin-config"></template>
+                <template template="collabora-config" disabled="!$newsettings[collabora_settings_iframe]"></template>
+            </tabpanels>
+        </et2-tabbox>
+    </template>
 </overlay>
