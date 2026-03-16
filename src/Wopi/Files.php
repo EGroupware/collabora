@@ -837,7 +837,14 @@ class Files
 
 	protected function user_private_info()
 	{
-		return [];
+		return [
+			/* Works following the example in the docs
+			// https://sdk.collaboraonline.com/docs/advanced_integration.html#document-signing
+			'SignatureCert' => file_get_contents(EGW_INCLUDE_ROOT . '/ca/intermediate/certs/example-cool-Alice.cert.pem'),
+			'SignatureKey'  => file_get_contents(EGW_INCLUDE_ROOT . '/ca/intermediate/private/example-cool-Alice.key.pem'),
+			'SignatureCa'   => file_get_contents(EGW_INCLUDE_ROOT . '/ca/intermediate/certs/ca-chain.cert.pem'),
+			*/
+		];
 	}
 
 	protected function server_private_info()
