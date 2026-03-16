@@ -75,6 +75,22 @@
 					<et2-description value="PDF resolution (dpi)"></et2-description>
 					<et2-number id="newsettings[pdf_resolution_dpi]" placeholder="96" min="96" max="385" step="1"></et2-number>
 				</row>
+                <row>
+                    <et2-description value="Digital signing" class="subHeader"></et2-description>
+                    <et2-description value="eIDeasy" extraLinkTarget="_blank" href="https://eideasy.com"></et2-description>
+                </row>
+                <row>
+                    <et2-description value="eID URL"></et2-description>
+                    <et2-url id="newsettings[esig_url]" placeholder="https://id.eideasy.com"></et2-url>
+                </row>
+                <row>
+                    <et2-description value="Client ID"></et2-description>
+                    <et2-textbox id="newsettings[esig_client_id]"></et2-textbox>
+                </row>
+                <row>
+                    <et2-description value="Secret"></et2-description>
+                    <et2-textbox id="newsettings[esig_secret]"></et2-textbox>
+                </row>
 			</rows>
 		</grid>
 	</template>

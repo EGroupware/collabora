@@ -219,6 +219,8 @@ class Files
 			),
 			'IsAdminUser'       => !empty($GLOBALS['egw_info']['user']['apps']['admin']),
 			'IsAnonymousUser'   => $GLOBALS['egw_info']['user']['account_lid'] === 'anonymous' || $GLOBALS['egw']->session->session_flags == 'A',
+			'UserPrivateInfo' => $this->user_private_info(),
+
 		);
 
 		if($path)
@@ -247,6 +249,11 @@ class Files
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
 
+		if(($server_info = $this->server_private_info()))
+		{
+			$data['ServerPrivateInfo'] = $server_info;
+		}
+		$config = Api\Config::read('collabora');
 		return $data;
 	}
 
@@ -826,5 +833,24 @@ class Files
 	protected function set_http_response_code($code)
 	{
 		http_response_code($code);
+	}
+
+	protected function user_private_info()
+	{
+		return [];
+	}
+
+	protected function server_private_info()
+	{
+		$config = Api\Config::read('collabora');
+		if(!$config['esig_url'])
+		{
+			return [];
+		}
+		return [
+			'ESignatureBaseUrl'  => $config['esig_url'],       // https://test.eideasy.com/
+			'ESignatureClientID' => $config['esig_client_id'], //'2IaeiZXbcKzlP1KvjZH9ghty2IJKM8Lg',
+			'ESignatureSecret'   => $config['esig_secret']     //'56RkLgZREDi1H0HZAvzOSAVlxu1Flx41'
+		];
 	}
 }
