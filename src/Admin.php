@@ -12,6 +12,7 @@ namespace EGroupware\Collabora;
 
 use EGroupware\Api;
 use EGroupware\Api\Egw;
+use EGroupware\Collabora\Wopi\Settings;
 
 /**
  * Edit the settings for this app.
@@ -70,6 +71,8 @@ class Admin
 			// Collabora 21.11+ uses /browser instead of /loleaflet
 			$data['admin_page'] = (strpos(current($discovery)['urlsrc'] ?? '', '/loleaflet/') !== false ? '/loleaflet' : '/browser').
 				'/dist/admin/admin.html';
+
+			$collabora_settings_iframe = Bo::settings($data['server'])['iframe'] ?? '';
 		}
 		catch (\Exception $e)
 		{
@@ -114,6 +117,16 @@ class Admin
 					// ignore exception --> stay with default server
 				}
 			}
+		}
+
+		// Settings iframe needs a token
+		if($collabora_settings_iframe && $data['settings_directory'])
+		{
+			$data['collabora_settings_iframe'] = $collabora_settings_iframe;
+			$settings = new Settings();
+			$data['token'] = Wopi::create('', $data['settings_directory'][0], Wopi::WOPI_WRITABLE, 'settings', '', [
+				'share_writable' => true])['share_token'] ?? "";
+			$data['wopi_url'] = Api\Framework::getUrl(Api\Framework::link('/collabora/index.php/wopi/settings'));
 		}
 		//error_log(__METHOD__."() returning ".array2string($data));
 		return $data;
