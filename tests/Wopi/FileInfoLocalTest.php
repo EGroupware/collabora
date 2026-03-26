@@ -142,6 +142,17 @@ class FileInfoLocalTest extends WopiBase
 			trigger_error("Missing fixture for $file created.", E_USER_NOTICE);
 			file_put_contents($this->get_info_fixture($file), $info);
 		}
+		else
+		{
+			$stored_data = json_decode($stored, true);
+			if(is_array($stored_data) && isset($GLOBALS['egw_info']['user']['account_id']))
+			{
+				$account_id = (string)$GLOBALS['egw_info']['user']['account_id'];
+				$stored_data['OwnerId'] = $account_id;
+				$stored_data['UserId'] = $account_id;
+				$stored = json_encode($stored_data);
+			}
+		}
 		$this->assertEquals($stored, $info, "Did you update the text fixture? (".$this->get_info_fixture($file).')');
 	}
 
