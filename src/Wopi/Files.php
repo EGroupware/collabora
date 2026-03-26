@@ -13,6 +13,8 @@ namespace EGroupware\Collabora\Wopi;
 
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
+use EGroupware\Api\Mail\Account as MailAccount;
+use EGroupware\Api\Mail\Smime as MailSmime;
 use EGroupware\Api\Vfs;
 use EGroupware\Collabora\Wopi;
 
@@ -862,6 +864,68 @@ class Files
 
 	protected function user_private_info()
 	{
+		$profile_id = (int)($GLOBALS['egw_info']['user']['preferences']['mail']['ActiveProfileID'] ?? 0);
+		if(!$profile_id)
+		{
+			$profile_id = MailAccount::get_default_acc_id();
+		}
+		if(!$profile_id)
+		{
+			return [];
+		}
+
+		$acc_smime = MailSmime::get_acc_smime($profile_id);
+		if(empty($acc_smime['cert']) || empty($acc_smime['pkey']))
+		{
+			$passphrase = Api\Cache::getSession('mail', 'smime_passphrase') ?: '';
+			if(!empty($acc_smime['acc_smime_password']))
+			{
+				$extracted = MailSmime::extractCertPKCS12($acc_smime['acc_smime_password'], $passphrase);
+				if(is_array($extracted))
+				{
+					$acc_smime = array_merge($acc_smime, $extracted);
+				}
+			}
+		}
+		if(empty($acc_smime['cert']) || empty($acc_smime['pkey']))
+		{
+			return [];
+		}
+
+		// Require a session passphrase so we can always return an unencrypted private key.
+		$passphrase = Api\Cache::getSession('mail', 'smime_passphrase');
+		if($passphrase === null)
+		{
+			return [];
+		}
+		// Normalize everything to PEM; key must be decrypted (unencrypted PEM) for Collabora.
+		$signature_cert = $this->normalize_cert_pem($acc_smime['cert']);
+		$signature_key = $this->normalize_key_pem($acc_smime['pkey'], $passphrase);
+		if(!$signature_cert || !$signature_key)
+		{
+			return [];
+		}
+
+		$signature_ca = null;
+		if(!empty($acc_smime['extracerts']))
+		{
+			$extra = is_array($acc_smime['extracerts']) ? $acc_smime['extracerts'] : [$acc_smime['extracerts']];
+			$normalized = [];
+			foreach($extra as $cert)
+			{
+				// CA chain can be provided as one or many certs; normalize each to PEM.
+				$normalized_cert = $this->normalize_cert_pem($cert);
+				if($normalized_cert)
+				{
+					$normalized[] = $normalized_cert;
+				}
+			}
+			if($normalized)
+			{
+				$signature_ca = implode("\n", $normalized);
+			}
+		}
+
 		return [
 			/* Works following the example in the docs
 			// https://sdk.collaboraonline.com/docs/advanced_integration.html#document-signing
@@ -869,7 +933,80 @@ class Files
 			'SignatureKey'  => file_get_contents(EGW_INCLUDE_ROOT . '/ca/intermediate/private/example-cool-Alice.key.pem'),
 			'SignatureCa'   => file_get_contents(EGW_INCLUDE_ROOT . '/ca/intermediate/certs/ca-chain.cert.pem'),
 			*/
+			'SignatureCert' => $signature_cert,
+			'SignatureKey'  => $signature_key,
+			'SignatureCa'   => $signature_ca,
 		];
+	}
+
+	protected function normalize_cert_pem($cert)
+	{
+		if(empty($cert))
+		{
+			return null;
+		}
+		if(preg_match(MailSmime::$certificate_regexp, $cert))
+		{
+			return $cert;
+		}
+		$resource = openssl_x509_read($cert);
+		if(!$resource)
+		{
+			return null;
+		}
+		$pem = null;
+		return openssl_x509_export($resource, $pem) ? $pem : null;
+	}
+
+	protected function normalize_key_pem($key, $passphrase = null)
+	{
+		if(empty($key))
+		{
+			return null;
+		}
+		// If we have a passphrase, always attempt to decrypt and export an unencrypted key.
+		if($passphrase !== null)
+		{
+			$resource = openssl_pkey_get_private($key, $passphrase);
+			if($resource)
+			{
+				$pem = null;
+				// Export with no passphrase to ensure the result is NOT encrypted.
+				if(openssl_pkey_export($resource, $pem, null))
+				{
+					// Defensive: reject encrypted PEM output.
+					if(preg_match(MailSmime::$privkey_encrypted_regexp, $pem))
+					{
+						return null;
+					}
+					return $pem;
+				}
+				return null;
+			}
+		}
+		if(preg_match(MailSmime::$privkey_regexp, $key))
+		{
+			return $key;
+		}
+		if(preg_match(MailSmime::$privkey_encrypted_regexp, $key))
+		{
+			return null;
+		}
+		$resource = openssl_pkey_get_private($key, $passphrase);
+		if(!$resource)
+		{
+			return null;
+		}
+		$pem = null;
+		if(openssl_pkey_export($resource, $pem, null))
+		{
+			if(preg_match(MailSmime::$privkey_encrypted_regexp, $pem))
+			{
+				return null;
+			}
+			return $pem;
+		}
+		return null;
 	}
 
 	protected function server_private_info()
