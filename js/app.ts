@@ -177,8 +177,15 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	{
 		let path = this.id2path(_selected[0].id);
 		let msg = this.egw.message(this.egw.lang("Converting..."), "info");
-		egw.json('EGroupware\\collabora\\Conversion::ajax_convert', [path, _action.id],
-			this._convert_to_callback, this, true, {app: this, msg: msg}).sendRequest();
+		egw.request('EGroupware\\collabora\\Conversion::ajax_convert', [path, _action.id])
+			.then(async(data) =>
+			{
+				// Clear converting message
+				(await msg).close();
+
+				this._convert_to_callback.call({app: this, msg: msg}, data);
+			});
+
 		return true;
 	}
 
@@ -194,9 +201,6 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	 */
 	_convert_to_callback(data : { success : Boolean, error_message : String, original_path : String, converted_path : String })
 	{
-		// Clear converting message
-		this.msg.close();
-
 		if(!data || !data.success)
 		{
 			this.app.egw.message(this.app.egw.lang("Conversion failed") + (data.error_message ? "\n" + data.error_message : ""), "error");
