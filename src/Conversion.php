@@ -64,8 +64,10 @@ class Conversion
 
 		$destination_path = Vfs::dirname($file);
 		$filename = Vfs::basename($file);
-		$parts = explode('.', $filename);
-		array_pop($parts);
+		if (count($parts = explode('.', $filename)) > 1)
+		{
+			array_pop($parts);
+		}
 		$destination = Vfs::make_unique($destination_path . '/' . implode('.', $parts) . '.' . $to_format);
 		$server = Bo::get_server();
 		$discovery = Bo::discover($server);
