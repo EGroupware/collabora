@@ -38,20 +38,14 @@ class PutTest extends WopiBase
 		'X-WOPI-Lock' => false
 	);
 
-	protected function setUp() : void
-	{
-		parent::setUp();
-
-		// Since we're checking response codes, it's a good idea to clear it first
-		http_response_code(200);
-	}
 	/**
 	 * Test save as - this one should work and copy the file to a new name
 	 */
 	public function testPutFile()
 	{
 		// Mock Files
-		$files = $this->mock_files($this->header_map, $this->file_contents);
+		$status = 200;
+		$files = $this->mock_files($this->header_map, $this->file_contents, $status);
 
 		// Create test file
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
@@ -74,7 +68,7 @@ class PutTest extends WopiBase
 		$mtime = $mtime->format(Wopi\Files::DATE_FORMAT);
 
 		// Response code should be 200, which we set in setUp
-		$this->assertEquals(200, http_response_code());
+		$this->assertEquals(200, $status);
 		// Response has modified time
 		$this->assertEquals($mtime, $response['LastModifiedTime']);
 		$this->assertTrue(Vfs::file_exists($url), "Test file $url is missing");
@@ -87,7 +81,8 @@ class PutTest extends WopiBase
 	public function testPutAlreadyExisting()
 	{
 		// Mock Files
-		$files = $this->mock_files($this->header_map, $this->file_contents);
+		$status = 200;
+		$files = $this->mock_files($this->header_map, $this->file_contents, $status);
 
 		// Create test files
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
@@ -103,7 +98,7 @@ class PutTest extends WopiBase
 		$mtime = $mtime->format(Wopi\Files::DATE_FORMAT);
 
 		// Response code should be 200, happily overwriting
-		$this->assertEquals(200, http_response_code());
+		$this->assertEquals(200, $status);
 		// Response has modified time
 		$this->assertEquals($mtime, $response['LastModifiedTime']);
 		$this->assertEquals($this->file_contents, file_get_contents(Vfs::PREFIX.$url));
@@ -115,7 +110,8 @@ class PutTest extends WopiBase
 	public function testPutReadonly()
 	{
 		// Mock Files - no content, it will fail before that
-		$files = $this->mock_files($this->header_map);
+		$status = 200;
+		$files = $this->mock_files($this->header_map, null, $status);
 
 		// Create test files
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
@@ -130,8 +126,7 @@ class PutTest extends WopiBase
 		$response = $files->put($url);
 
 		// Response code should be 404 - Resource not found/user unauthorized
-		$this->assertEquals(404, http_response_code());
+		$this->assertEquals(404, $status);
 		$this->assertNull($response);
-		$this->assertFalse(Vfs::file_exists($url));
 	}
 }

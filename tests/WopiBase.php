@@ -28,10 +28,10 @@ class WopiBase extends \EGroupware\Api\Vfs\SharingBase
 	 * @param String $file_contents = null Specify the content 'sent' from the client
 	 * @return MockedFiles
 	 */
-	protected function mock_files($header_map, $file_contents = null)
+	protected function mock_files($header_map, $file_contents = null, &$status = 200)
 	{
 		$files = $this->getMockBuilder(Wopi\Files::class)
-			->setMethods(array('header','get_sent_content'))
+			->onlyMethods(array('header', 'get_sent_content', 'set_http_response_code'))
 			->getMock();
 		$files->method('header')
 				// Headers that will trigger specific mode - no changes allowed
@@ -41,6 +41,12 @@ class WopiBase extends \EGroupware\Api\Vfs\SharingBase
 							return $header_map[$header];
 						}
 				));
+
+		$files->method('set_http_response_code')
+			  ->willReturnCallback(function ($code) use (&$status)
+			  {
+				  $status = $code;
+			  });
 
 		// Mock the file contents, since nobody sent them
 		if($file_contents)
