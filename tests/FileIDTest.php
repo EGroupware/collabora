@@ -15,6 +15,7 @@ namespace EGroupware\Collabora;
 require_once __DIR__ . '/WopiBase.php';
 
 use \EGroupware\Api\Vfs;
+use EGroupware\Api\Sharing;
 
 /**
  * Test for File ID
@@ -132,16 +133,17 @@ class FileIDTest extends WopiBase
 		// Get file ID
 		$original_file_id = Wopi::get_file_id($test_path);
 
-		// Create share & verify it
-		$mode = Wopi::WOPI_WRITABLE;
-		$extra = array();
-		$this->getShareExtra($test_path, $mode, $extra);
-		$this->shareLink($test_path, $mode, $extra);
+			// Create share & verify it
+			$mode = Wopi::WOPI_WRITABLE;
+			$extra = array();
+			$this->getShareExtra($test_path, $mode, $extra);
+			$share = $this->createShare($test_path, $mode, $extra);
+			$GLOBALS['egw']->sharing = [$share['share_token'] => Sharing::factory($share)];
 
-		// Check file ID
-		$share_file_id = Wopi::get_file_id($test_path);
-		$this->assertEquals($original_file_id, $share_file_id, "Share is using a different file ID from original");
-	}
+			// Check file ID
+			$share_file_id = Wopi::get_file_id($test_path, $share);
+			$this->assertEquals($original_file_id, $share_file_id, "Share is using a different file ID from original");
+		}
 
 	/**
 	 * Check a given directory to see all the files in it give a file ID
@@ -187,7 +189,13 @@ class FileIDTest extends WopiBase
 		$this->assertNotEquals(0, $file_id, 'No File ID for ' . $file);
 
 		// Check the other way, but $file is missing the Vfs prefix
-		$resolved_file = Vfs::stat($file)['url'] ?: $file;
-		$this->assertStringContainsString(Wopi::get_path_from_id($file_id), $resolved_file);
+		$path_from_id = Wopi::get_path_from_id($file_id);
+		$this->assertNotEmpty($path_from_id, "Could not resolve path from file ID $file_id");
+		$roundtrip_file_id = Wopi::get_file_id($path_from_id, $share);
+		$this->assertEquals(
+			$file_id,
+			$roundtrip_file_id,
+			"Path roundtrip mismatch for file ID $file_id: path='$path_from_id', roundtrip='$roundtrip_file_id'"
+		);
 	}
 }
