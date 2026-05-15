@@ -27,6 +27,8 @@ class EditTest extends WopiBase
 	 * Test that a share link goes to the editor, and at least the etemplate is loaded.
 	 * We can't really test Collabora here, but we can test our side.
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testEditorTemplateIsLoaded()
 	{
 		try

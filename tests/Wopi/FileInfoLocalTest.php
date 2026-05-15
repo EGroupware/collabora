@@ -34,6 +34,8 @@ class FileInfoLocalTest extends WopiBase
 	/**
 	 * Check the file info against saved results
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testCheckFileOnSqlfs()
 	{
 		$this->files = $this->addFiles(Vfs::get_home_dir(), static::CONTENT);
@@ -44,6 +46,8 @@ class FileInfoLocalTest extends WopiBase
 		}
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testCheckFileInfoOnVersioning()
 	{
 		$this->files[] = $dir = Vfs::get_home_dir().'/versioned/';
@@ -61,6 +65,8 @@ class FileInfoLocalTest extends WopiBase
 		}
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testCheckFileInfoOnFilesystem()
 	{
 		$this->files[] = $dir = Vfs::get_home_dir().'/filesystem/';
@@ -78,6 +84,8 @@ class FileInfoLocalTest extends WopiBase
 		}
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testCheckFileInfoOnLink()
 	{
 		// Create an infolog entry for testing purposes
@@ -96,6 +104,8 @@ class FileInfoLocalTest extends WopiBase
 		}
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testCheckFileInfoOnMerge()
 	{
 		if(!class_exists("\EGroupware\Stylite\Vfs\Merge\StreamWrapper"))

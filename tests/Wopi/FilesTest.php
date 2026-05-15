@@ -27,18 +27,26 @@ class FilesTest extends WopiBase
 {
 
 	// Collabora does not actually use locking last I heard (2017)
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testLock()
 	{
 		$this->markTestIncomplete();
 	}
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testUnlock()
 	{
 		$this->markTestIncomplete();
 	}
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testRefreshLock()
 	{
 		$this->markTestIncomplete();
 	}
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testUnlockAndRelock()
 	{
 		$this->markTestIncomplete();

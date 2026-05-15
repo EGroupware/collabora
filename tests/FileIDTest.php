@@ -27,11 +27,15 @@ use \EGroupware\Api\Vfs;
  */
 class FileIDTest extends WopiBase
 {
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testSqlfs()
 	{
 		$this->checkDirectory(Vfs::get_home_dir(), Wopi::READONLY);
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testVersioning()
 	{
 		$this->files[] = $dir = Vfs::get_home_dir().'/versioned/';
@@ -45,9 +49,10 @@ class FileIDTest extends WopiBase
 		$this->checkDirectory($dir, Wopi::READONLY);
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testFilesystem()
 	{
-		$this->markTestSkipped("Travis doesn't like this one");
 		// Don't add to files list or it deletes the folder from filesystem
 		$dir = '/filesystem/';
 
@@ -57,9 +62,11 @@ class FileIDTest extends WopiBase
 		$this->mountFilesystem($dir);
 		$this->assertTrue(Vfs::is_writable($dir), "Unable to write to '$dir' as expected");
 
-		$this->checkDirectory($dir);
+		$this->checkDirectory($dir, Wopi::WOPI_WRITABLE);
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testLink()
 	{
 		// Create an infolog entry for testing purposes
@@ -74,6 +81,8 @@ class FileIDTest extends WopiBase
 		$this->checkDirectory($dir, Wopi::READONLY);
 	}
 
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testMerge()
 	{
 		if(!class_exists("\EGroupware\Stylite\Vfs\Merge\StreamWrapper"))
@@ -101,6 +110,8 @@ class FileIDTest extends WopiBase
 	 *
 	 * @return void
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testShareHasSameFileID()
 	{
 		// Create files

@@ -41,6 +41,8 @@ class PutTest extends WopiBase
 	/**
 	 * Test save as - this one should work and copy the file to a new name
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutFile()
 	{
 		// Mock Files
@@ -78,6 +80,8 @@ class PutTest extends WopiBase
 	/**
 	 * Put the file someplace that already exists, should happily overwrite
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutAlreadyExisting()
 	{
 		// Mock Files
@@ -107,6 +111,8 @@ class PutTest extends WopiBase
 	/**
 	 * Test that writing to a readonly share fails
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutReadonly()
 	{
 		// Mock Files - no content, it will fail before that
