@@ -43,6 +43,8 @@ class PutRelativeTest extends WopiBase
 	/**
 	 * Test save as - this one should work and copy the file to a new name
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutRelativeFileSpecific()
 	{
 		// Create test file
@@ -73,6 +75,8 @@ class PutRelativeTest extends WopiBase
 	 * Put the file someplace that already exists, should give 409 and not change
 	 * anything
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutRelativeFileConflict()
 	{
 		// Create test files
@@ -103,6 +107,8 @@ class PutRelativeTest extends WopiBase
 	 * Put the file someplace, but let the system adjust the name since file
 	 * is already there.  Should save to a different file name.
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutRelativeFileSuggested()
 	{
 		// Create test files
@@ -137,6 +143,8 @@ class PutRelativeTest extends WopiBase
 	/**
 	 * Test what happens if we try to save to an invalid place
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutRelativeInvalid()
 	{
 		// Create test files

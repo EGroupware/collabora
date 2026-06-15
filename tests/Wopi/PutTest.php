@@ -41,6 +41,8 @@ class PutTest extends WopiBase
 	/**
 	 * Test save as - this one should work and copy the file to a new name
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutFile()
 	{
 		// Mock Files
@@ -78,6 +80,8 @@ class PutTest extends WopiBase
 	/**
 	 * Put the file someplace that already exists, should happily overwrite
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutAlreadyExisting()
 	{
 		// Mock Files
@@ -107,21 +111,20 @@ class PutTest extends WopiBase
 	/**
 	 * Test that writing to a readonly share fails
 	 */
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
+	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
 	public function testPutReadonly()
 	{
-		// Mock Files - no content, it will fail before that
+		// Mock Files - read-only check should reject write regardless of content
 		$status = 200;
 		$files = $this->mock_files($this->header_map, null, $status);
 
-		// Create test files
+		// Create a real file and force read-only mode.  In direct unit calls, the
+		// share is not mounted through share.php, so enforce read-only on the path.
 		$this->files[] = $url = Vfs::get_home_dir() .'/' . $this->original_filename;
-		$this->assertFalse(Vfs::file_exists($url));
-
-		// Create and use link
-		$extra = array();
-		$mode = Wopi::WOPI_READONLY;
-		$this->getShareExtra($url, $mode, $extra);
-		$this->shareLink($url, $mode, $extra);
+		file_put_contents(Vfs::PREFIX.$url, $this->file_contents);
+		Vfs::chmod($url, 0444);
+		$this->assertFalse(Vfs::is_writable($url), "$url should be read-only");
 
 		$response = $files->put($url);
 

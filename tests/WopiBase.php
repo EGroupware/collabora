@@ -14,6 +14,8 @@
 namespace EGroupware\Collabora;
 
 require_once __DIR__ . '/../../api/tests/Vfs/SharingBase.php';
+require_once __DIR__ . '/../../api/tests/Vfs/SharingACLTest.php';
+require_once __DIR__ . '/../../api/tests/Vfs/SharingHooksTest.php';
 
 use \EGroupware\Api\Vfs;
 use EGroupware\Api\Vfs\TestSharing;
@@ -31,16 +33,14 @@ class WopiBase extends \EGroupware\Api\Vfs\SharingBase
 	protected function mock_files($header_map, $file_contents = null, &$status = 200)
 	{
 		$files = $this->getMockBuilder(Wopi\Files::class)
-			->onlyMethods(array('header', 'get_sent_content', 'set_http_response_code'))
-			->getMock();
+		              ->onlyMethods(array('header', 'get_sent_content', 'set_http_response_code'))
+		              ->getMock();
 		$files->method('header')
-				// Headers that will trigger specific mode - no changes allowed
-				->will($this->returnCallback(
-						function($header) use ($header_map)
-						{
-							return $header_map[$header];
-						}
-				));
+			// Headers that will trigger specific mode - no changes allowed
+			  ->willReturnCallback(function ($header) use ($header_map)
+			{
+				return $header_map[$header];
+			});
 
 		$files->method('set_http_response_code')
 			  ->willReturnCallback(function ($code) use (&$status)
@@ -52,8 +52,8 @@ class WopiBase extends \EGroupware\Api\Vfs\SharingBase
 		if($file_contents)
 		{
 			$files->expects($this->once())
-					->method('get_sent_content')
-					->will($this->returnValue($this->file_contents));
+			      ->method('get_sent_content')
+			      ->willReturn($this->file_contents);
 		}
 		else
 		{
