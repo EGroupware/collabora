@@ -22,12 +22,12 @@
 							<row>
 								<et2-label></et2-label>
 								<et2-label  value="Latest revision"></et2-label>
-								<et2-button-icon  id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"></et2-button-icon>
+								<et2-button-icon  id="edit[$row]" image="edit" onclick="app.collabora.edit_revision"></et2-button-icon>
 							</row>
 							<row>
 								<et2-box><et2-vfs-mime  id="$row"></et2-vfs-mime></et2-box>
 								<et2-date-time  readonly="true" id="${row}[mtime]"></et2-date-time>
-								<et2-button-icon  id="edit[${row}]" image="edit" onclick="app.collabora.edit_revision"></et2-button-icon>
+								<et2-button-icon  id="edit[$row]" image="edit" onclick="app.collabora.edit_revision"></et2-button-icon>
 							</row>
 						</rows>
 					</grid>
