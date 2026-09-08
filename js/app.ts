@@ -248,15 +248,25 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	_mail_link_callback(_data) {
 		if (_data.msg || !_data.share_link) window.egw_refresh(_data.msg, this.appname);
 
+		const linkHtml = '<a href="'+_data.share_link + '">'+_data.title+'</a>';
 		let params = {
-			'preset[body]': '<a href="'+_data.share_link + '">'+_data.title+'</a>',
+			'preset[body]': linkHtml,
 			'mimeType': 'html'// always open compose in html mode, as attachment links look a lot nicer in html
 		};
 		let content = {
-			mail_htmltext: ['<br /><a href="'+_data.share_link + '">'+_data.title+'</a>'],
+			mail_htmltext: ['<br />'+linkHtml],
 			mail_plaintext: ["\n"+_data.share_link]
 		};
-		return egw.openWithinWindow("mail", "setCompose", content, params, /mail.mail_compose.compose/);
+		// mail's own compose popup moved from the classic mail_compose.compose postback to a
+		// client-side-only mail/compose.php page (doc/ai/projects/mail-compose-jmap-migration.md,
+		// Step 10) - the old regex never matched that url, so this always opened a redundant new
+		// popup instead of reusing an already-open one (found live 2026-09-08, ralf: "addressbook_ui
+		// and collabora app have the same issue" as invoices' own dropped-menuaction bug). Matches
+		// filemanager.ts's own identical _mail_link_callback() fix: same regex, same
+		// MailApp.composeWithPreset({body, mimeType}) fallback for the "nothing to reuse" case
+		// instead of a classic menuaction url.
+		return egw.openWithinWindow("mail", "setCompose", content, params, /\/mail\/compose\.php/,
+			undefined, () => (<any>window).app.mail?.composeWithPreset({body: '<br />'+linkHtml, mimeType: 'html'}));
 	}
 
 	/**
