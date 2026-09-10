@@ -416,6 +416,19 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 app.classes.filemanager = collaboraFilemanagerAPP;
 
 /**
+ * Re-point an app.filemanager created before this file loaded: we are only pulled in for
+ * filemanager.index, but etemplate2.load() instantiates app.filemanager for ANY filemanager
+ * template (home's favorite portlet) and never re-creates an existing one - leaving it without
+ * set_discovery()/isSharableFile(), so the Collabora actions silently drop out of the menu.
+ * Swapping the prototype keeps loaded etemplates and registered actions working.
+ */
+if(typeof app.filemanager === "object" && app.filemanager !== null &&
+	!(app.filemanager instanceof collaboraFilemanagerAPP))
+{
+	Object.setPrototypeOf(app.filemanager, collaboraFilemanagerAPP.prototype);
+}
+
+/**
 * UI for collabora stuff
 *
 * @augments AppJS
