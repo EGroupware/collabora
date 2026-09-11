@@ -14,12 +14,13 @@
 import {filemanagerAPP} from "../../filemanager/js/filemanager";
 import {EgwApp} from "../../api/js/jsapi/egw_app";
 import {et2_createWidget} from "../../api/js/etemplate/et2_core_widget";
-import {egw} from "../../api/js/jsapi/egw_global";
 import {et2_IInput} from "../../api/js/etemplate/et2_core_interfaces";
 import {Et2Dialog} from "../../api/js/etemplate/Et2Dialog/Et2Dialog";
 import {formatDate} from "../../api/js/etemplate/Et2Date/Et2Date";
 import {loadWebComponent} from "../../api/js/etemplate/Et2Widget/Et2Widget";
-import {Et2VfsSelectDialog} from "../../api/js/etemplate/Et2Vfs/Et2VfsSelectDialog";
+import type {Et2VfsSelectDialog} from "../../api/js/etemplate/Et2Vfs/Et2VfsSelectDialog";
+// egw/app are ambient globals (declare global {} in egw_global.d.ts, unconditionally included
+// via tsconfig's "**/*.d.ts") - no import needed or possible.
 
 /**
  * UI for filemanager in collabora
@@ -118,7 +119,10 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		let mime = data && data.data && data.data.mime ? data.data.mime : '';
 		if(data && mime && this.discovery && this.discovery[mime])
 		{
-			let fe = egw.file_editor_prefered_mimes();
+			// Fixing the broken "egw" import above (ambient global, see comment on it) revealed this
+			// call was silently missing its required "mime" argument, previously masked by TS treating
+			// the whole failed-import "egw" as "any".
+			const fe : any = egw.file_editor_prefered_mimes(mime);
 			if (fe && fe.mime && !fe.mime[mime]) return false;
 			return ['edit'].indexOf(this.discovery[mime].name) !== -1;
 		}
@@ -156,8 +160,8 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		if(this.isEditable(_action, _selected))
 		{
 			let path = this.id2path(_selected[0].id);
-			egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path],
-				this._share_link_callback, this, true, this).sendRequest();
+			egw.request('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path])
+				.then(data => this._share_link_callback(data));
 			return true;
 		}
 		return false;
@@ -199,7 +203,9 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	 *	converted_path : String
 	 * }
 	 */
-	_convert_to_callback(data : { success : Boolean, error_message : String, original_path : String, converted_path : String })
+	// Invoked via .call({app: this, msg: msg}, data) in convert_to() above - "this" is deliberately
+	// NOT the class instance, so it needs an explicit "this" parameter type to match.
+	_convert_to_callback(this : {app : collaboraFilemanagerAPP, msg : any}, data : { success : Boolean, error_message : String, original_path : String, converted_path : String })
 	{
 		if(!data || !data.success)
 		{
@@ -226,8 +232,8 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 			return super.mail(_action, _selected);
 		}
 		let path = this.id2path(_selected[0].id);
-		egw.json('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path],
-			this._mail_link_callback, this, true, this).sendRequest();
+		egw.request('EGroupware\\collabora\\Ui::ajax_share_link', [_action.id, path])
+			.then(data => this._mail_link_callback(data));
 		return true;
 	}
 
@@ -242,15 +248,25 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	_mail_link_callback(_data) {
 		if (_data.msg || !_data.share_link) window.egw_refresh(_data.msg, this.appname);
 
+		const linkHtml = '<a href="'+_data.share_link + '">'+_data.title+'</a>';
 		let params = {
-			'preset[body]': '<a href="'+_data.share_link + '">'+_data.title+'</a>',
+			'preset[body]': linkHtml,
 			'mimeType': 'html'// always open compose in html mode, as attachment links look a lot nicer in html
 		};
 		let content = {
-			mail_htmltext: ['<br /><a href="'+_data.share_link + '">'+_data.title+'</a>'],
+			mail_htmltext: ['<br />'+linkHtml],
 			mail_plaintext: ["\n"+_data.share_link]
 		};
-		return egw.openWithinWindow("mail", "setCompose", content, params, /mail.mail_compose.compose/);
+		// mail's own compose popup moved from the classic mail_compose.compose postback to a
+		// client-side-only mail/compose.php page (doc/ai/projects/mail-compose-jmap-migration.md,
+		// Step 10) - the old regex never matched that url, so this always opened a redundant new
+		// popup instead of reusing an already-open one (found live 2026-09-08, ralf: "addressbook_ui
+		// and collabora app have the same issue" as invoices' own dropped-menuaction bug). Matches
+		// filemanager.ts's own identical _mail_link_callback() fix: same regex, same
+		// MailApp.composeWithPreset({body, mimeType}) fallback for the "nothing to reuse" case
+		// instead of a classic menuaction url.
+		return egw.openWithinWindow("mail", "setCompose", content, params, /\/mail\/compose\.php/,
+			undefined, () => (<any>window).app.mail?.composeWithPreset({body: '<br />'+linkHtml, mimeType: 'html'}));
 	}
 
 	/**
@@ -270,7 +286,6 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		let current_path = _path || this.et2.getWidgetById('path').get_value();
 		let extensions = {};
 		let type = _type || 'document';
-		let self = this;
 		let ext_default = 'odt';
 		let title = _openasnew ? this.egw.lang('Open as new') :
 			this.egw.lang('Create new %1', type == 'more'? this.egw.lang('file'): this.egw.lang(type));
@@ -298,9 +313,9 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 			case 'more':
 				for(let key in this.discovery)
 				{
-					if(this.discovery[key].name == 'edit' && exclusive_ext.filter(function(v)
+					if(this.discovery[key].name == 'edit' && exclusive_ext.filter((v) =>
 					{
-						return (self.discovery[key]['ext'] == v);
+						return (this.discovery[key]['ext'] == v);
 					}).length == 0)
 					{
 						extensions[this.discovery[key]['ext']] = '(.' + this.discovery[key]['ext'] + ') ' + key;
@@ -310,11 +325,11 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		}
 		let dialog = new Et2Dialog(this.egw);
 		dialog.transformAttributes({
-			callback: function(_button_id, _val)
+			callback: (_button_id, _val) =>
 			{
 				if(_button_id == 'create' && _val && _val.name != '')
 				{
-					self._request_createNew({
+					this._request_createNew({
 						name: _val.name,
 						openasnew: _openasnew,
 						ext: _openasnew ? _openasnew.split('.').pop() : _val.extension,
@@ -348,10 +363,11 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	 */
 	_request_createNew(data)
 	{
-		egw.json('EGroupware\\collabora\\Ui::ajax_createNew', [data.ext, data.dir, data.name, data.openasnew], function(_data){
+		egw.request('EGroupware\\collabora\\Ui::ajax_createNew', [data.ext, data.dir, data.name, data.openasnew]).then((_data) =>
+		{
 			if (_data.path)
 			{
-				self.egw.refresh('', 'filemanager');
+				egw.refresh('', 'filemanager');
 				window.open(egw.link('/index.php', {
 					menuaction: 'collabora.EGroupware\\collabora\\Ui.editor',
 					path: _data.path,
@@ -359,7 +375,7 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 				}));
 			}
 			egw.message(_data.message);
-		}).sendRequest(true);
+		});
 	}
 
 	/**
@@ -398,6 +414,19 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 	}
 }
 app.classes.filemanager = collaboraFilemanagerAPP;
+
+/**
+ * Re-point an app.filemanager created before this file loaded: we are only pulled in for
+ * filemanager.index, but etemplate2.load() instantiates app.filemanager for ANY filemanager
+ * template (home's favorite portlet) and never re-creates an existing one - leaving it without
+ * set_discovery()/isSharableFile(), so the Collabora actions silently drop out of the menu.
+ * Swapping the prototype keeps loaded etemplates and registered actions working.
+ */
+if(typeof app.filemanager === "object" && app.filemanager !== null &&
+	!(app.filemanager instanceof collaboraFilemanagerAPP))
+{
+	Object.setPrototypeOf(app.filemanager, collaboraFilemanagerAPP.prototype);
+}
 
 /**
 * UI for collabora stuff
@@ -478,41 +507,44 @@ class collaboraAPP extends EgwApp
 		values.url += '&user=' + (this.egw.user('account_lid') ?? 'anonymous');
 		values.url += '&lang=' + (this.egw.preference('lang') ?? 'en');
 		values.url += '&title=' + encodeURIComponent(values.filename);
-		let form_html = jQuery(document.createElement('form')).attr({
-			id: "form",
-			name: "form",
-			target: "loleafletframe",
-			action: values.url,
-			method: "post",
-		});
-		jQuery(document.createElement('input')).attr({
-			name: "access_token",
-			value: values.token,
-			type: "hidden"
-		}).appendTo(form_html);
+		const form_html = document.createElement('form');
+		form_html.id = "form";
+		form_html.name = "form";
+		form_html.target = "loleafletframe";
+		form_html.action = values.url;
+		form_html.method = "post";
 
-		let ui_preferences = "UIMode="+ (egw.preference("ui_mode","filemanager") || 'notebookbar');
-		jQuery(document.createElement('input')).attr({
-			name: "ui_defaults",
-			value: ui_preferences,
-			type: "hidden"
-		}).appendTo(form_html);
+		const access_token = document.createElement('input');
+		access_token.name = "access_token";
+		access_token.value = values.token;
+		access_token.type = "hidden";
+		form_html.appendChild(access_token);
 
-		jQuery('body').append(form_html);
+		const ui_preferences = "UIMode="+ (egw.preference("ui_mode","filemanager") || 'notebookbar');
+		const ui_defaults = document.createElement('input');
+		ui_defaults.name = "ui_defaults";
+		ui_defaults.value = ui_preferences;
+		ui_defaults.type = "hidden";
+		form_html.appendChild(ui_defaults);
 
-		let frameholder = jQuery('.editor_frame');
-		let frame = '<iframe id="loleafletframe" name= "loleafletframe" allow="fullscreen; clipboard-read *; clipboard-write *" style="height:100%;position:absolute;"/>';
+		document.body.append(form_html);
 
-		jQuery('iframe',frameholder).remove();
-		frameholder.append(frame);
+		const frameholder = document.querySelector('.editor_frame');
+		frameholder.querySelectorAll('iframe').forEach(el => el.remove());
+		frameholder.insertAdjacentHTML('beforeend',
+			'<iframe id="loleafletframe" name= "loleafletframe" allow="fullscreen; clipboard-read *; clipboard-write *" style="height:100%;position:absolute;"/>');
 
 		// Listen for messages
-		window.addEventListener('message', jQuery.proxy(function(e){
+		window.addEventListener('message', (e) =>
+		{
 			this._handle_messages(e);
-		}, this));
+		});
 
-		this.editor_iframe = <HTMLIFrameElement>jQuery('#loleafletframe')[0];
-		jQuery(frame).on('load', () => {
+		this.editor_iframe = <HTMLIFrameElement>document.getElementById('loleafletframe');
+		// (previously bound 'load' on a freshly re-parsed, detached copy of the iframe HTML string,
+		// not the real element already in the DOM above - that copy's 'load' event could never fire)
+		this.editor_iframe.addEventListener('load', () =>
+		{
 			// Tell the iframe that we are ready now
 			this.WOPIPostMessage('Host_PostmessageReady', {});
 		});
@@ -626,7 +658,7 @@ class collaboraAPP extends EgwApp
 				// Update our value for path, or next time we do something with it (Save as again, email)
 				// it will be the original value
 				this.et2.getArrayMgr('content').data.path =
-					app.filemanager.dirname(this.et2.getArrayMgr('content').data.path) + '/' +
+					(<collaboraFilemanagerAPP><unknown>app.filemanager).dirname(this.et2.getArrayMgr('content').data.path) + '/' +
 					message.Values.NewName;
 				break;
 		}
@@ -704,7 +736,7 @@ class collaboraAPP extends EgwApp
 	 */
 	on_save_as_mail() {
 		let filepath = this.et2.getArrayMgr('content').getEntry('path', true);
-		app.filemanager.mail({id:"attach"}, [{id:filepath}]);
+		(<collaboraFilemanagerAPP><unknown>app.filemanager).mail({id:"attach"}, [{id:filepath}]);
 	}
 
 	/**
@@ -715,7 +747,7 @@ class collaboraAPP extends EgwApp
 	on_close()
 	{
 		// Do not ask if they're sure, it's too late.  Just reset dirty
-		this.et2.iterateOver(function(w) {w.resetDirty();},this,et2_IInput);
+		this.et2.iterateOver((w) => {w.resetDirty();},this,et2_IInput);
 		window.close();
 	}
 
@@ -725,7 +757,7 @@ class collaboraAPP extends EgwApp
 	on_save_as()
 	{
 		let filepath = this.et2.getArrayMgr('content').getEntry('path', true);
-		let parts = app.filemanager.basename(filepath).split('.');
+		let parts = (<collaboraFilemanagerAPP><unknown>app.filemanager).basename(filepath).split('.');
 		let ext = parts.pop();
 		let filename = parts.join('.');
 
@@ -745,12 +777,11 @@ class collaboraAPP extends EgwApp
 			id: 'savefile',
 			mode: 'saveas',
 			filename: filename,
-			path: app.filemanager.dirname(filepath).replace(/^(vfs:\/\/default)/, ""),
+			path: (<collaboraFilemanagerAPP><unknown>app.filemanager).dirname(filepath).replace(/^(vfs:\/\/default)/, ""),
 			buttonLabel: this.egw.lang("Save as"),
 			mimeList: mime_types,
 			mime: mime_types[0].value ?? ""
 		}, this.et2);
-		let self = this;
 		vfs_select.show();
 
 		// Wait until user is done
@@ -801,7 +832,7 @@ class collaboraAPP extends EgwApp
 		// where this.egw() points, which breaks getting the translations from Collabora lang files
 		this.et2.addChild(selector);
 
-		selector.doLoadingFinished();
+		(<any>selector).doLoadingFinished();
 	}
 
 	/**
@@ -820,7 +851,7 @@ class collaboraAPP extends EgwApp
 		// Don't know what's going wrong with the parenting, selector fails to get parent which screws up
 		// where this.egw() points, which breaks getting the translations from Collabora lang files
 		this.et2.addChild(selector);
-		selector.doLoadingFinished();
+		(<any>selector).doLoadingFinished();
 	}
 
 	/**
@@ -828,7 +859,7 @@ class collaboraAPP extends EgwApp
 	 */
 	show_revision_history()
 	{
-		jQuery(this.et2.getInstanceManager().DOMContainer).addClass('revisions');
+		this.et2.getInstanceManager().DOMContainer.classList.add('revisions');
 	}
 
 	/**
@@ -836,7 +867,7 @@ class collaboraAPP extends EgwApp
 	 */
 	close_revision_history()
 	{
-		jQuery(this.et2.getInstanceManager().DOMContainer).removeClass('revisions');
+		this.et2.getInstanceManager().DOMContainer.classList.remove('revisions');
 	}
 
 	/**
@@ -859,7 +890,7 @@ class collaboraAPP extends EgwApp
 	 */
 	insert_image()
 	{
-		let image_selected = function(event)
+		const image_selected = (event) =>
 		{
 			let filenames = event.target.value ?? [];
 			event.target.remove();
@@ -870,16 +901,16 @@ class collaboraAPP extends EgwApp
 				// Collabora will fail (hang) if share disappears while the document is open
 				let expires = new Date();
 				expires.setUTCDate(expires.getUTCDate()+1);
-				this.egw.json('EGroupware\\Api\\Sharing::ajax_create',
-					['collabora', filename, false, false, {share_expires: formatDate(expires, {dateFormat: 'Y-m-d'})}],
-					function(value) {
+				this.egw.request('EGroupware\\Api\\Sharing::ajax_create',
+					['collabora', filename, false, false, {share_expires: formatDate(expires, {dateFormat: 'Y-m-d'})}])
+					.then((value) =>
+					{
 						// Tell Collabora about it - add '/' to the end to avoid redirect by WebDAV server
 						// (WebDAV/Server.php line 247
 						this.WOPIPostMessage('Action_InsertGraphic', {url:value.share_link+'/'});
-					},
-					this, true,this,this.egw).sendRequest();
+					});
 			});
-		}.bind(this);
+		};
 		let attrs = {
 			mode: 'open',
 			open: true,
@@ -887,7 +918,7 @@ class collaboraAPP extends EgwApp
 			buttonLabel: this.egw.lang('Insert'),
 			mime: 'image/'
 		};
-		let select = loadWebComponent('et2-vfs-select-dialog', attrs, this.et2);
+		const select = <Et2VfsSelectDialog><unknown>loadWebComponent('et2-vfs-select-dialog', attrs, this.et2);
 		select.show();
 		select.addEventListener("change", image_selected);
 	}
@@ -912,8 +943,11 @@ class collaboraAPP extends EgwApp
 	share()
 	{
 		let path = this.et2.getArrayMgr('content').getEntry('path');
-		egw.json('EGroupware\\collabora\\Ui::ajax_share_link', ['mail_collabora', path],
-			app.filemanager._mail_link_callback, this, true, this).sendRequest();
+		// Borrows filemanager's _mail_link_callback implementation, but runs it against OUR "this"
+		// (via .call) so it reports as this app (collabora), not filemanager - same as the original
+		// egw.json(..., callback, context=this, ...) did.
+		egw.request('EGroupware\\collabora\\Ui::ajax_share_link', ['mail_collabora', path])
+			.then(data => (<collaboraFilemanagerAPP><unknown>app.filemanager)._mail_link_callback.call(this, data));
 		return true;
 	}
 
