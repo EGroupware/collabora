@@ -65,6 +65,13 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 		        )
 		    )
 		);
+		// The WOPI endpoint opens OUR session - Wopi::create_session() verifies the sessionid
+		// carried in the share.  PHP locks a session file exclusively, so while this process
+		// still holds it open the webserver blocks in session_start() until the request times
+		// out and get_headers() returns false - which read as "No webserver" below.  Hand the
+		// session over before asking the webserver to use it.
+		$GLOBALS['egw']->session->commit_session();
+
 		$headers = get_headers($url, 1, $context);
 
 		if($headers === FALSE)
@@ -72,8 +79,17 @@ class RewriteTest extends \EGroupware\Api\LoggedInTest {
 			$this->markTestSkipped('No webserver');
 		}
 
+		$status = substr($headers[0], 9, 3);
+
+		// A 401 here is not this endpoint's doing: it is Wopi::create_session() failing to
+		// verify our session, and the exception handler turning that into a basic-auth
+		// challenge.  The usual cause is PHPUnit running as root, which writes the session
+		// file 0600 root - unreadable to the www-data the webserver runs as.
+		$this->assertNotEquals('401', $status,
+			"The webserver could not verify this test's session (run PHPUnit as www-data, not root): $url");
+
 		// /home is a directory, which is invalid - files only
-		$this->assertEquals('404', substr($headers[0], 9, 3), "Testing home directory $url");
+		$this->assertEquals('404', $status, "Testing home directory $url");
 	}
 
 	protected function fixLink($url)
