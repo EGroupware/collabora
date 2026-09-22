@@ -24,6 +24,11 @@ use EGroupware\Collabora\Bo;
 class EditTest extends WopiBase
 {
 	/**
+	 * What the editor link actually answered, for a failure message
+	 */
+	protected $editor_response = '(no response captured)';
+
+	/**
 	 * Test that a share link goes to the editor, and at least the etemplate is loaded.
 	 * We can't really test Collabora here, but we can test our side.
 	 */
@@ -70,7 +75,7 @@ class EditTest extends WopiBase
 		$editor_nodes = $this->getEditor($link, $data);
 		if(!$editor_nodes)
 		{
-			$this->markTestSkipped('Could not load the editor (no webserver/editor response in this environment)');
+			$this->markTestSkipped('Could not load the editor: ' . $this->editor_response);
 		}
 
 		// Check for etemplate
@@ -93,16 +98,36 @@ class EditTest extends WopiBase
 		// Setting this lets us debug the request too
 		$cookie = 'XDEBUG_SESSION=PHPSTORM';
 		curl_setopt($curl, CURLOPT_COOKIE, $cookie);
+
+		// Keep the response: when the editor does not come back the body is what says why -
+		// "Didn't find editor" on its own names the symptom and nothing else
+		$response_headers = [];
+		curl_setopt($curl, CURLOPT_HEADERFUNCTION, function($ch, $header) use (&$response_headers)
+		{
+			if(trim($header) !== '') $response_headers[] = trim($header);
+			return strlen($header);
+		});
+
 		$html = curl_exec($curl);
+		$http_code = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$effective_url = (string)curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
+		$curl_error = curl_error($curl);
 		curl_close($curl);
 
 		if(!$html)
 		{
-			// No response - could mean something is terribly wrong, or it could
-			// mean we're running on Travis with no webserver to answer the
-			// request
-			return;
+			// Nothing answered at all - no webserver here, which the caller reports as skipped,
+			// with the reason rather than a guess at it
+			if($http_code === 0)
+			{
+				$this->editor_response = "no response from '$link'" . ($curl_error ? " (curl: $curl_error)" : '');
+				return;
+			}
+			$this->fail("Editor link '$link' returned no content (HTTP $http_code, '$effective_url')"
+				. ($curl_error ? " curl: $curl_error" : ''));
 		}
+		$this->editor_response = "HTTP $http_code at '$effective_url'\nResponse headers:\n  "
+			. implode("\n  ", $response_headers) . "\nFirst 500 bytes of the body:\n" . substr($html, 0, 500);
 
 		// Parse & check for nextmatch
 		$dom = new \DOMDocument();
@@ -117,7 +142,7 @@ class EditTest extends WopiBase
 				echo "Got this instead:\n".($form?$form:$html)."\n\n";
 			}
 		}
-		$this->assertNotNull($form, "Didn't find editor");
+		$this->assertNotNull($form, "Didn't find editor - the share link did not return the editor template.\n" . $this->editor_response);
 		$data = json_decode($form->getAttribute('data-etemplate'));
 
 		return $form;
