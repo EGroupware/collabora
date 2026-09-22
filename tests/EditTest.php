@@ -39,21 +39,15 @@ class EditTest extends WopiBase
 	 */
 	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
 	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
-	/**
-	 * Environment variable saying a Collabora backend is there to hand the file to.
-	 *
-	 * Without one - EGroupware's own CI runs collabora-key at replicas: 0 - a share of an editable
-	 * file is served as the file itself, and that is the correct answer, so it is what this test
-	 * requires.  Collabora's own CI brings the backend up and sets this, and then the file has to
-	 * arrive in the editor instead.  Bo::discover() cannot stand in for it: it answers for this
-	 * process, not for the webserver that will actually serve the share, and the two disagree in
-	 * CI.
-	 */
-	const COLLABORA_ENV = 'EGW_TEST_COLLABORA';
-
 	public function testEditorTemplateIsLoaded()
 	{
-		$expect_editor = (string)getenv(self::COLLABORA_ENV) !== '';
+		// Whether a share opens in the editor is decided by the link, not by whether a Collabora
+		// backend is running: Wopi::share2link() appends "?edit" only for a user who has the
+		// stylite (EPL) app, and get_share_class() routes to Wopi only for WOPI_SHARED, which
+		// this share is not.  So on a public install a share of an editable file is served as
+		// the file, and that is the right answer - this test requires whichever of the two the
+		// install can actually produce.
+		$expect_editor = !empty($GLOBALS['egw_info']['user']['apps']['stylite']);
 		$dir = Vfs::get_home_dir().'/';
 
 		// Plain text file
@@ -84,15 +78,15 @@ class EditTest extends WopiBase
 		{
 			// No backend to hand it to, so the share must deliver the file itself - intact, and
 			// not some error page that happens not to be the editor
-			$this->assertNull($editor_nodes, "Got the editor without a Collabora backend: " . $this->editor_response);
+			$this->assertNull($editor_nodes, "Got the editor on an install without EPL: " . $this->editor_response);
 			$this->assertEquals($content, $this->editor_body,
-				"Without a Collabora backend the share must serve the file itself.\n" . $this->editor_response);
+				"Without EPL the share link does not ask to edit, so it must serve the file itself.\n" . $this->editor_response);
 			return;
 		}
 
 		if(!$editor_nodes)
 		{
-			$this->fail(self::COLLABORA_ENV . " is set, so the share had to open in the editor.\n" . $this->editor_response);
+			$this->fail("This install has EPL, so the share link asks to edit and had to open in the editor.\n" . $this->editor_response);
 		}
 
 		// Check for etemplate
