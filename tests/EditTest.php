@@ -29,25 +29,31 @@ class EditTest extends WopiBase
 	protected $editor_response = '(no response captured)';
 
 	/**
+	 * The body the editor link answered with
+	 */
+	protected $editor_body = '';
+
+	/**
 	 * Test that a share link goes to the editor, and at least the etemplate is loaded.
 	 * We can't really test Collabora here, but we can test our side.
 	 */
 	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingACLTest::class)]
 	#[\PHPUnit\Framework\Attributes\DependsOnClass(\EGroupware\Api\Vfs\SharingHooksTest::class)]
+	/**
+	 * Environment variable saying a Collabora backend is there to hand the file to.
+	 *
+	 * Without one - EGroupware's own CI runs collabora-key at replicas: 0 - a share of an editable
+	 * file is served as the file itself, and that is the correct answer, so it is what this test
+	 * requires.  Collabora's own CI brings the backend up and sets this, and then the file has to
+	 * arrive in the editor instead.  Bo::discover() cannot stand in for it: it answers for this
+	 * process, not for the webserver that will actually serve the share, and the two disagree in
+	 * CI.
+	 */
+	const COLLABORA_ENV = 'EGW_TEST_COLLABORA';
+
 	public function testEditorTemplateIsLoaded()
 	{
-		try
-		{
-			$discover = Bo::discover();
-		}
-		catch (Exception $e)
-		{
-			$discover = false;
-		}
-		if(!$discover)
-		{
-			$this->markTestSkipped("No Collabora server");
-		}
+		$expect_editor = (string)getenv(self::COLLABORA_ENV) !== '';
 		$dir = Vfs::get_home_dir().'/';
 
 		// Plain text file
@@ -72,10 +78,21 @@ class EditTest extends WopiBase
 		LoggedInTest::tearDownAfterClass();
 
 		$data = array();
-		$editor_nodes = $this->getEditor($link, $data);
+		$editor_nodes = $this->getEditor($link, $data, $expect_editor);
+
+		if(!$expect_editor)
+		{
+			// No backend to hand it to, so the share must deliver the file itself - intact, and
+			// not some error page that happens not to be the editor
+			$this->assertNull($editor_nodes, "Got the editor without a Collabora backend: " . $this->editor_response);
+			$this->assertEquals($content, $this->editor_body,
+				"Without a Collabora backend the share must serve the file itself.\n" . $this->editor_response);
+			return;
+		}
+
 		if(!$editor_nodes)
 		{
-			$this->markTestSkipped('Could not load the editor: ' . $this->editor_response);
+			$this->fail(self::COLLABORA_ENV . " is set, so the share had to open in the editor.\n" . $this->editor_response);
 		}
 
 		// Check for etemplate
@@ -89,7 +106,15 @@ class EditTest extends WopiBase
 		$this->assertNotEmpty($query['WOPISrc'], "WOPISrc is missing from url '$url'");
 	}
 
-	public function getEditor($link, &$data)
+	/**
+	 * Fetch a share link and return the editor template's form, or null if it was not one
+	 *
+	 * @param string $link
+	 * @param mixed $data etemplate data, on return
+	 * @param bool $require_editor true: fail if the response is not the editor
+	 * @return \DOMNode|null
+	 */
+	public function getEditor($link, &$data, $require_editor = true)
 	{
 		// Set up curl
 		$curl = curl_init($link);
@@ -128,6 +153,7 @@ class EditTest extends WopiBase
 		}
 		$this->editor_response = "HTTP $http_code at '$effective_url'\nResponse headers:\n  "
 			. implode("\n  ", $response_headers) . "\nFirst 500 bytes of the body:\n" . substr($html, 0, 500);
+		$this->editor_body = $html;
 
 		// Parse & check for nextmatch
 		$dom = new \DOMDocument();
@@ -142,7 +168,16 @@ class EditTest extends WopiBase
 				echo "Got this instead:\n".($form?$form:$html)."\n\n";
 			}
 		}
-		$this->assertNotNull($form, "Didn't find editor - the share link did not return the editor template.\n" . $this->editor_response);
+		if(!$form)
+		{
+			// The caller decides whether this is a failure: without a Collabora backend the
+			// share serves the file, which has no form in it and is the right answer
+			if($require_editor)
+			{
+				$this->fail("Didn't find editor - the share link did not return the editor template.\n" . $this->editor_response);
+			}
+			return null;
+		}
 		$data = json_decode($form->getAttribute('data-etemplate'));
 
 		return $form;
