@@ -46,3 +46,14 @@ jobs:
       # Only collabora's suite - not the whole EGroupware suite, which its own CI already covers.
       test-apps: collabora
       test-scope: extra-apps
+
+      # Nearly every test here declares DependsOnClass on these two, and PHPUnit skips a test
+      # whose dependency never ran - without them the suite reported 25 tests, 22 of them
+      # skipped, 9 assertions, and passed.  With them it is 33 tests and 318 assertions.
+      test-also: api/tests/Vfs/SharingACLTest.php api/tests/Vfs/SharingHooksTest.php
+
+      # This is the one place a Collabora backend is actually available, so here a share of an
+      # editable file has to arrive in the editor.  EGroupware's own CI runs without the backend
+      # and requires the file to be served instead.  Pointless without test-also above: the
+      # tests that need the backend would skip before reaching it.
+      with-collabora: true
