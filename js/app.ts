@@ -736,6 +736,15 @@ class collaboraAPP extends EgwApp
 	 */
 	on_save_as_mail() {
 		let filepath = this.et2.getArrayMgr('content').getEntry('path', true);
+		// ticket #125341: collabora/src/Bo.php's own get_token() can store share_path as EITHER
+		// the bare VFS path or the "vfs://default"-prefixed one (its own check tests both forms) -
+		// filemanager.mail()'s open_mail() always unconditionally prepends "vfs://default" itself,
+		// assuming a bare path (the normal row-selection convention, via id2path() stripping only
+		// a "filemanager::" row-id prefix, never this url prefix). An already-prefixed path here
+		// doubled up into "vfs://defaultvfs://default/...", which Api\Vfs then rejected as "not an
+		// absolute path" - same fix as MailCompose.vfsPathFromPreset() (mail/js/compose.ts) already
+		// applies for this identical class of bug on its own preset[file] callers.
+		filepath = filepath.replace(/^vfs:\/\/default(?=\/)/, '');
 		(<collaboraFilemanagerAPP><unknown>app.filemanager).mail({id:"attach"}, [{id:filepath}]);
 	}
 
