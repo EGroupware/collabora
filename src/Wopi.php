@@ -494,7 +494,7 @@ class Wopi extends Sharing
 
 			$where = array(
 				'share_path' => ($url[0] === '/' ? Api\Vfs::PREFIX : '').$url,
-				'(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')',
+				Api\Db\SqlFragment::raw('(share_expires IS NULL OR share_expires > '.$GLOBALS['egw']->db->quote(time(), 'date').')'),
 			);
 			$append = 'ORDER BY share_id ASC';
 			foreach($GLOBALS['egw']->db->select(self::TABLE, 'share_id', $where,
