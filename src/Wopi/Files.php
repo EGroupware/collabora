@@ -247,6 +247,19 @@ class Files
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
 
+		// Settings (autotext, dictionaries, browser settings) the editor loads from our settings endpoint
+		$settings = new Settings();
+		foreach(['UserSettings' => 'userconfig', 'SharedSettings' => 'systemconfig'] as $key => $type)
+		{
+			$data[$key] = [
+				'uri'   => Api\Framework::getUrl(Api\Framework::link(
+					'/collabora/index.php/wopi/settings',
+					['access_token' => Wopi::get_token(), 'type' => $type, 'fileId' => '-1']
+				)),
+				'stamp' => $settings->getStamp($type)
+			];
+		}
+
 		return $data;
 	}
 

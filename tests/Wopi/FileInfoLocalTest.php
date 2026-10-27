@@ -186,6 +186,9 @@ class FileInfoLocalTest extends WopiBase
 		unset($info['PostMessageOrigin']);
 		unset($info['LastModifiedTime']);
 		unset($info['UserExtraInfo']);
+		// Links to the settings, with a token in them, and the time of their last change
+		unset($info['UserSettings']);
+		unset($info['SharedSettings']);
 		
 		// This is different on Travis (User, Admin vs Account, Demo)
 		unset($info['UserFriendlyName']);

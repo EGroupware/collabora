@@ -65,11 +65,11 @@ class Wopi extends Sharing
 	{
 		// Determine the endpoint, get the ID
 		$matches = array();
-		preg_match('#/wopi/([[:alpha:]]+)/(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
+		preg_match('#/wopi/([[:alpha:]]+)/?(-?[[:digit:]]+)?/?(contents)?#', $_SERVER['REQUEST_URI'], $matches);
 		list(, $endpoint, $id) = $matches;
 
 		// need to create a new session, if the file_id changes, eg. after a PUT_RELATIVE
-		if (($last_id = Api\Cache::getSession(__CLASS__, 'file_id')) && $last_id != $id)
+		if($id && ($last_id = Api\Cache::getSession(__CLASS__, 'file_id')) && $last_id != $id)
 		{
 			static::create_session(null);
 		}
@@ -95,7 +95,7 @@ class Wopi extends Sharing
 
 		if(!headers_sent() && $data)
 		{
-			$response = json_encode($data);
+			$response = json_encode($data, JSON_UNESCAPED_SLASHES);
 			header('X-WOPI-ServerVersion: ' . $GLOBALS['egw_info']['apps']['collabora']['version']);
 			header('X-WOPI-MachineName: ' . 'Egroupware');
 			header('Content-Length:'.strlen($response));
@@ -306,8 +306,15 @@ class Wopi extends Sharing
 	 */
 	public static function get_token($path=null)
 	{
+		// Get full raw query string
+		$query = $_SERVER['QUERY_STRING'] ?? '';
+
+		// If there are multiple access_token params, parse directly (settings adds a token)
+		preg_match_all('/access_token=([^&]+)/', $query, $matches);
+		$all_tokens = $matches[1] ?? [];
+
 		// Access token is encoded, as it may have + in it
-		$token = urldecode(filter_var($_GET['access_token'],FILTER_SANITIZE_SPECIAL_CHARS));
+		$token = urldecode(filter_var($all_tokens[0], FILTER_SANITIZE_SPECIAL_CHARS));
 
 		// Strip out possible credentials ID if path needs password
 		list($token, self::$credentials) = explode(':', $token);
