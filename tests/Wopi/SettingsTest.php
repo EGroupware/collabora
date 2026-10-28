@@ -345,6 +345,38 @@ class SettingsTest extends LoggedInTest
 	}
 
 	/**
+	 * A world-writable settings directory hands its mode on to what is uploaded, which is taken off again
+	 *
+	 * Upload itself reads php://input, so the step it runs after writing is called directly.
+	 */
+	public function testUploadedModeIsNeverWorldWritable()
+	{
+		$sub = $this->dir . '/systemconfig/wordbook';
+		Vfs::mkdir($sub, null, STREAM_MKDIR_RECURSIVE);
+		Vfs::chmod($this->dir . '/systemconfig', 0777);
+		Vfs::chmod($sub, 0777);
+		$file = $this->addSetting('systemconfig', 'wordbook', 'System dictionary.dic');
+		$this->assertEquals(0666, Vfs::stat($file)['mode'] & 0777, 'New file does not inherit the mode of its directory');
+
+		Vfs::clearstatcache();
+		$this->call($this->settings, 'withoutWorldWrite', [$sub, $file]);
+		Vfs::clearstatcache();
+
+		foreach([$sub, $file] as $path)
+		{
+			$mode = Vfs::stat($path)['mode'];
+			$this->assertEquals(0, $mode & 0002, "$path is still world-writable: " . decoct($mode & 0777));
+			$this->assertNotEquals(0, $mode & 0004, "$path lost world-read");
+		}
+		// a mode that is already fine is left alone
+		Vfs::chmod($file, 0640);
+		Vfs::clearstatcache();
+		$this->call($this->settings, 'withoutWorldWrite', [$file]);
+		Vfs::clearstatcache();
+		$this->assertEquals(0640, Vfs::stat($file)['mode'] & 0777);
+	}
+
+	/**
 	 * Without files the stamp is a fixed time, so Collabora has nothing to download again
 	 */
 	public function testStampWithoutFilesIsFixed()

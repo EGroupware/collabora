@@ -95,7 +95,12 @@ class Settings
 			'status'   => 'failure',
 			'filename' => $file_name
 		];
-		if(Vfs::is_dir(Vfs::dirname($path)) || Vfs::mkdir(Vfs::dirname($path), null, STREAM_MKDIR_RECURSIVE))
+		$new_dirs = [];
+		for($dir = Vfs::dirname($path); $dir && $dir !== '/' && !Vfs::is_dir($dir); $dir = Vfs::dirname($dir))
+		{
+			array_unshift($new_dirs, $dir);
+		}
+		if(!$new_dirs || Vfs::mkdir(Vfs::dirname($path), null, STREAM_MKDIR_RECURSIVE))
 		{
 			$content = fopen('php://input', 'r');
 			if(False === file_put_contents(Vfs::PREFIX . $path, $content, 0))
@@ -104,11 +109,43 @@ class Settings
 				header('X-WOPI-ServerError: Unable to write file');
 				return;
 			}
+			static::withoutWorldWrite(array_merge($new_dirs, [$path]));
 			$response['status'] = 'success';
 			$response['details'] = $this->getFileInfo($path);
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Take the world-write bit off files and directories we created
+	 *
+	 * The VFS gives a new file the mode of its directory and a new directory the mode of its parent, so a
+	 * settings directory somebody made world-writable would hand that on to every file and sub-directory
+	 * uploaded into it.  Anybody could then replace the dictionaries and settings Collabora loads for everyone.
+	 * Directories belong to the owner of their parent (root), so changing them needs root rights.
+	 *
+	 * @param string[] $paths VFS paths of the directories and the file just created
+	 */
+	protected static function withoutWorldWrite(array $paths)
+	{
+		$was_root = Vfs::$is_root;
+		try
+		{
+			foreach($paths as $path)
+			{
+				$mode = Vfs::stat($path)['mode'] ?? 0;
+				if($mode & 0002)
+				{
+					Vfs::$is_root = $was_root || is_dir(Vfs::PREFIX . $path);
+					Vfs::chmod($path, $mode & 0777 & ~0002);
+				}
+			}
+		}
+		finally
+		{
+			Vfs::$is_root = $was_root;
+		}
 	}
 
 	protected function delete()
