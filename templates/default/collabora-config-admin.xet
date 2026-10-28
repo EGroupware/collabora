@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../../doc/etemplate2/etemplate2.0.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2.0//EN" "https://www.egroupware.org/etemplate2.0.dtd">
+<overlay>
+    <et2-template id="collabora.collabora-config-admin">
+        <et2-description value="Collabora settings for all users are managed in Admin > Collabora Online > App configuration."
+                         statustext="Open the Collabora configuration in Admin"
+                         style="cursor: pointer; text-decoration: underline"
+                         onclick="egw.link_handler(egw.link('/index.php', 'menuaction=admin.admin_config.index&amp;appname=collabora&amp;ajax=true'), 'admin'); return false;"></et2-description>
+    </et2-template>
+</overlay>

@@ -22,8 +22,28 @@ use EGroupware\Collabora\Wopi\Settings;
  */
 class Preferences {
 
-	public static function settings()
+	/**
+	 * Settings hook: the user's own Collabora settings, edited in Collabora's settings iframe
+	 *
+	 * The iframe stores into the current user's own settings directory, so it can not edit default or forced
+	 * preferences.  Those get a note pointing to the system-wide settings in the admin configuration instead.
+	 *
+	 * @param array $hook_data
+	 * @return array
+	 */
+	public static function settings($hook_data = [])
 	{
+		if(($hook_data['type'] ?? 'user') !== 'user')
+		{
+			return [[
+				'type'    => 'section',
+				'title'   => lang('Collabora settings'),
+				'tab'     => 'collabora.collabora-config-admin',
+				'no_lang' => true,
+				'xmlrpc'  => False,
+				'admin'   => False
+			]];
+		}
 		$settings = new Settings();
 		$settings_directory = $settings->getSettingsPath("userconfig");
 		// the iframe needs a directory to put the user's files into
