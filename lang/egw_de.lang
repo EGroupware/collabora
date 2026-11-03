@@ -8,22 +8,26 @@ admin console	collabora	de	Admin-Konsole
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	de	Ein Benutzer 'anonymous' wird benötigt, damit Collabora Online auf Ihre Dateien zugreifen kann und um diese zu teilen.
 can not read collobora configuration in %1!	collabora	de	Kann Collabora Online-Konfiguration in %1 NICHT lesen!
 checking for user 'anonymous'	collabora	de	Prüfung des Benutzer 'anonymous'
+client id	collabora	de	Client-ID
 collabora	common	de	Collabora Online
 collabora is not configured!	collabora	de	Collabora Online ist nicht konfiguriert!
 collabora server	collabora	de	Collabora Online-Server
 collabora settings	collabora	de	Collabora-Einstellungen
 collabora settings directory	collabora	de	Verzeichnis für Collabora-Einstellungen
+collabora settings for all users are managed in admin > collabora online > app configuration.	collabora	de	Die Collabora-Einstellungen für alle Benutzer werden unter Admin > Collabora Online > Anwendungskonfiguration verwaltet.
 conversion failed	collabora	de	Konvertierung fehlgeschlagen
 convert to	collabora	de	Umwandeln in
 converted	collabora	de	Konvertiert
 converting...	collabora	de	Konvertiere ...
 create	collabora	de	Anlegen
 create new %1	filemanager	de	%1 neu anlegen
+digital signing	collabora	de	Digitale Signatur
 document	filemanager	de	Textdokument
 drawing	filemanager	de	Zeichnung
 edit %1 in collabora	collabora	de	%1 in Collabora Online bearbeiten
 editable share link	collabora	de	Editierbarer Share-Link
 egroupware epl is required to configure a custom collabora server.	collabora	de	Sie benötigen EGroupware EPL, um einen eigenen Collabora Online-Server zu konfigurieren.
+eid url	collabora	de	eID-URL
 failed to create file %1!	collabora	de	Anlegen der Datei %1 fehlgeschlagen!
 failed to create file %1: file already exists!	collabora	de	Anlegen der Datei %1 fehlgeschlagen: sie existiert bereits!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	de	Anlegen der Datei fehlgeschlagen, da Sie nicht die notwendigen Rechte für den Ordner %1 haben!
@@ -44,6 +48,7 @@ presentation	filemanager	de	Präsentation
 requirements / please note	collabora	de	Voraussetzungen / bitte beachten
 revision history	collabora	de	Änderungshistorie
 save as mail	collabora	de	Dokument per E-Mail versenden
+secret	collabora	de	Geheimnis
 spreadsheet	filemanager	de	Tabellendokument
 support-key	collabora	de	Support-Key
 the collabora server must be able to access your egroupware installation!	collabora	de	Der Collabora Online-Server muss auf Ihre EGroupware Installation zugreifen können!
@@ -53,4 +58,3 @@ versions	collabora	de	Versionen
 writable collabora link	collabora	de	Beschreibbarer Collabora Online-Link
 writable collabora share	collabora	de	Beschreibbare Collabora Online-Freigabe
 you need a support-key from the egroupware gmbh shop, for a supported collabora installation.	admin	de	Für eine unterstützte Collabora Online-Version benötigen Sie einen Support-Key aus dem Shop der EGroupware GmbH.
-collabora settings for all users are managed in admin > collabora online > app configuration.	collabora	de	Die Collabora-Einstellungen für alle Benutzer werden unter Admin > Collabora Online > Anwendungskonfiguration verwaltet.

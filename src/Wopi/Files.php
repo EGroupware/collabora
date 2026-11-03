@@ -260,7 +260,67 @@ class Files
 			];
 		}
 
+		if(($user_info = $this->user_private_info($settings)))
+		{
+			$data['UserPrivateInfo'] = $user_info;
+		}
+		if(($server_info = $this->server_private_info()))
+		{
+			$data['ServerPrivateInfo'] = $server_info;
+		}
+
 		return $data;
+	}
+
+	/**
+	 * Signing certificate, key and CA the user stored in Collabora's own settings
+	 *
+	 * Collabora keeps them in the user's viewsetting file, but only uses them for signing when the
+	 * integration passes them back as UserPrivateInfo.
+	 *
+	 * @param Settings $settings
+	 * @return string[] SignatureCert, SignatureKey and SignatureCa, or empty if there is no certificate and key
+	 */
+	protected function user_private_info(Settings $settings) : array
+	{
+		$dir = $settings->getSettingsPath('userconfig') . '/viewsetting';
+		if(!Vfs::is_dir($dir))
+		{
+			return [];
+		}
+		foreach(Vfs::find($dir, ['type' => 'f']) as $file)
+		{
+			$view = json_decode(file_get_contents(Vfs::PREFIX . $file), true);
+			if(is_array($view) && !empty($view['signatureCert']) && !empty($view['signatureKey']))
+			{
+				return array_filter([
+					'SignatureCert' => $view['signatureCert'],
+					'SignatureKey'  => $view['signatureKey'],
+					'SignatureCa'   => $view['signatureCa'] ?? ''
+				]);
+			}
+		}
+		return [];
+	}
+
+	/**
+	 * Credentials of the eIDeasy service for Collabora's electronic signing
+	 *
+	 * @return string[] ESignatureBaseUrl, ESignatureClientId and ESignatureSecret, or empty if not configured
+	 */
+	protected function server_private_info() : array
+	{
+		$config = Api\Config::read('collabora');
+		if(empty($config['esig_url']))
+		{
+			return [];
+		}
+		return [
+			// Collabora appends "/api/..." itself, a trailing slash would give "//api/..." which eIDeasy rejects
+			'ESignatureBaseUrl'  => rtrim($config['esig_url'], '/'),
+			'ESignatureClientId' => $config['esig_client_id'] ?? '',
+			'ESignatureSecret'   => $config['esig_secret'] ?? ''
+		];
 	}
 
 	/**

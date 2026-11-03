@@ -79,6 +79,24 @@
 						<et2-description  id="newsettings[settings_directory]"></et2-description>
 					</et2-hbox>
 				</row>
+				<row height="30" valign="bottom">
+					<et2-description  value="Digital signing" span="all" class="subHeader"></et2-description>
+				</row>
+				<row>
+					<et2-description  value="eIDeasy" href="https://eideasy.com" extraLinkTarget="_blank" span="all"></et2-description>
+				</row>
+				<row>
+					<et2-description  value="eID URL"></et2-description>
+					<et2-url  id="newsettings[esig_url]" width="300px" placeholder="https://test.eideasy.com"></et2-url>
+				</row>
+				<row>
+					<et2-description  value="Client ID"></et2-description>
+					<et2-textbox  id="newsettings[esig_client_id]" width="300px"></et2-textbox>
+				</row>
+				<row>
+					<et2-description  value="Secret"></et2-description>
+					<et2-password  id="newsettings[esig_secret]" width="300px" autocomplete="new-password"></et2-password>
+				</row>
 			</rows>
 		</grid>
 	</et2-template>

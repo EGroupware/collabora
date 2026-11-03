@@ -189,7 +189,10 @@ class FileInfoLocalTest extends WopiBase
 		// Links to the settings, with a token in them, and the time of their last change
 		unset($info['UserSettings']);
 		unset($info['SharedSettings']);
-		
+		// Signing credentials, only there when eIDeasy or a signing certificate is configured on the instance
+		unset($info['ServerPrivateInfo']);
+		unset($info['UserPrivateInfo']);
+
 		// This is different on Travis (User, Admin vs Account, Demo)
 		unset($info['UserFriendlyName']);
 
