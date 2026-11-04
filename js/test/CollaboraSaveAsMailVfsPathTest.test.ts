@@ -16,6 +16,14 @@ import "../../../api/js/etemplate/Et2Widget/Et2Widget";
  */
 describe("collaboraAPP.on_save_as_mail() - vfs://default prefix de-duplication", () =>
 {
+	// Loading app.ts pulls in the whole filemanager/api import chain, which takes longer than the 3s test timeout:
+	// do it here, with its own, so the first test is not the one that runs out of time waiting for it.
+	before(async function()
+	{
+		this.timeout(60000);
+		await import("../app");
+	});
+
 	async function callWith(contentPath : string) : Promise<{id : string}[]>
 	{
 		// collaboraAPP itself is not exported - grab it the same way the rest of the framework
