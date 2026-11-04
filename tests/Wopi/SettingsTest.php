@@ -407,6 +407,36 @@ class SettingsTest extends LoggedInTest
 		$this->assertEquals('1970-01-01T00:00:01.000000Z', $this->settingsFor($this->dir . '/does-not-exist')->getStamp('userconfig'));
 	}
 
+	public function testEnsureViewSettingCreatesAnEmptyFile()
+	{
+		$path = $this->dir . '/userconfig/viewsetting/viewsetting.json';
+		$this->created[] = $path;
+
+		$this->assertTrue($this->settings->ensureViewSetting());
+
+		$this->assertTrue(Vfs::file_exists($path));
+		$content = json_decode(file_get_contents(Vfs::PREFIX . $path), true);
+		$this->assertIsArray($content);
+		// the keys Collabora's settings page stores, none of them with a value
+		$this->assertArrayHasKey('signatureCert', $content);
+		$this->assertSame([], array_filter($content));
+		$this->assertSame(0, Vfs::stat($path)['mode'] & 0002, 'world-writable');
+	}
+
+	public function testEnsureViewSettingKeepsWhatIsThere()
+	{
+		$path = $this->addSetting('userconfig', 'viewsetting', 'viewsetting.json', '{"signatureCert":"kept"}');
+
+		$this->assertTrue($this->settings->ensureViewSetting());
+
+		$this->assertSame('{"signatureCert":"kept"}', file_get_contents(Vfs::PREFIX . $path));
+	}
+
+	public function testEnsureViewSettingWithoutSettingsDirectoryDoesNothing()
+	{
+		$this->assertFalse($this->settingsFor('')->ensureViewSetting());
+	}
+
 	/**
 	 * CheckFileInfo tells Collabora where to get both kinds of settings
 	 */

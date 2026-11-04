@@ -148,6 +148,46 @@ class Settings
 		}
 	}
 
+	/**
+	 * Make sure the user has a Collabora view settings file, creating an empty one if there is none
+	 *
+	 * Collabora only uses the signing certificate it is given as UserPrivateInfo for users who have such a file,
+	 * which the settings page does not create until something is stored in it.  The file holds no values, so
+	 * whatever the user sets later is stored in it as usual.
+	 *
+	 * @return bool true if there is a file now
+	 */
+	public function ensureViewSetting() : bool
+	{
+		$path = $this->getSettingPath('userconfig', 'viewsetting', 'viewsetting.json');
+		if(!$path)
+		{
+			return false;
+		}
+		$dir = Vfs::dirname($path);
+		if(Vfs::is_dir($dir) && Vfs::find($dir, ['type' => 'f']))
+		{
+			return true;
+		}
+		$new_dirs = [];
+		for($parent = $dir; $parent && $parent !== '/' && !Vfs::is_dir($parent); $parent = Vfs::dirname($parent))
+		{
+			array_unshift($new_dirs, $parent);
+		}
+		if($new_dirs && !Vfs::mkdir($dir, null, STREAM_MKDIR_RECURSIVE))
+		{
+			return false;
+		}
+		$keys = ['aiImageModel', 'aiImageProviderAPIKey', 'aiImageProviderURL', 'aiImageSize', 'aiProviderAPIKey',
+			'aiProviderModel', 'aiProviderURL', 'aiRequestTimeout', 'signatureCa', 'signatureCert', 'signatureKey', 'zoteroAPIKey'];
+		if(False === file_put_contents(Vfs::PREFIX . $path, json_encode(array_fill_keys($keys, ''))))
+		{
+			return false;
+		}
+		static::withoutWorldWrite(array_merge($new_dirs, [$path]));
+		return true;
+	}
+
 	protected function delete()
 	{
 		list(, , $type, $setting_name, $file_name) = explode('/', $_REQUEST['fileId']);
