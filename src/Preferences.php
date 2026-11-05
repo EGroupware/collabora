@@ -23,6 +23,29 @@ use EGroupware\Collabora\Wopi\Settings;
 class Preferences {
 
 	/**
+	 * Hidden fields of the settings form, rebuilt on every request and never to be stored as preferences
+	 *
+	 * The token belongs to the current session, a stored one is stale and Collabora rejects it with
+	 * "Settings are only available to signed-in users".
+	 */
+	const EPHEMERAL = ['collabora_settings_iframe', 'token', 'wopi_url', 'iframe_type'];
+
+	/**
+	 * Verify hook: keep the form's hidden fields out of the saved preferences
+	 *
+	 * @param array $hook_data 'prefs' is the (by reference) array of the app's preferences about to be saved
+	 * @return false no error
+	 */
+	public static function verify_settings($hook_data)
+	{
+		foreach(self::EPHEMERAL as $key)
+		{
+			unset($hook_data['prefs'][$key]);
+		}
+		return false;
+	}
+
+	/**
 	 * Settings hook: the user's own Collabora settings, edited in Collabora's settings iframe
 	 *
 	 * The iframe stores into the current user's own settings directory, so it can not edit default or forced
@@ -43,6 +66,11 @@ class Preferences {
 				'xmlrpc'  => False,
 				'admin'   => False
 			]];
+		}
+		// Stored copies saved before verify_settings() existed would win over the fresh values
+		foreach(self::EPHEMERAL as $key)
+		{
+			unset($GLOBALS['egw']->preferences->user['collabora'][$key]);
 		}
 		$settings = new Settings();
 		$settings_directory = $settings->getSettingsPath("userconfig");

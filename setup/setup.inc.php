@@ -23,6 +23,7 @@ $setup_info['collabora']['description'] = 'Online document editing with Collabor
 
 /* The hooks this app includes, needed for hooks registration */
 $setup_info['collabora']['hooks']['settings'] = 'EGroupware\Collabora\Preferences::settings';
+$setup_info['collabora']['hooks']['verify_settings'] = 'EGroupware\Collabora\Preferences::verify_settings';
 $setup_info['collabora']['hooks']['admin'] = 'EGroupware\Collabora\Admin::admin_sidebox';
 $setup_info['collabora']['hooks']['config'] = 'EGroupware\Collabora\Admin::config';
 $setup_info['collabora']['hooks']['config_validate'] = 'EGroupware\Collabora\Admin::validate';
