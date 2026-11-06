@@ -8,20 +8,26 @@ admin console	collabora	en	Admin console
 an user 'anonymous' is required for collabora to access files and also for sharing files.	collabora	en	An user 'anonymous' is required for Collabora Online to access files and also for sharing files.
 can not read collobora configuration in %1!	collabora	en	Can NOT read Collabora Online configuration in %1!
 checking for user 'anonymous'	collabora	en	Checking for user 'anonymous'
+client id	collabora	en	Client ID
 collabora	common	en	Collabora Online
 collabora is not configured!	collabora	en	Collabora Online is not configured!
 collabora server	collabora	en	Collabora Online server
+collabora settings	collabora	en	Collabora settings
+collabora settings directory	collabora	en	Collabora settings directory
+collabora settings for all users are managed in admin > collabora online > app configuration.	collabora	en	Collabora settings for all users are managed in Admin > Collabora Online > App configuration.
 conversion failed	collabora	en	Conversion failed
 convert to	collabora	en	Convert to
 converted	collabora	en	Converted
 converting...	collabora	en	Converting ...
 create	collabora	en	Create
 create new %1	filemanager	en	Create new %1
+digital signing	collabora	en	Digital signing
 document	filemanager	en	Document
 drawing	filemanager	en	Drawing
 edit %1 in collabora	collabora	en	Edit %1 in Collabora Online
 editable share link	collabora	en	Editable share link
 egroupware epl is required to configure a custom collabora server.	collabora	en	EGroupware EPL is required to configure a custom Collabora Online server.
+eid url	collabora	en	eID URL
 failed to create file %1!	collabora	en	Failed to create file %1!
 failed to create file %1: file already exists!	collabora	en	Failed to create file %1: file already exists!
 failed to create the file! because you do not have enough permission to %1 folder!	collabora	en	Failed to create the file! Because you do not have enough permission to %1 folder!
@@ -42,6 +48,7 @@ presentation	filemanager	en	Presentation
 requirements / please note	collabora	en	Requirements / please note
 revision history	collabora	en	Revision History
 save as mail	collabora	en	Send document by e-mail
+secret	collabora	en	Secret
 spreadsheet	filemanager	en	Spreadsheet
 support-key	collabora	en	Support-key
 the collabora server must be able to access your egroupware installation!	collabora	en	The Collabora Online server must be able to access your EGroupware installation!

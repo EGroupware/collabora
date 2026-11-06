@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../../doc/etemplate2/etemplate2.0.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<!DOCTYPE overlay PUBLIC "-//EGroupware GmbH//eTemplate 2.0//EN" "https://www.egroupware.org/etemplate2.0.dtd">
+<overlay>
+    <et2-template id="collabora.collabora-config">
+        <iframe name="collabora_settings_iframe" width="100%" height="98%"></iframe>
+        <et2-textbox id="collabora_settings_iframe" type="hidden"></et2-textbox>
+        <et2-textbox id="token" type="hidden"></et2-textbox>
+        <et2-textbox id="wopi_url" type="hidden"></et2-textbox>
+        <et2-textbox id="iframe_type" type="hidden"></et2-textbox>
+        <script>
+            // Collabora needs this in its iframe
+            // This script runs while the template is still being built, after the page's "load" event has fired,
+            // and the iframe ends up inside a shadow root, so wait for it to show up instead of listening for events
+            const find_iframe = (root) => {
+                const iframe = root.querySelector('iframe[name="collabora_settings_iframe"]');
+                if(iframe)
+                {
+                    return iframe;
+                }
+                for(const el of root.querySelectorAll('*'))
+                {
+                    const found = el.shadowRoot ? find_iframe(el.shadowRoot) : null;
+                    if(found)
+                    {
+                        return found;
+                    }
+                }
+                return null;
+            };
+            let tries = 0;
+            const init_timer = setInterval(() => {
+                tries++;
+                const iframe = find_iframe(document);
+                if(iframe)
+                {
+                    clearInterval(init_timer);
+                    const template = iframe.getRootNode().host.closest('et2-template');
+                    window.egw(window).applyFunc('app.collabora.init_settings_iframe', [iframe, template.getInstanceManager().getValues(template.getRoot()).tab1], window);
+                }
+                else if(tries === 50)
+                {
+                    clearInterval(init_timer);
+                }
+            }, 200);
+        </script>
+    </et2-template>
+</overlay>

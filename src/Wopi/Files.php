@@ -13,6 +13,7 @@ namespace EGroupware\Collabora\Wopi;
 
 use EGroupware\Api;
 use EGroupware\Api\Accounts;
+use EGroupware\Api\Mail;
 use EGroupware\Api\Vfs;
 use EGroupware\Collabora\Wopi;
 
@@ -247,7 +248,242 @@ class Files
 		// Additional, optional things we support
 		$data['UserFriendlyName'] = Accounts::username(Vfs::$user);
 
+		// Settings (autotext, dictionaries, browser settings) the editor loads from our settings endpoint
+		$settings = new Settings();
+		// before the stamps, as it may create a settings file
+		$user_info = $this->user_private_info($settings);
+		foreach(['UserSettings' => 'userconfig', 'SharedSettings' => 'systemconfig'] as $key => $type)
+		{
+			$data[$key] = [
+				'uri'   => Api\Framework::getUrl(Api\Framework::link(
+					'/collabora/index.php/wopi/settings',
+					['access_token' => Wopi::get_token(), 'type' => $type, 'fileId' => '-1']
+				)),
+				'stamp' => $settings->getStamp($type)
+			];
+		}
+
+		if($user_info)
+		{
+			$data['UserPrivateInfo'] = $user_info;
+		}
+		if(($server_info = $this->server_private_info()))
+		{
+			$data['ServerPrivateInfo'] = $server_info;
+		}
+
 		return $data;
+	}
+
+	/**
+	 * Signing certificate, key and CA for the editor to sign documents with
+	 *
+	 * Anything the user stored in Collabora's own settings is used as it is.  Only if there is nothing
+	 * there, the user's S/MIME certificate from the Mail app is tried, with the passphrase the user unlocked it
+	 * with in this session, or without one if there is none.  No usable certificate is no signing, without any
+	 * message.  Collabora ignores the certificate of a user who has no settings file, so one is created if needed.
+	 * Collabora then keeps the certificate and key in that file, where it counts as the user's own setting: to use
+	 * a changed Mail certificate, the user clears the signing fields in their Collabora settings.
+	 *
+	 * Collabora only uses them for signing when the integration passes them back as UserPrivateInfo.
+	 *
+	 * @param Settings $settings
+	 * @return string[] SignatureCert, SignatureKey and SignatureCa, or empty if there is no certificate and key
+	 */
+	protected function user_private_info(Settings $settings) : array
+	{
+		$stored = $this->stored_signing_settings($settings);
+		if($stored)
+		{
+			return empty($stored['signatureCert']) || empty($stored['signatureKey']) ? [] : array_filter([
+				'SignatureCert' => $stored['signatureCert'],
+				'SignatureKey'  => $stored['signatureKey'],
+				'SignatureCa'   => $stored['signatureCa'] ?? ''
+			]);
+		}
+		$info = $this->mail_smime_certificate();
+		if($info)
+		{
+			// Collabora ignores the certificate for a user without a settings file
+			$settings->ensureViewSetting();
+		}
+		return $info;
+	}
+
+	/**
+	 * The signing settings the user stored in Collabora's own settings (viewsetting file)
+	 *
+	 * @param Settings $settings
+	 * @return array stored values, empty if the user has set no certificate or key
+	 */
+	protected function stored_signing_settings(Settings $settings) : array
+	{
+		$dir = $settings->getSettingsPath('userconfig') . '/viewsetting';
+		if(!Vfs::is_dir($dir))
+		{
+			return [];
+		}
+		foreach(Vfs::find($dir, ['type' => 'f']) as $file)
+		{
+			$view = json_decode(file_get_contents(Vfs::PREFIX . $file), true);
+			if(is_array($view) && (!empty($view['signatureCert']) || !empty($view['signatureKey'])))
+			{
+				return $view;
+			}
+		}
+		return [];
+	}
+
+	/**
+	 * The user's S/MIME certificate from the Mail app, if it opens with the passphrase cached in the session
+	 * when the user unlocked it, or without one if nothing is cached
+	 *
+	 * The request runs in the user's own (restored) session, so a certificate stored with their login password
+	 * can be read and the passphrase Mail cached for the session is there too.  Whether the PKCS#12 file itself
+	 * is protected by a passphrase is a separate matter.
+	 *
+	 * A certificate that is stored but can not be used is not told to the user, it is written to the error log
+	 * for the admin, see log_smime_problem().  Not having one at all is not a problem.
+	 *
+	 * @return string[] SignatureCert, SignatureKey and SignatureCa, or empty
+	 */
+	protected function mail_smime_certificate() : array
+	{
+		$account_id = (int)Vfs::$user;
+		if($account_id <= 0)
+		{
+			return [];
+		}
+		$acc_id = 0;
+		try
+		{
+			$rows = Mail\Credentials::get_db()->select(Mail\Credentials::TABLE, 'acc_id', [
+				'account_id' => $account_id,
+				'(cred_type & ' . Mail\Credentials::SMIME . ') > 0',
+			], __LINE__, __FILE__, false, 'ORDER BY acc_id', Mail\Credentials::APP);
+			// the passphrase the user unlocked with, if there is one, otherwise none: a user who unlocked their
+			// certificate has one, and the cache is a single slot for all of the user's accounts
+			$passphrase = Api\Cache::getSession('mail', 'smime_passphrase');
+			$passphrase = is_string($passphrase) ? $passphrase : '';
+			foreach($rows as $row)
+			{
+				$acc_id = (int)$row['acc_id'];
+				$on_login = null;
+				$smime = Mail\Credentials::read($acc_id, Mail\Credentials::SMIME, $account_id, $on_login, null, false);
+				$pkcs12 = $smime['acc_smime_password'] ?? '';
+				if($pkcs12 === '')
+				{
+					continue;	// no certificate stored, nothing to report
+				}
+				if($pkcs12 === Mail\Credentials::UNAVAILABLE)
+				{
+					$this->log_smime_problem($account_id, $acc_id, 'it can not be decrypted in this session');
+					continue;
+				}
+				$error = null;
+				if(($info = static::smime_certificate($pkcs12, $passphrase, $error)))
+				{
+					return $info;
+				}
+				$this->log_smime_problem($account_id, $acc_id, 'it does not open ' . ($passphrase === '' ?
+					'without a passphrase and none is cached in the session' : 'with the passphrase cached in the session') .
+					($error ? " ($error)" : ''));
+			}
+		}
+		catch(\Throwable $e)
+		{
+			// no certificate we can use: no signing, nothing to tell the user, but the admin can find out why
+			$this->log_smime_problem($account_id, $acc_id, 'reading it failed: ' . get_class($e) . ': ' . $e->getMessage());
+		}
+		return [];
+	}
+
+	/**
+	 * Key under which the last logged problem with a user's S/MIME certificate is remembered
+	 *
+	 * @param int $account_id
+	 * @param int $acc_id mail account, 0 if it is not known
+	 * @return string
+	 */
+	public static function smime_problem_key(int $account_id, int $acc_id) : string
+	{
+		return 'smime-problem-' . $account_id . '-' . $acc_id;
+	}
+
+	/**
+	 * Tell the admin why a user's S/MIME certificate can not be used for signing
+	 *
+	 * Written to the PHP error log, once an hour for the same problem of the same user and mail account: the
+	 * editor asks for the file info several times for every document it opens.  Never contains the passphrase
+	 * or any part of the certificate.
+	 *
+	 * @param int $account_id
+	 * @param int $acc_id mail account, 0 if it is not known
+	 * @param string $reason
+	 */
+	protected function log_smime_problem(int $account_id, int $acc_id, string $reason) : void
+	{
+		$key = static::smime_problem_key($account_id, $acc_id);
+		if(Api\Cache::getInstance('collabora', $key) === $reason)
+		{
+			return;
+		}
+		Api\Cache::setInstance('collabora', $key, $reason, 3600);
+		error_log("Collabora: no signing for user #$account_id, their S/MIME certificate" .
+			($acc_id ? " of mail account #$acc_id" : '') . " can not be used: $reason");
+	}
+
+	/**
+	 * Certificate, unencrypted key and CA chain from a PKCS#12 file
+	 *
+	 * @param string $pkcs12 content of the p12 file
+	 * @param string $passphrase passphrase of the file, '' for one without
+	 * @param ?string& $error on failure why it did not open, as far as OpenSSL says
+	 * @return string[] SignatureCert, SignatureKey and SignatureCa, or empty if the passphrase is wrong or the file is not usable
+	 */
+	public static function smime_certificate(string $pkcs12, string $passphrase = '', ?string &$error = null) : array
+	{
+		$certs = [];
+		while(openssl_error_string())
+		{
+		}
+		$opened = $pkcs12 !== '' && @openssl_pkcs12_read($pkcs12, $certs, $passphrase);
+		// do not leave OpenSSL's complaints about the wrong passphrase for the next caller
+		$errors = [];
+		while(($message = openssl_error_string()))
+		{
+			$errors[] = $message;
+		}
+		if(!$opened || empty($certs['cert']) || empty($certs['pkey']))
+		{
+			$error = $errors ? implode('; ', $errors) : 'not a usable PKCS#12 file';
+			return [];
+		}
+		return array_filter([
+			'SignatureCert' => $certs['cert'],
+			'SignatureKey'  => $certs['pkey'],
+			'SignatureCa'   => implode("\n", array_map('trim', (array)($certs['extracerts'] ?? [])))
+		]);
+	}
+
+	/**
+	 * Credentials of the eIDeasy service for Collabora's electronic signing
+	 *
+	 * @return string[] ESignatureBaseUrl, ESignatureClientId and ESignatureSecret, or empty if not configured
+	 */
+	protected function server_private_info() : array
+	{
+		$config = Api\Config::read('collabora');
+		if(empty($config['esig_url']))
+		{
+			return [];
+		}
+		return [
+			// Collabora appends "/api/..." itself, a trailing slash would give "//api/..." which eIDeasy rejects
+			'ESignatureBaseUrl'  => rtrim($config['esig_url'], '/'),
+			'ESignatureClientId' => $config['esig_client_id'] ?? '',
+			'ESignatureSecret'   => $config['esig_secret'] ?? ''
+		];
 	}
 
 	/**
