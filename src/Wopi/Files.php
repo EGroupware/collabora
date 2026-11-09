@@ -359,7 +359,7 @@ class Files
 		{
 			$rows = Mail\Credentials::get_db()->select(Mail\Credentials::TABLE, 'acc_id', [
 				'account_id' => $account_id,
-				'(cred_type & ' . Mail\Credentials::SMIME . ') > 0',
+				Api\Db\SqlFragment::raw('(cred_type & ' . Mail\Credentials::SMIME . ') > 0'),
 			], __LINE__, __FILE__, false, 'ORDER BY acc_id', Mail\Credentials::APP);
 			// the passphrase the user unlocked with, if there is one, otherwise none: a user who unlocked their
 			// certificate has one, and the cache is a single slot for all of the user's accounts
