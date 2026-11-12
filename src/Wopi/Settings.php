@@ -277,7 +277,9 @@ class Settings
 		switch($type)
 		{
 			case 'userconfig':
-				return Vfs::get_home_dir() . '/.config/collabora';
+				// get_home_dir() can legitimately be the bare '/' (eg. no real current-user context,
+				// such as during account creation via setup/admin-cli) - concat() avoids a resulting "//"
+				return Vfs::concat(Vfs::get_home_dir(), '.config/collabora');
 				break;
 			case 'systemconfig':
 				$config = (new Config('collabora'))->read_repository();

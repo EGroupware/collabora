@@ -67,6 +67,14 @@ class Preferences {
 				'admin'   => False
 			]];
 		}
+		// no real current-user context (eg. this hook running during account creation via
+		// setup/admin-cli, outside any actual login) - there's no per-user directory to share.
+		// get_home_dir() itself only falls back to '/' for the sharing-mismatch case, not for a
+		// missing account_lid (it would otherwise build a home dir for literally nobody), so check both.
+		if (empty($GLOBALS['egw_info']['user']['account_lid']) || Vfs::get_home_dir() === '/')
+		{
+			return [];
+		}
 		// Stored copies saved before verify_settings() existed would win over the fresh values
 		foreach(self::EPHEMERAL as $key)
 		{
