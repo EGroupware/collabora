@@ -520,10 +520,10 @@ class collaboraAPP extends EgwApp
 		access_token.type = "hidden";
 		form_html.appendChild(access_token);
 
-		const ui_preferences = "UIMode="+ (egw.preference("ui_mode","filemanager") || 'notebookbar');
+		// Tabbed is only the default, the user's own choice in Collabora's interface settings wins
 		const ui_defaults = document.createElement('input');
 		ui_defaults.name = "ui_defaults";
-		ui_defaults.value = ui_preferences;
+		ui_defaults.value = "UIMode=notebookbar";
 		ui_defaults.type = "hidden";
 		form_html.appendChild(ui_defaults);
 
@@ -747,7 +747,8 @@ class collaboraAPP extends EgwApp
 	 */
 	_customize_editor()
 	{
-		const notebookbar = (egw.preference("ui_mode","filemanager") || 'notebookbar') === 'notebookbar';
+		// Tabbed layout, unless the user switched on "Compact layout" in Collabora's interface settings
+		const notebookbar = !this.et2.getArrayMgr('content').getEntry('compact_mode');
 		const suffix = notebookbar ? '_white' : '';
 		let baseUrl = egw.webserverUrl[0] == '/' ?
 			window.location.protocol+'//'+window.location.hostname+egw.webserverUrl

@@ -188,6 +188,27 @@ class Settings
 		return true;
 	}
 
+	/**
+	 * Does the current user have Collabora's "Compact layout" interface setting switched on?
+	 *
+	 * Collabora stores its interface settings, from its settings page as well as the toggle in the editor,
+	 * in the browsersetting.json file of the user's settings directory.  Without that file or the value,
+	 * the editor uses the tabbed layout.
+	 *
+	 * @return bool true for the compact layout (toolbar and menu), false for the tabbed one
+	 */
+	public function isCompactMode() : bool
+	{
+		$path = $this->getSettingPath('userconfig', 'browsersetting', 'browsersetting.json');
+		if(!$path || !Vfs::file_exists($path))
+		{
+			return false;
+		}
+		$settings = json_decode(file_get_contents(Vfs::PREFIX . $path), true);
+
+		return filter_var($settings['compactMode'] ?? false, FILTER_VALIDATE_BOOLEAN);
+	}
+
 	protected function delete()
 	{
 		list(, , $type, $setting_name, $file_name) = explode('/', $_REQUEST['fileId']);

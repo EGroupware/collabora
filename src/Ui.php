@@ -223,6 +223,9 @@ class Ui {
 			}
 		}
 
+		// our own toolbar buttons depend on the layout the user chose in Collabora's interface settings
+		$content['compact_mode'] = (new Wopi\Settings())->isCompactMode();
+
 		// remove evtl. set autosave TS, to force a new version
 		Vfs::proppatch($path, array(array('ns' => Vfs::DEFAULT_PROP_NAMESPACE, 'name' => Wopi\Files::PROP_AUTOSAVE_TS, 'val' => null)));
 

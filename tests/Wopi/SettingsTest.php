@@ -438,6 +438,35 @@ class SettingsTest extends LoggedInTest
 	}
 
 	/**
+	 * Collabora stores the compact layout as a string from the editor and as a boolean from its settings page
+	 */
+	#[DataProvider('compactModeProvider')]
+	public function testCompactModeIsReadFromTheInterfaceSettings(string $content, bool $expected)
+	{
+		$this->addSetting('userconfig', 'browsersetting', 'browsersetting.json', $content);
+
+		$this->assertSame($expected, $this->settings->isCompactMode());
+	}
+
+	public static function compactModeProvider() : array
+	{
+		return [
+			'string true'  => ['{"compactMode":"true"}', true],
+			'boolean true' => ['{"compactMode":true}', true],
+			'string false' => ['{"compactMode":"false"}', false],
+			'boolean false' => ['{"compactMode":false}', false],
+			'not set'      => ['{"darkTheme":true}', false],
+			'not json'     => ['x', false],
+		];
+	}
+
+	public function testCompactModeWithoutInterfaceSettingsIsOff()
+	{
+		$this->assertFalse($this->settings->isCompactMode());
+		$this->assertFalse($this->settingsFor('')->isCompactMode());
+	}
+
+	/**
 	 * CheckFileInfo tells Collabora where to get both kinds of settings
 	 */
 	public function testCheckFileInfoOffersSettings()
