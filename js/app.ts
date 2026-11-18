@@ -606,6 +606,155 @@ class collaboraAPP extends EgwApp
 		jQuery('body').append(form_html);
 		(<HTMLFormElement>document.getElementById('form')).submit();
 		form_html.remove();
+
+		this._save_settings_iframe_with_dialog(iframe, values.collabora_settings_iframe, values.iframe_type || "admin");
+	}
+
+	/**
+	 * Make the Save and Apply buttons of the surrounding dialog also save Collabora's settings
+	 *
+	 * Collabora's settings page has a save button in each of its sections, and whatever was changed without
+	 * using them is lost when the dialog is saved.  The dialog is submitted once Collabora has saved, or after
+	 * a few seconds if it does not finish.
+	 *
+	 * This needs Collabora on the same origin as EGroupware: its page ignores messages from other origins,
+	 * and its buttons are out of reach.  Nothing is changed if it runs on another host.
+	 *
+	 * @param iframe The iframe showing Collabora's settings page
+	 * @param url URL of Collabora's settings page
+	 * @param type "user" for the settings of a user, "admin" for the ones shared by all users
+	 */
+	_save_settings_iframe_with_dialog(iframe : HTMLIFrameElement, url : string, type : string)
+	{
+		let origin;
+		try
+		{
+			origin = new URL(url, window.location.href).origin;
+		}
+		catch(e)
+		{
+			return;
+		}
+		if(origin !== window.location.origin)
+		{
+			return;
+		}
+		const template = (<any>(<ShadowRoot>iframe.getRootNode()).host ?? iframe).closest('et2-template');
+		const root = template?.getInstanceManager?.()?.widgetContainer;
+		// the preferences dialog and the admin app configuration name their buttons differently
+		['button[save]', 'button[apply]', 'save', 'apply'].forEach(id =>
+		{
+			const button = root?.getWidgetById(id);
+			if(!button || button.dataset.collaboraSaveAll)
+			{
+				return;
+			}
+			button.dataset.collaboraSaveAll = "true";
+			let saved = false;
+			button.addEventListener('click', (event : MouseEvent) =>
+			{
+				// second round, Collabora is done: let the button submit the dialog
+				if(saved || !iframe.isConnected || !iframe.contentWindow)
+				{
+					saved = false;
+					return;
+				}
+				event.stopImmediatePropagation();
+				event.preventDefault();
+
+				(type === 'user' ? this._save_all_settings(iframe, origin) : this._click_settings_save_buttons(iframe))
+					.then(() =>
+					{
+						saved = true;
+						button.click();
+					});
+			}, {capture: true});
+		});
+	}
+
+	/**
+	 * Ask Collabora's settings page to save all its sections
+	 *
+	 * The page saves everything when sent a "settings-save-all" message, and answers "settings-save-complete".
+	 * It can only do that for the settings of a user.
+	 *
+	 * @param iframe The iframe showing Collabora's settings page
+	 * @param origin Origin of Collabora's settings page
+	 * @param wait Milliseconds to wait for Collabora at most
+	 * @return Promise resolved when Collabora has saved, or the time is up
+	 */
+	_save_all_settings(iframe : HTMLIFrameElement, origin : string, wait = 5000) : Promise<void>
+	{
+		return new Promise(resolve =>
+		{
+			let timeout;
+			const done = (message? : MessageEvent) =>
+			{
+				if(message)
+				{
+					if(message.source !== iframe.contentWindow || message.origin !== origin)
+					{
+						return;
+					}
+					try
+					{
+						if(JSON.parse(message.data).MessageId !== 'settings-save-complete')
+						{
+							return;
+						}
+					}
+					catch(e)
+					{
+						return;
+					}
+				}
+				window.removeEventListener('message', done);
+				window.clearTimeout(timeout);
+				resolve();
+			};
+			window.addEventListener('message', done);
+			timeout = window.setTimeout(done, wait);
+			iframe.contentWindow.postMessage(JSON.stringify({MessageId: 'settings-save-all'}), origin);
+		});
+	}
+
+	/**
+	 * Click the save button of every section of Collabora's settings page
+	 *
+	 * Used for the settings shared by all users, where the page can not save all its sections by itself.
+	 * A section's save button is disabled while it saves.
+	 *
+	 * @param iframe The iframe showing Collabora's settings page
+	 * @param wait Milliseconds to wait for Collabora at most
+	 * @return Promise resolved when no section is saving any more, or the time is up
+	 */
+	_click_settings_save_buttons(iframe : HTMLIFrameElement, wait = 5000) : Promise<void>
+	{
+		return new Promise(resolve =>
+		{
+			let buttons : HTMLButtonElement[] = [];
+			try
+			{
+				buttons = Array.from(iframe.contentDocument.querySelectorAll<HTMLButtonElement>('button[id$="-save-button"]:not([disabled])'));
+			}
+			catch(e)
+			{
+				// not our origin after all
+			}
+			buttons.forEach(button => button.click());
+
+			const started = Date.now();
+			const check = () =>
+			{
+				if(!buttons.some(button => button.disabled) || Date.now() - started >= wait)
+				{
+					resolve();
+					return;
+				}
+				window.setTimeout(check, 100);
+			};
+			check();
+		});
 	}
 
 	/**
