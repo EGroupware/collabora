@@ -265,8 +265,11 @@ class collaboraFilemanagerAPP extends filemanagerAPP
 		// filemanager.ts's own identical _mail_link_callback() fix: same regex, same
 		// MailApp.composeWithPreset({body, mimeType}) fallback for the "nothing to reuse" case
 		// instead of a classic menuaction url.
+		//
+		// egw.applyFunc() loads the mail app first if this window does not have it yet, as in the
+		// editor window: a direct call of app.mail would silently do nothing there.
 		return egw.openWithinWindow("mail", "setCompose", content, params, /\/mail\/compose\.php/,
-			undefined, () => (<any>window).app.mail?.composeWithPreset({body: '<br />'+linkHtml, mimeType: 'html'}));
+			undefined, () => egw.applyFunc('app.mail.composeWithPreset', [{body: '<br />'+linkHtml, mimeType: 'html'}]));
 	}
 
 	/**
