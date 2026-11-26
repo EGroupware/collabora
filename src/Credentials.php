@@ -81,7 +81,7 @@ class Credentials extends Api\Mail\Credentials {
 		$rows = self::get_db()->select(self::TABLE, '*', array(
 				'cred_id' => (int)$cred_id,
 				'account_id' => self::CREDENTIAL_ACCOUNT,
-				'(cred_type & '.(int)parent::COLLABORA.') > 0',	// postgreSQL require > 0, or gives error as it expects boolean
+				Api\Db\SqlFragment::raw('(cred_type & '.(int)parent::COLLABORA.') > 0'),	// postgreSQL require > 0, or gives error as it expects boolean
 			), __LINE__, __FILE__, false,
 			'ORDER BY account_id ASC', self::APP
 		);
